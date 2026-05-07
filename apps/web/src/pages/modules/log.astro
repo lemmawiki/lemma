@@ -4,7 +4,7 @@ import Base from "../../layouts/Base.astro";
 import LogarithmIsland from "../../views/LogarithmIsland.tsx";
 import { pythonCode } from "../../data/code";
 
-const opts = { lang: "python", theme: "github-dark" } as const;
+const opts = { lang: "python", theme: "vitesse-light" } as const;
 const code = {
   arc1: await codeToHtml(pythonCode.logarithm.arc1, opts),
   arc3: await codeToHtml(pythonCode.logarithm.arc3, opts),

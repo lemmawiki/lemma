@@ -35,13 +35,19 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Pre-rendered Shiki code blocks. The <pre class="shiki"> already carries the
-   theme background; we just add spacing, rounded corners, and overflow. */
+/* Pre-rendered Shiki code blocks. The vitesse-light theme provides the token
+   colors; we override the white background with the same warm tint we use for
+   formula-inline pills so code blocks flow with the prose. */
 .shiki-wrap {
   margin-top: 12px;
 }
+.shiki-wrap .shiki,
+.shiki-wrap .shiki span {
+  background-color: var(--color-rule-soft) !important;
+}
 .shiki-wrap .shiki {
   overflow-x: auto;
+  border: 1px solid var(--color-rule);
   border-radius: 6px;
   padding: 14px 16px;
   font-size: 13.5px;
