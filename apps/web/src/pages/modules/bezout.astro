@@ -1,0 +1,19 @@
+---
+import { codeToHtml } from "shiki";
+import Base from "../../layouts/Base.astro";
+import BezoutIsland from "../../views/BezoutIsland.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "vitesse-light" } as const;
+const code = {
+  arc4: await codeToHtml(pythonCode.bezout.arc4, opts),
+  arc6: await codeToHtml(pythonCode.bezout.arc6, opts),
+};
+---
+
+<Base
+  title="Bezout's Theorem · Lemma"
+  description="Two curves of degrees d and e meet — projectively, complex-coordinated, multiplicity-counted — in exactly d·e points. Interactive."
+>
+  <BezoutIsland code={code} client:load />
+</Base>
