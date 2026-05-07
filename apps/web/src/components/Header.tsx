@@ -6,7 +6,18 @@ function HeaderInner({ pathname }: { pathname: string }) {
   return (
     <header className="header">
       <a href="/" className="brand">
-        <div className="brand-mark">∴</div>
+        <span className="brand-mark" aria-hidden>
+          <svg
+            viewBox="0 0 100 100"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="6"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="50" cy="38" r="26" />
+            <line x1="10" y1="64" x2="90" y2="64" />
+          </svg>
+        </span>
         <div className="brand-text">
           <div className="brand-title">Lemma</div>
           <div className="brand-sub">{pick(language, "math, backwards", "수학, 거꾸로")}</div>
