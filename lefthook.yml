@@ -1,0 +1,23 @@
+# https://lefthook.dev/configuration/
+#
+# Format with oxfmt, then lint with oxlint. Both run on pre-commit against the
+# files staged for the commit; auto-fixes are re-staged via stage_fixed.
+# Unfixable lint errors abort the commit.
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: fmt
+      glob: "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,json,jsonc,md,mdx,yml,yaml,css}"
+      run: pnpm exec oxfmt {staged_files}
+      stage_fixed: true
+
+    - name: lint
+      glob: "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}"
+      run: pnpm exec oxlint --fix {staged_files}
+      stage_fixed: true
+
+pre-push:
+  jobs:
+    - name: typecheck
+      run: pnpm --filter lemma-web exec astro check

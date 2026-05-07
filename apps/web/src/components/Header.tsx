@@ -14,15 +14,31 @@ function HeaderInner({ pathname }: { pathname: string }) {
       </a>
       <div className="toggles">
         <div className="toggle-group" role="tablist" aria-label="Language">
-          <button className={`toggle ${language === "en" ? "on" : ""}`} onClick={() => setLanguage("en")}>EN</button>
-          <button className={`toggle ${language === "ko" ? "on" : ""}`} onClick={() => setLanguage("ko")}>KO</button>
+          <button
+            className={`toggle ${language === "en" ? "on" : ""}`}
+            onClick={() => setLanguage("en")}
+          >
+            EN
+          </button>
+          <button
+            className={`toggle ${language === "ko" ? "on" : ""}`}
+            onClick={() => setLanguage("ko")}
+          >
+            KO
+          </button>
         </div>
         {showMode && (
           <div className="toggle-group" role="tablist" aria-label="Mode">
-            <button className={`toggle ${mode === "general" ? "on" : ""}`} onClick={() => setMode("general")}>
+            <button
+              className={`toggle ${mode === "general" ? "on" : ""}`}
+              onClick={() => setMode("general")}
+            >
               {pick(language, "general", "일반")}
             </button>
-            <button className={`toggle ${mode === "code" ? "on" : ""}`} onClick={() => setMode("code")}>
+            <button
+              className={`toggle ${mode === "code" ? "on" : ""}`}
+              onClick={() => setMode("code")}
+            >
               {pick(language, "code", "코드")}
             </button>
           </div>

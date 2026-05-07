@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "plugins": ["typescript", "react", "jsx-a11y"],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "typescript/triple-slash-reference": "off",
+    "eslint/no-underscore-dangle": "off",
+    "jsx-a11y/prefer-tag-over-role": "off"
+  },
+  "ignorePatterns": ["**/dist/**", "**/.astro/**", "**/node_modules/**", "**/*.md", "**/*.astro"]
+}

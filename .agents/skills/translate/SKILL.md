@@ -25,20 +25,20 @@ counterpart locale past the same content bar.
 
 Direct calque from English produces awkward Korean. Some patterns to watch:
 
-| Calque (avoid) | Native (prefer) |
-|---|---|
-| `이 모듈은 X 가 소비한다` | `이 모듈은 X 에서 쓰인다` |
-| `당시 약 $41 을 보냈다` | `당시 약 $41 어치 — 를 보냈다` |
-| `결과가 주어지면 단계 수를 센다` | `결과를 주면 몇 번 곱했는지를 센다` |
-| `미쳐가던 천문학자들의 시대` | `속이 타들어 가던 천문학자들의 시대였다` |
-| `더하기 같음 / 곱하기 같음` | `덧셈으로 같은 양 / 곱셈으로 같은 비율` |
+| Calque (avoid)                   | Native (prefer)                          |
+| -------------------------------- | ---------------------------------------- |
+| `이 모듈은 X 가 소비한다`        | `이 모듈은 X 에서 쓰인다`                |
+| `당시 약 $41 을 보냈다`          | `당시 약 $41 어치 — 를 보냈다`           |
+| `결과가 주어지면 단계 수를 센다` | `결과를 주면 몇 번 곱했는지를 센다`      |
+| `미쳐가던 천문학자들의 시대`     | `속이 타들어 가던 천문학자들의 시대였다` |
+| `더하기 같음 / 곱하기 같음`      | `덧셈으로 같은 양 / 곱셈으로 같은 비율`  |
 
 ## Math notation stays in source form
 
 - `log₁₀`, not `로그₁₀`
 - `e`, not `자연상수` (the term `e` itself is taught; don't translate it)
 - `Σ`, `∫`, function names — Latin / symbolic
-- The exception: when the symbol *is* the Korean term being defined, define it
+- The exception: when the symbol _is_ the Korean term being defined, define it
   via the glossary, not by translating in prose
 
 ## Term policy
@@ -76,14 +76,14 @@ When the user says "review Korean translations" or similar:
    - `apps/web/src/data/glossary/*/ko.md` (glossary entries)
    - `apps/web/src/data/{applications,modules}.ts` (card titles + hooks)
 2. **Score** each passage on calque ↔ native (1–5). Don't grade individual
-   words; grade the *paragraph rhythm*.
+   words; grade the _paragraph rhythm_.
 3. **Prioritize** the 1–3 worst, with one-line diagnoses ("English clause
    order leaks through", "academic register", "term inconsistency with x/ko.md").
 4. **Use Opus** for the rewrite pass on tough passages. Sonnet/Haiku tend to
    produce smoother but blander Korean and over-formalize.
-5. **Verify** the rewrite preserves *meaning*, not *clause structure*. The
-   English and Korean versions are allowed to diverge in *how* they say it
-   as long as they converge on *what* the reader walks away knowing.
+5. **Verify** the rewrite preserves _meaning_, not _clause structure_. The
+   English and Korean versions are allowed to diverge in _how_ they say it
+   as long as they converge on _what_ the reader walks away knowing.
 
 ## QA per file
 
@@ -102,9 +102,9 @@ For a single `ko.md` or `ko.*` surface, check:
    sentence-shaped.
 2. Translate the **hook** last. It's the most rhythmic prose on the page;
    it benefits from doing the rest first.
-3. For the arc sections, preserve the *function* of each clause (this clause
+3. For the arc sections, preserve the _function_ of each clause (this clause
    sets up, this clause delivers, this clause pivots). Don't preserve the
-   *order* if the target language wants it differently.
+   _order_ if the target language wants it differently.
 4. For exercises and solutions, preserve the math literally. The prose
    wrapping the math can flex.
 5. Check term ids — every `<Term id="x">` in the source must resolve in the

@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 
 // Each Astro page contains multiple React islands (Header + page content).
 // They live in separate React trees and cannot share context directly, so we
@@ -47,7 +54,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
     const onStorage = (e: StorageEvent) => {
       if (e.key === LANG_KEY && (e.newValue === "en" || e.newValue === "ko")) setLang(e.newValue);
-      if (e.key === MODE_KEY && (e.newValue === "general" || e.newValue === "code")) setModeState(e.newValue);
+      if (e.key === MODE_KEY && (e.newValue === "general" || e.newValue === "code"))
+        setModeState(e.newValue);
     };
     window.addEventListener(LANG_EVENT, onLang);
     window.addEventListener(MODE_EVENT, onMode);
@@ -70,11 +78,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     window.dispatchEvent(new CustomEvent(MODE_EVENT, { detail: m }));
   }
 
-  return (
-    <AppContext.Provider value={{ language, setLanguage, mode, setMode }}>
-      {children}
-    </AppContext.Provider>
+  const value = useMemo(
+    () => ({ language, setLanguage, mode, setMode }),
+    [language, mode],
   );
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
 
 export function useApp() {

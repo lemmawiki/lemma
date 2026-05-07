@@ -37,15 +37,30 @@ Yes → it ships. No → it doesn't, however polished.
 - **Astro + React islands.** `.astro` files are routes; React only mounts
   where interactivity exists. See [apps/web/src/layouts/Base.astro](apps/web/src/layouts/Base.astro).
 
+## Toolchain
+
+- **pnpm** workspace (`pnpm-workspace.yaml` lists `apps/*`). Pinned via
+  `packageManager` in [package.json](package.json).
+- **oxlint** (linter) + **oxfmt** (formatter) — both at the repo root,
+  config in [.oxlintrc.json](.oxlintrc.json). Run on the whole repo.
+- **lefthook** — git hooks pinned in [lefthook.yml](lefthook.yml).
+  Pre-commit runs oxfmt + oxlint on staged files (auto-fix and re-stage);
+  pre-push runs `astro check`.
+- **Astro 6**, **TypeScript 6**, **React 19** — all on latest.
+
 ## Build & verify
 
 All commands run from the repo root.
 
 ```sh
-npm install --prefix apps/web
-npm run dev --prefix apps/web                # http://localhost:4321
-npm run build --prefix apps/web              # validate + typecheck + build
-npm run validate:glossary --prefix apps/web  # glossary structure + cross-refs
+pnpm install                # installs both workspaces, runs lefthook install
+pnpm run dev                # http://localhost:4321
+pnpm run build              # validate glossary + astro check + astro build
+pnpm run lint               # oxlint
+pnpm run lint:fix           # oxlint --fix
+pnpm run fmt                # oxfmt
+pnpm run fmt:check          # oxfmt --check
+pnpm run validate:glossary  # glossary structure + cross-refs
 ```
 
 ## Skills

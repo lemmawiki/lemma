@@ -10,13 +10,17 @@ function Hero() {
   return (
     <section className="home-hero">
       <h1 className="home-title">
-        {pick(language, "An interactive math textbook built backwards.", "거꾸로 만든 인터랙티브 수학 교과서.")}
+        {pick(
+          language,
+          "An interactive math textbook built backwards.",
+          "거꾸로 만든 인터랙티브 수학 교과서.",
+        )}
       </h1>
       <p className="home-lede">
         {pick(
           language,
           <>We start with the question. The math comes after.</>,
-          <>질문에서 시작합니다. 수학은 그 다음입니다.</>
+          <>질문에서 시작합니다. 수학은 그 다음입니다.</>,
         )}
       </p>
     </section>
@@ -29,7 +33,11 @@ function ApplicationsList() {
   return (
     <section className="home-section">
       <div className="kicker">
-        {pick(language, `applications · available · ${live.length}`, `응용 · 공개됨 · ${live.length}`)}
+        {pick(
+          language,
+          `applications · available · ${live.length}`,
+          `응용 · 공개됨 · ${live.length}`,
+        )}
       </div>
       <ul className="app-list">
         {live.map((app) => (
@@ -42,9 +50,7 @@ function ApplicationsList() {
               </div>
               <h2 className="app-card-title">{app.title[language]}</h2>
               <p className="app-card-hook">{app.hook[language]}</p>
-              <span className="app-card-cta">
-                {pick(language, "open →", "열기 →")}
-              </span>
+              <span className="app-card-cta">{pick(language, "open →", "열기 →")}</span>
             </Link>
           </li>
         ))}
@@ -70,9 +76,7 @@ function ModulesList() {
               </div>
               <h2 className="app-card-title">{m.title[language]}</h2>
               <p className="app-card-hook">{m.hook[language]}</p>
-              <span className="app-card-cta">
-                {pick(language, "open →", "열기 →")}
-              </span>
+              <span className="app-card-cta">{pick(language, "open →", "열기 →")}</span>
             </Link>
           </li>
         ))}
@@ -89,8 +93,19 @@ function Status() {
       <p className="home-status">
         {pick(
           language,
-          <>Early. One application live, more in progress. The bar is one question: <em>does this make a curious learner understand something they could not understand before?</em> Yes — it ships. No — it doesn't, however polished.</>,
-          <>초기. 응용 하나 공개, 더 작업 중. 기준은 단 하나: <em>호기심 있는 학습자가 이전엔 이해하지 못한 것을 이해하게 만드는가?</em> 예 — 들어옵니다. 아니오 — 아무리 다듬어졌어도 들어오지 않습니다.</>
+          <>
+            Early. One application live, more in progress. The bar is one question:{" "}
+            <em>
+              does this make a curious learner understand something they could not understand
+              before?
+            </em>{" "}
+            Yes — it ships. No — it doesn't, however polished.
+          </>,
+          <>
+            초기. 응용 하나 공개, 더 작업 중. 기준은 단 하나:{" "}
+            <em>호기심 있는 학습자가 이전엔 이해하지 못한 것을 이해하게 만드는가?</em> 예 —
+            들어옵니다. 아니오 — 아무리 다듬어졌어도 들어오지 않습니다.
+          </>,
         )}
       </p>
     </section>
@@ -102,7 +117,9 @@ function Counters() {
   return (
     <section className="home-counters">
       <div className="counter">
-        <div className="counter-num">{applications.filter((a) => a.status === "available").length}</div>
+        <div className="counter-num">
+          {applications.filter((a) => a.status === "available").length}
+        </div>
         <div className="counter-label">{pick(language, "applications", "응용")}</div>
       </div>
       <div className="counter">
@@ -128,12 +145,19 @@ function HomeFooter() {
       <div>
         {pick(
           language,
-          <>Lemma is bilingual at the term level. Hover any underlined word to see its counterpart.</>,
-          <>Lemma는 용어 단위로 이중언어입니다. 밑줄 그어진 단어 위에 마우스를 올리면 반대 언어가 보입니다.</>
+          <>
+            Lemma is bilingual at the term level. Hover any underlined word to see its counterpart.
+          </>,
+          <>
+            Lemma는 용어 단위로 이중언어입니다. 밑줄 그어진 단어 위에 마우스를 올리면 반대 언어가
+            보입니다.
+          </>,
         )}
       </div>
       <div className="footer-license">
-        <a href="https://github.com/lemmawiki/lemma" target="_blank" rel="noopener noreferrer">github</a>
+        <a href="https://github.com/lemmawiki/lemma" target="_blank" rel="noopener noreferrer">
+          github
+        </a>
         <span className="footer-sep"> · </span>
         CC BY 4.0 (content) · MIT (code)
       </div>

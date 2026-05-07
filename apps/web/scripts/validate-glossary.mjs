@@ -25,7 +25,7 @@ function parse(raw) {
 const order = JSON.parse(readFileSync(join(ROOT, "_order.json"), "utf8"));
 const ids = new Set();
 const dirEntries = readdirSync(ROOT).filter(
-  (n) => !n.startsWith("_") && !n.startsWith(".") && statSync(join(ROOT, n)).isDirectory()
+  (n) => !n.startsWith("_") && !n.startsWith(".") && statSync(join(ROOT, n)).isDirectory(),
 );
 
 for (const id of dirEntries) {
@@ -73,7 +73,8 @@ for (const id of order) {
   if (!ids.has(id)) errors.push(`_order.json references unknown id '${id}'`);
 }
 for (const id of ids) {
-  if (!order.includes(id)) warnings.push(`${id} not in _order.json (will be hidden from glossary list)`);
+  if (!order.includes(id))
+    warnings.push(`${id} not in _order.json (will be hidden from glossary list)`);
 }
 
 if (warnings.length) {

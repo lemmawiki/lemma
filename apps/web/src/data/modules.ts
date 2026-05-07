@@ -32,5 +32,5 @@ export const modules: ModuleMeta[] = [
 ];
 
 export const moduleByHref: Record<string, ModuleMeta> = Object.fromEntries(
-  modules.map((m) => [m.href, m])
+  modules.map((m) => [m.href, m]),
 );

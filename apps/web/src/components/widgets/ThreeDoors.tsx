@@ -28,8 +28,16 @@ export function ThreeDoors() {
 
   if (door === "F") {
     answer = futureValue(P, r, t);
-    formula = <>F = P · (1 + r)<sup>t</sup></>;
-    formulaKo = <>F = P · (1 + r)<sup>t</sup></>;
+    formula = (
+      <>
+        F = P · (1 + r)<sup>t</sup>
+      </>
+    );
+    formulaKo = (
+      <>
+        F = P · (1 + r)<sup>t</sup>
+      </>
+    );
     opLabel = { en: "operation: exponent", ko: "연산: 지수" };
   } else if (door === "t") {
     answer = yearsToTarget(P, F, r);
@@ -38,8 +46,16 @@ export function ThreeDoors() {
     opLabel = { en: "operation: logarithm", ko: "연산: 로그" };
   } else {
     answer = impliedRate(P, F, t);
-    formula = <>r = (F / P)<sup>1/t</sup> − 1</>;
-    formulaKo = <>r = (F / P)<sup>1/t</sup> − 1</>;
+    formula = (
+      <>
+        r = (F / P)<sup>1/t</sup> − 1
+      </>
+    );
+    formulaKo = (
+      <>
+        r = (F / P)<sup>1/t</sup> − 1
+      </>
+    );
     opLabel = { en: "operation: n-th root", ko: "연산: 거듭제곱근" };
   }
 
@@ -146,8 +162,14 @@ export function ThreeDoors() {
       <div className="widget-caption">
         {pick(
           language,
-          <>One equation. Three unknowns. <b>exp</b> isolates F. <b>log</b> isolates t. <b>root</b> isolates r. Same machine, three doors.</>,
-          <>한 식. 세 미지수. <b>지수</b>는 F를, <b>로그</b>는 t를, <b>거듭제곱근</b>은 r을 분리한다. 같은 기계, 세 문.</>
+          <>
+            One equation. Three unknowns. <b>exp</b> isolates F. <b>log</b> isolates t. <b>root</b>{" "}
+            isolates r. Same machine, three doors.
+          </>,
+          <>
+            한 식. 세 미지수. <b>지수</b>는 F를, <b>로그</b>는 t를, <b>거듭제곱근</b>은 r을
+            분리한다. 같은 기계, 세 문.
+          </>,
         )}
       </div>
     </div>

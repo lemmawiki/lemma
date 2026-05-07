@@ -17,8 +17,8 @@ question first, math second. This skill is for getting content past the bar.
 - No → it doesn't, however polished
 
 If a page is well-written but the reader walks away knowing the same thing they
-already knew, the page failed. Beautiful prose that *restates* understanding is
-worse than rough prose that *creates* it.
+already knew, the page failed. Beautiful prose that _restates_ understanding is
+worse than rough prose that _creates_ it.
 
 ## Page structure (the arc)
 
@@ -26,7 +26,7 @@ Every application page follows this skeleton:
 
 1. **Hook** — a real-world question that the math is needed to answer
    ("What annual rate turns $41 into $1B in 16 years?"). One vivid paragraph.
-   No math yet — the math has to be *missed* before it's introduced.
+   No math yet — the math has to be _missed_ before it's introduced.
 2. **Widget** — an interactive thing that makes the question tangible. The
    reader must be able to push values around and watch what happens.
 3. **Arc** — numbered sections (1, 2, 3 …), each building on the previous.
@@ -36,10 +36,10 @@ Every application page follows this skeleton:
 4. **Pin** — a boxed conclusion that crystallizes the whole page in 1–3
    sentences. Memorable. Short. The thing the reader will quote later.
 5. **Exercises** — 5–7 problems with reveal-able solutions. Cover this mix:
-   - *read the graph* — uses the widget, no formula
-   - *compute by hand* / *no calculator* — forces understanding, not lookup
-   - *write the equation* — translation from English to math
-   - *the evil one* — catches a likely misconception or breaks an
+   - _read the graph_ — uses the widget, no formula
+   - _compute by hand_ / _no calculator_ — forces understanding, not lookup
+   - _write the equation_ — translation from English to math
+   - _the evil one_ — catches a likely misconception or breaks an
      approximation in a way the reader will remember
 6. **Glossary** — page-scoped, auto-populated from `<Term>` usage on the page.
    Don't list everything — only what was actually used.
@@ -51,17 +51,19 @@ identity that does all the work, and the arc shows it consumed by applications.
 
 Audience: post-secondary, 18+, smart, technical. Decision rule:
 
-> Would a smart 18-year-old developer *need help here*?
+> Would a smart 18-year-old developer _need help here_?
 
 If yes, backlink it. Wrap the term in `<Term id="…">…</Term>` so it gets a
 glossary entry and the hover-counterpart treatment.
 
 **Backlink:**
+
 - Domain-specific things: `float32`, `log_softmax`, `SPY`, `CAGR`, `slide-rule`
 - Anything you'd otherwise gloss with "(see Wikipedia)"
 - Library functions and concepts that aren't universally known
 
 **Don't backlink:**
+
 - High-school basics: `function`, `variable`, `multiplication`, `derivative`
 - General programming literacy: `for loop`, `array`, `string`
 
@@ -72,7 +74,7 @@ backlinking nothing — both signal "I don't know who I'm writing for."
 
 - **General mode**: prose only. Accessible to anyone meeting the baseline,
   even if they never write code.
-- **Code mode**: prose + Python snippets that *complete* the prose. The code
+- **Code mode**: prose + Python snippets that _complete_ the prose. The code
   is itself a teaching surface — function names and return values reinforce
   the equation. Don't duplicate the prose in comments.
 
@@ -103,7 +105,7 @@ For any non-trivial new page, spawn parallel subagents with different lenses
   break-points called out?
 - **Copy editor** — is any sentence load-bearing without earning its weight?
   Cut prose that restates the previous sentence. Cut hedges.
-- **Korean reader** — is the ko.* prose native, or English-shaped? (Hand to
+- **Korean reader** — is the ko.\* prose native, or English-shaped? (Hand to
   the `translate` skill if so.)
 
 Synthesize their feedback into a single revision pass. Don't merge advice

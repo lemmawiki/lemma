@@ -48,5 +48,5 @@ export const applications: ApplicationMeta[] = [
 ];
 
 export const applicationByHref: Record<string, ApplicationMeta> = Object.fromEntries(
-  applications.map((a) => [a.href, a])
+  applications.map((a) => [a.href, a]),
 );

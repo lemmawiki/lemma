@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useMemo,
   useState,
   type ReactNode,
 } from "react";
@@ -28,11 +29,8 @@ export function TermsProvider({ children }: { children: ReactNode }) {
       return next;
     });
   }, []);
-  return (
-    <TermsContext.Provider value={{ used, register }}>
-      {children}
-    </TermsContext.Provider>
-  );
+  const value = useMemo(() => ({ used, register }), [used, register]);
+  return <TermsContext.Provider value={value}>{children}</TermsContext.Provider>;
 }
 
 export function useTermsRegistry() {

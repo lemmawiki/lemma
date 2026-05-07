@@ -45,18 +45,36 @@ export function Term({ id, children }: { id: string; children?: React.ReactNode 
     <span
       ref={ref}
       className="term"
+      role="button"
+      tabIndex={0}
+      aria-expanded={open}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={(e) => {
         e.stopPropagation();
         setPinned((p) => !p);
       }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          setPinned((p) => !p);
+        } else if (e.key === "Escape") {
+          setPinned(false);
+        }
+      }}
     >
       {primary}
       {open && (
-        <span className="term-pop" onClick={(e) => e.stopPropagation()}>
+        <span
+          role="presentation"
+          className="term-pop"
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => e.stopPropagation()}
+        >
           <span className="term-pop-head">
-            <span className={`term-pop-lang lang-${counterpartLang}`}>{counterpartLang.toUpperCase()}</span>
+            <span className={`term-pop-lang lang-${counterpartLang}`}>
+              {counterpartLang.toUpperCase()}
+            </span>
             <strong>{counterpart}</strong>
           </span>
           <span className="term-pop-body">{body}</span>
