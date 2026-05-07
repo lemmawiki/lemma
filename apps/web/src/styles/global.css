@@ -1,55 +1,65 @@
-/* reset + global */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@import "tailwindcss";
+
+/* Design tokens — Tailwind v4 @theme generates utilities (bg-acc, text-ink-soft,
+   font-serif, etc.). Plain :root vars below are short aliases used by class
+   definitions still present during the Phase B utility migration. */
+@theme {
+  --color-bg: #faf7f2;
+  --color-bg-card: #ffffff;
+  --color-ink: #14110d;
+  --color-ink-soft: #50473e;
+  --color-ink-mute: #897e6f;
+  --color-rule: #e6dfd2;
+  --color-rule-soft: #f0ead9;
+  --color-acc: #b6451e; /* terracotta — our identity */
+  --color-acc-soft: #f5e1d4;
+  --color-acc-deep: #7a2c10;
+  --color-green: #2c6f4a;
+  --color-plot-line: #b6451e;
+  --color-plot-grid: #e9e0cf;
+  --color-plot-bg: #fefdf9;
+  --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  --breakpoint-md: 720px;
 }
-html,
-body {
-  margin: 0;
-  padding: 0;
+
+/* Back-compat aliases — keep until Phase B deletes the legacy class blocks
+   below. Once those are gone, this :root block can go too. */
+:root {
+  --bg: var(--color-bg);
+  --bg-card: var(--color-bg-card);
+  --ink: var(--color-ink);
+  --ink-soft: var(--color-ink-soft);
+  --ink-mute: var(--color-ink-mute);
+  --rule: var(--color-rule);
+  --rule-soft: var(--color-rule-soft);
+  --acc: var(--color-acc);
+  --acc-soft: var(--color-acc-soft);
+  --acc-deep: var(--color-acc-deep);
+  --green: var(--color-green);
+  --plot-line: var(--color-plot-line);
+  --plot-grid: var(--color-plot-grid);
+  --plot-bg: var(--color-plot-bg);
+  --serif: var(--font-serif);
+  --sans: var(--font-sans);
+  --mono: var(--font-mono);
 }
+
+/* Body baseline (Tailwind preflight handles box-sizing reset and most defaults) */
 body {
-  background: #faf7f2;
-  color: #14110d;
-  font-family:
-    "Inter",
-    system-ui,
-    -apple-system,
-    sans-serif;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
   font-size: 17px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
-#root {
-  min-height: 100vh;
-}
 button {
   font: inherit;
   cursor: pointer;
-}
-/* Design system
-   ---------------------------------------------------------------- */
-:root {
-  --bg: #faf7f2;
-  --bg-card: #ffffff;
-  --ink: #14110d;
-  --ink-soft: #50473e;
-  --ink-mute: #897e6f;
-  --rule: #e6dfd2;
-  --rule-soft: #f0ead9;
-  --acc: #b6451e; /* terracotta */
-  --acc-soft: #f5e1d4;
-  --acc-deep: #7a2c10;
-  --green: #2c6f4a;
-  --plot-line: #b6451e;
-  --plot-grid: #e9e0cf;
-  --plot-bg: #fefdf9;
-  --serif: "Fraunces", Georgia, "Times New Roman", serif;
-  --sans: "Inter", system-ui, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
 }
 
 /* Page layout
