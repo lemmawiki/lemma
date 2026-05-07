@@ -31,5 +31,6 @@ coverage/
 # typescript
 *.tsbuildinfo
 
-# claude
-.claude/
+# claude — ignore local config, but track the skills symlink → ../.agents/skills
+.claude/*
+!.claude/skills
