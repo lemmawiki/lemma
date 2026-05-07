@@ -8,7 +8,8 @@
     "build": "pnpm run validate:glossary && astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "validate:glossary": "node scripts/validate-glossary.mjs"
+    "validate:glossary": "node scripts/validate-glossary.mjs",
+    "build:brand": "node scripts/build-brand.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
@@ -22,6 +23,7 @@
     "@types/js-yaml": "^4.0.9",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "sharp": "^0.34.5",
     "typescript": "^6.0.3"
   }
 }
