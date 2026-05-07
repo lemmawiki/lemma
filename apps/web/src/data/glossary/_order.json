@@ -21,5 +21,8 @@
   "gradient",
   "stirling-approximation",
   "slide-rule",
-  "pytorch"
+  "pytorch",
+  "parametrized-curve",
+  "image-of-curve",
+  "reparametrization"
 ]
