@@ -1,9 +1,23 @@
-# Lemma
+<div align="center">
+  <a href="https://lemma.wiki">
+    <img src="brand/mark.svg" alt="Lemma — the Tangent" width="72" />
+  </a>
 
-**거꾸로 만든 인터랙티브 수학 교과서.**
-질문에서 시작합니다. 수학은 그 다음입니다.
+  <h1>Lemma</h1>
 
-> English version: [README.md](./README.md)
+  <p>
+    <strong>거꾸로 만든 인터랙티브 수학 교과서.</strong><br />
+    질문에서 시작합니다. 수학은 그 다음입니다.
+  </p>
+
+  <p>
+    <a href="https://lemma.wiki">lemma.wiki</a>
+    &nbsp;·&nbsp;
+    <a href="./README.md">English</a>
+    &nbsp;·&nbsp;
+    <a href="./brand/README.md">브랜드 키트</a>
+  </p>
+</div>
 
 ---
 
