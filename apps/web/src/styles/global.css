@@ -673,6 +673,13 @@ section { margin-top: 56px; }
 }
 .footer b { color: var(--ink); font-weight: 600; }
 .footer-license { font-size: 11px; }
+.footer-license a {
+  color: var(--ink-mute);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--ink-mute);
+}
+.footer-license a:hover { color: var(--acc); border-bottom-color: var(--acc); }
+.footer-sep { color: var(--rule); }
 
 /* Brand as link (router)
    ---------------------------------------------------------------- */

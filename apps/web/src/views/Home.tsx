@@ -132,7 +132,11 @@ function HomeFooter() {
           <>Lemma는 용어 단위로 이중언어입니다. 밑줄 그어진 단어 위에 마우스를 올리면 반대 언어가 보입니다.</>
         )}
       </div>
-      <div className="footer-license">CC BY 4.0 (content) · MIT (code)</div>
+      <div className="footer-license">
+        <a href="https://github.com/lemmawiki/lemma" target="_blank" rel="noopener noreferrer">github</a>
+        <span className="footer-sep"> · </span>
+        CC BY 4.0 (content) · MIT (code)
+      </div>
     </footer>
   );
 }
