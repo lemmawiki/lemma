@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 
 // Per-page registry of which glossary term ids actually appeared on the page.
 // <Term> auto-registers itself on mount; the page's Glossary section reads the
