@@ -13,8 +13,14 @@ const KICKER =
 const FORMULA_INLINE =
   "rounded-sm bg-rule-soft px-1.5 py-px font-mono text-[0.95em] text-ink whitespace-nowrap";
 const MONO = "font-mono text-[0.93em]";
-const CODE_BLOCK =
-  "mt-3 overflow-x-auto rounded-md border border-[#2a2620] bg-[#1f1c18] px-4 py-3.5 font-mono text-[13.5px] leading-[1.5] text-[#f5e9d4]";
+
+type CodeMap = { arc1: string; arc2: string; arc3: string };
+
+// Pre-rendered Shiki HTML produced at build time in the .astro page; we just
+// drop it into the DOM. The .shiki rule in global.css adds spacing/overflow.
+function Code({ html }: { html: string }) {
+  return <div className="shiki-wrap" dangerouslySetInnerHTML={{ __html: html }} />;
+}
 
 function Breadcrumb() {
   const { language } = useApp();
@@ -102,7 +108,7 @@ function ArcRow({ n, children }: { n: number; children: React.ReactNode }) {
   );
 }
 
-function Arc() {
+function Arc({ code }: { code: CodeMap }) {
   const { language, mode } = useApp();
   return (
     <section className="mt-14">
@@ -141,13 +147,7 @@ function Arc() {
             </>,
           )}
         </p>
-        {mode === "code" && (
-          <pre className={CODE_BLOCK}>{`def future_value(P, r, t):
-    return P * (1 + r) ** t
-
-future_value(41, 1.89, 16)     # ≈ 1.0e9    (Laszlo today)
-future_value(1e9, 1.89, 20)    # ≈ 1.7e18   (BTC in 2046, if it keeps pace)`}</pre>
-        )}
+        {mode === "code" && <Code html={code.arc1} />}
       </ArcRow>
 
       <ArcRow n={2}>
@@ -180,14 +180,7 @@ future_value(1e9, 1.89, 20)    # ≈ 1.7e18   (BTC in 2046, if it keeps pace)`}<
             </>,
           )}
         </p>
-        {mode === "code" && (
-          <pre className={CODE_BLOCK}>{`from math import log
-
-def years_to_target(P, F, r):
-    return log(F / P) / log(1 + r)
-
-years_to_target(41, 1e6, 1.89)  # ≈ 9.5  (years since May 2010)`}</pre>
-        )}
+        {mode === "code" && <Code html={code.arc2} />}
       </ArcRow>
 
       <ArcRow n={3}>
@@ -228,13 +221,7 @@ years_to_target(41, 1e6, 1.89)  # ≈ 9.5  (years since May 2010)`}</pre>
             </>,
           )}
         </p>
-        {mode === "code" && (
-          <pre className={CODE_BLOCK}>{`def implied_rate(P, F, t):
-    return (F / P) ** (1 / t) - 1
-
-implied_rate(41, 1e9, 16)     # ≈ 1.89   (189% / yr — Bitcoin)
-implied_rate(100, 1000, 30)   # ≈ 0.08   (8% — boring SPY-ish)`}</pre>
-        )}
+        {mode === "code" && <Code html={code.arc3} />}
       </ArcRow>
 
       <div className="mt-[22px] rounded-r-md border-l-4 border-acc bg-acc-soft px-[22px] py-[18px] text-base leading-[1.55] text-acc-deep">
@@ -603,7 +590,7 @@ function PageFooter() {
   );
 }
 
-export function BitcoinPizza() {
+export function BitcoinPizza({ code }: { code: CodeMap }) {
   useEffect(() => {
     document.title = "The Bitcoin Pizza · Lemma";
   }, []);
@@ -612,7 +599,7 @@ export function BitcoinPizza() {
       <Breadcrumb />
       <Hook />
       <PizzaSlider />
-      <Arc />
+      <Arc code={code} />
       <ThreeDoors />
       <Exercises />
       <Glossary />

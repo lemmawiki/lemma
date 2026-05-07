@@ -27,6 +27,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "sharp": "^0.34.5",
+    "shiki": "^4.0.2",
     "typescript": "^6.0.3"
   }
 }

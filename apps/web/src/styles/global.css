@@ -35,6 +35,19 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Pre-rendered Shiki code blocks. The <pre class="shiki"> already carries the
+   theme background; we just add spacing, rounded corners, and overflow. */
+.shiki-wrap {
+  margin-top: 12px;
+}
+.shiki-wrap .shiki {
+  overflow-x: auto;
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
 /* SVG plot decorations — applied to <line>, <text>, etc. inside widgets.
    Kept as classes because Tailwind doesn't compose well onto SVG children. */
 .plot-bg {

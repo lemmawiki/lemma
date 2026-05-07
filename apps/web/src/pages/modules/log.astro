@@ -1,8 +1,19 @@
 ---
+import { codeToHtml } from "shiki";
 import Base from "../../layouts/Base.astro";
 import LogarithmIsland from "../../views/LogarithmIsland.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "github-dark" } as const;
+const code = {
+  arc1: await codeToHtml(pythonCode.logarithm.arc1, opts),
+  arc3: await codeToHtml(pythonCode.logarithm.arc3, opts),
+};
 ---
 
-<Base title="Log · Lemma" description="The trick that turns × into +. The whole module is one equation.">
-  <LogarithmIsland client:load />
+<Base
+  title="Log · Lemma"
+  description="The trick that turns × into +. The whole module is one equation."
+>
+  <LogarithmIsland code={code} client:load />
 </Base>

@@ -1,8 +1,23 @@
 ---
+import { codeToHtml } from "shiki";
 import Base from "../../layouts/Base.astro";
 import BitcoinPizzaIsland from "../../views/BitcoinPizzaIsland.tsx";
+import { pythonCode } from "../../data/code";
+
+// Pre-render the Python snippets at build time using the same Shiki engine
+// that powers Astro's built-in <Code /> component. Default theme: github-dark
+// (Astro's markdown default). Zero JS shipped to the client for highlighting.
+const opts = { lang: "python", theme: "github-dark" } as const;
+const code = {
+  arc1: await codeToHtml(pythonCode.bitcoinPizza.arc1, opts),
+  arc2: await codeToHtml(pythonCode.bitcoinPizza.arc2, opts),
+  arc3: await codeToHtml(pythonCode.bitcoinPizza.arc3, opts),
+};
 ---
 
-<Base title="The Bitcoin Pizza · Lemma" description="An interactive look at exp, log, and root through the most expensive meal in history.">
-  <BitcoinPizzaIsland client:load />
+<Base
+  title="The Bitcoin Pizza · Lemma"
+  description="An interactive look at exp, log, and root through the most expensive meal in history."
+>
+  <BitcoinPizzaIsland code={code} client:load />
 </Base>

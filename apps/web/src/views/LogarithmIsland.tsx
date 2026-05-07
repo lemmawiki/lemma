@@ -1,10 +1,10 @@
 import { AppProvider } from "../context/AppContext";
 import { Logarithm } from "./Logarithm";
 
-export default function LogarithmIsland() {
+export default function LogarithmIsland({ code }: { code: { arc1: string; arc3: string } }) {
   return (
     <AppProvider>
-      <Logarithm />
+      <Logarithm code={code} />
     </AppProvider>
   );
 }

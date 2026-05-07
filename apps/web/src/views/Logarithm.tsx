@@ -12,8 +12,12 @@ const KICKER =
 const FORMULA_INLINE =
   "rounded-sm bg-rule-soft px-1.5 py-px font-mono text-[0.95em] text-ink whitespace-nowrap";
 const MONO = "font-mono text-[0.93em]";
-const CODE_BLOCK =
-  "mt-3 overflow-x-auto rounded-md border border-[#2a2620] bg-[#1f1c18] px-4 py-3.5 font-mono text-[13.5px] leading-[1.5] text-[#f5e9d4]";
+
+type CodeMap = { arc1: string; arc3: string };
+
+function Code({ html }: { html: string }) {
+  return <div className="shiki-wrap" dangerouslySetInnerHTML={{ __html: html }} />;
+}
 
 function Breadcrumb() {
   const { language } = useApp();
@@ -104,7 +108,7 @@ function ArcRow({ n, children }: { n: number; children: React.ReactNode }) {
   );
 }
 
-function Arc() {
+function Arc({ code }: { code: CodeMap }) {
   const { language, mode } = useApp();
   return (
     <section className="mt-14">
@@ -144,14 +148,7 @@ function Arc() {
             </>,
           )}
         </p>
-        {mode === "code" && (
-          <pre className={CODE_BLOCK}>{`import math
-
-# every log law from one identity:
-math.log10(2 * 50)              # ≈ math.log10(2) + math.log10(50)
-math.log10(2 ** 10)             # ≈ 10 * math.log10(2)
-math.log10(1)                   # 0.0`}</pre>
-        )}
+        {mode === "code" && <Code html={code.arc1} />}
       </ArcRow>
 
       <ArcRow n={2}>
@@ -248,16 +245,7 @@ math.log10(1)                   # 0.0`}</pre>
             </>,
           )}
         </p>
-        {mode === "code" && (
-          <pre className={CODE_BLOCK}>{`import numpy as np
-
-# Naive: multiply 40 probabilities. Underflows in float32.
-p = np.float32(0.1)
-np.prod([p] * 40)               # → 0.0  (silent death)
-
-# Log-space: add 40 log-probabilities. Survives.
-np.sum(np.log([p] * 40))        # → -92.10  (well-defined)`}</pre>
-        )}
+        {mode === "code" && <Code html={code.arc3} />}
       </ArcRow>
 
       <ArcRow n={4}>
@@ -709,7 +697,7 @@ function PageFooter() {
   );
 }
 
-export function Logarithm() {
+export function Logarithm({ code }: { code: CodeMap }) {
   useEffect(() => {
     document.title = "Log · Lemma";
   }, []);
@@ -718,7 +706,7 @@ export function Logarithm() {
       <Breadcrumb />
       <Hook />
       <TwoStacks />
-      <Arc />
+      <Arc code={code} />
       <Exercises />
       <Glossary />
       <PageFooter />
