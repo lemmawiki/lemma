@@ -5,18 +5,21 @@ import { applications, PILLAR_LABEL } from "../data/applications";
 import { modules } from "../data/modules";
 import { glossary } from "../data/glossary";
 
+const KICKER =
+  "mb-4 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute";
+
 function Hero() {
   const { language } = useApp();
   return (
-    <section className="home-hero">
-      <h1 className="home-title">
+    <section className="mb-9 mt-16">
+      <h1 className="m-0 mb-[18px] max-w-[720px] font-serif text-[44px] font-medium leading-[1.15] tracking-[-0.02em] text-ink max-md:text-[30px]">
         {pick(
           language,
           "An interactive math textbook built backwards.",
           "거꾸로 만든 인터랙티브 수학 교과서.",
         )}
       </h1>
-      <p className="home-lede">
+      <p className="m-0 max-w-[640px] font-serif text-[22px] italic leading-[1.5] text-ink-soft max-md:text-[18px]">
         {pick(
           language,
           <>We start with the question. The math comes after.</>,
@@ -31,26 +34,35 @@ function ApplicationsList() {
   const { language } = useApp();
   const live = applications.filter((a) => a.status === "available");
   return (
-    <section className="home-section">
-      <div className="kicker">
+    <section className="mt-14">
+      <div className={KICKER}>
         {pick(
           language,
           `applications · available · ${live.length}`,
           `응용 · 공개됨 · ${live.length}`,
         )}
       </div>
-      <ul className="app-list">
+      <ul className="m-0 grid list-none gap-3.5 p-0">
         {live.map((app) => (
-          <li key={app.id} className="app-card">
-            <Link to={app.href} className="app-card-link">
-              <div className="app-card-meta">
-                <span className="app-card-pillar">{PILLAR_LABEL[app.pillar][language]}</span>
-                <span className="app-card-sep">·</span>
-                <span className="app-card-modules">{app.modules.join(" · ")}</span>
+          <li
+            key={app.id}
+            className="group rounded-[10px] border border-rule bg-bg-card transition-[border,transform] duration-[0.18s] hover:border-acc"
+          >
+            <Link to={app.href} className="block px-6 py-[22px] text-inherit no-underline">
+              <div className="mb-2.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
+                <span className="font-semibold text-acc">{PILLAR_LABEL[app.pillar][language]}</span>
+                <span className="mx-1.5 text-rule">·</span>
+                <span>{app.modules.join(" · ")}</span>
               </div>
-              <h2 className="app-card-title">{app.title[language]}</h2>
-              <p className="app-card-hook">{app.hook[language]}</p>
-              <span className="app-card-cta">{pick(language, "open →", "열기 →")}</span>
+              <h2 className="m-0 mb-2.5 font-serif text-[26px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
+                {app.title[language]}
+              </h2>
+              <p className="m-0 mb-3.5 font-serif text-[17px] leading-[1.55] text-ink-soft">
+                {app.hook[language]}
+              </p>
+              <span className="font-mono text-xs lowercase tracking-[0.06em] text-acc">
+                {pick(language, "open →", "열기 →")}
+              </span>
             </Link>
           </li>
         ))}
@@ -63,20 +75,29 @@ function ModulesList() {
   const { language } = useApp();
   const live = modules.filter((m) => m.status === "available");
   return (
-    <section className="home-section">
-      <div className="kicker">
+    <section className="mt-14">
+      <div className={KICKER}>
         {pick(language, `modules · available · ${live.length}`, `모듈 · 공개됨 · ${live.length}`)}
       </div>
-      <ul className="app-list">
+      <ul className="m-0 grid list-none gap-3.5 p-0">
         {live.map((m) => (
-          <li key={m.id} className="app-card">
-            <Link to={m.href} className="app-card-link">
-              <div className="app-card-meta">
-                <span className="app-card-pillar">{pick(language, "module", "모듈")}</span>
+          <li
+            key={m.id}
+            className="group rounded-[10px] border border-rule bg-bg-card transition-[border,transform] duration-[0.18s] hover:border-acc"
+          >
+            <Link to={m.href} className="block px-6 py-[22px] text-inherit no-underline">
+              <div className="mb-2.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
+                <span className="font-semibold text-acc">{pick(language, "module", "모듈")}</span>
               </div>
-              <h2 className="app-card-title">{m.title[language]}</h2>
-              <p className="app-card-hook">{m.hook[language]}</p>
-              <span className="app-card-cta">{pick(language, "open →", "열기 →")}</span>
+              <h2 className="m-0 mb-2.5 font-serif text-[26px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
+                {m.title[language]}
+              </h2>
+              <p className="m-0 mb-3.5 font-serif text-[17px] leading-[1.55] text-ink-soft">
+                {m.hook[language]}
+              </p>
+              <span className="font-mono text-xs lowercase tracking-[0.06em] text-acc">
+                {pick(language, "open →", "열기 →")}
+              </span>
             </Link>
           </li>
         ))}
@@ -88,9 +109,9 @@ function ModulesList() {
 function Status() {
   const { language } = useApp();
   return (
-    <section className="home-section">
-      <div className="kicker">{pick(language, "status", "현재 상태")}</div>
-      <p className="home-status">
+    <section className="mt-14">
+      <div className={KICKER}>{pick(language, "status", "현재 상태")}</div>
+      <p className="m-0 max-w-[720px] font-serif text-[17.5px] leading-[1.6] text-ink-soft [&_em]:italic [&_em]:text-acc-deep">
         {pick(
           language,
           <>
@@ -115,25 +136,25 @@ function Status() {
 function Counters() {
   const { language } = useApp();
   return (
-    <section className="home-counters">
-      <div className="counter">
-        <div className="counter-num">
-          {applications.filter((a) => a.status === "available").length}
+    <section className="mt-10 grid grid-cols-4 gap-3 border-y border-rule py-[22px] max-md:grid-cols-2">
+      {[
+        {
+          num: applications.filter((a) => a.status === "available").length,
+          label: pick(language, "applications", "응용"),
+        },
+        { num: modules.length, label: pick(language, "modules", "모듈") },
+        { num: glossary.length, label: pick(language, "glossary terms", "용어") },
+        { num: 2, label: pick(language, "languages", "언어") },
+      ].map((c) => (
+        <div key={c.label} className="text-center">
+          <div className="font-serif text-[38px] font-semibold leading-none text-acc [font-feature-settings:'lnum']">
+            {c.num}
+          </div>
+          <div className="mt-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
+            {c.label}
+          </div>
         </div>
-        <div className="counter-label">{pick(language, "applications", "응용")}</div>
-      </div>
-      <div className="counter">
-        <div className="counter-num">{modules.length}</div>
-        <div className="counter-label">{pick(language, "modules", "모듈")}</div>
-      </div>
-      <div className="counter">
-        <div className="counter-num">{glossary.length}</div>
-        <div className="counter-label">{pick(language, "glossary terms", "용어")}</div>
-      </div>
-      <div className="counter">
-        <div className="counter-num">2</div>
-        <div className="counter-label">{pick(language, "languages", "언어")}</div>
-      </div>
+      ))}
     </section>
   );
 }
@@ -141,7 +162,7 @@ function Counters() {
 function HomeFooter() {
   const { language } = useApp();
   return (
-    <footer className="footer">
+    <footer className="mt-20 flex flex-wrap items-center justify-between gap-3 border-t border-rule pt-[18px] font-mono text-xs text-ink-mute">
       <div>
         {pick(
           language,
@@ -154,11 +175,11 @@ function HomeFooter() {
           </>,
         )}
       </div>
-      <div className="footer-license">
+      <div className="text-[11px] [&_a]:border-b [&_a]:border-dotted [&_a]:border-ink-mute [&_a]:text-ink-mute [&_a]:no-underline hover:[&_a]:border-acc hover:[&_a]:text-acc">
         <a href="https://github.com/lemmawiki/lemma" target="_blank" rel="noopener noreferrer">
           github
         </a>
-        <span className="footer-sep"> · </span>
+        <span className="text-rule"> · </span>
         CC BY 4.0 (content) · MIT (code)
       </div>
     </footer>

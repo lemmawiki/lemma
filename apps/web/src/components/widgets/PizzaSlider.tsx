@@ -73,39 +73,43 @@ export function PizzaSlider() {
   }, [t]);
 
   return (
-    <div className="widget">
-      <div className="widget-title">
+    <div className="mt-9 rounded-[10px] border border-rule bg-bg-card px-6 py-[22px]">
+      <div className="mb-3.5 font-mono text-xs uppercase tracking-[0.1em] text-ink-mute">
         {pick(language, "Widget A — The Pizza Slider", "위젯 A — 피자 슬라이더")}
       </div>
 
-      <div className="widget-readout">
-        <div className="readout-row">
-          <span className="readout-label">
+      <div className="mb-3.5 grid grid-cols-2 gap-x-6 gap-y-2 rounded-md bg-rule-soft px-3.5 py-2.5 font-mono text-[13.5px]">
+        <div className="flex justify-between gap-2">
+          <span className="text-ink-mute">
             {pick(language, "Laszlo's $41 (P)", "라즐로의 $41 (P)")}
           </span>
-          <span className="readout-value">{formatCurrency(P)}</span>
+          <span className="font-medium text-ink">{formatCurrency(P)}</span>
         </div>
-        <div className="readout-row">
-          <span className="readout-label">{pick(language, "annual rate r", "연이율 r")}</span>
-          <span className="readout-value">{(r * 100).toFixed(1)}%</span>
+        <div className="flex justify-between gap-2">
+          <span className="text-ink-mute">{pick(language, "annual rate r", "연이율 r")}</span>
+          <span className="font-medium text-ink">{(r * 100).toFixed(1)}%</span>
         </div>
-        <div className="readout-row">
-          <span className="readout-label">{pick(language, "years t", "햇수 t")}</span>
-          <span className="readout-value">{t.toFixed(0)} yr</span>
+        <div className="flex justify-between gap-2">
+          <span className="text-ink-mute">{pick(language, "years t", "햇수 t")}</span>
+          <span className="font-medium text-ink">{t.toFixed(0)} yr</span>
         </div>
-        <div className="readout-row readout-result">
-          <span className="readout-label">
+        <div className="col-span-full mt-1 flex justify-between gap-2 border-t border-dashed border-rule pt-2">
+          <span className="text-ink-mute">
             F = P(1+r)<sup>t</sup>
           </span>
-          <span className="readout-value readout-big">{formatCurrency(F)}</span>
+          <span className="text-lg font-semibold text-acc">{formatCurrency(F)}</span>
         </div>
-        <div className="readout-row readout-meta">
-          <span className="readout-label">{pick(language, "year reached", "도달 연도")}</span>
-          <span className="readout-value">{(START_YEAR + t).toFixed(0)}</span>
+        <div className="col-span-full flex justify-between gap-2 text-xs text-ink-mute">
+          <span>{pick(language, "year reached", "도달 연도")}</span>
+          <span className="font-medium text-ink">{(START_YEAR + t).toFixed(0)}</span>
         </div>
       </div>
 
-      <svg viewBox={`0 0 ${W} ${H}`} className="widget-plot" role="img">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="my-3.5 mb-1.5 block h-auto w-full rounded-md border border-rule bg-plot-bg"
+        role="img"
+      >
         <rect
           x={PAD_L}
           y={PAD_T}
@@ -139,77 +143,84 @@ export function PizzaSlider() {
         <circle cx={xScale(t)} cy={yScale(F)} r={4.5} className="plot-dot" />
       </svg>
 
-      <div className="widget-controls">
-        <label className="ctrl">
-          <span>
+      <div className="mt-2 grid gap-2.5">
+        <label className="grid grid-cols-[220px_1fr_90px] items-center gap-3 text-[13.5px] max-md:grid-cols-[100px_1fr_70px]">
+          <span className="inline-flex items-center gap-1.5 font-mono text-xs text-ink-mute">
             {pick(language, "principal P (BTC value, May 2010)", "원금 P (BTC, 2010년 5월)")}
           </span>
           <input
             type="range"
+            className="w-full accent-acc"
             min={1}
             max={1000}
             step={1}
             value={P}
             onChange={(e) => setP(+e.target.value)}
           />
-          <span className="ctrl-val">{formatCurrency(P)}</span>
+          <span className="text-right font-mono text-[12.5px] text-ink">{formatCurrency(P)}</span>
         </label>
-        <label className="ctrl">
-          <span>
+        <label className="grid grid-cols-[220px_1fr_90px] items-center gap-3 text-[13.5px] max-md:grid-cols-[100px_1fr_70px]">
+          <span className="inline-flex items-center gap-1.5 font-mono text-xs text-ink-mute">
             {pick(language, "annual rate r (BTC actual ≈ 189%)", "연이율 r (BTC 실제 ≈ 189%)")}
           </span>
           <input
             type="range"
+            className="w-full accent-acc"
             min={0}
             max={2.5}
             step={0.01}
             value={r}
             onChange={(e) => setR(+e.target.value)}
           />
-          <span className="ctrl-val">{(r * 100).toFixed(0)}%</span>
+          <span className="text-right font-mono text-[12.5px] text-ink">
+            {(r * 100).toFixed(0)}%
+          </span>
         </label>
-        <label className="ctrl">
-          <span>{pick(language, "years t (since 2010)", "햇수 t (2010년부터)")}</span>
+        <label className="grid grid-cols-[220px_1fr_90px] items-center gap-3 text-[13.5px] max-md:grid-cols-[100px_1fr_70px]">
+          <span className="inline-flex items-center gap-1.5 font-mono text-xs text-ink-mute">
+            {pick(language, "years t (since 2010)", "햇수 t (2010년부터)")}
+          </span>
           <input
             type="range"
+            className="w-full accent-acc"
             min={0}
             max={40}
             step={1}
             value={t}
             onChange={(e) => setT(+e.target.value)}
           />
-          <span className="ctrl-val">{t.toFixed(0)}</span>
+          <span className="text-right font-mono text-[12.5px] text-ink">{t.toFixed(0)}</span>
         </label>
       </div>
 
-      <div className="widget-toggles">
-        <button className={`pill ${logScale ? "on" : ""}`} onClick={() => setLogScale((v) => !v)}>
+      <div className="mt-3.5 flex flex-wrap gap-2">
+        <button className={pillClass(logScale)} onClick={() => setLogScale((v) => !v)}>
           {pick(
             language,
             logScale ? "y-axis: log (try linear)" : "y-axis: linear (try log)",
             logScale ? "y축: 로그 (선형으로 바꾸기)" : "y축: 선형 (로그로 바꾸기)",
           )}
         </button>
-        <button className="pill" onClick={() => setFrozen({ P, r, t, F })}>
+        <button className={pillClass(false)} onClick={() => setFrozen({ P, r, t, F })}>
           {pick(language, "freeze & solve", "고정 후 풀기")}
         </button>
         {frozen && (
-          <button className="pill ghost" onClick={() => setFrozen(null)}>
+          <button className={`${pillClass(false)} text-ink-mute`} onClick={() => setFrozen(null)}>
             {pick(language, "clear freeze", "고정 해제")}
           </button>
         )}
       </div>
 
       {frozen && (
-        <div className="freeze-panel">
-          <div className="freeze-title">
+        <div className="mt-3.5 rounded-md border border-dashed border-rule bg-rule-soft px-3.5 py-3">
+          <div className="mb-1.5 font-mono text-xs text-ink-mute">
             {pick(
               language,
               "Frozen — solve on paper, then check.",
               "고정됨 — 종이로 풀어보고 답을 확인하라.",
             )}
           </div>
-          <div className="freeze-grid">
+          <div className="grid grid-cols-4 gap-2 font-mono text-[13px] text-ink max-md:grid-cols-1 [&_b]:font-semibold [&_b]:text-acc">
             <div>
               <b>P</b> = {formatCurrency(frozen.P)}
             </div>
@@ -219,18 +230,22 @@ export function PizzaSlider() {
             <div>
               <b>t</b> = {frozen.t.toFixed(0)} yr
             </div>
-            <div className="hidden-target">
+            <div className="text-acc-deep">
               <b>F = ?</b>
             </div>
           </div>
-          <details>
-            <summary>{pick(language, "show F", "F 보기")}</summary>
-            <div className="freeze-answer">F = {formatCurrency(frozen.F)}</div>
+          <details className="mt-2.5 font-mono text-xs">
+            <summary className="cursor-pointer text-ink-mute">
+              {pick(language, "show F", "F 보기")}
+            </summary>
+            <div className="mt-1.5 font-mono font-medium text-green">
+              F = {formatCurrency(frozen.F)}
+            </div>
           </details>
         </div>
       )}
 
-      <div className="widget-caption">
+      <div className="mt-3.5 border-t border-rule pt-3 text-[14.5px] text-ink-soft [&_b]:text-ink [&_em]:italic [&_em]:text-acc">
         {pick(
           language,
           <>
@@ -248,4 +263,11 @@ export function PizzaSlider() {
       </div>
     </div>
   );
+}
+
+function pillClass(on: boolean): string {
+  const base = "rounded-full border px-3.5 py-1.5 font-mono text-xs transition-colors";
+  return on
+    ? `${base} border-ink bg-ink text-bg`
+    : `${base} border-rule bg-bg text-ink-soft hover:border-acc hover:text-acc`;
 }

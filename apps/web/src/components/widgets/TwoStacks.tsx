@@ -39,31 +39,35 @@ export function TwoStacks() {
   const fmt = (v: number) => (v >= 100 ? v.toFixed(0) : v >= 10 ? v.toFixed(1) : v.toFixed(2));
 
   return (
-    <div className="widget">
-      <div className="widget-title">
+    <div className="mt-9 rounded-[10px] border border-rule bg-bg-card px-6 py-[22px]">
+      <div className="mb-3.5 font-mono text-xs uppercase tracking-[0.1em] text-ink-mute">
         {pick(language, "Widget A — Two Stacks", "위젯 A — 두 자")}
       </div>
 
-      <div className="widget-readout">
-        <div className="readout-row">
-          <span className="readout-label">log₁₀(a)</span>
-          <span className="readout-value">{Math.log10(a).toFixed(2)}</span>
+      <div className="mb-3.5 grid grid-cols-2 gap-x-6 gap-y-2 rounded-md bg-rule-soft px-3.5 py-2.5 font-mono text-[13.5px]">
+        <div className="flex justify-between gap-2">
+          <span className="text-ink-mute">log₁₀(a)</span>
+          <span className="font-medium text-ink">{Math.log10(a).toFixed(2)}</span>
         </div>
-        <div className="readout-row">
-          <span className="readout-label">log₁₀(b)</span>
-          <span className="readout-value">{Math.log10(b).toFixed(2)}</span>
+        <div className="flex justify-between gap-2">
+          <span className="text-ink-mute">log₁₀(b)</span>
+          <span className="font-medium text-ink">{Math.log10(b).toFixed(2)}</span>
         </div>
-        <div className="readout-row">
-          <span className="readout-label">log₁₀(a) + log₁₀(b)</span>
-          <span className="readout-value">{(Math.log10(a) + Math.log10(b)).toFixed(2)}</span>
+        <div className="flex justify-between gap-2">
+          <span className="text-ink-mute">log₁₀(a) + log₁₀(b)</span>
+          <span className="font-medium text-ink">{(Math.log10(a) + Math.log10(b)).toFixed(2)}</span>
         </div>
-        <div className="readout-row readout-result">
-          <span className="readout-label">a · b</span>
-          <span className="readout-value readout-big">{fmt(product)}</span>
+        <div className="col-span-full mt-1 flex justify-between gap-2 border-t border-dashed border-rule pt-2">
+          <span className="text-ink-mute">a · b</span>
+          <span className="text-lg font-semibold text-acc">{fmt(product)}</span>
         </div>
       </div>
 
-      <svg viewBox={`0 0 ${W} ${H}`} className="widget-plot" role="img">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="my-3.5 mb-1.5 block h-auto w-full rounded-md border border-rule bg-plot-bg"
+        role="img"
+      >
         {/* Top (linear) axis */}
         <line x1={PAD_L} y1={TOP_Y} x2={W - PAD_R} y2={TOP_Y} className="plot-axis" />
         <text x={PAD_L - 8} y={TOP_Y - 14} className="plot-tick" textAnchor="end">
@@ -205,38 +209,44 @@ export function TwoStacks() {
         )}
       </svg>
 
-      <div className="widget-controls">
-        <label className="ctrl">
-          <span>
-            <span className="swatch" style={{ background: "var(--acc)" }} aria-hidden />a
+      <div className="mt-2 grid gap-2.5">
+        <label className="grid grid-cols-[220px_1fr_90px] items-center gap-3 text-[13.5px] max-md:grid-cols-[100px_1fr_70px]">
+          <span className="inline-flex items-center gap-1.5 font-mono text-xs text-ink-mute">
+            <span className="inline-block h-2.5 w-2.5 shrink-0 rounded-sm bg-acc" aria-hidden />a
           </span>
           <input
             type="range"
+            className="w-full accent-acc"
             min={1}
             max={100}
             step={0.1}
             value={a}
             onChange={(e) => setA(+e.target.value)}
           />
-          <span className="ctrl-val">{fmt(a)}</span>
+          <span className="text-right font-mono text-[12.5px] text-ink">{fmt(a)}</span>
         </label>
-        <label className="ctrl">
-          <span>
-            <span className="swatch" style={{ background: "var(--acc-deep)" }} aria-hidden />b
+        <label className="grid grid-cols-[220px_1fr_90px] items-center gap-3 text-[13.5px] max-md:grid-cols-[100px_1fr_70px]">
+          <span className="inline-flex items-center gap-1.5 font-mono text-xs text-ink-mute">
+            <span
+              className="inline-block h-2.5 w-2.5 shrink-0 rounded-sm bg-acc-deep"
+              aria-hidden
+            />
+            b
           </span>
           <input
             type="range"
+            className="w-full accent-acc"
             min={1}
             max={100}
             step={0.1}
             value={b}
             onChange={(e) => setB(+e.target.value)}
           />
-          <span className="ctrl-val">{fmt(b)}</span>
+          <span className="text-right font-mono text-[12.5px] text-ink">{fmt(b)}</span>
         </label>
       </div>
 
-      <div className="widget-caption">
+      <div className="mt-3.5 border-t border-rule pt-3 text-[14.5px] text-ink-soft [&_b]:text-ink">
         {pick(
           language,
           <>

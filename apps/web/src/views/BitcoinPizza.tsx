@@ -8,13 +8,21 @@ import { ThreeDoors } from "../components/widgets/ThreeDoors";
 import { glossary } from "../data/glossary";
 import { Link } from "../lib/router";
 
+const KICKER =
+  "mb-4 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute";
+const FORMULA_INLINE =
+  "rounded-sm bg-rule-soft px-1.5 py-px font-mono text-[0.95em] text-ink whitespace-nowrap";
+const MONO = "font-mono text-[0.93em]";
+const CODE_BLOCK =
+  "mt-3 overflow-x-auto rounded-md border border-[#2a2620] bg-[#1f1c18] px-4 py-3.5 font-mono text-[13.5px] leading-[1.5] text-[#f5e9d4]";
+
 function Breadcrumb() {
   const { language } = useApp();
   return (
-    <nav className="breadcrumb">
+    <nav className="mt-7 font-mono text-xs tracking-[0.04em] text-ink-mute [&_a]:text-ink-mute [&_a]:no-underline hover:[&_a]:text-acc">
       <Link to="/">{pick(language, "Lemma", "Lemma")}</Link>
-      <span className="breadcrumb-sep">/</span>
-      <span className="breadcrumb-current">
+      <span className="mx-2 text-rule">/</span>
+      <span className="uppercase tracking-[0.06em] text-ink">
         {pick(language, "finance · the bitcoin pizza", "금융 · 비트코인 피자")}
       </span>
     </nav>
@@ -24,11 +32,11 @@ function Breadcrumb() {
 function Hook() {
   const { language } = useApp();
   return (
-    <section className="hook">
-      <div className="kicker">
+    <section className="mt-12">
+      <div className={KICKER}>
         {pick(language, "the hook · may 22, 2010", "도입 · 2010년 5월 22일")}
       </div>
-      <h1 className="hook-title">
+      <h1 className="m-0 mb-6 font-serif text-[38px] font-medium leading-[1.18] tracking-[-0.015em] text-ink max-md:text-[28px] [&_.acc]:font-semibold [&_.acc]:text-acc">
         {pick(
           language,
           <>
@@ -42,7 +50,7 @@ function Hook() {
           </>,
         )}
       </h1>
-      <p className="hook-q">
+      <p className="m-0 mb-5 font-serif text-[22px] leading-[1.45] text-ink-soft max-md:text-[18px] [&_em]:italic [&_em]:text-acc">
         {pick(
           language,
           <>
@@ -59,7 +67,7 @@ function Hook() {
           </>,
         )}
       </p>
-      <p className="hook-tag">
+      <p className="m-0 border-l-[3px] border-acc pl-4 text-base text-ink-soft [&_em]:italic [&_em]:text-acc">
         {pick(
           language,
           <>
@@ -81,157 +89,160 @@ function Hook() {
   );
 }
 
+function ArcRow({ n, children }: { n: number; children: React.ReactNode }) {
+  return (
+    <div className="grid grid-cols-[56px_1fr] gap-5 border-t border-rule py-5 max-md:grid-cols-[36px_1fr] max-md:gap-[14px]">
+      <div className="font-serif text-[38px] font-medium leading-none text-acc [font-feature-settings:'lnum'] max-md:text-[28px]">
+        {n}
+      </div>
+      <div className="[&_h3]:m-0 [&_h3]:mb-2 [&_h3]:font-serif [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:tracking-[-0.01em] [&_h3]:text-ink [&_p]:m-0 [&_p]:text-[16.5px] [&_p]:text-ink-soft">
+        {children}
+      </div>
+    </div>
+  );
+}
+
 function Arc() {
   const { language, mode } = useApp();
   return (
-    <section className="arc">
-      <div className="kicker">{pick(language, "the arc", "흐름")}</div>
-      <div className="arc-row">
-        <div className="arc-num">1</div>
-        <div>
-          <h3>
-            {pick(
-              language,
-              "How much? — projecting the pizza forward",
-              "얼마? — 피자를 미래로 보내기",
-            )}
-          </h3>
-          <p>
-            {pick(
-              language,
-              <>
-                If <Term id="bitcoin">Bitcoin</Term> keeps its historical pace, what's 10,000 BTC
-                worth in 2046? Stack <span className="mono">×2.89</span> twenty more times on $1B.{" "}
-                <Term id="compound-interest">Compound</Term> growth is repeated multiplication;
-                repeated multiplication, compressed into one symbol, is{" "}
-                <Term id="exponent">exponentiation</Term>.{" "}
-                <span className="formula-inline">
-                  F = P · (1 + r)<sup>t</sup>
-                </span>
-                . Tap "Code" mode at the top — three lines of Python.
-              </>,
-              <>
-                <Term id="bitcoin">비트코인</Term>이 지금까지의 속도를 유지하면 10,000 BTC는
-                2046년에 얼마? $10억 위에 <span className="mono">×2.89</span>를 20번 더 쌓는다.{" "}
-                <Term id="compound-interest">복리</Term>는 곱셈의 반복; 그 반복을 한 기호로 압축한
-                게 <Term id="exponent">지수</Term>.{" "}
-                <span className="formula-inline">
-                  F = P · (1 + r)<sup>t</sup>
-                </span>
-                . 위쪽 "코드" 모드를 켜라 — 파이썬 세 줄.
-              </>,
-            )}
-          </p>
-          {mode === "code" && (
-            <pre className="code">{`def future_value(P, r, t):
+    <section className="mt-14">
+      <div className={KICKER}>{pick(language, "the arc", "흐름")}</div>
+      <ArcRow n={1}>
+        <h3>
+          {pick(
+            language,
+            "How much? — projecting the pizza forward",
+            "얼마? — 피자를 미래로 보내기",
+          )}
+        </h3>
+        <p>
+          {pick(
+            language,
+            <>
+              If <Term id="bitcoin">Bitcoin</Term> keeps its historical pace, what's 10,000 BTC
+              worth in 2046? Stack <span className={MONO}>×2.89</span> twenty more times on $1B.{" "}
+              <Term id="compound-interest">Compound</Term> growth is repeated multiplication;
+              repeated multiplication, compressed into one symbol, is{" "}
+              <Term id="exponent">exponentiation</Term>.{" "}
+              <span className={FORMULA_INLINE}>
+                F = P · (1 + r)<sup>t</sup>
+              </span>
+              . Tap "Code" mode at the top — three lines of Python.
+            </>,
+            <>
+              <Term id="bitcoin">비트코인</Term>이 지금까지의 속도를 유지하면 10,000 BTC는 2046년에
+              얼마? $10억 위에 <span className={MONO}>×2.89</span>를 20번 더 쌓는다.{" "}
+              <Term id="compound-interest">복리</Term>는 곱셈의 반복; 그 반복을 한 기호로 압축한 게{" "}
+              <Term id="exponent">지수</Term>.{" "}
+              <span className={FORMULA_INLINE}>
+                F = P · (1 + r)<sup>t</sup>
+              </span>
+              . 위쪽 "코드" 모드를 켜라 — 파이썬 세 줄.
+            </>,
+          )}
+        </p>
+        {mode === "code" && (
+          <pre className={CODE_BLOCK}>{`def future_value(P, r, t):
     return P * (1 + r) ** t
 
 future_value(41, 1.89, 16)     # ≈ 1.0e9    (Laszlo today)
 future_value(1e9, 1.89, 20)    # ≈ 1.7e18   (BTC in 2046, if it keeps pace)`}</pre>
-          )}
-        </div>
-      </div>
+        )}
+      </ArcRow>
 
-      <div className="arc-row">
-        <div className="arc-num">2</div>
-        <div>
-          <h3>
-            {pick(
-              language,
-              "How long? — when did the pizza hit $1M?",
-              "언제까지? — 피자가 $100만이 된 건 언제?",
-            )}
-          </h3>
-          <p>
-            {pick(
-              language,
-              <>
-                Reverse the question: at BTC's actual rate, when did 10,000 BTC first cross{" "}
-                <b>$1,000,000</b>? You can't multiply your way there — you have to <em>undo</em> the
-                exponent. The <Term id="logarithm">logarithm</Term> is exactly that: given the
-                result, <em>count the steps</em>.{" "}
-                <span className="formula-inline">t = log(F / P) ÷ log(1 + r)</span>. Log <em>is</em>{" "}
-                the inverse of exp. They are defined by each other. Answer: about <b>9.5 years</b>{" "}
-                in — late 2019. The pizza became a million-dollar pizza on a random Tuesday.
-              </>,
-              <>
-                질문을 뒤집자. BTC 실제 속도로, 10,000 BTC가 처음 <b>$100만</b>을 넘긴 건 언제?
-                곱해서 도달할 길은 없다. 지수를 <em>되돌려야</em> 한다.{" "}
-                <Term id="logarithm">로그</Term>가 바로 그것이다: 결과를 주면{" "}
-                <em>몇 번 곱했는지를 센다</em>.{" "}
-                <span className="formula-inline">t = log(F / P) ÷ log(1 + r)</span>. 로그는 지수의
-                역함수. 서로가 서로를 정의한다. 답: 약 <b>9.5년</b> 후 — 2019년 말. 평범한 어느
-                화요일에, 그 피자는 백만 달러짜리 피자가 되어 있었다.
-              </>,
-            )}
-          </p>
-          {mode === "code" && (
-            <pre className="code">{`from math import log
+      <ArcRow n={2}>
+        <h3>
+          {pick(
+            language,
+            "How long? — when did the pizza hit $1M?",
+            "언제까지? — 피자가 $100만이 된 건 언제?",
+          )}
+        </h3>
+        <p>
+          {pick(
+            language,
+            <>
+              Reverse the question: at BTC's actual rate, when did 10,000 BTC first cross{" "}
+              <b>$1,000,000</b>? You can't multiply your way there — you have to <em>undo</em> the
+              exponent. The <Term id="logarithm">logarithm</Term> is exactly that: given the result,{" "}
+              <em>count the steps</em>.{" "}
+              <span className={FORMULA_INLINE}>t = log(F / P) ÷ log(1 + r)</span>. Log <em>is</em>{" "}
+              the inverse of exp. They are defined by each other. Answer: about <b>9.5 years</b> in
+              — late 2019. The pizza became a million-dollar pizza on a random Tuesday.
+            </>,
+            <>
+              질문을 뒤집자. BTC 실제 속도로, 10,000 BTC가 처음 <b>$100만</b>을 넘긴 건 언제? 곱해서
+              도달할 길은 없다. 지수를 <em>되돌려야</em> 한다. <Term id="logarithm">로그</Term>가
+              바로 그것이다: 결과를 주면 <em>몇 번 곱했는지를 센다</em>.{" "}
+              <span className={FORMULA_INLINE}>t = log(F / P) ÷ log(1 + r)</span>. 로그는 지수의
+              역함수. 서로가 서로를 정의한다. 답: 약 <b>9.5년</b> 후 — 2019년 말. 평범한 어느
+              화요일에, 그 피자는 백만 달러짜리 피자가 되어 있었다.
+            </>,
+          )}
+        </p>
+        {mode === "code" && (
+          <pre className={CODE_BLOCK}>{`from math import log
 
 def years_to_target(P, F, r):
     return log(F / P) / log(1 + r)
 
 years_to_target(41, 1e6, 1.89)  # ≈ 9.5  (years since May 2010)`}</pre>
-          )}
-        </div>
-      </div>
+        )}
+      </ArcRow>
 
-      <div className="arc-row">
-        <div className="arc-num">3</div>
-        <div>
-          <h3>
-            {pick(
-              language,
-              "What rate? — was Laszlo's loss really 'extraordinary'?",
-              "이율은? — 라즐로의 손실은 정말 '특별했나'?",
-            )}
-          </h3>
-          <p>
-            {pick(
-              language,
-              <>
-                We know $41 became $1B in 16 years. We don't know r. We can't undo the exponent (we
-                don't know it); we can't take a log (we'd get the wrong unknown). We need a{" "}
-                <em>third</em> operation: the <Term id="nth-root">n-th root</Term>.{" "}
-                <span className="formula-inline">
-                  r = (F / P)<sup>1/t</sup> − 1
-                </span>
-                . Finance calls this <Term id="cagr">CAGR</Term>. It is a fractional exponent — a
-                1/16th power. The number that comes out: <b>189% per year</b>.{" "}
-                <Term id="spy">SPY</Term> does ~10%. Buffett's Berkshire (his investment company):
-                ~20%. NVIDIA over 25 years: ~33%. Bitcoin: <em>189</em>.{" "}
-                <em>Roots are exponents whose value is not a whole number.</em>
-              </>,
-              <>
-                $41이 16년 만에 $10억이 됐다는 건 안다. r은 모른다. 지수를 되돌릴 수도 없고 (지수
-                자체를 모르니까), 로그를 씌울 수도 없다 (엉뚱한 미지수가 분리된다). <em>세 번째</em>{" "}
-                연산이 필요하다: <Term id="nth-root">거듭제곱근</Term>.{" "}
-                <span className="formula-inline">
-                  r = (F / P)<sup>1/t</sup> − 1
-                </span>
-                . 금융에서는 <Term id="cagr">CAGR</Term>이라 부른다. 1/16 제곱 — 분수 지수. 결과:{" "}
-                <b>연 189%</b>. <Term id="spy">SPY</Term>는 약 10%. 버크셔 (버핏의 투자회사)는 약
-                20%. 25년간의 엔비디아는 약 33%. 비트코인은 — <em>189</em>.{" "}
-                <em>거듭제곱근은 정수가 아닌 지수일 뿐이다.</em>
-              </>,
-            )}
-          </p>
-          {mode === "code" && (
-            <pre className="code">{`def implied_rate(P, F, t):
+      <ArcRow n={3}>
+        <h3>
+          {pick(
+            language,
+            "What rate? — was Laszlo's loss really 'extraordinary'?",
+            "이율은? — 라즐로의 손실은 정말 '특별했나'?",
+          )}
+        </h3>
+        <p>
+          {pick(
+            language,
+            <>
+              We know $41 became $1B in 16 years. We don't know r. We can't undo the exponent (we
+              don't know it); we can't take a log (we'd get the wrong unknown). We need a{" "}
+              <em>third</em> operation: the <Term id="nth-root">n-th root</Term>.{" "}
+              <span className={FORMULA_INLINE}>
+                r = (F / P)<sup>1/t</sup> − 1
+              </span>
+              . Finance calls this <Term id="cagr">CAGR</Term>. It is a fractional exponent — a
+              1/16th power. The number that comes out: <b>189% per year</b>.{" "}
+              <Term id="spy">SPY</Term> does ~10%. Buffett's Berkshire (his investment company):
+              ~20%. NVIDIA over 25 years: ~33%. Bitcoin: <em>189</em>.{" "}
+              <em>Roots are exponents whose value is not a whole number.</em>
+            </>,
+            <>
+              $41이 16년 만에 $10억이 됐다는 건 안다. r은 모른다. 지수를 되돌릴 수도 없고 (지수
+              자체를 모르니까), 로그를 씌울 수도 없다 (엉뚱한 미지수가 분리된다). <em>세 번째</em>{" "}
+              연산이 필요하다: <Term id="nth-root">거듭제곱근</Term>.{" "}
+              <span className={FORMULA_INLINE}>
+                r = (F / P)<sup>1/t</sup> − 1
+              </span>
+              . 금융에서는 <Term id="cagr">CAGR</Term>이라 부른다. 1/16 제곱 — 분수 지수. 결과:{" "}
+              <b>연 189%</b>. <Term id="spy">SPY</Term>는 약 10%. 버크셔 (버핏의 투자회사)는 약 20%.
+              25년간의 엔비디아는 약 33%. 비트코인은 — <em>189</em>.{" "}
+              <em>거듭제곱근은 정수가 아닌 지수일 뿐이다.</em>
+            </>,
+          )}
+        </p>
+        {mode === "code" && (
+          <pre className={CODE_BLOCK}>{`def implied_rate(P, F, t):
     return (F / P) ** (1 / t) - 1
 
 implied_rate(41, 1e9, 16)     # ≈ 1.89   (189% / yr — Bitcoin)
 implied_rate(100, 1000, 30)   # ≈ 0.08   (8% — boring SPY-ish)`}</pre>
-          )}
-        </div>
-      </div>
+        )}
+      </ArcRow>
 
-      <div className="arc-pin">
+      <div className="mt-[22px] rounded-r-md border-l-4 border-acc bg-acc-soft px-[22px] py-[18px] text-base leading-[1.55] text-acc-deep">
         {pick(
           language,
           <>
             <b>One equation, three operations.</b>{" "}
-            <span className="formula-inline">
+            <span className={FORMULA_INLINE}>
               F = P(1+r)<sup>t</sup>
             </span>{" "}
             has three unknowns. Each unknown picks a different door: <b>exp</b> for F, <b>log</b>{" "}
@@ -240,7 +251,7 @@ implied_rate(100, 1000, 30)   # ≈ 0.08   (8% — boring SPY-ish)`}</pre>
           </>,
           <>
             <b>한 식, 세 연산.</b>{" "}
-            <span className="formula-inline">
+            <span className={FORMULA_INLINE}>
               F = P(1+r)<sup>t</sup>
             </span>
             에는 미지수가 셋 있다. 각 미지수가 서로 다른 문을 고른다: F는 <b>지수</b>, t는{" "}
@@ -255,8 +266,8 @@ implied_rate(100, 1000, 30)   # ≈ 0.08   (8% — boring SPY-ish)`}</pre>
 
 function Exercises() {
   return (
-    <section className="exercises">
-      <div className="kicker">exercises · 손으로 풀기</div>
+    <section className="mt-14">
+      <div className={KICKER}>exercises · 손으로 풀기</div>
 
       <Exercise
         number={1}
@@ -466,7 +477,7 @@ function Exercises() {
               16-year CAGR of <b>189%</b> for another <b>20 years</b> (until 2046), what is the
               pizza worth? Compare to global GDP (~$110T). What does the answer tell you about
               exponential stories? Use{" "}
-              <span className="mono">
+              <span className={MONO}>
                 log<sub>10</sub>(2.89) ≈ 0.461
               </span>
               .
@@ -477,7 +488,7 @@ function Exercises() {
               비트코인을 미래로 던져 보자. 오늘 (2026): 10,000 BTC ≈ <b>$10억</b>. BTC가{" "}
               <b>연 189%</b>라는 16년치 CAGR을 앞으로 <b>20년</b> 더 유지하면 (2046년) 그 피자의
               값은? 세계 GDP (~$110조)와 비교하라. 그 답은 지수 이야기에 대해 무엇을 말해주는가?{" "}
-              <span className="mono">
+              <span className={MONO}>
                 log<sub>10</sub>(2.89) ≈ 0.461
               </span>{" "}
               사용.
@@ -526,28 +537,39 @@ function Glossary() {
   const used = registry?.used;
   const visible = used ? glossary.filter((g) => used.has(g.id)) : glossary;
   return (
-    <section className="glossary">
-      <div className="kicker">
+    <section className="mt-14">
+      <div className={KICKER}>
         {pick(
           language,
           `glossary · used on this page · ${visible.length}`,
           `용어집 · 이 페이지에서 쓰임 · ${visible.length}`,
         )}
       </div>
-      <div className="glossary-grid">
+      <div className="grid grid-cols-2 gap-3 max-md:grid-cols-1">
         {visible.map((g) => {
           const en = g.locales.en;
           const ko = g.locales.ko;
           const view = g.locales[language] ?? en;
           return (
-            <div className="glossary-item" key={g.id}>
-              <div className="glossary-head">
-                <span className="glossary-en">{en?.term ?? g.id}</span>
-                <span className="glossary-sep">·</span>
-                <span className="glossary-ko">{ko?.term ?? g.id}</span>
+            <div
+              key={g.id}
+              className="rounded-md border border-rule bg-bg-card px-4 py-3.5 text-[14.5px] leading-[1.5]"
+            >
+              <div className="mb-1.5 flex items-baseline gap-2">
+                <span className="font-serif text-base font-semibold text-ink">
+                  {en?.term ?? g.id}
+                </span>
+                <span className="text-ink-mute">·</span>
+                <span className="font-sans text-[15px] font-medium text-acc">
+                  {ko?.term ?? g.id}
+                </span>
               </div>
-              <div className="glossary-body">{view?.body}</div>
-              {view?.flag && <div className="glossary-flag">⚠ {view.flag}</div>}
+              <div className="text-ink-soft">{view?.body}</div>
+              {view?.flag && (
+                <div className="mt-2 border-t border-dashed border-rule pt-2 text-[13px] text-acc-deep">
+                  ⚠ {view.flag}
+                </div>
+              )}
             </div>
           );
         })}
@@ -559,7 +581,7 @@ function Glossary() {
 function PageFooter() {
   const { language } = useApp();
   return (
-    <footer className="footer">
+    <footer className="mt-20 flex flex-wrap items-center justify-between gap-3 border-t border-rule pt-[18px] font-mono text-xs text-ink-mute [&_b]:font-semibold [&_b]:text-ink">
       <div>
         {pick(
           language,
@@ -576,7 +598,7 @@ function PageFooter() {
           </>,
         )}
       </div>
-      <div className="footer-license">CC BY 4.0 (content) · MIT (code)</div>
+      <div className="text-[11px]">CC BY 4.0 (content) · MIT (code)</div>
     </footer>
   );
 }

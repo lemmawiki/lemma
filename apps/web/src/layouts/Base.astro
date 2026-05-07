@@ -49,7 +49,7 @@ const canonical = new URL(pathname, Astro.site ?? "https://lemma.wiki").href;
     <title>{title}</title>
   </head>
   <body>
-    <main class="page">
+    <main class="mx-auto max-w-[880px] px-7 pt-8 pb-24 max-md:px-[18px] max-md:pt-5 max-md:pb-16">
       <Header pathname={pathname} client:load />
       <slot />
     </main>

@@ -44,7 +44,7 @@ export function Term({ id, children }: { id: string; children?: React.ReactNode 
   return (
     <span
       ref={ref}
-      className="term"
+      className="relative cursor-help border-b border-dotted border-acc font-medium text-ink hover:text-acc"
       role="button"
       tabIndex={0}
       aria-expanded={open}
@@ -67,18 +67,22 @@ export function Term({ id, children }: { id: string; children?: React.ReactNode 
       {open && (
         <span
           role="presentation"
-          className="term-pop"
+          className="absolute left-0 top-[calc(100%+8px)] z-20 block w-80 cursor-default rounded-lg border border-rule bg-bg-card px-3.5 py-3 text-left text-sm font-normal leading-[1.5] text-ink-soft shadow-[0_8px_24px_rgba(20,17,13,0.12)]"
           onClick={(e) => e.stopPropagation()}
           onKeyDown={(e) => e.stopPropagation()}
         >
-          <span className="term-pop-head">
-            <span className={`term-pop-lang lang-${counterpartLang}`}>
+          <span className="mb-1.5 flex items-center gap-2">
+            <span className="rounded-sm bg-rule-soft px-1.5 py-0.5 font-mono text-[10px] tracking-[0.06em] text-ink-mute">
               {counterpartLang.toUpperCase()}
             </span>
-            <strong>{counterpart}</strong>
+            <strong className="text-[15px] font-semibold text-ink">{counterpart}</strong>
           </span>
-          <span className="term-pop-body">{body}</span>
-          {flag && <span className="term-pop-flag">⚠ {flag}</span>}
+          <span className="block">{body}</span>
+          {flag && (
+            <span className="mt-2 block border-t border-dashed border-rule pt-2 text-[13px] text-acc-deep">
+              ⚠ {flag}
+            </span>
+          )}
         </span>
       )}
     </span>
