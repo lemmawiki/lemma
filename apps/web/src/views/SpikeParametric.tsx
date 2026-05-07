@@ -36,14 +36,14 @@ function Hook() {
           <>
             Drawing the parabola <span className="mono">y = x²</span> on a board, you'd say{" "}
             <em>this is a curve</em>. Below you'll see the same picture drawn three different ways —
-            same paint, different motions. So which one is <b>the</b> curve? The picture, or the
-            motion that produced it? Math has been quietly using the word for both.
+            same paint, different motions. Which one is <b>the</b> curve? Pick an answer in your
+            head before pressing play. Then play.
           </>,
           <>
             칠판에 <span className="mono">y = x²</span>를 그리면 당신은 <em>이것이 곡선이다</em>라고
             말한다. 아래에는 같은 그림이 세 가지 다른 방식으로 그려진다 — 페인트는 같고, 움직임은
-            다르다. 그렇다면 <b>그</b> 곡선은 어느 쪽인가? 그림인가, 그것을 만들어낸 움직임인가?
-            수학은 한 단어로 둘 다를 가리켜 왔다.
+            다르다. <b>그</b> 곡선은 어느 쪽인가? 재생을 누르기 전에 마음속으로 답을 정해두자. 그
+            다음에 누른다.
           </>,
         )}
       </p>
@@ -93,6 +93,11 @@ function Arc() {
                 actually be drawn.
               </>,
               <>
+                <em>
+                  (어휘 약속: 이 글에서 "곡선"은 매개변수 곡선 — 함수 — 을 가리키고, 점들의 집합은
+                  "상"이라 부른다. 한국어 일상어에서는 "곡선"이 두 의미를 다 받는데, 그 한 단어에 두
+                  대상이 들어가 있다는 사실 자체가 이 페이지의 출발점이다.)
+                </em>{" "}
                 <Term id="parametrized-curve">매개변수 곡선</Term>은 함수{" "}
                 <span className="mono">γ : [0, 1] → ℝ²</span>이다. 위의 세 γ는 세 개의{" "}
                 <em>서로 다른</em> 함수다. 그들은 우연히 같은 <Term id="image-of-curve">상</Term> —
@@ -209,8 +214,10 @@ err = max(abs(g1(phi(u))[0] - g2(u)[0]) for u in us)
               </li>
             </ul>
             The picture is the weakest layer; the function is the strictest.{" "}
-            <b>Geometry lives in between.</b> The widget you played with above is one diagram
-            showing all three at once.
+            <b>Geometry lives in between.</b> School math conflates all three under the single word{" "}
+            <em>curve</em>; that is why "is this the same curve?" has no clean answer — the word was
+            quietly carrying three different objects. The widget you played with above is one
+            diagram showing all three at once.
           </>,
           <>
             <b>"같다"의 세 층:</b>
@@ -225,8 +232,10 @@ err = max(abs(g1(phi(u))[0] - g2(u)[0]) for u in us)
                 <b>함수로서 같음</b> — 매개변수 곡선: 셋 다 다름
               </li>
             </ul>
-            그림은 가장 약한 층, 함수는 가장 strict. <b>기하학은 그 사이에 산다.</b> 위에서 가지고
-            논 위젯 하나가 세 층을 한 그림에 담고 있다.
+            그림은 가장 약한 층, 함수는 가장 strict. <b>기하학은 그 사이에 산다.</b> 학교 수학은 세
+            층을 <em>곡선</em>이라는 한 단어 안에 섞어 둔다. "같은 곡선인가?"라는 질문에 깔끔한 답이
+            없는 건 바로 그 단어가 셋을 한꺼번에 짊어지고 있어서다. 위에서 가지고 논 위젯 하나가 세
+            층을 한 그림에 담고 있다.
           </>,
         )}
       </div>
