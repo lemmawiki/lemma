@@ -34,9 +34,9 @@ function gamma(idx: ParamIdx, u: number): [number, number] {
 }
 
 const COLORS: Record<ParamIdx, string> = {
-  0: "var(--acc)",
-  1: "var(--acc-deep)",
-  2: "var(--green)",
+  0: "var(--color-acc)",
+  1: "var(--color-acc-deep)",
+  2: "var(--color-green)",
 };
 
 const LABELS = {
@@ -111,6 +111,9 @@ type TrailPoint = {
   x: number;
   y: number;
 };
+
+const PILL_BASE =
+  "inline-flex items-center gap-2 rounded-full border bg-bg-card px-3.5 py-1.5 font-mono text-[12.5px] transition disabled:cursor-not-allowed disabled:opacity-50";
 
 export function SameCurve() {
   const { language, mode } = useApp();
@@ -212,10 +215,17 @@ export function SameCurve() {
   ];
 
   return (
-    <div className="widget">
-      <div className="widget-title">{L.title}</div>
+    <div className="mt-9 rounded-[10px] border border-rule bg-bg-card px-6 py-[22px]">
+      <div className="mb-3.5 font-mono text-xs uppercase tracking-[0.1em] text-ink-mute">
+        {L.title}
+      </div>
 
-      <svg viewBox={`0 0 ${W} ${H}`} className="widget-plot" role="img" aria-label={L.title}>
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="my-3.5 mb-1.5 block h-auto w-full rounded-md border border-rule bg-plot-bg"
+        role="img"
+        aria-label={L.title}
+      >
         <rect x={PAD_L} y={PAD_T} width={innerW} height={innerH} className="plot-bg" />
 
         {xTicks.map((x) => (
@@ -292,7 +302,7 @@ export function SameCurve() {
         />
       </svg>
 
-      <div className="widget-toggles" style={{ alignItems: "center" }}>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
         {buttons.map(({ idx, label, formula }) => {
           const isActive = active === idx;
           const isPlaying = playing === idx;
@@ -301,27 +311,32 @@ export function SameCurve() {
             <button
               key={idx}
               type="button"
-              className={`pill ${isActive ? "on" : ""}`}
+              className={`${PILL_BASE} ${
+                isActive
+                  ? "bg-acc-soft text-acc-deep hover:text-acc-deep"
+                  : "border-rule text-ink-soft hover:border-acc hover:text-acc"
+              }`}
               onClick={() => handlePlay(idx)}
               disabled={playing !== null && !isPlaying}
               style={{
                 borderColor: isActive ? COLORS[idx] : undefined,
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
               }}
             >
-              <span className="swatch" style={{ background: COLORS[idx] }} aria-hidden />
+              <span
+                className="inline-block h-2.5 w-2.5 shrink-0 rounded-sm"
+                style={{ background: COLORS[idx] }}
+                aria-hidden
+              />
               <span>{label}</span>
-              <span style={{ fontSize: "0.85em", opacity: 0.65 }}>{formula}</span>
+              <span className="text-[0.85em] opacity-65">{formula}</span>
               {wasPlayed && !isPlaying ? <span aria-hidden>✓</span> : null}
-              {isPlaying ? <span style={{ opacity: 0.7 }}>· {L.playing}</span> : null}
+              {isPlaying ? <span className="opacity-70">· {L.playing}</span> : null}
             </button>
           );
         })}
         <button
           type="button"
-          className="pill ghost"
+          className={`${PILL_BASE} border-dashed border-rule text-ink-mute hover:border-solid hover:border-acc hover:text-acc`}
           onClick={handleReset}
           disabled={playing !== null}
         >
@@ -329,35 +344,38 @@ export function SameCurve() {
         </button>
       </div>
 
-      <div className="widget-controls" style={{ marginTop: 14 }}>
-        <label className="ctrl">
-          <span>{L.parameter}</span>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.001}
-            value={u}
-            onChange={(e) => handleSlide(+e.target.value)}
-          />
-          <span className="ctrl-val">{u.toFixed(3)}</span>
-        </label>
+      <div className="mt-3.5 grid grid-cols-[80px_1fr_90px] items-center gap-3 text-[13.5px] max-md:grid-cols-[60px_1fr_70px]">
+        <span className="font-mono text-xs text-ink-mute">{L.parameter}</span>
+        <input
+          type="range"
+          className="w-full accent-acc"
+          min={0}
+          max={1}
+          step={0.001}
+          value={u}
+          onChange={(e) => handleSlide(+e.target.value)}
+        />
+        <span className="text-right font-mono text-[12.5px] text-ink">{u.toFixed(3)}</span>
       </div>
 
-      <div className="widget-caption">{playing !== null ? L.helpRunning : L.helpIdle}</div>
+      <div className="mt-3.5 border-t border-rule pt-3 text-[14.5px] text-ink-soft">
+        {playing !== null ? L.helpRunning : L.helpIdle}
+      </div>
 
       {allPlayed ? (
-        <div className="arc-pin" style={{ marginTop: 18, fontSize: 16 }}>
-          <span style={{ opacity: 0.8 }}>{L.punchlineSetup}</span> <b>{L.punchlineHit}</b>
+        <div className="mt-[18px] rounded-r-md border-l-4 border-acc bg-acc-soft px-[22px] py-[18px] text-base leading-[1.55] text-acc-deep">
+          <span className="opacity-80">{L.punchlineSetup}</span> <b>{L.punchlineHit}</b>
         </div>
       ) : null}
 
       {mode === "code" ? (
-        <div style={{ marginTop: 18 }}>
-          <div className="kicker" style={{ marginBottom: 6 }}>
+        <div className="mt-[18px]">
+          <div className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">
             {L.codeHeader}
           </div>
-          <pre className="code">{L.codeBody}</pre>
+          <pre className="overflow-x-auto rounded-md border border-rule bg-rule-soft px-4 py-3.5 font-mono text-[13.5px] leading-[1.5] text-ink-soft">
+            {L.codeBody}
+          </pre>
         </div>
       ) : null}
     </div>
