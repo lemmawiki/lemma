@@ -3,6 +3,7 @@ import { useApp, pick } from "../context/AppContext";
 import { Link } from "../lib/router";
 import { applications, PILLAR_LABEL } from "../data/applications";
 import { modules } from "../data/modules";
+import { spikes } from "../data/spikes";
 import { glossary } from "../data/glossary";
 
 const KICKER =
@@ -106,6 +107,49 @@ function ModulesList() {
   );
 }
 
+function SpikesList() {
+  const { language } = useApp();
+  if (spikes.length === 0) return null;
+  return (
+    <section className="mt-14">
+      <div className={KICKER}>
+        {pick(
+          language,
+          `spikes · in progress · ${spikes.length}`,
+          `스파이크 · 작업 중 · ${spikes.length}`,
+        )}
+      </div>
+      <ul className="m-0 grid list-none gap-3.5 p-0">
+        {spikes.map((s) => (
+          <li
+            key={s.id}
+            className="group rounded-[10px] border border-dashed border-rule bg-bg-card transition-[border,transform] duration-[0.18s] hover:border-acc"
+          >
+            <Link to={s.href} className="block px-6 py-[22px] text-inherit no-underline">
+              <div className="mb-2.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
+                <span className="font-semibold text-acc-deep">
+                  {pick(language, "spike", "스파이크")}
+                </span>
+                <span className="mx-1.5 text-rule">·</span>
+                <span className="italic">{s.testing[language]}</span>
+              </div>
+              <h2 className="m-0 mb-2.5 font-serif text-[26px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
+                {s.title[language]}
+              </h2>
+              <p className="m-0 mb-3.5 font-serif text-[17px] leading-[1.55] text-ink-soft">
+                {s.hook[language]}
+              </p>
+              <span className="font-mono text-xs lowercase tracking-[0.06em] text-acc">
+                {pick(language, "open →", "열기 →")}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function Status() {
   const { language } = useApp();
   return (
@@ -196,6 +240,7 @@ export function Home() {
       <Counters />
       <ApplicationsList />
       <ModulesList />
+      <SpikesList />
       <Status />
       <HomeFooter />
     </>
