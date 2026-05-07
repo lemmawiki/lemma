@@ -27,7 +27,7 @@ export const spikes: SpikeMeta[] = [
     },
     testing: {
       en: "Can Lemma's grammar carry a definitional crisis instead of an external application?",
-      ko: "Lemma의 문법이 외부 응용 없이 정의의 위기를 담아낼 수 있는가?",
+      ko: "Lemma의 문법이 외부 응용 없이 용어 과부하만으로 한 페이지를 끌고 갈 수 있는가?",
     },
   },
 ];
