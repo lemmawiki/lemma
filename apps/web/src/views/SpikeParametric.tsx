@@ -33,7 +33,7 @@ function Hook() {
   return (
     <section className="mt-12">
       <div className={KICKER}>
-        {pick(language, "spike · definitional crisis", "스파이크 · 용어 과부하")}
+        {pick(language, "spike · definitional crisis", "스파이크 · 정의의 위기")}
       </div>
       <h1 className="m-0 mb-6 font-serif text-[38px] font-medium leading-[1.18] tracking-[-0.015em] text-ink max-md:text-[28px]">
         {pick(language, <>What is "the same curve"?</>, <>"같은 곡선"이란 무엇인가?</>)}
@@ -68,7 +68,7 @@ function Hook() {
           <>
             외부 응용이 아니다. 비트코인 피자나 float 언더플로우 자리에{" "}
             <Term id="definitional-crisis">
-              <em className="italic">용어 과부하</em>
+              <em className="italic">정의의 위기</em>
             </Term>
             를 넣어도 Lemma의 문법이 그대로 작동하는지 보는 스파이크.
           </>,
@@ -465,9 +465,8 @@ function PageFooter() {
           </>,
           <>
             <b>스파이크일 뿐, 공개 모듈이 아니다.</b> 보고 있는 건 한 가지 질문이다 — Lemma의
-            문법(도입·위젯·흐름·핀·연습문제·용어집)이 외부 응용 없이 용어 과부하만으로도 한 페이지를
-            끌고 갈 수 있는가? 그렇다면 이 페이지는{" "}
-            <span className={MONO}>modules/parametric-curves</span>
+            문법(도입·위젯·흐름·핀·연습문제·용어집)이 외부 응용 없이도 정의의 위기를 담아낼 수
+            있는가? 그렇다면 이 페이지는 <span className={MONO}>modules/parametric-curves</span>
             가 되고, 이걸 끌어다 쓰는 곳(그래픽 렌더링, 물리 궤적)은 그 뒤에 붙는다.
           </>,
         )}
