@@ -30,6 +30,16 @@ export const modules: ModuleMeta[] = [
     },
   },
   {
+    id: "parametric-curves",
+    href: "/modules/parametric-curves",
+    status: "available",
+    title: { en: "Parametric Curves", ko: "매개변수 곡선" },
+    hook: {
+      en: "A curve is not a picture. Three motions can paint the same parabola — same image, different parametrizations. Pin down the distinction the word 'curve' was hiding, and a whole stack of downstream tools snaps into place.",
+      ko: "곡선은 그림이 아니다. 세 가지 움직임이 같은 포물선을 칠할 수 있다 — 같은 이미지, 다른 매개변수화. '곡선'이라는 단어가 숨기고 있던 구분을 못박으면, 그 위에 쌓일 도구들 (그래픽, 물리, 애니메이션) 의 자리가 한꺼번에 잡힌다.",
+    },
+  },
+  {
     id: "bezout",
     href: "/modules/bezout",
     status: "available",

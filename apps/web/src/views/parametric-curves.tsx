@@ -22,7 +22,7 @@ function Breadcrumb() {
       <Link to="/">{pick(language, "Lemma", "Lemma")}</Link>
       <span className="mx-2 text-rule">/</span>
       <span className="uppercase tracking-[0.06em] text-ink">
-        {pick(language, "spike · parametric curves", "스파이크 · 매개변수 곡선")}
+        {pick(language, "module · parametric curves", "모듈 · 매개변수 곡선")}
       </span>
     </nav>
   );
@@ -33,7 +33,7 @@ function Hook() {
   return (
     <section className="mt-12">
       <div className={KICKER}>
-        {pick(language, "spike · definitional crisis", "스파이크 · 정의의 위기")}
+        {pick(language, "the hook · definitional crisis", "도입 · 정의의 위기")}
       </div>
       <h1 className="m-0 mb-6 font-serif text-[38px] font-medium leading-[1.18] tracking-[-0.015em] text-ink max-md:text-[28px]">
         {pick(language, <>What is "the same curve"?</>, <>"같은 곡선"이란 무엇인가?</>)}
@@ -59,18 +59,22 @@ function Hook() {
         {pick(
           language,
           <>
-            Not an external application. A spike — testing whether Lemma's grammar can carry a{" "}
+            A module that opens with a{" "}
             <Term id="definitional-crisis">
               <em className="italic">definitional crisis</em>
             </Term>{" "}
-            the way it carries Bitcoin Pizza or float underflow.
+            instead of an application: the same picture, drawn three different ways. The fix
+            redefines what "a curve" even is — and that redefinition is the tool downstream
+            applications (graphics, physics, animation) consume.
           </>,
           <>
-            외부 응용이 아니다. 비트코인 피자나 float 언더플로우 자리에{" "}
+            외부 응용이 아니라{" "}
             <Term id="definitional-crisis">
               <em className="italic">정의의 위기</em>
             </Term>
-            를 넣어도 Lemma의 문법이 그대로 작동하는지 보는 스파이크.
+            로 열리는 모듈: 같은 그림이 세 가지 방식으로 그려진다. 그 위기를 푸는 과정에서 "곡선"이
+            *무엇인지*가 다시 정의되고, 그 재정의가 아래로 흘러갈 응용들 (그래픽, 물리, 애니메이션)
+            의 도구가 된다.
           </>,
         )}
       </p>
@@ -457,17 +461,15 @@ function PageFooter() {
         {pick(
           language,
           <>
-            <b>Spike, not a published module.</b> The bar this is testing: can Lemma's grammar —
-            hook, widget, arc, pin, exercises, glossary — carry a definitional crisis instead of an
-            external application? If yes, this becomes{" "}
-            <span className={MONO}>modules/parametric-curves</span> and consumers (graphics
-            rendering, physical trajectories) plug in later.
+            module: <b>Parametric Curves</b>. The crisis-as-hook spike that became a real module.
+            Downstream consumers — Bezier curves in graphics, trajectories in physics, motion paths
+            in animation — plug into the parametrization-vs-image distinction this module makes
+            precise.
           </>,
           <>
-            <b>스파이크일 뿐, 공개 모듈이 아니다.</b> 보고 있는 건 한 가지 질문이다 — Lemma의
-            문법(도입·위젯·흐름·핀·연습문제·용어집)이 외부 응용 없이도 정의의 위기를 담아낼 수
-            있는가? 그렇다면 이 페이지는 <span className={MONO}>modules/parametric-curves</span>
-            가 되고, 이걸 끌어다 쓰는 곳(그래픽 렌더링, 물리 궤적)은 그 뒤에 붙는다.
+            모듈: <b>매개변수 곡선</b>. 위기를 도입으로 삼은 스파이크가 정식 모듈로 자라난 결과. 이
+            모듈이 정밀하게 만든 *매개변수 vs 이미지* 구분을 그래픽의 베지에 곡선, 물리의 궤적,
+            애니메이션의 움직임 경로 같은 응용들이 소비한다.
           </>,
         )}
       </div>
@@ -476,9 +478,9 @@ function PageFooter() {
   );
 }
 
-export function SpikeParametric() {
+export function ParametricCurves() {
   useEffect(() => {
-    document.title = "Spike — Parametric Curves · Lemma";
+    document.title = "Parametric Curves · Lemma";
   }, []);
   return (
     <TermsProvider>
