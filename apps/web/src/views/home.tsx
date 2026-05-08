@@ -152,6 +152,9 @@ function SpikesList() {
 
 function Status() {
   const { language } = useApp();
+  const apps = applications.filter((a) => a.status === "available");
+  const consumedModules = new Set(apps.flatMap((a) => a.modules));
+  const activePillars = new Set(apps.map((a) => a.pillar));
   return (
     <section className="mt-14">
       <div className={KICKER}>{pick(language, "status", "현재 상태")}</div>
@@ -159,7 +162,10 @@ function Status() {
         {pick(
           language,
           <>
-            Early. One application live, more in progress. The bar is one question:{" "}
+            Proof-of-system stage. {apps.length} live applications span {activePillars.size}/4
+            pillars; {consumedModules.size}/{modules.length} modules are consumed by at least one
+            application; {glossary.length} bilingual terms backfill the gaps. Still early — most of
+            math is missing — but the graph now has working evidence. The bar remains one question:{" "}
             <em>
               does this make a curious learner understand something they could not understand
               before?
@@ -167,7 +173,10 @@ function Status() {
             Yes — it ships. No — it doesn't, however polished.
           </>,
           <>
-            초기. 응용 하나 공개, 더 작업 중. 기준은 단 하나:{" "}
+            시스템 검증 단계. 공개 응용 {apps.length}개가 {activePillars.size}/4개 기둥에 걸쳐 있고,
+            모듈 {consumedModules.size}/{modules.length}개가 적어도 하나의 응용에 의해 소비되며,
+            이중언어 용어 {glossary.length}개가 빈틈을 메웁니다. 아직 초기입니다 — 수학의 대부분은
+            비어 있습니다 — 하지만 그래프에는 이제 작동하는 증거가 있습니다. 기준은 여전히 단 하나:{" "}
             <em>호기심 있는 학습자가 이전엔 이해하지 못한 것을 이해하게 만드는가?</em> 예 —
             들어옵니다. 아니오 — 아무리 다듬어졌어도 들어오지 않습니다.
           </>,
