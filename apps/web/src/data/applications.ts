@@ -45,6 +45,21 @@ export const applications: ApplicationMeta[] = [
       ko: "2010년 5월 22일, 플로리다의 프로그래머가 파파존스 피자 두 판 값으로 10,000 BTC — 약 $41 — 을 보냈다. 16년 뒤, 그 코인의 가치는 $10억. 역사상 가장 비싼 식사.",
     },
   },
+  {
+    id: "confident-wrong",
+    href: "/ml/confident-wrong",
+    pillar: "ml",
+    modules: ["log"],
+    status: "available",
+    title: {
+      en: "Confidently Wrong",
+      ko: "자신 있게 틀리기",
+    },
+    hook: {
+      en: "A model does not know it is right. It has scores. Softmax turns those scores into numbers that look like probabilities. Cross-entropy punishes the probability the model gave to the correct answer. The trap: a bad score can still become a very confident probability.",
+      ko: "모델은 자신이 맞는지 아는 게 아니다. 점수들이 있을 뿐이다. softmax는 그 점수들을 확률처럼 보이는 수로 바꾸고, 교차 엔트로피는 정답에 부여한 확률을 벌점으로 바꾼다. 함정: 나쁜 점수도 아주 자신만만한 확률이 될 수 있다.",
+    },
+  },
 ];
 
 export const applicationByHref: Record<string, ApplicationMeta> = Object.fromEntries(

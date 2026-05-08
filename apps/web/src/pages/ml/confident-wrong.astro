@@ -1,0 +1,20 @@
+---
+import { codeToHtml } from "shiki";
+import Base from "../../layouts/base.astro";
+import ConfidentWrongIsland from "../../views/confident-wrong-island.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "vitesse-light" } as const;
+const code = {
+  arc2: await codeToHtml(pythonCode.confidentWrong.arc2, opts),
+  arc3: await codeToHtml(pythonCode.confidentWrong.arc3, opts),
+  arc5: await codeToHtml(pythonCode.confidentWrong.arc5, opts),
+};
+---
+
+<Base
+  title="Confidently Wrong · Lemma"
+  description="A model does not know it is right. It has scores. Softmax turns scores into probabilities; cross-entropy reads off the one for the correct answer. Confidence and truth are unrelated."
+>
+  <ConfidentWrongIsland code={code} client:load />
+</Base>

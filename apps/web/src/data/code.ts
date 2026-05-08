@@ -37,6 +37,52 @@ np.prod([p] * 40)               # → 0.0  (silent death)
 # Log-space: add 40 log-probabilities. Survives.
 np.sum(np.log([p] * 40))        # → -92.10  (well-defined)`,
   },
+  confidentWrong: {
+    arc2: `import numpy as np
+
+# Three logits — raw scores. No truth check anywhere.
+z = np.array([2.0, 1.0, 0.5])
+
+# Numerically stable softmax: subtract max before exp.
+def softmax(z, T=1.0):
+    s = z / T
+    s = s - s.max()
+    e = np.exp(s)
+    return e / e.sum()
+
+p = softmax(z)
+# p ≈ [0.659, 0.242, 0.099]   (sums to 1)
+# Same logits + 100 give the same p — softmax depends only on differences.
+softmax(z + 100)
+# → [0.659, 0.242, 0.099]`,
+    arc3: `# In PyTorch, log_softmax + nll_loss is the numerically stable cross-entropy.
+import torch
+import torch.nn.functional as F
+
+z = torch.tensor([[2.0, 1.0, 0.5]])      # logits, batch of 1
+y = torch.tensor([0])                     # true class — 'cat' at index 0
+
+log_p = F.log_softmax(z, dim=1)           # avoids log(softmax) overflow
+loss  = F.nll_loss(log_p, y)
+# loss ≈ 0.417  =  −log p_true  =  −log(0.659)
+#
+# Why log_softmax not log(softmax)?
+# log(softmax) computes exp() first → overflow when logits are large.
+# log_softmax keeps things in log-space the whole way through.`,
+    arc5: `# The trap: a wrong score can produce a confident probability.
+import numpy as np
+
+z = np.array([5.0, 1.0, 0.5])        # model is sure of class 0
+true_idx = 1                          # but truth is class 1
+p = softmax(z)
+# p ≈ [0.978, 0.018, 0.011]
+# 97.8% confidence — and wrong.
+loss = -np.log(p[true_idx])
+# loss ≈ 4.0   (huge — log explodes as p_true → 0)
+#
+# Lower the temperature, and confidence rises further while truth is unchanged.
+softmax(z, T=0.5)[0]                 # ≈ 0.99964   (even more sure)`,
+  },
   bezout: {
     arc4: `# The disjoint-circles example, hand-eliminated.
 # C1: x² + y² − 1     = 0

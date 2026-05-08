@@ -32,5 +32,10 @@
   "homogenize",
   "intersection-multiplicity",
   "resultant",
-  "vieta-formulas"
+  "vieta-formulas",
+  "logit",
+  "softmax",
+  "temperature",
+  "cross-entropy",
+  "negative-log-likelihood"
 ]
