@@ -1,0 +1,20 @@
+---
+import { codeToHtml } from "shiki";
+import Base from "../../layouts/base.astro";
+import BitcoinSignatureIsland from "../../views/bitcoin-signature-island.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "vitesse-light" } as const;
+const code = {
+  arc2: await codeToHtml(pythonCode.bitcoinSignature.arc2, opts),
+  arc4: await codeToHtml(pythonCode.bitcoinSignature.arc4, opts),
+  arc5: await codeToHtml(pythonCode.bitcoinSignature.arc5, opts),
+};
+---
+
+<Base
+  title="The Bitcoin Signature · Lemma"
+  description="A Bitcoin address is public; the private key is not. ECDSA on an elliptic curve lets anyone verify you signed a payment without ever learning the secret that authorizes all your payments. Toy curve worked end-to-end."
+>
+  <BitcoinSignatureIsland code={code} client:load />
+</Base>

@@ -83,6 +83,68 @@ loss = -np.log(p[true_idx])
 # Lower the temperature, and confidence rises further while truth is unchanged.
 softmax(z, T=0.5)[0]                 # ≈ 0.99964   (even more sure)`,
   },
+  bitcoinSignature: {
+    arc2: `# Toy curve E: y² = x³ + 7 over F_17.
+# Same shape (a=0, b=7) as secp256k1, microscopic prime.
+P, A, B = 17, 0, 7
+INF = None  # the point at infinity is the group identity
+
+def add(P_, Q_):
+    if P_ is INF: return Q_
+    if Q_ is INF: return P_
+    x1, y1 = P_; x2, y2 = Q_
+    if x1 == x2 and (y1 + y2) % P == 0:
+        return INF
+    if P_ == Q_:
+        lam = (3 * x1 * x1 + A) * pow(2 * y1, -1, P) % P
+    else:
+        lam = (y2 - y1) * pow(x2 - x1, -1, P) % P
+    x3 = (lam * lam - x1 - x2) % P
+    y3 = (lam * (x1 - x3) - y1) % P
+    return (x3, y3)
+
+def scalar_mul(k, P_):
+    R = INF
+    while k > 0:
+        if k & 1: R = add(R, P_)
+        P_ = add(P_, P_)
+        k >>= 1
+    return R
+
+G = (1, 5)             # generator
+N = 9                  # order of G — 9G = INF
+scalar_mul(2, G)       # → (2, 10)
+scalar_mul(3, G)       # → (5, 9)
+scalar_mul(9, G)       # → None (= O)`,
+    arc4: `# Sign a message hash with private key d, nonce k.
+def sign(d, h, k):
+    R = scalar_mul(k, G)
+    r = R[0] % N
+    s = (h + r * d) * pow(k, -1, N) % N
+    if r == 0 or s == 0:
+        raise ValueError("retry with another k")
+    return r, s
+
+# Toy: d = 5 (private), h = 3 (message hash), k = 7 (nonce)
+sign(5, 3, 7)  # → (2, 7)`,
+    arc5: `# Verify uses only public information: h, (r, s), Q.
+def verify(h, r, s, Q):
+    s_inv = pow(s, -1, N)
+    u1 = h * s_inv % N
+    u2 = r * s_inv % N
+    V = add(scalar_mul(u1, G), scalar_mul(u2, Q))
+    return V is not INF and V[0] % N == r
+
+Q = scalar_mul(5, G)            # public key matching d = 5
+verify(3, 2, 7, Q)              # → True
+
+# The algebra: V = u1·G + u2·Q
+#                = (h/s)G + (r/s)·dG
+#                = ((h + r·d)/s)·G
+#                = ((h + r·d) · k / (h + r·d))·G   # because s = (h+r·d)/k
+#                = k·G = R.   So V.x mod N = r.
+# Verifier never sees d. The identity holds iff signer knew d.`,
+  },
   bezout: {
     arc4: `# The disjoint-circles example, hand-eliminated.
 # C1: x² + y² − 1     = 0

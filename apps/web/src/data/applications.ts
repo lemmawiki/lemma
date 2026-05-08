@@ -46,6 +46,21 @@ export const applications: ApplicationMeta[] = [
     },
   },
   {
+    id: "bitcoin-signature",
+    href: "/finance/bitcoin-signature",
+    pillar: "finance",
+    modules: ["bezout"],
+    status: "available",
+    title: {
+      en: "The Bitcoin Signature",
+      ko: "비트코인 서명",
+    },
+    hook: {
+      en: "Anyone can see your Bitcoin address. No one should see your private key. So how can the network verify that you authorized a payment without learning the secret that authorizes all payments?",
+      ko: "비트코인 주소는 누구나 볼 수 있다. 개인키는 아무도 보면 안 된다. 그렇다면 네트워크는 모든 결제를 승인할 수 있는 비밀을 배우지 않고도, 이번 결제가 정말 네가 승인한 것인지 어떻게 확인할까?",
+    },
+  },
+  {
     id: "confident-wrong",
     href: "/ml/confident-wrong",
     pillar: "ml",

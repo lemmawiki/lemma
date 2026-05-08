@@ -37,5 +37,13 @@
   "softmax",
   "temperature",
   "cross-entropy",
-  "negative-log-likelihood"
+  "negative-log-likelihood",
+  "elliptic-curve",
+  "scalar-multiplication",
+  "discrete-log",
+  "private-key",
+  "public-key",
+  "nonce",
+  "digital-signature",
+  "secp256k1"
 ]
