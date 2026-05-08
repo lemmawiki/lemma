@@ -1,0 +1,19 @@
+---
+import { codeToHtml } from "shiki";
+import Base from "../../layouts/base.astro";
+import PendulumClockIsland from "../../views/pendulum-clock-island.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "vitesse-light" } as const;
+const code = {
+  arc4: await codeToHtml(pythonCode.pendulumClock.arc4, opts),
+  arc6: await codeToHtml(pythonCode.pendulumClock.arc6, opts),
+};
+---
+
+<Base
+  title="The Pendulum Clock · Lemma"
+  description="A real pendulum's period depends on its amplitude. So how do mechanical clocks keep time? Linearize sin θ ≈ θ near zero, and the period becomes 2π√(L/g) — independent of amplitude. The clock runs on that approximation."
+>
+  <PendulumClockIsland code={code} client:load />
+</Base>

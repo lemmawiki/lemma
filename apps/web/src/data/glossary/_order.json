@@ -53,5 +53,9 @@
   "velocity",
   "acceleration",
   "gravity",
-  "parabola"
+  "parabola",
+  "small-angle-approximation",
+  "linearization",
+  "simple-harmonic-motion",
+  "period"
 ]

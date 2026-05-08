@@ -46,6 +46,21 @@ export const applications: ApplicationMeta[] = [
     },
   },
   {
+    id: "pendulum-clock",
+    href: "/physics/pendulum-clock",
+    pillar: "physics",
+    modules: ["parametric-curves"],
+    status: "available",
+    title: {
+      en: "The Pendulum Clock",
+      ko: "진자시계",
+    },
+    hook: {
+      en: "Double the swing. Why does the clock barely change? A real pendulum's period depends on amplitude — but for small swings it almost doesn't. Linearize sin θ ≈ θ, and the period becomes constant. The clock stands on that approximation.",
+      ko: "진폭을 두 배로 키웠는데, 왜 시계는 거의 같은 시간을 잴까? 실제 진자의 주기는 진폭에 의존한다 — 단, 작은 흔들림에서는 거의 의존하지 않는다. sin θ ≈ θ로 선형화하면 주기가 상수가 된다. 시계는 그 근사 위에 서 있다.",
+    },
+  },
+  {
     id: "projectile-motion",
     href: "/physics/projectile-motion",
     pillar: "physics",

@@ -83,6 +83,37 @@ loss = -np.log(p[true_idx])
 # Lower the temperature, and confidence rises further while truth is unchanged.
 softmax(z, T=0.5)[0]                 # ≈ 0.99964   (even more sure)`,
   },
+  pendulumClock: {
+    arc4: `import math
+
+# Linearized pendulum: small-angle solution.
+# θ̈ = −(g/L)·sin θ   →   (sin θ ≈ θ)   →   θ̈ = −(g/L)·θ
+# Solutions are simple harmonic: θ(t) = θ₀·cos(ω·t),  ω = √(g/L).
+def theta(t, L, g, theta0):
+    omega = math.sqrt(g / L)
+    return theta0 * math.cos(omega * t)
+
+def period_small(L, g):
+    return 2 * math.pi * math.sqrt(L / g)
+
+period_small(1.0, 9.8)            # ≈ 2.007 s   (1-meter rod on Earth)
+period_small(1.0, 1.62)           # ≈ 4.929 s   (same rod on the Moon)`,
+    arc6: `# What the small-angle formula is missing — Borda's leading correction.
+# Real period grows with amplitude: T(θ₀) ≈ T₀ · (1 + θ₀²/16).
+def period_corrected(L, g, theta0_rad):
+    return period_small(L, g) * (1 + theta0_rad**2 / 16)
+
+# How much does the clock drift if the bob actually swings 30°?
+T0  = period_small(1.0, 9.8)
+T30 = period_corrected(1.0, 9.8, math.radians(30))
+(T30 - T0) / T0 * 100              # ≈ 1.7 %   slow, every period
+
+# 60° (a wild swing) gives ~6.9 % slow — many minutes per day. The
+# actual clocks of the 17th century constrained the bob to small
+# arcs (the cycloidal-cheek trick); modern ones use escapements that
+# keep the amplitude small enough for the linear approximation to
+# stay nearly true. The whole technology is built around the lie.`,
+  },
   projectileMotion: {
     arc2: `import math
 
