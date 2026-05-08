@@ -83,6 +83,42 @@ loss = -np.log(p[true_idx])
 # Lower the temperature, and confidence rises further while truth is unchanged.
 softmax(z, T=0.5)[0]                 # ≈ 0.99964   (even more sure)`,
   },
+  bezierCurves: {
+    arc2: `# A point is a 2-tuple. Lerp is one line.
+def lerp(a, b, t):
+    return (a[0] + (b[0] - a[0]) * t,
+            a[1] + (b[1] - a[1]) * t)
+
+lerp((0, 0), (4, 2), 0.0)    # → (0, 0)
+lerp((0, 0), (4, 2), 0.5)    # → (2, 1)
+lerp((0, 0), (4, 2), 1.0)    # → (4, 2)`,
+    arc3: `# De Casteljau: lerp every adjacent pair, then again, until 1 point remains.
+def bezier(controls, t):
+    pts = list(controls)
+    while len(pts) > 1:
+        pts = [lerp(pts[i], pts[i+1], t) for i in range(len(pts) - 1)]
+    return pts[0]
+
+# Cubic Bezier — four control points
+P = [(0, 0), (1, 2), (3, 2), (4, 0)]
+bezier(P, 0.0)   # → (0, 0)            (= P[0], starts at first)
+bezier(P, 1.0)   # → (4, 0)            (= P[-1], ends at last)
+bezier(P, 0.5)   # → (2.0, 1.5)         (midpoint by recursion)`,
+    arc4: `# Bernstein form — algebraically equivalent to De Casteljau.
+def bezier_bernstein(P, t):
+    s = 1 - t
+    bx = (s**3 * P[0][0] + 3*s*s*t * P[1][0]
+        + 3*s*t*t * P[2][0] + t**3 * P[3][0])
+    by = (s**3 * P[0][1] + 3*s*s*t * P[1][1]
+        + 3*s*t*t * P[2][1] + t**3 * P[3][1])
+    return (bx, by)
+
+bezier_bernstein(P, 0.5)  # → (2.0, 1.5)   same answer, different bookkeeping
+#
+# B'(0) = 3(P[1] - P[0])  →  tangent at start points along P0→P1
+# B'(1) = 3(P[3] - P[2])  →  tangent at end points along P2→P3
+# A designer reads "the curve leans into the next handle" off these two facts.`,
+  },
   bitcoinSignature: {
     arc2: `# Toy curve E: y² = x³ + 7 over F_17.
 # Same shape (a=0, b=7) as secp256k1, microscopic prime.

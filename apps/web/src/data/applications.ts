@@ -46,6 +46,21 @@ export const applications: ApplicationMeta[] = [
     },
   },
   {
+    id: "bezier-curves",
+    href: "/graphics/bezier-curves",
+    pillar: "graphics",
+    modules: ["parametric-curves"],
+    status: "available",
+    title: {
+      en: "Bezier Curves",
+      ko: "베지에 곡선",
+    },
+    hook: {
+      en: "A designer drags four handles. A movie character gets a smooth cheek, a car gets a perfect hood, a letter gets its curve. How does a computer turn a few points into a smooth path?",
+      ko: "디자이너가 손잡이 네 개를 움직인다. 캐릭터의 볼이 매끄러워지고, 자동차 보닛이 휘고, 글자의 곡선이 잡힌다. 컴퓨터는 점 몇 개를 어떻게 매끄러운 길로 바꿀까?",
+    },
+  },
+  {
     id: "bitcoin-signature",
     href: "/finance/bitcoin-signature",
     pillar: "finance",

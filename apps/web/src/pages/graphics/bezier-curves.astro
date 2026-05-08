@@ -1,0 +1,20 @@
+---
+import { codeToHtml } from "shiki";
+import Base from "../../layouts/base.astro";
+import BezierCurvesIsland from "../../views/bezier-curves-island.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "vitesse-light" } as const;
+const code = {
+  arc2: await codeToHtml(pythonCode.bezierCurves.arc2, opts),
+  arc3: await codeToHtml(pythonCode.bezierCurves.arc3, opts),
+  arc4: await codeToHtml(pythonCode.bezierCurves.arc4, opts),
+};
+---
+
+<Base
+  title="Bezier Curves · Lemma"
+  description="Drag four handles, get a smooth curve. The handles aren't on the curve — they pull at it. One operation (lerp), applied recursively (De Casteljau), is the entire algorithm behind every smooth path in fonts, vector art, animation, and CAD."
+>
+  <BezierCurvesIsland code={code} client:load />
+</Base>
