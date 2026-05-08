@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "pnpm run validate:glossary && astro check && astro build",
+    "build": "pnpm run validate:glossary && pnpm run validate:links && astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "validate:glossary": "node scripts/validate-glossary.mjs",
+    "validate:links": "node scripts/validate-links.mjs",
     "build:brand": "node scripts/build-brand.mjs"
   },
   "dependencies": {
