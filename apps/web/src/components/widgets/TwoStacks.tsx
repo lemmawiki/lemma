@@ -41,7 +41,7 @@ export function TwoStacks() {
   return (
     <div className="mt-9 rounded-[10px] border border-rule bg-bg-card px-6 py-[22px]">
       <div className="mb-3.5 font-mono text-xs uppercase tracking-[0.1em] text-ink-mute">
-        {pick(language, "Widget A — Two Stacks", "위젯 A — 두 자")}
+        {pick(language, "Widget B — Two Stacks", "위젯 B — 두 자")}
       </div>
 
       <div className="mb-3.5 grid grid-cols-2 gap-x-6 gap-y-2 rounded-md bg-rule-soft px-3.5 py-2.5 font-mono text-[13.5px]">

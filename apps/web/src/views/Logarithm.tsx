@@ -3,6 +3,7 @@ import { useApp, pick } from "../context/AppContext";
 import { TermsProvider, useTermsRegistry } from "../context/TermsContext";
 import { Term } from "../components/Term";
 import { Exercise } from "../components/Exercise";
+import { DoublingLadder } from "../components/widgets/DoublingLadder";
 import { TwoStacks } from "../components/widgets/TwoStacks";
 import { glossary } from "../data/glossary";
 import { Link } from "../lib/router";
@@ -13,7 +14,7 @@ const FORMULA_INLINE =
   "rounded-sm bg-rule-soft px-1.5 py-px font-mono text-[0.95em] text-ink whitespace-nowrap";
 const MONO = "font-mono text-[0.93em]";
 
-type CodeMap = { arc1: string; arc3: string };
+type CodeMap = { arc1: string; arc4: string };
 
 function Code({ html }: { html: string }) {
   return <div className="shiki-wrap" dangerouslySetInnerHTML={{ __html: html }} />;
@@ -36,59 +37,63 @@ function Hook() {
   const { language } = useApp();
   return (
     <section className="mt-12">
-      <div className={KICKER}>{pick(language, "the hook · ×→+", "도입 · ×→+")}</div>
+      <div className={KICKER}>
+        {pick(language, "the hook · what's the exponent", "도입 · 지수가 몇이냐")}
+      </div>
       <h1 className="m-0 mb-6 font-serif text-[38px] font-medium leading-[1.18] tracking-[-0.015em] text-ink max-md:text-[28px]">
         {pick(
           language,
-          <>Engineers carried wooden rulers until 1972.</>,
-          <>엔지니어들은 1972년까지 나무 자를 들고 다녔다.</>,
+          <>How many times do you multiply 2 to get 1,024?</>,
+          <>2를 몇 번 곱해야 1,024가 될까?</>,
         )}
       </h1>
-      <p className="m-0 mb-5 font-serif text-[22px] leading-[1.45] text-ink-soft max-md:text-[18px] [&_em]:italic [&_em]:text-acc">
+      <p className="m-0 mb-5 font-serif text-[22px] leading-[1.45] text-ink-soft max-md:text-[18px] [&_em]:italic [&_em]:text-acc [&_b]:font-semibold [&_b]:text-ink">
         {pick(
           language,
           <>
-            They used them to multiply by <em>adding</em> — sliding two log-spaced scales past each
-            other, reading the product off the meeting point. The trick was 400 years old by then
-            and is still the trick: <span className={MONO}>log(a·b) = log(a) + log(b)</span>. The
-            same one-line identity is why a modern language model can train at all. Multiply twenty
-            probabilities of <span className={MONO}>0.1</span> in{" "}
-            <Term id="float32">
-              <span className={MONO}>float32</span>
-            </Term>{" "}
-            and the result rounds silently to zero — every <Term id="gradient">gradient</Term> that
-            touched it dies with it. <Term id="pytorch">PyTorch</Term> never multiplies them. It
-            calls{" "}
-            <Term id="log-softmax">
-              <span className={MONO}>log_softmax</span>
-            </Term>{" "}
-            and <em>adds</em> twenty negative numbers. The model trains because somebody decided to
-            live in log-space.
+            The answer is 10. That 10 is <span className={MONO}>log₂(1,024)</span>.{" "}
+            <b>Log is the inverse of exponentiation — it pulls the exponent out of the result.</b>{" "}
+            Most big numbers in nature are built from exponents: cells double, interest compounds,
+            starlight dims as <span className={MONO}>1/r²</span>, sound spans twelve orders of
+            magnitude. The result you see (1,024 cells, a 100× gain, magnitude-7.2) is rarely the
+            natural parameter. The <em>exponent</em> (how many doublings, how many years) is. Log is
+            the function that recovers it. You already use a special case —{" "}
+            <span className={MONO}>log₁₀(1,000,000) = 6</span> because the number has six zeros. The
+            everyday <em>digit count is the exponent for base 10</em>. Generalize the digit count to
+            any base and you have the log. And because exponents add when their bases multiply, log
+            turns multiplication into addition:{" "}
+            <span className={MONO}>log(a·b) = log(a) + log(b)</span>. That one line drives the rest
+            of this page.
           </>,
           <>
-            그 자로 곱셈을 <em>덧셈</em>으로 했다 — 로그 간격으로 눈금이 새겨진 두 자를 서로
-            미끄러뜨려, 만나는 자리에서 곱을 읽는 식이었다. 그 트릭은 1972년에 이미 400년이 지나
-            있었고, 지금도 같은 트릭이다: <span className={MONO}>log(a·b) = log(a) + log(b)</span>.
-            현대 언어 모델이 학습된다는 사실도 이 한 줄에서 나온다.{" "}
-            <Term id="float32">
-              <span className={MONO}>float32</span>
-            </Term>
-            에서 확률 <span className={MONO}>0.1</span>을 스무 번 곱하면 결과는 조용히 0으로
-            떨어지고, 그 값에 닿았던 모든 <Term id="gradient">그래디언트</Term>가 함께 죽는다.{" "}
-            <Term id="pytorch">PyTorch</Term>는 절대 그것들을 곱하지 않는다.{" "}
-            <Term id="log-softmax">
-              <span className={MONO}>log_softmax</span>
-            </Term>{" "}
-            를 호출해 음수 스무 개를 <em>더한다</em>. 모델이 학습되는 건, 누군가가 로그 공간에
-            살기로 결정했기 때문이다.
+            답은 10. 그 10이 <span className={MONO}>log₂(1,024)</span>다.{" "}
+            <b>로그는 거듭제곱의 역함수 — 결과에서 지수를 꺼낸다.</b> 자연의 큰 수는 거의 다 지수로
+            만들어진다. 세포는 두 배가 되고, 이자는 복리로 쌓이고, 별빛은{" "}
+            <span className={MONO}>1/r²</span>로 흐려지고, 소리는 열두 자릿수에 걸쳐 변한다. 우리가
+            보는 <em>결과</em> (1,024개의 세포, 100배가 된 자산, 진도 7.2)는 자연이 쓰는 매개변수가
+            아니다. <em>지수</em> (몇 번 두 배 됐나, 몇 년 굴렸나)가 매개변수다. 로그는 그것을
+            꺼내주는 함수다. 이미 익숙한 특수 케이스가 있다 —{" "}
+            <span className={MONO}>log₁₀(1,000,000) = 6</span>인 건 0이 6개라서. 일상의{" "}
+            <em>자릿수가 밑 10에서의 지수</em>. 자릿수를 다른 밑으로 일반화하면 로그가 된다. 그리고
+            지수는 밑이 곱해질 때 더해지므로, 로그는 곱셈을 덧셈으로 바꾼다:{" "}
+            <span className={MONO}>log(a·b) = log(a) + log(b)</span>. 이 페이지의 나머지가 이 한
+            줄에서 따라 나온다.
           </>,
         )}
       </p>
-      <p className="m-0 border-l-[3px] border-acc pl-4 text-base text-ink-soft">
+      <p className="m-0 border-l-[3px] border-acc pl-4 text-base text-ink-soft [&_b]:font-semibold [&_b]:text-ink">
         {pick(
           language,
-          <>The whole module is one equation. Everything else is consequence.</>,
-          <>모듈 전체가 한 방정식이다. 나머지는 따름정리.</>,
+          <>
+            <b>log = what's the exponent.</b> Everything else —{" "}
+            <span className={MONO}>log(a·b) = log(a) + log(b)</span>, slide rules, log-likelihood,
+            digit-count estimates — is consequence.
+          </>,
+          <>
+            <b>로그 = 지수가 몇이냐.</b> 나머지 —{" "}
+            <span className={MONO}>log(a·b) = log(a) + log(b)</span>, 계산자, 로그우도, 자릿수 추정
+            — 는 따름정리.
+          </>,
         )}
       </p>
     </section>
@@ -121,7 +126,11 @@ function Arc({ code }: { code: CodeMap }) {
             language,
             <>
               Log is defined by one rule: <span className={MONO}>log(a·b) = log(a) + log(b)</span>.
-              Pick any base. The rule is the same. Every other property falls out of that line.{" "}
+              Pick any base. The rule is the same. (Context picks the base by convention:{" "}
+              <span className={MONO}>log</span> means <Term id="common-log">log₁₀</Term> in
+              engineering, <Term id="natural-log">ln</Term> in ML and statistics,{" "}
+              <span className={MONO}>log₂</span> in algorithms — read by domain when the subscript
+              is omitted.) Every other property falls out of that line.{" "}
               <span className={MONO}>log(a/b) = log(a) − log(b)</span>: take the rule, replace b
               with 1/b, done. <span className={MONO}>log(aⁿ) = n·log(a)</span>: apply the rule n
               times to <span className={MONO}>a · a · … · a</span>.{" "}
@@ -135,7 +144,10 @@ function Arc({ code }: { code: CodeMap }) {
             </>,
             <>
               로그는 한 줄로 정의된다: <span className={MONO}>log(a·b) = log(a) + log(b)</span>.
-              밑은 뭐든 좋다. 규칙은 같다. 다른 모든 성질이 이 한 줄에서 떨어져 나온다.{" "}
+              밑은 뭐든 좋다. 규칙은 같다. (분야가 밑을 정한다: <span className={MONO}>log</span>는
+              공학·고등학교에서는 <Term id="common-log">log₁₀</Term>, ML·통계에서는{" "}
+              <Term id="natural-log">ln</Term>, 알고리즘에서는 <span className={MONO}>log₂</span> —
+              첨자가 없으면 분야로 읽는다.) 다른 모든 성질이 이 한 줄에서 떨어져 나온다.{" "}
               <span className={MONO}>log(a/b) = log(a) − log(b)</span>: 규칙에서 b를 1/b로 바꾸면
               끝. <span className={MONO}>log(aⁿ) = n·log(a)</span>: 규칙을{" "}
               <span className={MONO}>a · a · … · a</span>에 n번 적용.{" "}
@@ -152,6 +164,142 @@ function Arc({ code }: { code: CodeMap }) {
       </ArcRow>
 
       <ArcRow n={2}>
+        <h3>{pick(language, "Same trick, five places", "같은 트릭, 다섯 곳")}</h3>
+        <p>
+          {pick(
+            language,
+            <>
+              Exponential quantities scatter across many places — time-growth (
+              <Term id="compound-interest">compound interest</Term>, carbon dating), perceptual
+              compression (decibels), scale-of-nature units (earthquake magnitude), counting
+              information (bits). Same trick each time: set up the equation, take logs, pull the
+              exponent. By hand.
+            </>,
+            <>
+              지수에 사는 양은 여러 군데에 흩어져 있다 — 시간에 따라 자라는 것 (
+              <Term id="compound-interest">복리</Term>, 탄소 연대 측정), 사람 감각의 압축 (데시벨),
+              거대 스케일의 단위 (지진), 정보를 세는 단위 (비트). 매번 같은 트릭이다: 식을 세우고,
+              양변에 로그, 지수를 꺼낸다. 손으로 풀어보자.
+            </>,
+          )}
+        </p>
+        <ul className="mt-4 list-none space-y-3 p-0 text-[16.5px] text-ink-soft [&_b]:font-semibold [&_b]:text-ink">
+          <li>
+            {pick(
+              language,
+              <>
+                <b>Compound interest.</b> A million won at 7%/year — when does it double?{" "}
+                <span className={MONO}>1.07ᵗ = 2</span> →{" "}
+                <span className={MONO}>t = log(2) / log(1.07) ≈ 0.301 / 0.0294 ≈ 10.24 years</span>.
+                The <Term id="rule-of-72">Rule of 72</Term> (
+                <span className={MONO}>72 / 7 ≈ 10.3</span>) is this formula sloppily memorized.
+              </>,
+              <>
+                <b>복리.</b> 100만원을 연 7%로 굴리면 두 배는 몇 년 뒤?{" "}
+                <span className={MONO}>1.07ᵗ = 2</span> →{" "}
+                <span className={MONO}>t = log(2) / log(1.07) ≈ 0.301 / 0.0294 ≈ 10.24년</span>.{" "}
+                <Term id="rule-of-72">72의 법칙</Term> (<span className={MONO}>72 / 7 ≈ 10.3</span>
+                )이 이 식을 작은 r에서 어림한 결과.
+              </>,
+            )}
+          </li>
+          <li>
+            {pick(
+              language,
+              <>
+                <b>Carbon-14 dating.</b> Carbon-14 halves every 5,730 years after death. If 25%
+                remains: <span className={MONO}>(1/2)^(t/5730) = 0.25 = (1/2)²</span> →{" "}
+                <span className={MONO}>t = 11,460 years</span>. For odd ratios (33%, 17%) only the
+                log expression closes in a single line.
+              </>,
+              <>
+                <b>탄소-14 연대 측정.</b> 탄소-14는 생물이 죽으면 반감기 5,730년으로 줄어든다. 25%만
+                남아 있다면: <span className={MONO}>(1/2)^(t/5730) = 0.25 = (1/2)²</span> →{" "}
+                <span className={MONO}>t = 11,460년</span>. 33%, 17% 같은 어중간한 비율은 로그 식 한
+                줄로만 닫힌다.
+              </>,
+            )}
+          </li>
+          <li>
+            {pick(
+              language,
+              <>
+                <b>Decibels.</b> <span className={MONO}>dB = 10·log₁₀(P/P₀)</span>. Conversation 60
+                dB, rock concert 110 dB → acoustic power differs by{" "}
+                <span className={MONO}>10⁵ = 100,000×</span>. Your ears don't perceive a
+                hundred-thousand-fold gap; hearing is logarithmic in power, and decibels track that
+                compression directly.
+              </>,
+              <>
+                <b>데시벨.</b> <span className={MONO}>dB = 10·log₁₀(P/P₀)</span>. 일반 대화 60 dB,
+                록 콘서트 110 dB → 음향 강도 차이는 <span className={MONO}>10⁵ = 10만 배</span>.
+                귀로는 그렇게 안 들린다. 청각이 강도의 로그를 듣기 때문 — 데시벨은 그 청각 로그를
+                그대로 따라간 단위.
+              </>,
+            )}
+          </li>
+          <li>
+            {pick(
+              language,
+              <>
+                <b>Earthquake magnitude.</b> <span className={MONO}>E = E₀·10^(1.5·M)</span>. Tōhoku
+                2011 (M 9.0) vs an ordinary large quake (M 7.0):{" "}
+                <span className={MONO}>E₉ / E₇ = 10^(1.5×2) = 10³ = 1,000×</span>. Two units of
+                magnitude, three orders of energy. Natural earthquake energies span 19 orders of
+                magnitude — comparison is hopeless without the compression Richter applies.
+              </>,
+              <>
+                <b>지진 규모.</b> <span className={MONO}>E = E₀·10^(1.5·M)</span>. 2011 도호쿠 (M
+                9.0) vs 평범한 큰 지진 (M 7.0):{" "}
+                <span className={MONO}>E₉ / E₇ = 10^(1.5×2) = 10³ = 1,000배</span>. 규모 2 차이가
+                에너지 1,000배. 자연 지진 에너지가 19자릿수에 걸쳐 있어, 리히터의 로그 압축 없이는
+                비교 자체가 불가능.
+              </>,
+            )}
+          </li>
+          <li>
+            {pick(
+              language,
+              <>
+                <b>Bits and binary search.</b> A 1,024-page dictionary, halving each step →{" "}
+                <span className={MONO}>log₂(1024) = 10</span> steps to find any word. A 32-bit int
+                holds <span className={MONO}>2³² ≈ 4.3 billion</span> values; identifying N items
+                needs <span className={MONO}>log₂(N)</span> bits. A deck of cards has{" "}
+                <span className={MONO}>
+                  log₂(<Term id="factorial">52!</Term>) ≈ 226 bits
+                </span>{" "}
+                of shuffle entropy — 226 yes/no questions to specify a single shuffle exactly.
+              </>,
+              <>
+                <b>비트와 이진 탐색.</b> 1,024쪽 사전을 매번 절반으로 자르면{" "}
+                <span className={MONO}>log₂(1024) = 10</span>번 만에 단어에 도달한다. 32비트 정수는{" "}
+                <span className={MONO}>2³² ≈ 43억</span> 가지를 표현하고, 거꾸로 N개를 식별하려면{" "}
+                <span className={MONO}>log₂(N)</span> 비트가 필요하다. 카드 한 벌의 셔플은{" "}
+                <span className={MONO}>
+                  log₂(<Term id="factorial">52!</Term>) ≈ 226 비트
+                </span>{" "}
+                — 226개의 예/아니오 질문이면 한 셔플이 정확히 특정된다.
+              </>,
+            )}
+          </li>
+        </ul>
+        <p className="mt-4">
+          {pick(
+            language,
+            <>
+              Five problems, one shape: nature's equation is exponential, take logs both sides, the
+              exponent falls out. The identity from § 1 — multiplication into addition — is doing
+              this work every single time.
+            </>,
+            <>
+              다섯 문제, 같은 모양: 자연이 만든 식은 지수꼴, 양변에 로그, 지수가 답으로 떨어진다. §
+              1의 항등식 — 곱셈을 덧셈으로 — 이 매번 이 일을 한다.
+            </>,
+          )}
+        </p>
+      </ArcRow>
+
+      <ArcRow n={3}>
         <h3>
           {pick(
             language,
@@ -192,7 +340,7 @@ function Arc({ code }: { code: CodeMap }) {
         </p>
       </ArcRow>
 
-      <ArcRow n={3}>
+      <ArcRow n={4}>
         <h3>
           {pick(
             language,
@@ -245,10 +393,10 @@ function Arc({ code }: { code: CodeMap }) {
             </>,
           )}
         </p>
-        {mode === "code" && <Code html={code.arc3} />}
+        {mode === "code" && <Code html={code.arc4} />}
       </ArcRow>
 
-      <ArcRow n={4}>
+      <ArcRow n={5}>
         <h3>{pick(language, "Back to the application", "다시 응용으로")}</h3>
         <p>
           {pick(
@@ -705,6 +853,7 @@ export function Logarithm({ code }: { code: CodeMap }) {
     <TermsProvider>
       <Breadcrumb />
       <Hook />
+      <DoublingLadder />
       <TwoStacks />
       <Arc code={code} />
       <Exercises />

@@ -28,7 +28,7 @@ implied_rate(100, 1000, 30)   # ≈ 0.08   (8% — boring SPY-ish)`,
 math.log10(2 * 50)              # ≈ math.log10(2) + math.log10(50)
 math.log10(2 ** 10)             # ≈ 10 * math.log10(2)
 math.log10(1)                   # 0.0`,
-    arc3: `import numpy as np
+    arc4: `import numpy as np
 
 # Naive: multiply 40 probabilities. Underflows in float32.
 p = np.float32(0.1)

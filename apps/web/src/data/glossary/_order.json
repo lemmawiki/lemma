@@ -19,6 +19,7 @@
   "underflow",
   "float32",
   "gradient",
+  "factorial",
   "stirling-approximation",
   "slide-rule",
   "pytorch",
