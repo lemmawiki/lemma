@@ -1,0 +1,11 @@
+---
+import Base from "../layouts/base.astro";
+import GraphIsland from "../views/graph-island.tsx";
+---
+
+<Base
+  title="Graph · Lemma"
+  description="The modular graph the Lemma manifesto promises — drawn honestly. Which modules are consumed, which sit orphaned, which pillars are still empty."
+>
+  <GraphIsland client:load />
+</Base>

@@ -34,7 +34,7 @@ export const applications: ApplicationMeta[] = [
     id: "bitcoin-pizza",
     href: "/finance/bitcoin-pizza",
     pillar: "finance",
-    modules: ["log-root-exp"],
+    modules: ["log"],
     status: "available",
     title: {
       en: "The Bitcoin Pizza",

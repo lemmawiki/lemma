@@ -179,26 +179,33 @@ function Status() {
 
 function Counters() {
   const { language } = useApp();
+  const apps = applications.filter((a) => a.status === "available");
+  const consumedModules = new Set(apps.flatMap((a) => a.modules));
   return (
-    <section className="mt-10 grid grid-cols-4 gap-3 border-y border-rule py-[22px] max-md:grid-cols-2">
-      {[
-        {
-          num: applications.filter((a) => a.status === "available").length,
-          label: pick(language, "applications", "응용"),
-        },
-        { num: modules.length, label: pick(language, "modules", "모듈") },
-        { num: glossary.length, label: pick(language, "glossary terms", "용어") },
-        { num: 2, label: pick(language, "languages", "언어") },
-      ].map((c) => (
-        <div key={c.label} className="text-center">
-          <div className="font-serif text-[38px] font-semibold leading-none text-acc [font-feature-settings:'lnum']">
-            {c.num}
+    <section className="mt-10 border-y border-rule py-[22px]">
+      <div className="grid grid-cols-4 gap-3 max-md:grid-cols-2">
+        {[
+          { num: apps.length, label: pick(language, "applications", "응용") },
+          {
+            num: `${consumedModules.size}/${modules.length}`,
+            label: pick(language, "modules · consumed", "모듈 · 소비됨"),
+          },
+          { num: glossary.length, label: pick(language, "glossary terms", "용어") },
+          { num: 2, label: pick(language, "languages", "언어") },
+        ].map((c) => (
+          <div key={c.label} className="text-center">
+            <div className="font-serif text-[38px] font-semibold leading-none text-acc [font-feature-settings:'lnum']">
+              {c.num}
+            </div>
+            <div className="mt-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
+              {c.label}
+            </div>
           </div>
-          <div className="mt-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
-            {c.label}
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
+      <div className="mt-4 text-center font-mono text-xs tracking-[0.04em] text-ink-mute [&_a]:text-ink-mute [&_a]:no-underline hover:[&_a]:text-acc">
+        <Link to="/graph">{pick(language, "see the graph →", "그래프 보기 →")}</Link>
+      </div>
     </section>
   );
 }
