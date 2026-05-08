@@ -52,7 +52,7 @@ function Hook() {
         {pick(
           language,
           <>
-            A Bitcoin address is public — anyone can see it. The{" "}
+            A <Term id="bitcoin">Bitcoin</Term> address is public — anyone can see it. The{" "}
             <Term id="private-key">private key</Term> that authorizes spending must stay secret;
             whoever sees it can spend everything you have, forever. Yet every transaction is
             verified by thousands of strangers.{" "}
@@ -62,9 +62,9 @@ function Hook() {
             </b>
           </>,
           <>
-            비트코인 주소는 공개돼 있다 — 누구나 볼 수 있다. 그 코인을 쓰게 해주는{" "}
-            <Term id="private-key">개인키</Term>는 비밀이어야 한다. 그것을 본 자는 네가 가진 모든 걸
-            영원히 쓸 수 있으니까. 그런데도 모든 거래는 모르는 사람 수천 명이 검증한다.{" "}
+            <Term id="bitcoin">비트코인</Term> 주소는 공개돼 있다 — 누구나 볼 수 있다. 그 코인을
+            쓰게 해주는 <Term id="private-key">개인키</Term>는 비밀이어야 한다. 그것을 본 자는 네가
+            가진 모든 걸 영원히 쓸 수 있으니까. 그런데도 모든 거래는 모르는 사람 수천 명이 검증한다.{" "}
             <b>
               네트워크는 네 모든 결제를 승인할 수 있는 비밀을 *배우지 않고도*, 이번 결제를 네가
               정말로 서명했다는 걸 어떻게 확인할 수 있을까?
@@ -185,17 +185,19 @@ function Arc({ code }: { code: CodeMap }) {
               <span className={MONO}>log₂ k</span> additions (double-and-add). Recovering{" "}
               <span className={MONO}>k</span> from <span className={FORMULA_INLINE}>(G, kG)</span>{" "}
               is the <Term id="discrete-log">discrete logarithm</Term> problem; for cryptographic
-              curves like secp256k1, no algorithm is known that beats roughly{" "}
-              <span className={MONO}>√n</span> work, where <span className={MONO}>n ≈ 2²⁵⁶</span>.
-              That is the asymmetry the entire scheme stands on.
+              curves like <Term id="secp256k1">secp256k1</Term>, no algorithm is known that beats
+              roughly <span className={MONO}>√n</span> work, where{" "}
+              <span className={MONO}>n ≈ 2²⁵⁶</span>. That is the asymmetry the entire scheme stands
+              on.
             </>,
             <>
               <span className={FORMULA_INLINE}>(k, G)</span>에서 <span className={MONO}>kG</span>를
               계산하는 데는 약 <span className={MONO}>log₂ k</span>번의 덧셈이면 된다 (배수-덧셈).{" "}
               <span className={FORMULA_INLINE}>(G, kG)</span>에서 <span className={MONO}>k</span>를
-              복구하는 건 <Term id="discrete-log">이산 로그</Term> 문제 — secp256k1 같은 암호용
-              곡선에서는 약 <span className={MONO}>√n</span> 보다 더 빠른 알고리즘이 알려져 있지
-              않다 (<span className={MONO}>n ≈ 2²⁵⁶</span>). 모든 체계가 서 있는 비대칭성이다.
+              복구하는 건 <Term id="discrete-log">이산 로그</Term> 문제 —{" "}
+              <Term id="secp256k1">secp256k1</Term> 같은 암호용 곡선에서는 약{" "}
+              <span className={MONO}>√n</span> 보다 더 빠른 알고리즘이 알려져 있지 않다 (
+              <span className={MONO}>n ≈ 2²⁵⁶</span>). 모든 체계가 서 있는 비대칭성이다.
             </>,
           )}
         </p>
