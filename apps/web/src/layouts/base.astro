@@ -22,7 +22,16 @@ const canonical = new URL(pathname, Astro.site ?? "https://lemma.wiki").href;
     <link rel="canonical" href={canonical} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- PWA / iOS Add-to-Home-Screen -->
+    <meta name="theme-color" content="#faf7f2" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Lemma" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
