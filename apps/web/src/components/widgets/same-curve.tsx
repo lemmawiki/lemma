@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useApp } from "../../context/app-context";
+import { WidgetShell } from "./widget-shell";
 
 // Spike widget — Same Curve?
 // Three parametrizations of the same image (y = x², x ∈ [-1, 1]). Animating
@@ -215,11 +216,7 @@ export function SameCurve() {
   ];
 
   return (
-    <div className="mt-9 rounded-[10px] border border-rule bg-bg-card px-6 py-[22px]">
-      <div className="mb-3.5 font-mono text-xs uppercase tracking-[0.1em] text-ink-mute">
-        {L.title}
-      </div>
-
+    <WidgetShell kicker={L.title}>
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="my-3.5 mb-1.5 block h-auto w-full rounded-md border border-rule bg-plot-bg"
@@ -378,6 +375,6 @@ export function SameCurve() {
           </pre>
         </div>
       ) : null}
-    </div>
+    </WidgetShell>
   );
 }

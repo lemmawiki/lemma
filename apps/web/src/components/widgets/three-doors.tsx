@@ -8,6 +8,7 @@ import {
   formatPercent,
 } from "../../lib/finance";
 import { useApp, pick } from "../../context/app-context";
+import { WidgetShell } from "./widget-shell";
 
 type Door = "F" | "t" | "r";
 
@@ -60,11 +61,7 @@ export function ThreeDoors() {
   }
 
   return (
-    <div className="mt-9 rounded-[10px] border border-rule bg-bg-card px-6 py-[22px]">
-      <div className="mb-3.5 font-mono text-xs uppercase tracking-[0.1em] text-ink-mute">
-        {pick(language, "Widget B — Three Doors", "위젯 B — 세 개의 문")}
-      </div>
-
+    <WidgetShell kicker={pick(language, "Widget B — Three Doors", "위젯 B — 세 개의 문")}>
       <div className="mb-4 grid grid-cols-3 gap-2 max-md:grid-cols-1">
         <DoorButton
           active={door === "F"}
@@ -178,7 +175,7 @@ export function ThreeDoors() {
           </>,
         )}
       </div>
-    </div>
+    </WidgetShell>
   );
 }
 

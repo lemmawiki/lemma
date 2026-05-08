@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useApp, pick } from "../../context/app-context";
+import { WidgetShell } from "./widget-shell";
 
 const W = 720;
 const H = 260;
@@ -39,11 +40,7 @@ export function TwoStacks() {
   const fmt = (v: number) => (v >= 100 ? v.toFixed(0) : v >= 10 ? v.toFixed(1) : v.toFixed(2));
 
   return (
-    <div className="mt-9 rounded-[10px] border border-rule bg-bg-card px-6 py-[22px]">
-      <div className="mb-3.5 font-mono text-xs uppercase tracking-[0.1em] text-ink-mute">
-        {pick(language, "Widget B — Two Stacks", "위젯 B — 두 자")}
-      </div>
-
+    <WidgetShell kicker={pick(language, "Widget B — Two Stacks", "위젯 B — 두 자")}>
       <div className="mb-3.5 grid grid-cols-2 gap-x-6 gap-y-2 rounded-md bg-rule-soft px-3.5 py-2.5 font-mono text-[13.5px]">
         <div className="flex justify-between gap-2">
           <span className="text-ink-mute">log₁₀(a)</span>
@@ -261,6 +258,6 @@ export function TwoStacks() {
           </>,
         )}
       </div>
-    </div>
+    </WidgetShell>
   );
 }

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { useApp, pick } from "../../context/app-context";
+import { WidgetShell } from "./widget-shell";
 
 const SUB = "₀₁₂₃₄₅₆₇₈₉";
 const sub = (k: number) =>
@@ -121,11 +122,7 @@ export function DoublingLadder() {
   const resultDisplay = result.toLocaleString();
 
   return (
-    <div className="mt-9 rounded-[10px] border border-rule bg-bg-card px-6 py-[22px]">
-      <div className="mb-3.5 font-mono text-xs uppercase tracking-[0.1em] text-ink-mute">
-        {pick(language, "Widget A — Doubling ladder", "위젯 A — 두 배의 사다리")}
-      </div>
-
+    <WidgetShell kicker={pick(language, "Widget A — Doubling ladder", "위젯 A — 두 배의 사다리")}>
       <div className="grid gap-3 rounded-md bg-rule-soft px-4 py-5 font-mono">
         {/* Section header — forward */}
         <div className="text-center text-[10px] uppercase tracking-[0.18em] text-ink-mute">
@@ -234,6 +231,6 @@ export function DoublingLadder() {
           </>,
         )}
       </div>
-    </div>
+    </WidgetShell>
   );
 }

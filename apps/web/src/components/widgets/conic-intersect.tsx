@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useApp, pick } from "../../context/app-context";
+import { WidgetShell } from "./widget-shell";
 
 // Widget — Two Conics, Four Intersections.
 // Shows two conics on the plane and their (up to four) intersections, computed
@@ -376,11 +377,13 @@ export function ConicIntersect() {
   const complexPoints = intersections.filter((p) => !p.isReal);
 
   return (
-    <div className="mt-9 rounded-[10px] border border-rule bg-bg-card px-6 py-[22px]">
-      <div className="mb-3.5 font-mono text-xs uppercase tracking-[0.1em] text-ink-mute">
-        {pick(language, "Widget — Two Conics, Four Intersections", "위젯 — 두 원뿔곡선, 네 교점")}
-      </div>
-
+    <WidgetShell
+      kicker={pick(
+        language,
+        "Widget — Two Conics, Four Intersections",
+        "위젯 — 두 원뿔곡선, 네 교점",
+      )}
+    >
       <div className="mb-4 grid grid-cols-2 gap-x-6 gap-y-2 rounded-md bg-rule-soft px-3.5 py-2.5 font-mono text-[13.5px]">
         <div className="flex justify-between gap-3">
           <span className="text-ink-mute">{pick(language, "real", "실수")}</span>
@@ -553,6 +556,6 @@ export function ConicIntersect() {
           </>,
         )}
       </div>
-    </div>
+    </WidgetShell>
   );
 }
