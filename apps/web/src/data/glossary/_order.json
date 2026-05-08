@@ -57,5 +57,8 @@
   "small-angle-approximation",
   "linearization",
   "simple-harmonic-motion",
-  "period"
+  "period",
+  "secant",
+  "tangent",
+  "derivative"
 ]

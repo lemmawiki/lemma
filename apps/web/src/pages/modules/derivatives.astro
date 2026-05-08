@@ -1,0 +1,20 @@
+---
+import { codeToHtml } from "shiki";
+import Base from "../../layouts/base.astro";
+import DerivativesIsland from "../../views/derivatives-island.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "vitesse-light" } as const;
+const code = {
+  arc2: await codeToHtml(pythonCode.derivatives.arc2, opts),
+  arc3: await codeToHtml(pythonCode.derivatives.arc3, opts),
+  arc5: await codeToHtml(pythonCode.derivatives.arc5, opts),
+};
+---
+
+<Base
+  title="The Derivative · Lemma"
+  description="A moving point leaves a trail. The derivative is not the trail — it is the arrow the trail wants to become at this instant. Secants shrink onto tangents; one machine becomes slope, velocity, and rate."
+>
+  <DerivativesIsland code={code} client:load />
+</Base>

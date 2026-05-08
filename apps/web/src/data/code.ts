@@ -83,6 +83,34 @@ loss = -np.log(p[true_idx])
 # Lower the temperature, and confidence rises further while truth is unchanged.
 softmax(z, T=0.5)[0]                 # ≈ 0.99964   (even more sure)`,
   },
+  derivatives: {
+    arc2: `# Average rate of change — the secant slope. Two points, one division.
+def average_rate(f, a, b):
+    return (f(b) - f(a)) / (b - a)
+
+f = lambda t: t * t            # x(t) = t² — toy "position"
+average_rate(f, 1, 3)          # → 4.0   (position went 1 → 9 in 2 seconds)`,
+    arc3: `# Instantaneous rate — shrink the interval and watch the secant slope
+# converge to the tangent slope. No epsilon-delta; just shrink and look.
+def secant_slope(f, a, h):
+    return (f(a + h) - f(a)) / h
+
+[secant_slope(f, 3, h) for h in (1, 0.1, 0.01, 0.0001)]
+# → [7.0, 6.1, 6.01, 6.0001]
+# The pattern: 6 + h. The limit as h → 0 is 6.
+# That's f'(3) for f(t) = t².  In general, f'(t) = 2t.`,
+    arc5: `# Position → velocity → acceleration. Same machine, applied twice.
+# Projectile: y(t) = v₀ sin θ · t − ½ g t²    (from /physics/projectile-motion)
+#   dy/dt = v₀ sin θ − g t                    (vertical velocity)
+#   d²y/dt² = −g                              (vertical acceleration — constant)
+#
+# Pendulum (small-angle): θ(t) = θ₀ cos(ω t),  ω = √(g/L)
+#   dθ/dt  = −θ₀ ω sin(ω t)
+#   d²θ/dt² = −θ₀ ω² cos(ω t) = −ω² · θ(t)   ← simple harmonic motion
+#
+# Each application's equation of motion is one or two derivatives applied
+# to the position function. The derivative is the shared tool.`,
+  },
   pendulumClock: {
     arc4: `import math
 

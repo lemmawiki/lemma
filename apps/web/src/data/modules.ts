@@ -40,6 +40,16 @@ export const modules: ModuleMeta[] = [
     },
   },
   {
+    id: "derivatives",
+    href: "/modules/derivatives",
+    status: "available",
+    title: { en: "The Derivative", ko: "미분" },
+    hook: {
+      en: "A moving point leaves a trail. The derivative is not the trail — it is the arrow the trail wants to become at this instant. Secant slopes converge to tangent slopes, and the same machine becomes slope, velocity, and rate.",
+      ko: "움직이는 점은 자취를 남긴다. 미분은 그 자취가 아니다 — 지금 이 순간, 자취가 되려고 하는 화살표다. 할선 기울기가 접선 기울기로 수렴하고, 같은 기계가 기울기·속도·변화율이 된다.",
+    },
+  },
+  {
     id: "bezout",
     href: "/modules/bezout",
     status: "available",
