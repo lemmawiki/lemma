@@ -3,6 +3,7 @@ import { useApp, pick } from "../context/app-context";
 import { TermsProvider, useTermsRegistry } from "../context/terms-context";
 import { Term } from "../components/term";
 import { Exercise } from "../components/exercise";
+import { ToolSpec } from "../components/meta";
 import { ConicIntersect } from "../components/widgets/conic-intersect";
 import { glossary } from "../data/glossary";
 import { Link } from "../lib/router";
@@ -794,6 +795,65 @@ export function Bezout({ code }: { code: CodeMap }) {
     <TermsProvider>
       <Breadcrumb />
       <Hook />
+      <ToolSpec
+        definition={{
+          en: (
+            <>
+              Two algebraic curves of degrees{" "}
+              <span className="font-mono text-[0.95em] text-ink">d</span> and{" "}
+              <span className="font-mono text-[0.95em] text-ink">e</span> in the projective plane
+              meet in exactly <span className="font-mono text-[0.95em] text-ink">d·e</span> points —
+              counted with multiplicity, over the algebraic closure. The naive count fails three
+              ways; the theorem is the simultaneous repair.
+            </>
+          ),
+          ko: (
+            <>
+              사영 평면 위 차수 <span className="font-mono text-[0.95em] text-ink">d</span>,{" "}
+              <span className="font-mono text-[0.95em] text-ink">e</span>인 두 대수 곡선은 정확히{" "}
+              <span className="font-mono text-[0.95em] text-ink">d·e</span> 점에서 만난다 — 중복도를
+              세고, 대수적 폐쇄체 위에서. 순진한 셈법은 세 군데서 깨지고, 정리는 그 셋을 한꺼번에
+              수선한다.
+            </>
+          ),
+        }}
+        appliesWhen={{
+          en: (
+            <>
+              You need an <em>exact</em> intersection count, not "around d·e". Elliptic-curve
+              cryptography (the chord-and-tangent group law uses Bezout to know that a line meets a
+              cubic in exactly 3 points), conic intersections, classical algebraic geometry,
+              computer algebra system invariants.
+            </>
+          ),
+          ko: (
+            <>
+              곡선 교점의 <em>정확한</em> 개수가 필요할 때 — "대략 d·e"가 아니라 정확히. 타원곡선
+              암호 (현·접선 군 법칙은 직선이 3차 곡선을 정확히 3점에서 만난다는 사실에 의존), 원뿔
+              곡선 교점, 고전 대수기하, 컴퓨터 대수 시스템의 불변량 계산.
+            </>
+          ),
+        }}
+        breaksWhen={{
+          en: (
+            <>
+              Stay on the affine plane over ℝ and the count fails everywhere — parallel lines (need
+              projective infinity), tangents (need multiplicity), disjoint real circles (need
+              complex coordinates). The three failures are not bugs in Bezout; they are signals that{" "}
+              <em>your plane is too small</em>. Open transcendental curves (sin x meets a line in
+              infinitely many points) are out of scope — not algebraic.
+            </>
+          ),
+          ko: (
+            <>
+              실수 위 아핀 평면에 머물면 셈이 곳곳에서 깨진다 — 평행선 (사영 무한점이 필요), 접선
+              (중복도가 필요), 실수에서 떨어진 두 원 (복소수 좌표가 필요). 셋은 베주 정리의 결함이
+              아니라 <em>당신의 평면이 너무 좁다</em>는 신호다. 초월 곡선 (sin x와 직선은 무한히
+              많이 만난다)은 애초에 적용 밖 — 대수 곡선이 아니다.
+            </>
+          ),
+        }}
+      />
       <ConicIntersect />
       <Arc code={code} />
       <Exercises />

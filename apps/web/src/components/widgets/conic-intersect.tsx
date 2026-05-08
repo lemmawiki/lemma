@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useApp, pick } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
+import { pillClass } from "./widget-primitives";
 
 // Widget — Two Conics, Four Intersections.
 // Shows two conics on the plane and their (up to four) intersections, computed
@@ -335,13 +336,6 @@ const PRESET_LABELS: Record<Preset, { en: string; ko: string }> = {
   disjoint: { en: "disjoint", ko: "분리" },
   partial: { en: "partial", ko: "부분" },
 };
-
-function pillClass(on: boolean): string {
-  const base = "rounded-full border px-3.5 py-1.5 font-mono text-xs transition-colors";
-  return on
-    ? `${base} border-ink bg-ink text-bg`
-    : `${base} border-rule bg-bg text-ink-soft hover:border-acc hover:text-acc`;
-}
 
 export function ConicIntersect() {
   const { language } = useApp();

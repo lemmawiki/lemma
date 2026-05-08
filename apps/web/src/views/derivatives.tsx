@@ -3,6 +3,7 @@ import { useApp, pick } from "../context/app-context";
 import { TermsProvider, useTermsRegistry } from "../context/terms-context";
 import { Term } from "../components/term";
 import { Exercise } from "../components/exercise";
+import { ToolSpec } from "../components/meta";
 import { SecantToTangent } from "../components/widgets/secant-to-tangent";
 import { glossary } from "../data/glossary";
 import { Link } from "../lib/router";
@@ -705,6 +706,65 @@ export function Derivatives({ code }: { code: CodeMap }) {
     <TermsProvider>
       <Breadcrumb />
       <Hook />
+      <ToolSpec
+        definition={{
+          en: (
+            <>
+              The instantaneous rate of change.{" "}
+              <span className="font-mono text-[0.95em] text-ink">
+                f'(a) = lim h→0 (f(a+h) − f(a)) / h
+              </span>
+              . The arrow the trail wants to be at this instant — secant slopes squeezed onto a
+              single tangent slope as the second point collapses into the first.
+            </>
+          ),
+          ko: (
+            <>
+              순간 변화율.{" "}
+              <span className="font-mono text-[0.95em] text-ink">
+                f'(a) = lim h→0 (f(a+h) − f(a)) / h
+              </span>
+              . 자취가 지금 이 순간 되려는 화살표 — 두 번째 점이 첫 번째 점으로 무너지면서, 할선
+              기울기들이 하나의 접선 기울기로 응축된 것.
+            </>
+          ),
+        }}
+        appliesWhen={{
+          en: (
+            <>
+              Wherever a <em>rate</em> shows up. Velocity (position → speed), gradient descent (loss
+              → step direction), small-angle approximation (sin θ ≈ θ near 0), local linearization
+              in physics, ML, control. One machine, four names: slope, velocity, rate, gradient.
+            </>
+          ),
+          ko: (
+            <>
+              <em>변화율</em>이 등장하는 모든 곳. 속도 (위치 → 속력), 경사하강 (손실 → 한 걸음
+              방향), 작은 각 근사 (0 근처 sin θ ≈ θ), 물리·ML·제어의 국소 선형화. 한 기계, 네 이름:
+              기울기·속도·변화율·그래디언트.
+            </>
+          ),
+        }}
+        breaksWhen={{
+          en: (
+            <>
+              The limit must exist. Sharp corners (|x| at 0), jumps (step functions), and
+              pathological wiggles (Weierstrass nowhere-differentiable function) have no derivative.
+              In ML, hidden non-differentiabilities — ReLU at 0, max-pooling, indicator functions —
+              are patched by <em>convention</em>, not by mathematics; the gradient you compute
+              through them is a choice, not a fact.
+            </>
+          ),
+          ko: (
+            <>
+              극한이 존재해야 한다. 뾰족한 모서리 (0에서의 |x|), 점프 (계단 함수), 병적인 진동
+              (어디서도 미분 불가능한 바이어슈트라스 함수)에는 미분이 없다. ML에서는 숨은 비미분
+              지점들 — ReLU의 0, 맥스풀링, 지시 함수 — 을 <em>관례</em>로 메운다. 수학이 아니라
+              합의로 메운다는 뜻 — 거기를 지나는 그래디언트는 사실이 아니라 선택이다.
+            </>
+          ),
+        }}
+      />
       <SecantToTangent />
       <Arc code={code} />
       <Pin />

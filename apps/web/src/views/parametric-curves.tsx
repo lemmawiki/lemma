@@ -3,6 +3,7 @@ import { useApp, pick } from "../context/app-context";
 import { TermsProvider, useTermsRegistry } from "../context/terms-context";
 import { Term } from "../components/term";
 import { Exercise } from "../components/exercise";
+import { ToolSpec } from "../components/meta";
 import { SameCurve } from "../components/widgets/same-curve";
 import { glossary } from "../data/glossary";
 import { Link } from "../lib/router";
@@ -486,6 +487,59 @@ export function ParametricCurves() {
     <TermsProvider>
       <Breadcrumb />
       <Hook />
+      <ToolSpec
+        definition={{
+          en: (
+            <>
+              A function <span className="font-mono text-[0.95em] text-ink">γ : [0, 1] → ℝ²</span>.
+              Not its picture, not its image — the <em>function</em>. Three layers of "same": same
+              image (loosest), same up to monotone reparametrization (geometric), equal as functions
+              (strictest).
+            </>
+          ),
+          ko: (
+            <>
+              함수 <span className="font-mono text-[0.95em] text-ink">γ : [0, 1] → ℝ²</span>. 그림도
+              상도 아니다 — <em>함수</em>다. "같다"의 세 층: 같은 상 (가장 약함), 단조 재매개화 동치
+              (기하학적), 함수로서 같음 (가장 엄격).
+            </>
+          ),
+        }}
+        appliesWhen={{
+          en: (
+            <>
+              The question is <em>motion</em>, not just <em>shape</em>. Bezier curves (designer
+              drags handles, computer evaluates γ(t)), trajectories (γ(t) = position at time t),
+              animations (motion path is a parametrization, not the path image), arc-length
+              integrals.
+            </>
+          ),
+          ko: (
+            <>
+              질문이 <em>모양</em>이 아니라 <em>움직임</em>일 때. 베지에 곡선 (디자이너가 핸들을
+              끌고 컴퓨터는 γ(t)를 계산), 궤적 (γ(t) = 시간 t에서의 위치), 애니메이션 (움직임 경로는
+              그림이 아니라 매개변수화다), 호의 길이 적분.
+            </>
+          ),
+        }}
+        breaksWhen={{
+          en: (
+            <>
+              If only the picture matters — drawing on paper, fitting an outline — the function
+              machinery is overkill; point-set geometry suffices. The distinction also leaks: "is
+              this the same curve?" has no clean answer until you say{" "}
+              <em>which of the three layers</em> you mean.
+            </>
+          ),
+          ko: (
+            <>
+              그림만 필요할 때 — 종이에 그리기, 윤곽 맞추기 — 함수 기계는 과잉이다. 점들의
+              집합론으로 충분. 또 새는 곳: "같은 곡선이냐?"는 <em>세 층 중 어느 것</em>을 묻는지
+              정해지기 전에는 답이 없다.
+            </>
+          ),
+        }}
+      />
       <SameCurve />
       <Arc />
       <Exercises />

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useApp, pick } from "../context/app-context";
 import { TermsProvider, useTermsRegistry } from "../context/terms-context";
 import { Term } from "../components/term";
+import { Counterexample, WhyNotTaught } from "../components/meta";
 import { Exercise } from "../components/exercise";
 import { ControlPoints } from "../components/widgets/control-points";
 import { glossary } from "../data/glossary";
@@ -371,6 +372,36 @@ function Arc({ code }: { code: CodeMap }) {
             </>,
           )}
         </p>
+        <Counterexample>
+          {{
+            en: (
+              <>
+                Bezier's "smooth" is a <em>local</em> claim, not a global one. A cubic Bezier whose
+                control polygon makes a sharp loop will produce a self-intersecting curve — still
+                smooth in the differential sense (B'(t) is continuous), but visually pathological.
+                Try the widget with{" "}
+                <span className="font-mono text-[0.93em]">
+                  P₀ = (60, 80), P₁ = (440, 240), P₂ = (60, 240), P₃ = (440, 80)
+                </span>
+                : a self-crossing Z. Designers' "smooth" and differential geometry's "smooth"
+                diverge here, and the four-handle abstraction does nothing to warn you.
+              </>
+            ),
+            ko: (
+              <>
+                베지에의 "매끄러움"은 <em>국소</em> 주장이지 전역 주장이 아니다. 제어 다각형이
+                날카롭게 꺾이는 3차 베지에는 자기 자신과 교차하는 곡선을 만든다 — 미분적으로는
+                여전히 매끄럽지만 (B'(t) 연속), 시각적으로는 병적이다. 위젯에서{" "}
+                <span className="font-mono text-[0.93em]">
+                  P₀ = (60, 80), P₁ = (440, 240), P₂ = (60, 240), P₃ = (440, 80)
+                </span>
+                으로 두면 자기 교차하는 Z가 나온다. 디자이너의 "매끄러움"과 미분기하학의
+                "매끄러움"은 여기서 갈라지고, 네 개의 손잡이 추상은 그 사실을 한 마디도 경고하지
+                않는다.
+              </>
+            ),
+          }}
+        </Counterexample>
       </ArcRow>
     </section>
   );
@@ -664,6 +695,31 @@ export function BezierCurves({ code }: { code: CodeMap }) {
       <Arc code={code} />
       <Pin />
       <Exercises />
+      <WhyNotTaught>
+        {{
+          en: (
+            <>
+              Computer-graphics texts usually present Bezier curves through their{" "}
+              <em>Bernstein basis</em> formula —{" "}
+              <span className="font-mono">B(t) = Σ b_i,n(t) · P_i</span> — a polynomial sum the
+              reader has no reason to trust. Lemma starts at the other end: <em>lerp</em>, the one
+              operation a designer already knows. Three lerps, recursively, <em>derive</em> the
+              Bernstein form. Industry uses the formula; understanding starts at the recursion. The
+              Bernstein basis is a consequence, not a starting point.
+            </>
+          ),
+          ko: (
+            <>
+              컴퓨터 그래픽 교과서는 보통 베지에를 <em>번스타인 기저</em> 공식 —{" "}
+              <span className="font-mono">B(t) = Σ b_i,n(t) · P_i</span> — 으로 소개한다. 독자가
+              믿어야 할 이유 없는 다항식 합으로. Lemma는 반대 끝에서 시작한다: <em>lerp</em> —
+              디자이너가 이미 아는 단 하나의 연산. 그 lerp를 재귀적으로 세 번 적용하면 번스타인
+              형식이 *유도*된다. 업계는 공식을 쓰지만, 이해는 재귀에서 시작한다. 번스타인 기저는
+              결과지, 출발점이 아니다.
+            </>
+          ),
+        }}
+      </WhyNotTaught>
       <GlossaryList />
       <PageFooter />
     </TermsProvider>

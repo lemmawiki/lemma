@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { futureValue, formatCurrency } from "../../lib/finance";
 import { useApp, pick } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
+import { pillClass } from "./widget-primitives";
 
 const W = 720;
 const H = 280;
@@ -260,11 +261,4 @@ export function PizzaSlider() {
       </div>
     </WidgetShell>
   );
-}
-
-function pillClass(on: boolean): string {
-  const base = "rounded-full border px-3.5 py-1.5 font-mono text-xs transition-colors";
-  return on
-    ? `${base} border-ink bg-ink text-bg`
-    : `${base} border-rule bg-bg text-ink-soft hover:border-acc hover:text-acc`;
 }

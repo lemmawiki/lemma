@@ -3,6 +3,7 @@ import { useApp, pick } from "../context/app-context";
 import { TermsProvider, useTermsRegistry } from "../context/terms-context";
 import { Term } from "../components/term";
 import { Exercise } from "../components/exercise";
+import { Counterexample, WhyNotTaught } from "../components/meta";
 import { PizzaSlider } from "../components/widgets/pizza-slider";
 import { ThreeDoors } from "../components/widgets/three-doors";
 import { glossary } from "../data/glossary";
@@ -222,6 +223,30 @@ function Arc({ code }: { code: CodeMap }) {
           )}
         </p>
         {mode === "code" && <Code html={code.arc3} />}
+        <Counterexample>
+          {{
+            en: (
+              <>
+                The single number "189% CAGR" hides 16 years of violence. Compute the CAGR over{" "}
+                <b>2018 → 2022</b> (peak-to-peak): it's around <b>3% per year</b>. Compute it over{" "}
+                <b>2020 → 2021</b>: over <b>300%</b>. CAGR is an <em>average exponent</em> — it
+                assumes the rate was constant, which it never was. The same equation that{" "}
+                <em>discovered</em> the Bitcoin story <em>flattens</em> it the moment you compute
+                CAGR. If you sell at the wrong window, your "average" returns nothing like 189%.
+              </>
+            ),
+            ko: (
+              <>
+                "연 189% CAGR"이라는 한 숫자는 16년의 난동을 숨긴다. <b>2018 → 2022</b>{" "}
+                (정점-정점)의 CAGR을 계산해 보면 <b>연 3%</b>쯤 된다. <b>2020 → 2021</b>로 잘라보면{" "}
+                <b>300%</b>가 넘는다. CAGR은 <em>평균 지수</em> — 이율이 일정했다고 가정한다. 한
+                번도 일정한 적 없는데. 비트코인 이야기를 <em>찾아낸</em> 그 식이, CAGR을 계산하는 그
+                순간부터 같은 이야기를 <em>납작하게 만든다</em>. 잘못된 창을 골라 팔면 당신의
+                '평균'은 189%와 한참 멀어진다.
+              </>
+            ),
+          }}
+        </Counterexample>
       </ArcRow>
 
       <div className="mt-[22px] rounded-r-md border-l-4 border-acc bg-acc-soft px-[22px] py-[18px] text-base leading-[1.55] text-acc-deep">
@@ -602,6 +627,29 @@ export function BitcoinPizza({ code }: { code: CodeMap }) {
       <Arc code={code} />
       <ThreeDoors />
       <Exercises />
+      <WhyNotTaught>
+        {{
+          en: (
+            <>
+              Most textbooks open with <span className="font-mono">log(x)</span> as "the inverse of{" "}
+              <span className="font-mono">eˣ</span>" — a definition without a question. The reader
+              learns the symbol before they learn the <em>need</em>. Lemma inverts the order: a
+              ten-thousand-bitcoin pizza is the question, and exp/log/root fall out as the only
+              honest way to answer it. The mathematics earns the page; the page does not earn the
+              mathematics.
+            </>
+          ),
+          ko: (
+            <>
+              대부분 교과서는 로그를 "<span className="font-mono">eˣ</span>의 역함수"로 정의하면서
+              연다 — 질문 없는 정의. 독자는 <em>왜 필요한지</em>를 배우기 전에 기호부터 배운다.
+              Lemma는 순서를 뒤집는다: 10,000 BTC짜리 피자가 질문이고, 지수·로그·거듭제곱근은 그
+              질문에 정직하게 답하는 유일한 도구로 *떨어져 나온다*. 수학이 페이지를 정당화하지,
+              페이지가 수학을 정당화하지 않는다.
+            </>
+          ),
+        }}
+      </WhyNotTaught>
       <Glossary />
       <PageFooter />
     </TermsProvider>

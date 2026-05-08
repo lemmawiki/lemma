@@ -3,6 +3,7 @@ import { useApp, pick } from "../context/app-context";
 import { TermsProvider, useTermsRegistry } from "../context/terms-context";
 import { Term } from "../components/term";
 import { Exercise } from "../components/exercise";
+import { Counterexample, WhyNotTaught } from "../components/meta";
 import { SignAndVerify } from "../components/widgets/sign-and-verify";
 import { glossary } from "../data/glossary";
 import { Link } from "../lib/router";
@@ -414,6 +415,36 @@ function Arc({ code }: { code: CodeMap }) {
             </>,
           )}
         </p>
+        <Counterexample>
+          {{
+            en: (
+              <>
+                The math is sound; the implementation is where it dies. ECDSA requires a fresh,
+                uniformly random nonce <span className="font-mono">k</span> for every signature.
+                Reuse <span className="font-mono">k</span> across two different messages and an
+                attacker recovers <span className="font-mono">d</span> with eighth-grade algebra:{" "}
+                <span className="font-mono text-[0.93em]">d = (s₁·h₂ − s₂·h₁) / (r·(s₂ − s₁))</span>{" "}
+                — a one-line wallet drainer. Sony's PlayStation 3 firmware (2010) reused{" "}
+                <span className="font-mono">k</span>; their <em>master signing key</em> fell out in
+                days. Bitcoin wallets have lost coins to non-uniform RNG drift the same way. The
+                discrete-log gap is unbreakable by mathematics; the nonce is breakable by code.
+              </>
+            ),
+            ko: (
+              <>
+                수학은 단단하지만, 구현이 무너진다. ECDSA는 서명마다 매번 새롭고 균등한 무작위 nonce{" "}
+                <span className="font-mono">k</span>를 요구한다. 두 메시지에{" "}
+                <span className="font-mono">k</span>를 재사용하면, 공격자는 중학교 대수로{" "}
+                <span className="font-mono">d</span>를 복구한다:{" "}
+                <span className="font-mono text-[0.93em]">d = (s₁·h₂ − s₂·h₁) / (r·(s₂ − s₁))</span>{" "}
+                — 한 줄짜리 지갑 추출기. 소니 플레이스테이션 3 펌웨어 (2010)가{" "}
+                <span className="font-mono">k</span>를 재사용했고, *마스터 서명 키*가 며칠 만에
+                떨어져 나왔다. 비트코인 지갑도 RNG가 살짝 어긋난 같은 방식으로 코인을 잃었다.
+                이산로그 격차는 수학으로 깰 수 없지만, nonce는 코드로 깰 수 있다.
+              </>
+            ),
+          }}
+        </Counterexample>
       </ArcRow>
     </section>
   );
@@ -700,6 +731,31 @@ export function BitcoinSignature({ code }: { code: CodeMap }) {
       <Arc code={code} />
       <Pin />
       <Exercises />
+      <WhyNotTaught>
+        {{
+          en: (
+            <>
+              Cryptography textbooks usually open ECDSA with the verification equation —{" "}
+              <span className="font-mono">u₁G + u₂Q = R</span> — already on the page, asking the
+              reader to accept it. Lemma walks the door the other way: <em>why</em> would the
+              verifier ever arrive at <span className="font-mono">R</span> without knowing{" "}
+              <span className="font-mono">d</span>? The answer rebuilds the algebra from the one-way
+              street (multiply easy, divide hard) up. The textbook hides the asymmetry; the
+              asymmetry is the point.
+            </>
+          ),
+          ko: (
+            <>
+              암호 교과서는 보통 ECDSA를 검증 식 — <span className="font-mono">u₁G + u₂Q = R</span>{" "}
+              — 부터 펼쳐놓고 받아들이라고 한다. Lemma는 문을 반대로 연다: 검증자가{" "}
+              <span className="font-mono">d</span>도 모르면서 <em>왜</em>{" "}
+              <span className="font-mono">R</span>에 도달하는가? 그 질문을 따라가면 일방통행 (곱셈은
+              쉽고 나눗셈은 어렵다)에서 위로 대수가 다시 세워진다. 교과서는 비대칭을 감추지만,
+              비대칭이야말로 핵심이다.
+            </>
+          ),
+        }}
+      </WhyNotTaught>
       <GlossaryList />
       <PageFooter />
     </TermsProvider>

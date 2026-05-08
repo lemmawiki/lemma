@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useApp, pick } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
+import { Slider, Row } from "./widget-primitives";
 
 // Toy curve E: y² = x³ + 7  over F_17.
 // Same a=0, b=7 as secp256k1, with a microscopic prime so the entire
@@ -338,21 +339,27 @@ export function SignAndVerify() {
               label={pick(language, "private key d", "개인키 d")}
               value={d}
               onChange={setD}
-              cfg={SLIDER.d}
+              min={SLIDER.d.min}
+              max={SLIDER.d.max}
+              step={SLIDER.d.step}
               accent={COLOR.Q}
             />
             <Slider
               label={pick(language, "message hash h", "메시지 해시 h")}
               value={h}
               onChange={setH}
-              cfg={SLIDER.h}
+              min={SLIDER.h.min}
+              max={SLIDER.h.max}
+              step={SLIDER.h.step}
               accent="var(--ink)"
             />
             <Slider
               label={pick(language, "nonce k", "nonce k")}
               value={k}
               onChange={setK}
-              cfg={SLIDER.k}
+              min={SLIDER.k.min}
+              max={SLIDER.k.max}
+              step={SLIDER.k.step}
               accent={COLOR.R}
               warn={
                 kInvalid
@@ -453,57 +460,5 @@ export function SignAndVerify() {
         )}
       </div>
     </WidgetShell>
-  );
-}
-
-function Slider({
-  label,
-  value,
-  onChange,
-  cfg,
-  accent,
-  warn,
-}: {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  cfg: { min: number; max: number; step: number };
-  accent: string;
-  warn?: string | null;
-}) {
-  return (
-    <label className="mt-2 grid grid-cols-[140px_1fr_40px] items-center gap-3 max-md:grid-cols-[100px_1fr_36px]">
-      <span className="inline-flex items-center gap-1.5 text-[11.5px] text-ink-mute">
-        <span
-          className="inline-block h-2 w-2 shrink-0 rounded-sm"
-          style={{ background: accent }}
-          aria-hidden
-        />
-        {label}
-      </span>
-      <input
-        type="range"
-        className="w-full"
-        style={{ accentColor: accent }}
-        min={cfg.min}
-        max={cfg.max}
-        step={cfg.step}
-        value={value}
-        onChange={(e) => onChange(+e.target.value)}
-      />
-      <span className="text-right text-[12.5px] text-ink">{value}</span>
-      {warn && <span className="col-span-3 mt-0.5 text-[11.5px] text-acc-deep">⚠ {warn}</span>}
-    </label>
-  );
-}
-
-function Row({ label, value, color }: { label: string; value: string; color?: string }) {
-  return (
-    <div className="grid grid-cols-[1fr_auto] items-baseline gap-3">
-      <span className="text-ink-mute">{label}</span>
-      <span className="text-ink" style={color ? { color } : undefined}>
-        {value}
-      </span>
-    </div>
   );
 }

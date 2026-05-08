@@ -3,6 +3,7 @@ import { useApp, pick } from "../context/app-context";
 import { TermsProvider, useTermsRegistry } from "../context/terms-context";
 import { Term } from "../components/term";
 import { Exercise } from "../components/exercise";
+import { ToolSpec } from "../components/meta";
 import { DoublingLadder } from "../components/widgets/doubling-ladder";
 import { TwoStacks } from "../components/widgets/two-stacks";
 import { glossary } from "../data/glossary";
@@ -853,6 +854,58 @@ export function Logarithm({ code }: { code: CodeMap }) {
     <TermsProvider>
       <Breadcrumb />
       <Hook />
+      <ToolSpec
+        definition={{
+          en: (
+            <>
+              The inverse of exponentiation.{" "}
+              <span className="font-mono text-[0.95em] text-ink">log(a·b) = log(a) + log(b)</span> —
+              products become sums. The whole module is that one identity.
+            </>
+          ),
+          ko: (
+            <>
+              거듭제곱의 역함수.{" "}
+              <span className="font-mono text-[0.95em] text-ink">log(a·b) = log(a) + log(b)</span> —
+              곱이 합이 된다. 모듈에 식은 이 하나뿐.
+            </>
+          ),
+        }}
+        appliesWhen={{
+          en: (
+            <>
+              A quantity is built from exponents — compound interest, half-life, decibels,
+              earthquake magnitudes, sequence probabilities. The natural parameter is{" "}
+              <em>how many factors</em>, and you want to recover it from the result.
+            </>
+          ),
+          ko: (
+            <>
+              어떤 양이 지수로 만들어졌을 때 — 복리, 반감기, 데시벨, 지진 규모, 시퀀스 확률. 자연이
+              쓰는 변수가 <em>몇 번 곱했는가</em>이고, 결과에서 그 횟수를 꺼내고 싶을 때.
+            </>
+          ),
+        }}
+        breaksWhen={{
+          en: (
+            <>
+              Argument is zero or negative — real log is undefined. Base 1 — every exponent gives 1
+              and the inverse collapses. The most common student error is logging across an
+              addition:{" "}
+              <span className="font-mono text-[0.95em] text-ink">log(a + b) ≠ log(a) + log(b)</span>
+              . The identity needs a product underneath, every time.
+            </>
+          ),
+          ko: (
+            <>
+              인수가 0 이하면 실수 로그는 정의되지 않는다. 밑이 1이면 모든 지수가 1을 만들어
+              역함수가 무너진다. 학생 실수 1순위는 합에 로그를 씌우는 것:{" "}
+              <span className="font-mono text-[0.95em] text-ink">log(a + b) ≠ log(a) + log(b)</span>
+              . 항등식 아래엔 *반드시* 곱이 있어야 한다.
+            </>
+          ),
+        }}
+      />
       <DoublingLadder />
       <TwoStacks />
       <Arc code={code} />

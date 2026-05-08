@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useApp, pick } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
+import { Slider, Stat } from "./widget-primitives";
 
 // Widget — Two Pendulums.
 // Two pendulums share L and g but launch with different amplitudes
@@ -301,60 +302,5 @@ export function TwoPendulums() {
         )}
       </div>
     </WidgetShell>
-  );
-}
-
-function Slider({
-  label,
-  value,
-  onChange,
-  min,
-  max,
-  step,
-  accent,
-  display,
-}: {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  min: number;
-  max: number;
-  step: number;
-  accent: string;
-  display: string;
-}) {
-  return (
-    <label className="grid grid-cols-[140px_1fr_70px] items-center gap-3 text-[13px] max-md:grid-cols-[100px_1fr_56px]">
-      <span className="inline-flex items-center gap-1.5 font-mono text-ink-mute">
-        <span
-          className="inline-block h-2.5 w-2.5 shrink-0 rounded-sm"
-          style={{ background: accent }}
-          aria-hidden
-        />
-        {label}
-      </span>
-      <input
-        type="range"
-        className="w-full"
-        style={{ accentColor: accent }}
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(+e.target.value)}
-      />
-      <span className="text-right font-mono text-[12.5px] text-ink">{display}</span>
-    </label>
-  );
-}
-
-function Stat({ label, value, color }: { label: string; value: string; color?: string }) {
-  return (
-    <div className="grid">
-      <span className="text-ink-mute">{label}</span>
-      <span className="text-ink" style={color ? { color } : undefined}>
-        {value}
-      </span>
-    </div>
   );
 }

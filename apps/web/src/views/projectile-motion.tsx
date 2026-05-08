@@ -3,6 +3,7 @@ import { useApp, pick } from "../context/app-context";
 import { TermsProvider, useTermsRegistry } from "../context/terms-context";
 import { Term } from "../components/term";
 import { Exercise } from "../components/exercise";
+import { Counterexample, WhyNotTaught } from "../components/meta";
 import { Launch } from "../components/widgets/launch";
 import { glossary } from "../data/glossary";
 import { Link } from "../lib/router";
@@ -370,6 +371,32 @@ y(t) = v₀ sin θ · t − ½ g t²`}
             </>,
           )}
         </p>
+        <Counterexample>
+          {{
+            en: (
+              <>
+                The parabola is the trajectory you get <em>when you ignore air</em>. A baseball
+                thrown at 40 m/s has Reynolds number ~10⁵; drag is not a small correction. Compute
+                the same equations with quadratic drag{" "}
+                <span className="font-mono text-[0.93em]">F_d = ½ ρ C_d A v²</span> for a 145 g
+                ball, and the range at <b>θ = 45°</b> drops from <b>~163 m</b> (vacuum) to{" "}
+                <b>~98 m</b> (air) — <em>and</em> the optimal angle shifts from <b>45°</b> to{" "}
+                <b>~38°</b>. The clean parabola is a vacuum object; real outdoor motion is one of
+                those, asymmetric, foreshortened.
+              </>
+            ),
+            ko: (
+              <>
+                포물선은 <em>공기를 무시할 때</em> 나오는 궤적이다. 40 m/s로 던진 야구공의 레이놀즈
+                수는 ~10⁵; 항력은 작은 보정이 아니다. 145 g 공에 대해 2차 항력{" "}
+                <span className="font-mono text-[0.93em]">F_d = ½ ρ C_d A v²</span>를 넣고 같은 식을
+                풀면, <b>θ = 45°</b>에서 사거리가 <b>~163 m</b> (진공)에서 <b>~98 m</b> (공기)로
+                줄고, <em>최적 각도</em>도 <b>45°</b>에서 <b>~38°</b>로 옮겨간다. 깔끔한 포물선은
+                진공의 물건이다. 실제 야외에서의 운동은 그것과 닮았으되, 비대칭이고, 짧다.
+              </>
+            ),
+          }}
+        </Counterexample>
       </ArcRow>
     </section>
   );
@@ -677,6 +704,29 @@ export function ProjectileMotion({ code }: { code: CodeMap }) {
       <Arc code={code} />
       <Pin />
       <Exercises />
+      <WhyNotTaught>
+        {{
+          en: (
+            <>
+              Most physics intros open with "objects in projectile motion follow a parabolic path" —
+              stated as a fact about <em>nature</em>, not as a consequence of two assumptions (no
+              air, constant g). The reader files away "parabola" without knowing what they traded
+              for it. Lemma keeps the two motions visible — horizontal uniform, vertical free-fall —
+              so the parabola arrives as a <em>theorem</em>, not a slogan. And the counterexample
+              above admits the obvious: outdoors, the parabola is already wrong.
+            </>
+          ),
+          ko: (
+            <>
+              물리 입문서 대부분은 "발사된 물체는 포물선을 그린다"로 연다 — 두 가정 (공기 무시, g
+              상수)의 *결과*가 아니라 *자연의 사실*처럼. 독자는 무엇을 거래해서 "포물선"을 얻었는지
+              모른 채 그 단어만 챙긴다. Lemma는 두 운동 — 수평 등속, 수직 자유낙하 — 을 끝까지
+              분리해 둔다. 그래서 포물선이 *구호*가 아니라 *정리*로 도착한다. 그리고 위
+              counterexample이 분명히 말한다: 야외에서, 포물선은 이미 틀려 있다.
+            </>
+          ),
+        }}
+      </WhyNotTaught>
       <GlossaryList />
       <PageFooter />
     </TermsProvider>
