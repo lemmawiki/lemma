@@ -1,0 +1,6 @@
+# Audit reports are local build artifacts. Run `pnpm run audit:backlinks`
+# to (re)generate. When a report's candidate list is small and stable, drop
+# it from this ignore list and commit it as a baseline so future runs diff
+# against it; until then the report stays local.
+*.md
+!.gitignore
