@@ -46,6 +46,21 @@ export const applications: ApplicationMeta[] = [
     },
   },
   {
+    id: "projectile-motion",
+    href: "/physics/projectile-motion",
+    pillar: "physics",
+    modules: ["parametric-curves"],
+    status: "available",
+    title: {
+      en: "Projectile Motion",
+      ko: "포물선 운동",
+    },
+    hook: {
+      en: "Throw a ball. Ignore air. Its horizontal motion keeps time; its vertical motion loses to gravity. Why does that make a parabola?",
+      ko: "공을 던진다. 공기저항은 무시한다. 가로 방향은 시간을 그대로 가고, 세로 방향은 중력에 진다. 왜 그 결과가 포물선일까?",
+    },
+  },
+  {
     id: "bezier-curves",
     href: "/graphics/bezier-curves",
     pillar: "graphics",

@@ -49,5 +49,9 @@
   "lerp",
   "control-point",
   "bezier-curve",
-  "de-casteljau"
+  "de-casteljau",
+  "velocity",
+  "acceleration",
+  "gravity",
+  "parabola"
 ]

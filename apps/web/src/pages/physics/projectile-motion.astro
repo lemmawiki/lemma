@@ -1,0 +1,20 @@
+---
+import { codeToHtml } from "shiki";
+import Base from "../../layouts/base.astro";
+import ProjectileMotionIsland from "../../views/projectile-motion-island.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "vitesse-light" } as const;
+const code = {
+  arc2: await codeToHtml(pythonCode.projectileMotion.arc2, opts),
+  arc3: await codeToHtml(pythonCode.projectileMotion.arc3, opts),
+  arc4: await codeToHtml(pythonCode.projectileMotion.arc4, opts),
+};
+---
+
+<Base
+  title="Projectile Motion · Lemma"
+  description="Throw a ball, ignore air. Horizontal motion keeps time; vertical motion loses to gravity. Two independent stories — uniform velocity, constant acceleration — meet only in the picture, and the picture is a parabola."
+>
+  <ProjectileMotionIsland code={code} client:load />
+</Base>

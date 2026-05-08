@@ -83,6 +83,51 @@ loss = -np.log(p[true_idx])
 # Lower the temperature, and confidence rises further while truth is unchanged.
 softmax(z, T=0.5)[0]                 # ≈ 0.99964   (even more sure)`,
   },
+  projectileMotion: {
+    arc2: `import math
+
+# Two motions, independent. The horizontal one ignores gravity;
+# the vertical one ignores horizontal velocity.
+def position(t, v0, theta_deg, g):
+    th = math.radians(theta_deg)
+    x = v0 * math.cos(th) * t           # uniform velocity → linear in t
+    y = v0 * math.sin(th) * t - 0.5 * g * t**2  # constant accel → quadratic
+    return x, y
+
+def velocity(t, v0, theta_deg, g):
+    th = math.radians(theta_deg)
+    return v0 * math.cos(th), v0 * math.sin(th) - g * t
+
+position(0.0, 20, 45, 9.8)   # → (0.0, 0.0)         start
+position(1.0, 20, 45, 9.8)   # → (14.14, 9.24)
+velocity(1.0, 20, 45, 9.8)   # → (14.14, 4.34)      vy decreased`,
+    arc3: `# Eliminate t. Substitute t = x / (v0 cos θ) into y(t):
+#   y = (tan θ) · x  −  g · x² / (2 v0² cos²θ)
+# That's a quadratic in x — a parabola. The motion's image, with
+# the time-axis collapsed.
+def trajectory(x, v0, theta_deg, g):
+    th = math.radians(theta_deg)
+    a = -g / (2 * v0**2 * math.cos(th)**2)
+    b = math.tan(th)
+    return a * x**2 + b * x
+
+trajectory(14.14, 20, 45, 9.8)  # → 9.24   (matches y from arc2 — same image)`,
+    arc4: `# Standard closed forms — read off the parabola without solving anything.
+def t_peak(v0, theta_deg, g):
+    return v0 * math.sin(math.radians(theta_deg)) / g
+
+def t_land(v0, theta_deg, g):
+    return 2 * t_peak(v0, theta_deg, g)        # symmetric flight
+
+def range_(v0, theta_deg, g):
+    return v0**2 * math.sin(math.radians(2 * theta_deg)) / g
+
+def y_max(v0, theta_deg, g):
+    return v0**2 * math.sin(math.radians(theta_deg))**2 / (2 * g)
+
+range_(20, 45, 9.8)   # → 40.82  (max range at 45° on a flat field)
+y_max(20, 45, 9.8)    # → 10.20`,
+  },
   bezierCurves: {
     arc2: `# A point is a 2-tuple. Lerp is one line.
 def lerp(a, b, t):
