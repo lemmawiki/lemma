@@ -511,8 +511,8 @@ function Exercises() {
         solution={{
           en: (
             <>
-              Homogenize <span className={FORMULA_INLINE}>y = x</span> by setting{" "}
-              <span className={FORMULA_INLINE}>x = X/Z, y = Y/Z</span>:{" "}
+              <Term id="homogenize">Homogenize</Term> <span className={FORMULA_INLINE}>y = x</span>{" "}
+              by setting <span className={FORMULA_INLINE}>x = X/Z, y = Y/Z</span>:{" "}
               <span className={FORMULA_INLINE}>Y = X</span>. Same for the second line:{" "}
               <span className={FORMULA_INLINE}>Y = X + Z</span>. Subtracting:{" "}
               <span className={FORMULA_INLINE}>Z = 0</span>. Combined with{" "}
@@ -525,9 +525,9 @@ function Exercises() {
           ko: (
             <>
               <span className={FORMULA_INLINE}>y = x</span>를{" "}
-              <span className={FORMULA_INLINE}>x = X/Z, y = Y/Z</span>로 동차화:{" "}
-              <span className={FORMULA_INLINE}>Y = X</span>. 둘째 직선도 같은 방식으로:{" "}
-              <span className={FORMULA_INLINE}>Y = X + Z</span>. 빼면{" "}
+              <span className={FORMULA_INLINE}>x = X/Z, y = Y/Z</span>로{" "}
+              <Term id="homogenize">동차화</Term>: <span className={FORMULA_INLINE}>Y = X</span>.
+              둘째 직선도 같은 방식으로: <span className={FORMULA_INLINE}>Y = X + Z</span>. 빼면{" "}
               <span className={FORMULA_INLINE}>Z = 0</span>. 이를{" "}
               <span className={FORMULA_INLINE}>Y = X</span>와 합치면 점{" "}
               <span className={FORMULA_INLINE}>[1 : 1 : 0]</span> — 방향{" "}
@@ -770,13 +770,13 @@ function PageFooter() {
           language,
           <>
             module: <b>Bezout's Theorem</b>. The chord-and-tangent construction in exercise 6 is one
-            short step from a proper module on elliptic-curve arithmetic — and from there, ECDSA /
-            Bitcoin signatures plug into the <b>finance</b> pillar via the existing{" "}
-            <Link to="/finance/bitcoin-pizza">Bitcoin Pizza</Link>.
+            short step from a proper module on elliptic-curve arithmetic — and from there, ECDSA /{" "}
+            <Term id="bitcoin">Bitcoin</Term> signatures plug into the <b>finance</b> pillar via the
+            existing <Link to="/finance/bitcoin-pizza">Bitcoin Pizza</Link>.
           </>,
           <>
             모듈: <b>베주 정리</b>. 6번 문제의 현·접선 작도는 타원곡선 산술이라는 본격 모듈로 가는
-            한 걸음 — 거기서부터 ECDSA · 비트코인 서명이 기존{" "}
+            한 걸음 — 거기서부터 ECDSA · <Term id="bitcoin">비트코인</Term> 서명이 기존{" "}
             <Link to="/finance/bitcoin-pizza">비트코인 피자</Link>를 통해 <b>금융</b> 기둥에 붙는다.
           </>,
         )}
