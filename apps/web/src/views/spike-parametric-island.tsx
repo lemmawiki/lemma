@@ -1,5 +1,5 @@
-import { AppProvider } from "../context/AppContext";
-import { SpikeParametric } from "./SpikeParametric";
+import { AppProvider } from "../context/app-context";
+import { SpikeParametric } from "./spike-parametric";
 
 export default function SpikeParametricIsland() {
   return (

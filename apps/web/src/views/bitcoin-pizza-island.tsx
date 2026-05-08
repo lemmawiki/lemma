@@ -1,5 +1,5 @@
-import { AppProvider } from "../context/AppContext";
-import { BitcoinPizza } from "./BitcoinPizza";
+import { AppProvider } from "../context/app-context";
+import { BitcoinPizza } from "./bitcoin-pizza";
 
 export default function BitcoinPizzaIsland({
   code,

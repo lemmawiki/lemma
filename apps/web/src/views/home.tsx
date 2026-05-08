@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useApp, pick } from "../context/AppContext";
+import { useApp, pick } from "../context/app-context";
 import { Link } from "../lib/router";
 import { applications, PILLAR_LABEL } from "../data/applications";
 import { modules } from "../data/modules";

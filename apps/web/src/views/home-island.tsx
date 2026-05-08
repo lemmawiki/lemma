@@ -1,5 +1,5 @@
-import { AppProvider } from "../context/AppContext";
-import { Home } from "./Home";
+import { AppProvider } from "../context/app-context";
+import { Home } from "./home";
 
 export default function HomeIsland() {
   return (

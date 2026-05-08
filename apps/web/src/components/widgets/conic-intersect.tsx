@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useApp, pick } from "../../context/AppContext";
+import { useApp, pick } from "../../context/app-context";
 
 // Widget — Two Conics, Four Intersections.
 // Shows two conics on the plane and their (up to four) intersections, computed

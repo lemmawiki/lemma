@@ -1,4 +1,4 @@
-import { AppProvider, useApp, pick } from "../context/AppContext";
+import { AppProvider, useApp, pick } from "../context/app-context";
 
 function HeaderInner({ pathname }: { pathname: string }) {
   const { language, setLanguage, mode, setMode } = useApp();

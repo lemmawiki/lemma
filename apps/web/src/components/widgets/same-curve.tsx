@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useApp } from "../../context/AppContext";
+import { useApp } from "../../context/app-context";
 
 // Spike widget — Same Curve?
 // Three parametrizations of the same image (y = x², x ∈ [-1, 1]). Animating

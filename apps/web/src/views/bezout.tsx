@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { useApp, pick } from "../context/AppContext";
-import { TermsProvider, useTermsRegistry } from "../context/TermsContext";
-import { Term } from "../components/Term";
-import { Exercise } from "../components/Exercise";
-import { ConicIntersect } from "../components/widgets/ConicIntersect";
+import { useApp, pick } from "../context/app-context";
+import { TermsProvider, useTermsRegistry } from "../context/terms-context";
+import { Term } from "../components/term";
+import { Exercise } from "../components/exercise";
+import { ConicIntersect } from "../components/widgets/conic-intersect";
 import { glossary } from "../data/glossary";
 import { Link } from "../lib/router";
 

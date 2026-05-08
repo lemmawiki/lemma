@@ -7,7 +7,7 @@ import {
   formatYears,
   formatPercent,
 } from "../../lib/finance";
-import { useApp, pick } from "../../context/AppContext";
+import { useApp, pick } from "../../context/app-context";
 
 type Door = "F" | "t" | "r";
 

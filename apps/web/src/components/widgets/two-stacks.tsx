@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useApp, pick } from "../../context/AppContext";
+import { useApp, pick } from "../../context/app-context";
 
 const W = 720;
 const H = 260;

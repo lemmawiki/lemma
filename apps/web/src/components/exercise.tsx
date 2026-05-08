@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { useApp, pick } from "../context/AppContext";
+import { useApp, pick } from "../context/app-context";
 
 export type ExerciseProps = {
   number: number;

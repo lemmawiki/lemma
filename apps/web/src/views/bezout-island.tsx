@@ -1,5 +1,5 @@
-import { AppProvider } from "../context/AppContext";
-import { Bezout } from "./Bezout";
+import { AppProvider } from "../context/app-context";
+import { Bezout } from "./bezout";
 
 export default function BezoutIsland({ code }: { code: { arc4: string; arc6: string } }) {
   return (

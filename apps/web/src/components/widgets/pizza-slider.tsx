@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { futureValue, formatCurrency } from "../../lib/finance";
-import { useApp, pick } from "../../context/AppContext";
+import { useApp, pick } from "../../context/app-context";
 
 const W = 720;
 const H = 280;

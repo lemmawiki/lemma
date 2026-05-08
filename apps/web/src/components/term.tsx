@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { glossaryById, type Locale } from "../data/glossary";
-import { useApp } from "../context/AppContext";
-import { useTermsRegistry } from "../context/TermsContext";
+import { useApp } from "../context/app-context";
+import { useTermsRegistry } from "../context/terms-context";
 
 // A term in either language; hover shows the counterpart and a one-line gloss.
 // Click pins the popover open. Self-registers in the page's TermsContext so

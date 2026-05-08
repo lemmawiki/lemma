@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { useApp, pick } from "../context/AppContext";
-import { TermsProvider, useTermsRegistry } from "../context/TermsContext";
-import { Term } from "../components/Term";
-import { Exercise } from "../components/Exercise";
-import { PizzaSlider } from "../components/widgets/PizzaSlider";
-import { ThreeDoors } from "../components/widgets/ThreeDoors";
+import { useApp, pick } from "../context/app-context";
+import { TermsProvider, useTermsRegistry } from "../context/terms-context";
+import { Term } from "../components/term";
+import { Exercise } from "../components/exercise";
+import { PizzaSlider } from "../components/widgets/pizza-slider";
+import { ThreeDoors } from "../components/widgets/three-doors";
 import { glossary } from "../data/glossary";
 import { Link } from "../lib/router";
 
