@@ -89,7 +89,22 @@ Same machinery underlies decision-tree splits in machine learning ("which featur
 
 </ArcRow>
 
-<ArcRow n={5} title="Where this module flows next">
+<ArcRow n={5} title="Where this shows up — same equation, two pillars">
+
+**Entropy is not randomness as a vibe. It is the expected surprise of a distribution.** Once that sinks in, the same four lines describe two applications that look unrelated:
+
+<pre class="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`rare word                → high surprise
+rare color               → high surprise
+predictable distribution → low entropy
+uniform distribution     → high entropy`}</pre>
+
+[TF-IDF](/en/ml/tf-idf) is the rare-word version: a search query weighted by <Formula>−log P(word)</Formula>, exactly the surprise of seeing that word in a random document. Stop-words have near-zero surprise, so they get near-zero weight without anyone hard-coding the list.
+
+[Why images compress](/en/graphics/image-compression) is the rare-color version on a [histogram](/en/graphics/image-compression) of pixel values — and then _again_ on a histogram of _neighbor differences_, where smooth pictures look extremely predictable (low entropy → small file) and scrambled ones look uniform (high entropy → big file). Same H, two pillars: the number isn't a feature of language or of pixels — it's a feature of _distributions_, and any field that names a distribution is implicitly bumping into this module.
+
+</ArcRow>
+
+<ArcRow n={6} title="Where this module flows next">
 
 The same definition reappears under new names. <Term id="cross-entropy">Cross-entropy</Term> (the loss at the heart of [classification](/en/ml/confident-wrong)) is _your_ entropy plus a penalty when your model's predicted distribution differs from the truth. KL divergence, mutual information, perplexity in language models — all consume this module. Password strength is just <Formula>log₂</Formula> of the keyspace under the assumption of a uniform attacker, which is the special case of arc 1. Every time someone says "this carries more information" or "that's redundant", they are gesturing at a number this module makes precise.
 
@@ -184,8 +199,10 @@ Two passwords. (a) 8 random characters from {`{a–z, A–Z, 0–9}`} = 62 symbo
 </Exercises>
 
 <PageFooter>
-  module: **Entropy**. Built on [the logarithm](/en/modules/log). Currently consumed by no
-  application page on its own (*cross-entropy* already lives inside [Confidently
-  Wrong](/en/ml/confident-wrong)); the planned consumers are *Wordle*, *JPEG*, and *password
+  module: **Entropy**. Built on [the logarithm](/en/modules/log). Two consumers across two pillars:
+  [TF-IDF](/en/ml/tf-idf) (ML — surprise as ranking signal) and [why images
+  compress](/en/graphics/image-compression) (graphics — surprise as the compression bound).
+  *Cross-entropy* is consumed implicitly inside [Confidently
+  Wrong](/en/ml/confident-wrong); the planned future consumers are *Wordle*, *JPEG*, and *password
   strength*.
 </PageFooter>
