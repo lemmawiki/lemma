@@ -68,5 +68,9 @@
   "shannon-bound",
   "loss-function",
   "learning-rate",
-  "gradient-descent"
+  "gradient-descent",
+  "vector",
+  "component",
+  "scalar",
+  "displacement"
 ]

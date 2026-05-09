@@ -60,6 +60,16 @@ export const modules: ModuleMeta[] = [
     },
   },
   {
+    id: "vectors",
+    href: "/modules/vectors",
+    status: "available",
+    title: { en: "Vectors", ko: "벡터" },
+    hook: {
+      en: "A point says where. A vector says how to move. The same tuple plays four roles — position, displacement, velocity, feature — across graphics, physics, and ML. Two operations (add and scale) carry every one of them.",
+      ko: "점은 어디인지를, 벡터는 어떻게 움직일지를 말한다. 같은 튜플이 그래픽·물리·ML에서 네 가지 역할 — 위치·변위·속도·특징 — 을 한다. 두 연산 (더하기와 늘이기) 이 그 모두를 받친다.",
+    },
+  },
+  {
     id: "entropy",
     href: "/modules/entropy",
     status: "available",

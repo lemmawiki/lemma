@@ -64,7 +64,7 @@ export const applications: ApplicationMeta[] = [
     id: "projectile-motion",
     href: "/physics/projectile-motion",
     pillar: "physics",
-    modules: ["parametric-curves", "derivatives"],
+    modules: ["parametric-curves", "derivatives", "vectors"],
     status: "available",
     title: {
       en: "Projectile Motion",
@@ -94,7 +94,7 @@ export const applications: ApplicationMeta[] = [
     id: "bezier-curves",
     href: "/graphics/bezier-curves",
     pillar: "graphics",
-    modules: ["parametric-curves"],
+    modules: ["parametric-curves", "vectors"],
     status: "available",
     title: {
       en: "Bezier Curves",

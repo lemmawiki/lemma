@@ -311,6 +311,42 @@ bezier_bernstein(P, 0.5)  # → (2.0, 1.5)   same answer, different bookkeeping
 # B'(1) = 3(P[3] - P[2])  →  tangent at end points along P2→P3
 # A designer reads "the curve leans into the next handle" off these two facts.`,
   },
+  vectors: {
+    arc3: `# A vector is a tuple. Component-wise addition. Scalar multiplication.
+# That's the whole arithmetic — every role uses these two operations.
+def add(u, v):
+    return tuple(a + b for a, b in zip(u, v))
+
+def scale(c, v):
+    return tuple(c * a for a in v)
+
+A = (2, 1)
+v = (3, 4)
+add(A, v)              # → (5, 5)        (location → location)
+scale(2, v)            # → (6, 8)        (twice the displacement)
+scale(-1, v)           # → (-3, -4)      (the reverse)
+add(A, scale(-1, v))   # → (-1, -3)      (going backward from A)`,
+    arc4: `# Same arithmetic, four roles. The tuple is the same; the application slot
+# is what gives it meaning.
+
+# graphics: shift one Bezier control point by v.
+control = (200, 60)
+new_control = add(control, v)            # the curve translates with it.
+
+# physics: a position-and-velocity update.
+pos     = (0.0, 0.0)
+vel     = (10.0, 14.0)         # m/s
+dt      = 0.05                  # s
+new_pos = add(pos, scale(dt, vel))        # one Euler step.
+
+# ML: one gradient-descent step on a 2-parameter weight vector.
+weights = (0.0, 0.0)
+grad    = (-2.4, -1.8)         # ∇L at current weights
+lr      = 0.1
+new_weights = add(weights, scale(-lr, grad))
+
+# In every block: add(point, scale(c, vector)). Same six characters of math.`,
+  },
   bitcoinSignature: {
     arc2: `# Toy curve E: y² = x³ + 7 over F_17.
 # Same shape (a=0, b=7) as secp256k1, microscopic prime.
