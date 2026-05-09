@@ -29,6 +29,8 @@ export interface JourneyMeta {
   id: string;
   title: Record<Locale, string>;
   hook: Record<Locale, string>;
+  /** Single-line promise for the home-page card — terser than `hook`. */
+  tagline: Record<Locale, string>;
   /** Total days. Read on consecutive days, or pace yourself — your call. */
   duration: number;
   destination: Record<Locale, string>; // the application or concept this lands on
@@ -45,6 +47,10 @@ export const journeys: JourneyMeta[] = [
     hook: {
       en: "Two applications, three modules, one trip. Open with the most expensive pizza in history; close knowing why a wallet stays safe.",
       ko: "응용 둘, 모듈 셋, 한 여정. 역사상 가장 비싼 피자로 시작해서 — 지갑이 왜 안전한지를 알고 닫는다.",
+    },
+    tagline: {
+      en: "From the most expensive pizza in history to the signature that keeps a wallet safe.",
+      ko: "역사상 가장 비싼 피자에서 지갑을 지키는 서명까지.",
     },
     duration: 7,
     destination: {
@@ -127,6 +133,10 @@ export const journeys: JourneyMeta[] = [
     hook: {
       en: "Confidently wrong, then less wrong, then almost right. Why does a model train? It walks downhill. The hill is a function. The walking is calculus.",
       ko: "자신 있게 틀리고, 덜 틀리고, 거의 맞고. 모델은 왜 학습되는가? 언덕을 내려간다. 언덕은 함수. 내려가는 일은 미적분.",
+    },
+    tagline: {
+      en: "Why does a model train? It walks downhill. The hill is a function.",
+      ko: "모델은 왜 학습되는가? 언덕을 내려간다. 언덕은 함수다.",
     },
     duration: 7,
     destination: {

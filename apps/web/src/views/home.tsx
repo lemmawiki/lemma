@@ -111,6 +111,22 @@ function ModulesList() {
   );
 }
 
+function pathSlugs(j: (typeof journeys)[number]): string[] {
+  // Unique slugs in order of first appearance — re-reads collapse, so the
+  // path reads as a clean breadcrumb of stops the journey hits. Deduping on
+  // the displayed slug (not the full page path) lets the slug itself serve
+  // as a stable React key downstream.
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const d of j.days) {
+    const slug = d.page.split("/").filter(Boolean).pop() ?? d.page;
+    if (seen.has(slug)) continue;
+    seen.add(slug);
+    out.push(slug);
+  }
+  return out;
+}
+
 function JourneysList() {
   const { language } = useApp();
   if (journeys.length === 0) return null;
@@ -123,30 +139,47 @@ function JourneysList() {
           `여정 · 큐레이션 경로 · ${journeys.length}`,
         )}
       </div>
-      <ul className="m-0 grid list-none gap-2.5 p-0">
-        {journeys.map((j) => (
-          <li
-            key={j.id}
-            className="group rounded-[10px] border border-rule bg-bg-card transition-[border,transform] duration-[0.18s] hover:border-acc"
-          >
-            <Link
-              to={`/${language}/journey/${j.id}`}
-              className="grid grid-cols-[1fr_auto] items-baseline gap-4 px-6 py-4 text-inherit no-underline"
+      <ul className="m-0 grid list-none gap-3.5 p-0">
+        {journeys.map((j) => {
+          const path = pathSlugs(j);
+          return (
+            <li
+              key={j.id}
+              className="group rounded-[10px] border border-rule bg-bg-card transition-[border,transform] duration-[0.18s] hover:border-acc"
             >
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <h2 className="m-0 font-serif text-[20px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
+              <Link
+                to={`/${language}/journey/${j.id}`}
+                className="block px-6 py-[22px] text-inherit no-underline"
+              >
+                <div className="mb-2.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
+                  <span className="font-semibold text-acc">
+                    {pick(language, "journey", "여정")}
+                  </span>
+                  <span className="mx-1.5 text-rule">·</span>
+                  <span>
+                    {j.duration} {pick(language, "days", "일")}
+                  </span>
+                  <span className="mx-1.5 text-rule">·</span>
+                  <span>→ {j.destination[language]}</span>
+                </div>
+                <h2 className="m-0 mb-2 font-serif text-[26px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
                   {j.title[language]}
                 </h2>
-                <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
-                  → {j.destination[language]}
-                </span>
-              </div>
-              <span className="font-mono text-xs lowercase tracking-[0.06em] text-acc">
-                {pick(language, "open →", "열기 →")}
-              </span>
-            </Link>
-          </li>
-        ))}
+                <p className="m-0 mb-3 font-serif text-[16.5px] leading-[1.55] text-ink-soft">
+                  {j.tagline[language]}
+                </p>
+                <div className="flex flex-wrap items-center gap-x-1 gap-y-1 font-mono text-[11.5px] text-ink-mute">
+                  {path.map((slug, i) => (
+                    <span key={slug} className="inline-flex items-center gap-1">
+                      {i > 0 && <span className="text-rule">→</span>}
+                      <span className="text-ink-soft">{slug}</span>
+                    </span>
+                  ))}
+                </div>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </section>
   );
