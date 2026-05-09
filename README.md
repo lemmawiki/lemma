@@ -100,6 +100,19 @@ The fundamental concepts — vectors, derivatives, distributions, logarithms —
 
 We do not add a fifth pillar to look comprehensive. Four is the budget.
 
+## Channels
+
+Lemma is a website. It is also the corpus that website renders, exposed in three other ways so the same prose can reach a reader who isn't on lemma.wiki.
+
+**MCP server (`@lemmawiki/mcp`)** — _the corpus, addressable by AI._
+A [Model Context Protocol](https://modelcontextprotocol.io) server ships at [`apps/mcp/`](./apps/mcp/). When you wire it into Claude Desktop, Cursor, or any MCP-compatible host, the LLM can query Lemma's modules, applications, journeys, glossary terms, and executable formulas as grounded ground truth. The seven tools (`lemma_search`, `lemma_get_module`, `lemma_get_journey`, …) return Lemma's actual prose — bilingual, cited — so the model answers from us, not from its averaged-internet memory. Math is the domain where LLMs hallucinate hardest. A small, opinionated, manifesto-bar corpus is the grounding shape modern RAG wants. See [the MCP README](./apps/mcp/README.md).
+
+**Seeds — single-file offline export.**
+Run `pnpm --filter lemma-web build:seeds` after a normal build and `apps/web/dist-seeds/` fills with one self-contained `.html` per page. Email it, archive it, USB-stick it onto a 2010 ThinkPad, read it on a plane. CSS, scripts, widget chunks, and even the React runtime are inlined as `data:` URIs so the page works under `file://` with no network. Average ~6.5 MB per seed; the trade is portability over bytes. _Knowledge that depends on a server isn't yours._
+
+**Listen — browser-native TTS.**
+Every page renders a small `▶ listen` chip beside its kicker. Click and the browser reads the prose aloud — sentence by sentence, with pause/resume/stop. v1 uses `window.speechSynthesis`, so the voices are whichever Apple/Google/Microsoft already shipped on the reader's machine. No API key, no audio assets, runs offline alongside the seeds. v2 will swap in studio voices and audio descriptions of widget state.
+
 ## What this is not
 
 We name what we refuse, because the refusals define the project as much as the inclusions.

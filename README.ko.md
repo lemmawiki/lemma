@@ -100,6 +100,19 @@
 
 다섯 번째 기둥을 더해 포괄적으로 보이게 하지 않습니다. 넷이 예산입니다.
 
+## 채널
+
+Lemma는 웹사이트입니다. 동시에 그 웹사이트가 렌더링하는 *코퍼스*이기도 합니다. 같은 글이 lemma.wiki 바깥의 독자에게도 닿도록, 세 가지 다른 표면을 더 갖춥니다.
+
+**MCP 서버 (`@lemmawiki/mcp`)** — _AI가 호출할 수 있는 코퍼스._
+[Model Context Protocol](https://modelcontextprotocol.io) 서버가 [`apps/mcp/`](./apps/mcp/)에서 출시됩니다. Claude Desktop, Cursor, 또는 MCP 호환 호스트에 등록하면, LLM이 Lemma의 모듈·응용·여정·용어·실행 가능한 공식을 *직접 조회*해 *근거 있는 답*을 만듭니다. 일곱 개의 도구 (`lemma_search`, `lemma_get_module`, `lemma_get_journey`, …) 가 Lemma의 _실제 prose_ — 이중언어, 인용 가능 — 를 돌려주므로, 모델은 평균낸 인터넷이 아니라 _우리에게서_ 답합니다. 수학은 LLM이 가장 자주 환각하는 도메인. 작고 의견 있고 매니페스토 바를 통과한 코퍼스가 현대 RAG가 원하는 grounding의 정확한 모양입니다. 자세한 내용은 [MCP README](./apps/mcp/README.md).
+
+**Seed — 단일 파일 오프라인 내보내기.**
+일반 빌드 후 `pnpm --filter lemma-web build:seeds` 실행하면 `apps/web/dist-seeds/`에 페이지마다 자기완결된 `.html`이 한 장씩 생깁니다. 이메일 첨부, 아카이브, USB로 2010년대 노트북에, 비행기에서 읽기. CSS, 스크립트, 위젯 청크, 심지어 React 런타임까지 모두 `data:` URI로 인라인 — `file://` 프로토콜에서 네트워크 없이 작동. seed 한 장 평균 ~6.5MB. 거래: 바이트 vs 휴대성. _서버에 의존하는 지식은 너의 것이 아닙니다._
+
+**Listen — 브라우저 네이티브 TTS.**
+모든 페이지 kicker 옆에 작은 `▶ listen` (한국어판은 `▶ 듣기`) 칩이 떠 있습니다. 클릭하면 브라우저가 prose를 _문장 단위로_ 읽어주고 — 일시정지/이어서/정지 컨트롤. v1은 `window.speechSynthesis`라서 Apple/Google/Microsoft가 이미 독자의 컴퓨터에 깔아둔 voice를 그대로 씁니다. API 키 없음, 오디오 자산 없음, seed 옆에서 오프라인으로도 작동. v2에서는 스튜디오 quality voice + 위젯 상태의 음성 묘사로 갈아탈 예정.
+
 ## 무엇이 _아닌가_
 
 거부하는 것을 명시합니다. 거부는 포함만큼이나 프로젝트를 정의하니까요.
