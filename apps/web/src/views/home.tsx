@@ -5,6 +5,7 @@ import { applications, PILLAR_LABEL } from "../data/applications";
 import { modules } from "../data/modules";
 import { spikes } from "../data/spikes";
 import { glossary } from "../data/glossary";
+import { HeaderInner } from "../components/header";
 
 const KICKER =
   "mb-4 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute";
@@ -12,21 +13,23 @@ const KICKER =
 function Hero() {
   const { language } = useApp();
   return (
-    <section className="mb-9 mt-16">
-      <h1 className="m-0 mb-[18px] max-w-[720px] font-serif text-[44px] font-medium leading-[1.15] tracking-[-0.02em] text-ink max-md:text-[30px]">
-        {pick(
-          language,
-          "An interactive math textbook built backwards.",
-          "거꾸로 만든 인터랙티브 수학 교과서.",
-        )}
-      </h1>
-      <p className="m-0 max-w-[640px] font-serif text-[22px] italic leading-[1.5] text-ink-soft max-md:text-[18px]">
-        {pick(
-          language,
-          <>We start with the question. The math comes after.</>,
-          <>질문에서 시작합니다. 수학은 그 다음입니다.</>,
-        )}
-      </p>
+    <section className="relative mx-[calc(50%-50vw)] -mt-8 h-screen w-screen overflow-hidden max-md:-mt-5">
+      <img
+        src="/hero.webp"
+        alt={pick(language, "A leaf, very close.", "잎사귀, 아주 가까이.")}
+        className="absolute inset-0 block h-full w-full object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/0 to-black/25" />
+      <div className="absolute inset-0 flex items-center justify-center px-6">
+        <h1
+          className={`m-0 text-center text-[120px] leading-[0.95] tracking-[-0.035em] text-white max-md:text-[64px] ${
+            language === "ko" ? "font-['Diphylleia'] font-normal" : "font-serif font-medium"
+          }`}
+          style={{ textShadow: "0 2px 40px rgba(0,0,0,0.45)" }}
+        >
+          {pick(language, "Look closer.", "가까이 보세요.")}
+        </h1>
+      </div>
     </section>
   );
 }
@@ -246,6 +249,16 @@ function HomeFooter() {
   );
 }
 
+function StickyHeader() {
+  return (
+    <div className="sticky top-0 z-20 mx-[calc(50%-50vw)] mb-2 w-screen bg-bg/85 backdrop-blur-md">
+      <div className="mx-auto max-w-[880px] px-7 pt-4 max-md:px-[18px]">
+        <HeaderInner pathname="/" />
+      </div>
+    </div>
+  );
+}
+
 export function Home() {
   useEffect(() => {
     document.title = "Lemma";
@@ -253,6 +266,7 @@ export function Home() {
   return (
     <>
       <Hero />
+      <StickyHeader />
       <Counters />
       <ApplicationsList />
       <ModulesList />

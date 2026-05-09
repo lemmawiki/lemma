@@ -1,6 +1,6 @@
 import { AppProvider, useApp, pick, type Language } from "../context/app-context";
 
-function HeaderInner({ pathname }: { pathname: string }) {
+export function HeaderInner({ pathname }: { pathname: string }) {
   const { language, setLanguage, mode, setMode } = useApp();
   const showMode = pathname !== "/";
   return (
