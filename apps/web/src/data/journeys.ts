@@ -29,7 +29,7 @@ export interface JourneyMeta {
   id: string;
   title: Record<Locale, string>;
   hook: Record<Locale, string>;
-  /** ~total days; not enforced — author can compress or stretch in `days`. */
+  /** Total days. Read on consecutive days, or pace yourself — your call. */
   duration: number;
   destination: Record<Locale, string>; // the application or concept this lands on
   days: JourneyDay[];
@@ -39,14 +39,14 @@ export const journeys: JourneyMeta[] = [
   {
     id: "to-bitcoin",
     title: {
-      en: "To Bitcoin in 14 days",
-      ko: "14일에 비트코인까지",
+      en: "To Bitcoin in 7 days",
+      ko: "7일에 비트코인까지",
     },
     hook: {
       en: "Two applications, three modules, one trip. Open with the most expensive pizza in history; close knowing why a wallet stays safe.",
       ko: "응용 둘, 모듈 셋, 한 여정. 역사상 가장 비싼 피자로 시작해서 — 지갑이 왜 안전한지를 알고 닫는다.",
     },
-    duration: 14,
+    duration: 7,
     destination: {
       en: "Bitcoin Signature",
       ko: "비트코인 서명",
@@ -62,7 +62,7 @@ export const journeys: JourneyMeta[] = [
         },
       },
       {
-        day: 3,
+        day: 2,
         page: "/modules/log",
         kind: "module",
         why: {
@@ -71,7 +71,7 @@ export const journeys: JourneyMeta[] = [
         },
       },
       {
-        day: 5,
+        day: 3,
         page: "/finance/bitcoin-pizza",
         kind: "review",
         why: {
@@ -80,7 +80,7 @@ export const journeys: JourneyMeta[] = [
         },
       },
       {
-        day: 7,
+        day: 4,
         page: "/modules/vectors",
         kind: "module",
         why: {
@@ -89,7 +89,7 @@ export const journeys: JourneyMeta[] = [
         },
       },
       {
-        day: 9,
+        day: 5,
         page: "/modules/bezout",
         kind: "module",
         why: {
@@ -98,7 +98,7 @@ export const journeys: JourneyMeta[] = [
         },
       },
       {
-        day: 11,
+        day: 6,
         page: "/graphics/curve-intersections",
         kind: "application",
         why: {
@@ -107,7 +107,7 @@ export const journeys: JourneyMeta[] = [
         },
       },
       {
-        day: 13,
+        day: 7,
         page: "/finance/bitcoin-signature",
         kind: "application",
         why: {
@@ -121,14 +121,14 @@ export const journeys: JourneyMeta[] = [
   {
     id: "to-backprop",
     title: {
-      en: "To Backprop in 14 days",
-      ko: "14일에 역전파까지",
+      en: "To Backprop in 7 days",
+      ko: "7일에 역전파까지",
     },
     hook: {
       en: "Confidently wrong, then less wrong, then almost right. Why does a model train? It walks downhill. The hill is a function. The walking is calculus.",
       ko: "자신 있게 틀리고, 덜 틀리고, 거의 맞고. 모델은 왜 학습되는가? 언덕을 내려간다. 언덕은 함수. 내려가는 일은 미적분.",
     },
-    duration: 14,
+    duration: 7,
     destination: {
       en: "Gradient Descent",
       ko: "경사하강",
@@ -144,7 +144,7 @@ export const journeys: JourneyMeta[] = [
         },
       },
       {
-        day: 3,
+        day: 2,
         page: "/modules/log",
         kind: "module",
         why: {
@@ -153,7 +153,7 @@ export const journeys: JourneyMeta[] = [
         },
       },
       {
-        day: 5,
+        day: 3,
         page: "/modules/derivatives",
         kind: "module",
         why: {
@@ -162,7 +162,7 @@ export const journeys: JourneyMeta[] = [
         },
       },
       {
-        day: 7,
+        day: 4,
         page: "/modules/linearization",
         kind: "module",
         why: {
@@ -171,7 +171,7 @@ export const journeys: JourneyMeta[] = [
         },
       },
       {
-        day: 9,
+        day: 5,
         page: "/modules/vectors",
         kind: "module",
         why: {
@@ -180,7 +180,7 @@ export const journeys: JourneyMeta[] = [
         },
       },
       {
-        day: 11,
+        day: 6,
         page: "/ml/gradient-descent",
         kind: "application",
         why: {
@@ -189,7 +189,7 @@ export const journeys: JourneyMeta[] = [
         },
       },
       {
-        day: 13,
+        day: 7,
         page: "/ml/confident-wrong",
         kind: "review",
         why: {

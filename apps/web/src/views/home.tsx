@@ -123,7 +123,7 @@ function JourneysList() {
           `여정 · 큐레이션 경로 · ${journeys.length}`,
         )}
       </div>
-      <ul className="m-0 grid list-none gap-3.5 p-0">
+      <ul className="m-0 grid list-none gap-2.5 p-0">
         {journeys.map((j) => (
           <li
             key={j.id}
@@ -131,23 +131,16 @@ function JourneysList() {
           >
             <Link
               to={`/${language}/journey/${j.id}`}
-              className="block px-6 py-[22px] text-inherit no-underline"
+              className="grid grid-cols-[1fr_auto] items-baseline gap-4 px-6 py-4 text-inherit no-underline"
             >
-              <div className="mb-2.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
-                <span className="font-semibold text-acc">{pick(language, "journey", "여정")}</span>
-                <span className="mx-1.5 text-rule">·</span>
-                <span>
-                  {j.duration} {pick(language, "days", "일")}
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <h2 className="m-0 font-serif text-[20px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
+                  {j.title[language]}
+                </h2>
+                <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
+                  → {j.destination[language]}
                 </span>
-                <span className="mx-1.5 text-rule">·</span>
-                <span>→ {j.destination[language]}</span>
               </div>
-              <h2 className="m-0 mb-2.5 font-serif text-[26px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
-                {j.title[language]}
-              </h2>
-              <p className="m-0 mb-3.5 font-serif text-[17px] leading-[1.55] text-ink-soft">
-                {j.hook[language]}
-              </p>
               <span className="font-mono text-xs lowercase tracking-[0.06em] text-acc">
                 {pick(language, "open →", "열기 →")}
               </span>
