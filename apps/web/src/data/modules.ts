@@ -60,6 +60,16 @@ export const modules: ModuleMeta[] = [
     },
   },
   {
+    id: "linearization",
+    href: "/modules/linearization",
+    status: "available",
+    title: { en: "Linearization", ko: "선형화" },
+    hook: {
+      en: "Most equations are hard. Their tangent line at a point is easy. Replace one with the other and you get a tool that powers the pendulum clock, Newton's method, and gradient descent — valid in a regime, wrong outside it. The discipline is the regime.",
+      ko: "대부분의 식은 어렵다. 어떤 점에서의 접선은 쉽다. 둘을 바꿔치면 진자시계·뉴턴 방법·경사하강법을 받치는 도구가 손에 들어온다 — 어떤 영역에서는 맞고, 그 밖에서는 틀린다. 규율은 그 영역에 있다.",
+    },
+  },
+  {
     id: "vectors",
     href: "/modules/vectors",
     status: "available",

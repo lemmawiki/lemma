@@ -311,6 +311,51 @@ bezier_bernstein(P, 0.5)  # → (2.0, 1.5)   same answer, different bookkeeping
 # B'(1) = 3(P[3] - P[2])  →  tangent at end points along P2→P3
 # A designer reads "the curve leans into the next handle" off these two facts.`,
   },
+  linearization: {
+    arc2: `import math
+
+# Linearization of f at a:  L_a(x) = f(a) + f'(a) · (x − a).
+# Choose anchor a, compare with the true value over a range of x.
+def linearize(f, fprime, a):
+    fa, slope = f(a), fprime(a)
+    return lambda x: fa + slope * (x - a)
+
+L0 = linearize(math.sin, math.cos, a=0)    # tangent at 0 is y = x
+[(round(x, 2), round(math.sin(x), 4), round(L0(x), 4))
+ for x in (0.05, 0.2, 0.5, 1.0)]
+# → [(0.05, 0.0500, 0.0500),    # < 0.0001 error
+#    (0.2,  0.1987, 0.2000),    # 0.001
+#    (0.5,  0.4794, 0.5000),    # 0.02
+#    (1.0,  0.8415, 1.0000)]    # 0.16  — visibly bad`,
+    arc3: `# Error scales as (x − a)², not as (x − a). Quadratic, not linear.
+# Doubling the deviation quadruples the error.
+def error_ratio(f, L, a, x):
+    return (f(x) - L(x)) / (x - a) ** 2 if x != a else None
+
+[error_ratio(math.sin, L0, 0, x) for x in (0.05, 0.1, 0.2, 0.4, 0.8)]
+# → roughly all near −0.166  (≈ −1/6)
+# The leading Taylor remainder for sin near 0 is −x³/6, so dividing by
+# (x − a)² gives roughly −x/6, drifting slowly with x. The shape "error
+# = constant·deviation²" is the dominant term in every linearization;
+# all you have to read off is the constant.`,
+    arc4: `# Newton's method: solve f(x) = 0 by repeatedly linearizing at the
+# current guess, then finding where THAT line crosses zero.
+def newton(f, fprime, x0, steps=5):
+    x = x0
+    for _ in range(steps):
+        x = x - f(x) / fprime(x)         # the root of the tangent line
+    return x
+
+# Fixed point of cos:  solve cos(x) − x = 0 starting near 0.5.
+newton(lambda x: math.cos(x) - x,
+       lambda x: -math.sin(x) - 1,
+       x0=0.5)
+# → 0.7390851332151607     (the Dottie number)
+#
+# Each Newton step IS a linearization step. Gradient descent is the
+# same recipe applied to ∇L instead of f, with a fixed-size step (η)
+# instead of the exact root of the tangent.`,
+  },
   vectors: {
     arc3: `# A vector is a tuple. Component-wise addition. Scalar multiplication.
 # That's the whole arithmetic — every role uses these two operations.

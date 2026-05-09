@@ -49,7 +49,7 @@ export const applications: ApplicationMeta[] = [
     id: "pendulum-clock",
     href: "/physics/pendulum-clock",
     pillar: "physics",
-    modules: ["parametric-curves", "derivatives"],
+    modules: ["parametric-curves", "derivatives", "linearization"],
     status: "available",
     title: {
       en: "The Pendulum Clock",

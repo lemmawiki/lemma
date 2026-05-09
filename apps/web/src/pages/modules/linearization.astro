@@ -1,0 +1,20 @@
+---
+import { codeToHtml } from "shiki";
+import Base from "../../layouts/base.astro";
+import LinearizationIsland from "../../views/linearization-island.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "vitesse-light" } as const;
+const code = {
+  arc2: await codeToHtml(pythonCode.linearization.arc2, opts),
+  arc3: await codeToHtml(pythonCode.linearization.arc3, opts),
+  arc4: await codeToHtml(pythonCode.linearization.arc4, opts),
+};
+---
+
+<Base
+  title="Linearization · Lemma"
+  description="Most equations are hard. Their tangent line at a point is easy. Linearization is the everyday move that powers small-angle approximation, Newton's method, and gradient descent — valid in a regime, wrong outside it. The discipline is the regime."
+>
+  <LinearizationIsland code={code} client:load />
+</Base>
