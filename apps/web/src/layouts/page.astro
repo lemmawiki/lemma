@@ -68,7 +68,8 @@ const altKo = new URL(altPath("ko"), Astro.site ?? "https://lemma.wiki").href;
 
     <!-- Read saved mode from localStorage and stamp it on <html> before paint,
          so MDX panels marked with data-mode-only/data-mode-panel render at the
-         correct visibility on first frame (no flash, no JS-tree dependency). -->
+         correct visibility on first frame (no flash, no JS-tree dependency).
+         Also seeds data-whiteboard from ?mode=whiteboard URL flag. -->
     <script is:inline>
       (function () {
         try {
@@ -76,6 +77,14 @@ const altKo = new URL(altPath("ko"), Astro.site ?? "https://lemma.wiki").href;
           document.documentElement.dataset.mode = m === "code" ? "code" : "general";
         } catch (e) {
           document.documentElement.dataset.mode = "general";
+        }
+        try {
+          var p = new URLSearchParams(window.location.search);
+          if (p.get("mode") === "whiteboard") {
+            document.documentElement.setAttribute("data-whiteboard", "true");
+          }
+        } catch (e) {
+          /* no-op */
         }
       })();
     </script>

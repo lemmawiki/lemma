@@ -108,3 +108,101 @@ html[data-mode="code"] [data-mode-only="general"] {
   font-family: var(--font-mono);
   font-size: 11px;
 }
+
+/* ---- Whiteboard mode -----------------------------------------------------
+ *
+ * Two ways to engage:
+ *   1. Append `?mode=whiteboard` to any page URL. A small head script (in
+ *      base.astro / page.astro) reads this and toggles `data-whiteboard` on
+ *      <html>, mirroring the design of `data-mode` for general/code.
+ *   2. Print (Cmd+P) — the same rules apply via @media print regardless of
+ *      whether the URL flag is set.
+ *
+ * Result: a leaner page with extra left margin for handwritten notes,
+ * widgets become static frames (no slider chrome), header chrome hides,
+ * pages get black-and-white treatment so a $50 inkjet can render them
+ * cleanly.
+ *
+ * Manifesto: a Lemma page should travel — onto paper, onto a tablet, into
+ * a notebook the reader writes alongside. The body-aware mode is not a
+ * cosmetic; it's an admission that the screen isn't the only surface. */
+
+@media print {
+  html,
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  /* Hide the on-screen header chrome (toggles, breadcrumbs hover states). */
+  header,
+  nav[aria-label],
+  .preview-tip {
+    display: none !important;
+  }
+  /* Page footer + journey/spike lists are out of place on print. */
+  footer,
+  .no-print {
+    display: none !important;
+  }
+  /* Add a wide left margin for handwriting notes alongside the prose. */
+  main {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 18mm 18mm 18mm 60mm !important;
+  }
+  /* Bump prose size — print rendering tends to look small. */
+  body {
+    font-size: 13pt !important;
+    line-height: 1.55 !important;
+  }
+  /* Avoid breaking arcs across pages where reasonable. */
+  section,
+  article {
+    break-inside: avoid;
+  }
+  /* Widgets are interactive — print just their canvas / svg, not the
+     control rows. The data-no-print attribute lets a widget hide its
+     interactive scaffolding while keeping the diagram. */
+  [data-no-print="true"] {
+    display: none !important;
+  }
+  /* Term hover popovers and Compute panels collapse on print. */
+  [aria-expanded="true"] + span[role="presentation"] {
+    display: none !important;
+  }
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-family: var(--font-mono);
+    font-size: 9pt;
+    color: #555;
+  }
+  /* But not on internal anchors / language toggles / nav. */
+  nav a[href]::after,
+  header a[href]::after {
+    content: none;
+  }
+}
+
+/* On-screen whiteboard preview (URL ?mode=whiteboard). Same rules as print
+ * except we keep the page on screen for the author/reader to verify. */
+html[data-whiteboard="true"] {
+  background: #fdfdfb;
+}
+html[data-whiteboard="true"] body {
+  color: #1a1a1a;
+}
+html[data-whiteboard="true"] header,
+html[data-whiteboard="true"] nav[aria-label] {
+  opacity: 0.4;
+}
+html[data-whiteboard="true"] main {
+  max-width: 940px;
+  padding-left: 60mm;
+}
+html[data-whiteboard="true"] body {
+  font-size: 18px;
+  line-height: 1.6;
+}
+html[data-whiteboard="true"] [data-no-print="true"] {
+  opacity: 0.45;
+}
