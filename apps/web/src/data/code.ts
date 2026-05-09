@@ -111,6 +111,54 @@ def secant_slope(f, a, h):
 # Each application's equation of motion is one or two derivatives applied
 # to the position function. The derivative is the shared tool.`,
   },
+  gradientDescent: {
+    arc2: `# Toy: one parameter w, one example (x, y) = (2, 6).
+# Loss(w) = (w·x − y)²   = quadratic in w, minimum at w* = y/x = 3.
+def loss(w, x, y):
+    return (w * x - y) ** 2
+
+def grad(w, x, y):
+    # d/dw [(wx − y)²] = 2x(wx − y).
+    return 2 * x * (w * x - y)
+
+x, y = 2, 6
+loss(0.0, x, y)        # → 36     (way off)
+loss(3.0, x, y)        # → 0      (perfect)
+grad(0.0, x, y)        # → −24    (loss decreases as w grows)
+grad(3.0, x, y)        # → 0      (no signal at the minimum)`,
+    arc4: `# The descent loop, in five lines. The shape that scales to neural nets.
+def descent(w0, lr, x, y, steps=20):
+    w = w0
+    for _ in range(steps):
+        w = w - lr * grad(w, x, y)
+    return w
+
+descent(0.0, lr=0.04, x=x, y=y, steps=20)   # → 2.95   slow but stable
+descent(0.0, lr=0.12, x=x, y=y, steps=20)   # → 3.00   fast, near-Newton
+descent(0.0, lr=0.27, x=x, y=y, steps=20)   # → ~10⁵  diverged
+
+# The single requirement for stability on a quadratic with second
+# derivative c is η < 2/c. Here c = L''(w) = 2x² = 8, so η < 0.25.
+# Beyond that, every "step" overshoots more than it corrects, and
+# the iterates explode geometrically.`,
+    arc6: `# Same loop, real ML.
+# Replace the toy parameter w with a parameter VECTOR θ.
+# Replace the toy gradient with the partial derivatives ∂L/∂θᵢ.
+# Replace the single example with a SUM (or mini-batch average) over data.
+#
+# Pseudocode for a one-layer linear classifier with cross-entropy loss
+# (the loss from /ml/confident-wrong) — same descent, more axes:
+#
+# for batch in data_loader:
+#     ŷ = softmax(W @ batch.x)            # forward
+#     L = cross_entropy(ŷ, batch.y)       # loss
+#     g = autograd.grad(L, W)             # ∇_W L  via reverse-mode autodiff
+#     W = W - lr * g                       # one step
+#
+# autograd ≠ a new idea; it's *bookkeeping for the chain rule* applied
+# to the same gradient operation arc 3 derives by hand. Walk downhill,
+# but with millions of axes and a clock.`,
+  },
   curveIntersections: {
     arc4: `# Engine pipeline: solve, classify, render. Bezout count = 4 always
 # for two conics; the picture only shows the real-affine subset.

@@ -1,0 +1,20 @@
+---
+import { codeToHtml } from "shiki";
+import Base from "../../layouts/base.astro";
+import GradientDescentIsland from "../../views/gradient-descent-island.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "vitesse-light" } as const;
+const code = {
+  arc2: await codeToHtml(pythonCode.gradientDescent.arc2, opts),
+  arc4: await codeToHtml(pythonCode.gradientDescent.arc4, opts),
+  arc6: await codeToHtml(pythonCode.gradientDescent.arc6, opts),
+};
+---
+
+<Base
+  title="Gradient Descent · Lemma"
+  description="A model is wrong; we can measure how wrong with a loss function. Which knob should move? The derivative tells you direction. How much? The learning rate tells you distance. Repeat. That five-line loop is the engine of every modern ML system."
+>
+  <GradientDescentIsland code={code} client:load />
+</Base>

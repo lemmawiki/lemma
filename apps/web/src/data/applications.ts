@@ -121,6 +121,21 @@ export const applications: ApplicationMeta[] = [
     },
   },
   {
+    id: "gradient-descent",
+    href: "/ml/gradient-descent",
+    pillar: "ml",
+    modules: ["derivatives"],
+    status: "available",
+    title: {
+      en: "Gradient Descent",
+      ko: "경사하강법",
+    },
+    hook: {
+      en: "A model is wrong. You can measure how wrong. But which knob should move, and by how much? The derivative gives the direction; the learning rate gives the distance. Repeat. That five-line loop trains every modern ML model.",
+      ko: "모델이 틀렸다. 얼마나 틀렸는지는 잴 수 있다. 그런데 어떤 손잡이를 어느 방향으로 얼마나 움직여야 할까? 미분이 방향을, 학습률이 거리를 정한다. 반복. 그 다섯 줄 루프가 모든 현대 ML 모델을 훈련시킨다.",
+    },
+  },
+  {
     id: "confident-wrong",
     href: "/ml/confident-wrong",
     pillar: "ml",
