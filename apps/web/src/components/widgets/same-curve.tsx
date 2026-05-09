@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Mafs, Coordinates, Plot, Point } from "mafs";
 import { useApp } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 
@@ -7,13 +8,12 @@ import { WidgetShell } from "./widget-shell";
 // each with constant time spacing makes the speed differences visible as trail
 // density. The crisis: three motions produce the same picture — so what *is*
 // the curve?
+//
+// Mafs handles the static figure (axes, grid, parabola, live dot, trail dots).
+// The animation timer + trail capture stay in React state — Mafs has no
+// time-domain primitive, and the discrete-dots-at-constant-time mechanism is
+// the entire pedagogical point (density = speed).
 
-const W = 720;
-const H = 360;
-const PAD_L = 56;
-const PAD_R = 32;
-const PAD_T = 24;
-const PAD_B = 56;
 const ANIM_DURATION_MS = 3000;
 const TRAIL_INTERVAL_MS = 50;
 
@@ -35,10 +35,11 @@ function gamma(idx: ParamIdx, u: number): [number, number] {
 }
 
 const COLORS: Record<ParamIdx, string> = {
-  0: "var(--color-acc)",
-  1: "var(--color-acc-deep)",
-  2: "var(--color-green)",
+  0: "#b6451e", // --color-acc — terracotta
+  1: "#7a2c10", // --color-acc-deep — burnt sienna
+  2: "#2c6f4a", // --color-green — moss
 };
+const PARABOLA = "#9a8d75"; // muted, so trails read on top
 
 const LABELS = {
   en: {
@@ -188,25 +189,7 @@ export function SameCurve() {
     setTrails({});
   }
 
-  // Coordinate scales: x ∈ [-1, 1] → [PAD_L, W-PAD_R], y ∈ [0, 1] → bottom-up.
-  const innerW = W - PAD_L - PAD_R;
-  const innerH = H - PAD_T - PAD_B;
-  const xScale = (x: number) => PAD_L + ((x + 1) / 2) * innerW;
-  const yScale = (y: number) => H - PAD_B - y * innerH;
-
-  // Static parabola path.
-  const N = 100;
-  const parabolaPath = Array.from({ length: N + 1 }, (_, i) => {
-    const x = -1 + (2 * i) / N;
-    const y = x * x;
-    return `${i === 0 ? "M" : "L"} ${xScale(x).toFixed(2)} ${yScale(y).toFixed(2)}`;
-  }).join(" ");
-
   const [liveX, liveY] = gamma(active, u);
-
-  const xTicks = [-1, -0.5, 0, 0.5, 1];
-  const yTicks = [0, 0.5, 1];
-
   const allPlayed = Boolean(trails[0] && trails[1] && trails[2]);
 
   const buttons: ButtonInfo[] = [
@@ -217,87 +200,43 @@ export function SameCurve() {
 
   return (
     <WidgetShell kicker={L.title}>
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        className="my-3.5 mb-1.5 block h-auto w-full rounded-md border border-rule bg-plot-bg"
-        role="img"
-        aria-label={L.title}
-      >
-        <rect x={PAD_L} y={PAD_T} width={innerW} height={innerH} className="plot-bg" />
+      <div className="my-3.5 mb-1.5 overflow-hidden rounded-md border border-rule bg-bg-card">
+        <Mafs
+          viewBox={{ x: [-1, 1], y: [0, 1] }}
+          preserveAspectRatio={false}
+          height={360}
+          pan={false}
+          zoom={false}
+        >
+          <Coordinates.Cartesian />
+          <Plot.OfX y={(x) => x * x} color={PARABOLA} weight={2} />
 
-        {xTicks.map((x) => (
-          <line
-            key={`vx-${x}`}
-            x1={xScale(x)}
-            y1={PAD_T}
-            x2={xScale(x)}
-            y2={H - PAD_B}
-            className="plot-grid"
-          />
-        ))}
-        {yTicks.map((y) => (
-          <line
-            key={`hy-${y}`}
-            x1={PAD_L}
-            y1={yScale(y)}
-            x2={W - PAD_R}
-            y2={yScale(y)}
-            className="plot-grid"
-          />
-        ))}
-
-        <line x1={PAD_L} y1={H - PAD_B} x2={W - PAD_R} y2={H - PAD_B} className="plot-axis" />
-        <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={H - PAD_B} className="plot-axis" />
-
-        {xTicks.map((x) => (
-          <text
-            key={`xt-${x}`}
-            x={xScale(x)}
-            y={H - PAD_B + 18}
-            className="plot-tick"
-            textAnchor="middle"
-          >
-            {x}
-          </text>
-        ))}
-        {yTicks.map((y) => (
-          <text
-            key={`yt-${y}`}
-            x={PAD_L - 8}
-            y={yScale(y) + 4}
-            className="plot-tick"
-            textAnchor="end"
-          >
-            {y}
-          </text>
-        ))}
-
-        <path d={parabolaPath} className="plot-line" fill="none" />
-
-        {buttons.map(({ idx }) => {
-          const pts = trails[idx];
-          if (!pts) return null;
-          return pts.map((pt) => (
-            <circle
+          {/* Only the active γ's trail is rendered. The other γ's trails stay
+              in `trails` state so the ✓ marks and punchline keep working —
+              the comparison happens in memory across sequential plays, not by
+              piling all three onto the same image (which read as noise). */}
+          {trails[active]?.map((pt) => (
+            <Point
               key={pt.id}
-              cx={xScale(pt.x)}
-              cy={yScale(pt.y)}
-              r={3}
-              style={{ fill: COLORS[idx], opacity: 0.75 }}
+              x={pt.x}
+              y={pt.y}
+              color={COLORS[active]}
+              opacity={0.75}
+              svgCircleProps={{ r: 4 }}
             />
-          ));
-        })}
+          ))}
 
-        <circle
-          cx={xScale(liveX)}
-          cy={yScale(liveY)}
-          r={7}
-          style={{
-            fill: COLORS[active],
-            filter: "drop-shadow(0 0 5px rgba(20,17,13,0.25))",
-          }}
-        />
-      </svg>
+          <Point
+            x={liveX}
+            y={liveY}
+            color={COLORS[active]}
+            svgCircleProps={{
+              r: 7,
+              style: { filter: "drop-shadow(0 0 5px rgba(20,17,13,0.25))" },
+            }}
+          />
+        </Mafs>
+      </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
         {buttons.map(({ idx, label, formula }) => {

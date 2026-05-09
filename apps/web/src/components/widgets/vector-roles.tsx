@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { Mafs, Coordinates, Vector, Line, MovablePoint, Point } from "mafs";
 import { useApp, pick } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
+import { Slider, pillClass } from "./widget-primitives";
+import { figureColors as C } from "../figures/theme";
 
 // Widget — Vector Roles.
 // One pair of tuples: a "point" A = (a_x, a_y) and a "displacement" v =
@@ -10,27 +13,15 @@ import { WidgetShell } from "./widget-shell";
 // into. The crisis the widget answers: a tuple has no inherent role —
 // you give it one by what you do with it.
 
-const W = 540;
-const H = 320;
-const PAD_X = 38;
-const PAD_Y = 32;
-
 const X_MIN = -1;
 const X_MAX = 8;
 const Y_MIN = -1;
 const Y_MAX = 6;
 
-const sx = (x: number) => PAD_X + ((x - X_MIN) / (X_MAX - X_MIN)) * (W - 2 * PAD_X);
-const sy = (y: number) => H - PAD_Y - ((y - Y_MIN) / (Y_MAX - Y_MIN)) * (H - 2 * PAD_Y);
-
-const COLOR = {
-  axis: "#9ca3a4",
-  grid: "var(--color-rule)",
-  pointA: "#1e6da6",
-  vector: "#b6451e",
-  result: "#3a8c4a",
-  component: "#7a5c2c",
-} as const;
+const POINT_A = "#1e6da6"; // blue — the anchor "point"
+const VECTOR = C.secant; // terracotta — the displacement
+const RESULT = C.point; // green — the destination
+const COMPONENT = C.tangent; // brown — decomposition
 
 type Role = "generic" | "graphics" | "physics" | "ml";
 
@@ -114,9 +105,8 @@ const ROLE_LABELS: Record<
   },
 };
 
-function fmt(n: number, d = 1): string {
-  return n.toFixed(d);
-}
+const fmt = (n: number, d = 1) => n.toFixed(d);
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
 export function VectorRoles() {
   const { language } = useApp();
@@ -127,8 +117,10 @@ export function VectorRoles() {
   const [role, setRole] = useState<Role>("generic");
   const [scaleC, setScaleC] = useState(1);
 
-  const rx = ax + scaleC * vx;
-  const ry = ay + scaleC * vy;
+  const cvx = scaleC * vx;
+  const cvy = scaleC * vy;
+  const rx = ax + cvx;
+  const ry = ay + cvy;
   const labels = ROLE_LABELS[role][language];
 
   return (
@@ -140,201 +132,74 @@ export function VectorRoles() {
       >
         <div>
           <span className="text-ink-mute">{labels.A} · </span>
-          <span className="text-ink" style={{ color: COLOR.pointA }}>
+          <span style={{ color: POINT_A }}>
             ({fmt(ax)}, {fmt(ay)})
           </span>
         </div>
         <div>
           <span className="text-ink-mute">{labels.v} · </span>
-          <span className="text-ink" style={{ color: COLOR.vector }}>
-            ({fmt(scaleC * vx)}, {fmt(scaleC * vy)})
+          <span style={{ color: VECTOR }}>
+            ({fmt(cvx)}, {fmt(cvy)})
           </span>
         </div>
         <div>
           <span className="text-ink-mute">{labels.res} · </span>
-          <span className="text-ink" style={{ color: COLOR.result }}>
+          <span style={{ color: RESULT }}>
             ({fmt(rx)}, {fmt(ry)})
           </span>
         </div>
       </div>
 
       <div className="overflow-hidden rounded-md border border-rule bg-bg-card">
-        <svg
-          viewBox={`0 0 ${W} ${H}`}
-          width="100%"
-          style={{ display: "block" }}
-          role="img"
-          aria-label={pick(
-            language,
-            "vector A, displacement v, and result A + cv on a grid",
-            "격자 위의 벡터 A, 변위 v, 결과 A + cv",
-          )}
+        <Mafs
+          viewBox={{ x: [X_MIN, X_MAX], y: [Y_MIN, Y_MAX] }}
+          preserveAspectRatio={false}
+          height={320}
+          pan={false}
+          zoom={false}
         >
-          {/* grid */}
-          {Array.from({ length: X_MAX - X_MIN + 1 }, (_, i) => X_MIN + i).map((gx) => (
-            <line
-              key={`gx-${gx}`}
-              x1={sx(gx)}
-              y1={sy(Y_MIN)}
-              x2={sx(gx)}
-              y2={sy(Y_MAX)}
-              stroke={COLOR.grid}
-              strokeWidth={0.5}
-              opacity={gx === 0 ? 0.8 : 0.3}
-            />
-          ))}
-          {Array.from({ length: Y_MAX - Y_MIN + 1 }, (_, i) => Y_MIN + i).map((gy) => (
-            <line
-              key={`gy-${gy}`}
-              x1={sx(X_MIN)}
-              y1={sy(gy)}
-              x2={sx(X_MAX)}
-              y2={sy(gy)}
-              stroke={COLOR.grid}
-              strokeWidth={0.5}
-              opacity={gy === 0 ? 0.8 : 0.3}
-            />
-          ))}
-
-          {/* axis ticks at integers */}
-          {[0, 2, 4, 6, 8].map((v) => (
-            <text
-              key={`tx-${v}`}
-              x={sx(v)}
-              y={sy(0) + 14}
-              textAnchor="middle"
-              style={{ fontFamily: "var(--font-mono)", fontSize: 10 }}
-              fill={COLOR.axis}
-            >
-              {v}
-            </text>
-          ))}
-          {[0, 2, 4].map((v) => (
-            <text
-              key={`ty-${v}`}
-              x={sx(0) - 6}
-              y={sy(v) + 3}
-              textAnchor="end"
-              style={{ fontFamily: "var(--font-mono)", fontSize: 10 }}
-              fill={COLOR.axis}
-            >
-              {v}
-            </text>
-          ))}
-
+          <Coordinates.Cartesian subdivisions={false} />
           {/* component decomposition: dashed horizontal then vertical */}
-          <line
-            x1={sx(ax)}
-            y1={sy(ay)}
-            x2={sx(rx)}
-            y2={sy(ay)}
-            stroke={COLOR.component}
-            strokeWidth={1.2}
-            strokeDasharray="4 3"
+          <Line.Segment
+            point1={[ax, ay]}
+            point2={[rx, ay]}
+            color={COMPONENT}
+            weight={1.2}
+            style="dashed"
           />
-          <line
-            x1={sx(rx)}
-            y1={sy(ay)}
-            x2={sx(rx)}
-            y2={sy(ry)}
-            stroke={COLOR.component}
-            strokeWidth={1.2}
-            strokeDasharray="4 3"
+          <Line.Segment
+            point1={[rx, ay]}
+            point2={[rx, ry]}
+            color={COMPONENT}
+            weight={1.2}
+            style="dashed"
           />
-          <text
-            x={(sx(ax) + sx(rx)) / 2}
-            y={sy(ay) - 4}
-            textAnchor="middle"
-            style={{ fontFamily: "var(--font-mono)", fontSize: 10.5 }}
-            fill={COLOR.component}
-          >
-            {fmt(scaleC * vx)}
-          </text>
-          <text
-            x={sx(rx) + 6}
-            y={(sy(ay) + sy(ry)) / 2 + 3}
-            style={{ fontFamily: "var(--font-mono)", fontSize: 10.5 }}
-            fill={COLOR.component}
-          >
-            {fmt(scaleC * vy)}
-          </text>
-
-          {/* the v vector arrow from A to A + cv */}
-          <defs>
-            <marker
-              id="arrow-v"
-              viewBox="0 0 10 10"
-              refX="8"
-              refY="5"
-              markerWidth={5}
-              markerHeight={5}
-              orient="auto-start-reverse"
-            >
-              <path d="M 0 0 L 10 5 L 0 10 z" fill={COLOR.vector} />
-            </marker>
-          </defs>
-          <line
-            x1={sx(ax)}
-            y1={sy(ay)}
-            x2={sx(rx)}
-            y2={sy(ry)}
-            stroke={COLOR.vector}
-            strokeWidth={2.4}
-            markerEnd="url(#arrow-v)"
+          {/* the v vector A → A + cv */}
+          <Vector tail={[ax, ay]} tip={[rx, ry]} color={VECTOR} weight={2.4} />
+          {/* destination point */}
+          <Point x={rx} y={ry} color={RESULT} />
+          {/* draggable A */}
+          <MovablePoint
+            point={[ax, ay]}
+            onMove={([nx, ny]) => {
+              setAx(clamp(nx, X_MIN, X_MAX));
+              setAy(clamp(ny, Y_MIN, Y_MAX));
+            }}
+            color={POINT_A}
           />
-
-          {/* point A */}
-          <circle
-            cx={sx(ax)}
-            cy={sy(ay)}
-            r={7}
-            fill={COLOR.pointA}
-            stroke="white"
-            strokeWidth={1.5}
-          />
-          <text
-            x={sx(ax) - 14}
-            y={sy(ay) + 18}
-            textAnchor="end"
-            style={{ fontFamily: "var(--font-mono)", fontSize: 11.5, fontWeight: 600 }}
-            fill={COLOR.pointA}
-          >
-            A
-          </text>
-
-          {/* point A + cv */}
-          <circle
-            cx={sx(rx)}
-            cy={sy(ry)}
-            r={6}
-            fill={COLOR.result}
-            stroke="white"
-            strokeWidth={1.5}
-          />
-          <text
-            x={sx(rx) + 9}
-            y={sy(ry) - 9}
-            style={{ fontFamily: "var(--font-mono)", fontSize: 11.5, fontWeight: 600 }}
-            fill={COLOR.result}
-          >
-            A + {scaleC === 1 ? "" : `${scaleC}·`}v
-          </text>
-        </svg>
+        </Mafs>
       </div>
 
       {/* role toggle */}
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="mt-3 flex flex-wrap gap-2" role="tablist" aria-label="vector role">
         {(Object.keys(ROLE_LABELS) as Role[]).map((r) => (
           <button
             key={r}
             type="button"
+            role="tab"
+            aria-selected={role === r}
             onClick={() => setRole(r)}
-            className={
-              "rounded-full border px-3 py-1 font-mono text-[11.5px] uppercase tracking-[0.06em] transition-colors " +
-              (role === r
-                ? "border-acc bg-acc/10 text-acc"
-                : "border-rule text-ink-mute hover:border-acc hover:text-acc")
-            }
+            className={pillClass(role === r)}
           >
             {ROLE_LABELS[r][language].name}
           </button>
@@ -344,33 +209,13 @@ export function VectorRoles() {
       {/* sliders */}
       <div className="mt-4 grid gap-2.5">
         <Slider
-          label={pick(language, "A · x", "A · x")}
-          value={ax}
-          onChange={setAx}
-          min={X_MIN}
-          max={X_MAX}
-          step={0.5}
-          accent={COLOR.pointA}
-          display={fmt(ax)}
-        />
-        <Slider
-          label={pick(language, "A · y", "A · y")}
-          value={ay}
-          onChange={setAy}
-          min={Y_MIN}
-          max={Y_MAX}
-          step={0.5}
-          accent={COLOR.pointA}
-          display={fmt(ay)}
-        />
-        <Slider
           label={pick(language, "v · x", "v · x")}
           value={vx}
           onChange={setVx}
           min={-5}
           max={5}
           step={0.5}
-          accent={COLOR.vector}
+          accent={VECTOR}
           display={fmt(vx)}
         />
         <Slider
@@ -380,7 +225,7 @@ export function VectorRoles() {
           min={-5}
           max={5}
           step={0.5}
-          accent={COLOR.vector}
+          accent={VECTOR}
           display={fmt(vy)}
         />
         <Slider
@@ -399,49 +244,5 @@ export function VectorRoles() {
         {labels.story}
       </div>
     </WidgetShell>
-  );
-}
-
-function Slider({
-  label,
-  value,
-  onChange,
-  min,
-  max,
-  step,
-  accent,
-  display,
-}: {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  min: number;
-  max: number;
-  step: number;
-  accent: string;
-  display: string;
-}) {
-  return (
-    <label className="grid grid-cols-[100px_1fr_60px] items-center gap-3 text-[13px] max-md:grid-cols-[80px_1fr_50px]">
-      <span className="inline-flex items-center gap-1.5 font-mono text-ink-mute">
-        <span
-          className="inline-block h-2.5 w-2.5 shrink-0 rounded-sm"
-          style={{ background: accent }}
-          aria-hidden
-        />
-        {label}
-      </span>
-      <input
-        type="range"
-        className="w-full"
-        style={{ accentColor: accent }}
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(+e.target.value)}
-      />
-      <span className="text-right font-mono text-[12.5px] text-ink">{display}</span>
-    </label>
   );
 }

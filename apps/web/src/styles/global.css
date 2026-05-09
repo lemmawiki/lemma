@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "mafs/core.css";
 
 /* Design tokens. Tailwind v4 @theme generates utilities (bg-acc, text-ink-soft,
    font-serif, etc.). Component styling lives in JSX className utilities. */
@@ -80,4 +81,17 @@ body {
   font-size: 10px;
   fill: var(--color-ink-mute);
   text-anchor: end;
+}
+
+/* Mafs theme — map the library's CSS variables onto Lemma's palette so figures
+   blend with the rest of the page. Mafs ships with a dark-mode default; this
+   override flips it to our cream-paper light theme. */
+.MafsView {
+  --mafs-bg: var(--color-bg-card);
+  --mafs-fg: var(--color-ink);
+  --mafs-line-color: var(--color-rule);
+  --grid-line-subdivision-color: var(--color-rule-soft);
+  --mafs-origin-color: var(--color-ink-mute);
+  font-family: var(--font-mono);
+  font-size: 11px;
 }

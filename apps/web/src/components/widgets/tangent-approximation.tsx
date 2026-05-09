@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { Mafs, Coordinates, Plot, Line, MovablePoint, Point } from "mafs";
 import { useApp, pick } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
+import { Slider, Stat } from "./widget-primitives";
+import { figureColors as C } from "../figures/theme";
 
 // Widget — Tangent Approximation.
 // f(x) = sin(x) over [-π, π], with the tangent line at a slidable anchor a.
@@ -11,40 +14,18 @@ import { WidgetShell } from "./widget-shell";
 // "linear works only in a small regime" made directly visible.
 
 const PI = Math.PI;
-
-function F(x: number): number {
-  return Math.sin(x);
-}
-function FPRIME(x: number): number {
-  return Math.cos(x);
-}
+const F = Math.sin;
+const FPRIME = Math.cos;
 
 const X_MIN = -PI;
 const X_MAX = PI;
-const Y_MIN = -1.4;
-const Y_MAX = 1.4;
 
-const W = 540;
-const H = 320;
-const PAD_X = 38;
-const PAD_Y = 30;
+const fmt = (n: number, d = 4) => n.toFixed(d);
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
-const sx = (x: number) => PAD_X + ((x - X_MIN) / (X_MAX - X_MIN)) * (W - 2 * PAD_X);
-const sy = (y: number) => H - PAD_Y - ((y - Y_MIN) / (Y_MAX - Y_MIN)) * (H - 2 * PAD_Y);
-
-const COLOR = {
-  curve: "#1e6da6",
-  tangent: "#7a5c2c",
-  anchor: "#3a8c4a",
-  evalTrue: "#1e6da6",
-  evalApprox: "#b6451e",
-  error: "#b6451e",
-  axis: "#9ca3a4",
-} as const;
-
-function fmt(n: number, d = 4): string {
-  return n.toFixed(d);
-}
+// Lemma's secondary plot blue — used for the curve (true value) and to
+// distinguish from the green anchor/movable points.
+const CURVE = "#1e6da6";
 
 export function TangentApproximation() {
   const { language } = useApp();
@@ -60,36 +41,6 @@ export function TangentApproximation() {
   const dev = x - a;
   const errorOverDevSq = Math.abs(dev) > 1e-6 ? error / (dev * dev) : 0;
 
-  // Curve points
-  const curvePts = (() => {
-    const pts: string[] = [];
-    const N = 120;
-    for (let i = 0; i <= N; i++) {
-      const xx = X_MIN + ((X_MAX - X_MIN) * i) / N;
-      pts.push(`${sx(xx)},${sy(F(xx))}`);
-    }
-    return pts.join(" ");
-  })();
-
-  // Tangent line clipped to plot frame
-  function clipTangent(): { x: number; y: number }[] {
-    const out: { x: number; y: number }[] = [];
-    for (const xEnd of [X_MIN, X_MAX]) {
-      let xx = xEnd;
-      let yy = tangentAt(xx);
-      if (yy < Y_MIN) {
-        yy = Y_MIN;
-        xx = a + (yy - fa) / (fpa || 1e-9);
-      } else if (yy > Y_MAX) {
-        yy = Y_MAX;
-        xx = a + (yy - fa) / (fpa || 1e-9);
-      }
-      out.push({ x: xx, y: yy });
-    }
-    return out;
-  }
-  const tline = clipTangent();
-
   return (
     <WidgetShell kicker={pick(language, "Widget — Tangent approximation", "위젯 — 접선 근사")}>
       <div
@@ -100,17 +51,17 @@ export function TangentApproximation() {
         <Stat
           label={pick(language, "f(x) — true", "f(x) — 실제")}
           value={fmt(trueVal)}
-          color={COLOR.evalTrue}
+          color={CURVE}
         />
         <Stat
           label={pick(language, "approx — tangent", "근사 — 접선")}
           value={fmt(approxVal)}
-          color={COLOR.evalApprox}
+          color={C.secant}
         />
         <Stat
           label={pick(language, "error", "오차")}
           value={fmt(error)}
-          color={Math.abs(error) > 0.05 ? COLOR.error : undefined}
+          color={Math.abs(error) > 0.05 ? C.secant : undefined}
         />
         <Stat
           label={pick(language, "error / (x − a)²", "오차 / (x − a)²")}
@@ -119,153 +70,54 @@ export function TangentApproximation() {
       </div>
 
       <div className="overflow-hidden rounded-md border border-rule bg-bg-card">
-        <svg
-          viewBox={`0 0 ${W} ${H}`}
-          width="100%"
-          style={{ display: "block" }}
-          role="img"
-          aria-label={pick(
-            language,
-            "sin curve with tangent line at anchor a and evaluation point x",
-            "sin 곡선과 기준점 a에서의 접선, 평가점 x",
-          )}
+        <Mafs
+          viewBox={{ x: [X_MIN, X_MAX], y: [-1.4, 1.4] }}
+          preserveAspectRatio={false}
+          height={320}
+          pan={false}
+          zoom={false}
         >
-          {/* axes */}
-          <line
-            x1={PAD_X}
-            y1={sy(0)}
-            x2={W - PAD_X}
-            y2={sy(0)}
-            stroke={COLOR.axis}
-            strokeWidth={0.8}
+          <Coordinates.Cartesian />
+          <Plot.OfX y={F} color={CURVE} weight={2} />
+          <Line.PointSlope
+            point={[a, fa]}
+            slope={fpa}
+            color={C.tangent}
+            weight={1.6}
+            style="dashed"
           />
-          <line
-            x1={sx(0)}
-            y1={PAD_Y}
-            x2={sx(0)}
-            y2={H - PAD_Y}
-            stroke={COLOR.axis}
-            strokeWidth={0.8}
-          />
-          {/* x-axis ticks at multiples of π/2 */}
-          {[-PI, -PI / 2, PI / 2, PI].map((v) => (
-            <g key={`tx-${v.toFixed(3)}`}>
-              <line
-                x1={sx(v)}
-                y1={sy(0) - 3}
-                x2={sx(v)}
-                y2={sy(0) + 3}
-                stroke={COLOR.axis}
-                strokeWidth={0.7}
-              />
-              <text
-                x={sx(v)}
-                y={sy(0) + 14}
-                textAnchor="middle"
-                style={{ fontFamily: "var(--font-mono)", fontSize: 9.5 }}
-                fill={COLOR.axis}
-              >
-                {v < 0 ? "−" : ""}
-                {Math.abs(v) === PI ? "π" : "π/2"}
-              </text>
-            </g>
-          ))}
-          {/* y ticks at ±1 */}
-          {[-1, 1].map((v) => (
-            <g key={`ty-${v}`}>
-              <line
-                x1={sx(0) - 3}
-                y1={sy(v)}
-                x2={sx(0) + 3}
-                y2={sy(v)}
-                stroke={COLOR.axis}
-                strokeWidth={0.7}
-              />
-              <text
-                x={sx(0) - 6}
-                y={sy(v) + 3}
-                textAnchor="end"
-                style={{ fontFamily: "var(--font-mono)", fontSize: 9.5 }}
-                fill={COLOR.axis}
-              >
-                {v}
-              </text>
-            </g>
-          ))}
-
-          {/* sin curve */}
-          <polyline points={curvePts} fill="none" stroke={COLOR.curve} strokeWidth={2} />
-
-          {/* tangent line */}
-          <line
-            x1={sx(tline[0].x)}
-            y1={sy(tline[0].y)}
-            x2={sx(tline[1].x)}
-            y2={sy(tline[1].y)}
-            stroke={COLOR.tangent}
-            strokeWidth={1.6}
-            strokeDasharray="5 4"
-          />
-
-          {/* anchor (a, f(a)) */}
-          <circle
-            cx={sx(a)}
-            cy={sy(fa)}
-            r={6}
-            fill={COLOR.anchor}
-            stroke="white"
-            strokeWidth={1.5}
-          />
-          <text
-            x={sx(a) - 12}
-            y={sy(fa) - 9}
-            textAnchor="end"
-            style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 600 }}
-            fill={COLOR.anchor}
-          >
-            a
-          </text>
-
-          {/* error gap: vertical line from approx to true at x */}
           {Math.abs(error) > 1e-3 && (
-            <line
-              x1={sx(x)}
-              y1={sy(approxVal)}
-              x2={sx(x)}
-              y2={sy(trueVal)}
-              stroke={COLOR.error}
-              strokeWidth={1.6}
-              strokeDasharray="2 2"
+            <Line.Segment
+              point1={[x, approxVal]}
+              point2={[x, trueVal]}
+              color={C.secant}
+              weight={1.6}
+              style="dashed"
             />
           )}
-
-          {/* eval point on tangent (approx) */}
-          <circle
-            cx={sx(x)}
-            cy={sy(approxVal)}
-            r={5}
-            fill={COLOR.evalApprox}
-            stroke="white"
-            strokeWidth={1.5}
+          {/* eval point on tangent (approximation) */}
+          <Point x={x} y={approxVal} color={C.secant} />
+          {/* anchor — drag along the curve to move a */}
+          <MovablePoint
+            point={[a, fa]}
+            constrain={([xx]) => {
+              const xc = clamp(xx, X_MIN, X_MAX);
+              return [xc, F(xc)];
+            }}
+            onMove={([xx]) => setA(clamp(xx, X_MIN, X_MAX))}
+            color={C.point}
           />
-          {/* eval point on curve (true) */}
-          <circle
-            cx={sx(x)}
-            cy={sy(trueVal)}
-            r={5}
-            fill={COLOR.evalTrue}
-            stroke="white"
-            strokeWidth={1.5}
+          {/* eval point on curve — drag along the curve to move x */}
+          <MovablePoint
+            point={[x, trueVal]}
+            constrain={([xx]) => {
+              const xc = clamp(xx, X_MIN, X_MAX);
+              return [xc, F(xc)];
+            }}
+            onMove={([xx]) => setX(clamp(xx, X_MIN, X_MAX))}
+            color={CURVE}
           />
-          <text
-            x={sx(x) + 8}
-            y={sy(Math.max(trueVal, approxVal)) - 7}
-            style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 600 }}
-            fill={COLOR.evalTrue}
-          >
-            x
-          </text>
-        </svg>
+        </Mafs>
       </div>
 
       <div className="mt-4 grid gap-2.5">
@@ -276,7 +128,7 @@ export function TangentApproximation() {
           min={-PI}
           max={PI}
           step={0.05}
-          accent={COLOR.anchor}
+          accent={C.point}
           display={fmt(a, 2)}
         />
         <Slider
@@ -286,7 +138,7 @@ export function TangentApproximation() {
           min={-PI}
           max={PI}
           step={0.05}
-          accent={COLOR.evalTrue}
+          accent={CURVE}
           display={fmt(x, 2)}
         />
       </div>
@@ -322,60 +174,5 @@ export function TangentApproximation() {
         )}
       </div>
     </WidgetShell>
-  );
-}
-
-function Slider({
-  label,
-  value,
-  onChange,
-  min,
-  max,
-  step,
-  accent,
-  display,
-}: {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  min: number;
-  max: number;
-  step: number;
-  accent: string;
-  display: string;
-}) {
-  return (
-    <label className="grid grid-cols-[140px_1fr_70px] items-center gap-3 text-[13px] max-md:grid-cols-[100px_1fr_56px]">
-      <span className="inline-flex items-center gap-1.5 font-mono text-ink-mute">
-        <span
-          className="inline-block h-2.5 w-2.5 shrink-0 rounded-sm"
-          style={{ background: accent }}
-          aria-hidden
-        />
-        {label}
-      </span>
-      <input
-        type="range"
-        className="w-full"
-        style={{ accentColor: accent }}
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(+e.target.value)}
-      />
-      <span className="text-right font-mono text-[12.5px] text-ink">{display}</span>
-    </label>
-  );
-}
-
-function Stat({ label, value, color }: { label: string; value: string; color?: string }) {
-  return (
-    <div className="grid">
-      <span className="text-ink-mute">{label}</span>
-      <span className="text-ink" style={color ? { color } : undefined}>
-        {value}
-      </span>
-    </div>
   );
 }

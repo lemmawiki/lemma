@@ -16,5 +16,17 @@ export default defineConfig({
   vite: {
     assetsInclude: ["**/*.md"],
     plugins: [tailwindcss()],
+    // Mafs ships a pre-bundled ESM dist; under pnpm Vite can hand its
+    // internals a different React copy than the app uses, which surfaces as
+    // "Invalid hook call". Dedupe + pre-bundle to keep them on one React.
+    resolve: {
+      dedupe: ["react", "react-dom"],
+    },
+    optimizeDeps: {
+      include: ["mafs"],
+    },
+    ssr: {
+      noExternal: ["mafs"],
+    },
   },
 });
