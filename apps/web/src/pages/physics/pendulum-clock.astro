@@ -1,19 +1,9 @@
 ---
-import { codeToHtml } from "shiki";
-import Base from "../../layouts/base.astro";
-import PendulumClockIsland from "../../views/pendulum-clock-island.tsx";
-import { pythonCode } from "../../data/code";
-
-const opts = { lang: "python", theme: "vitesse-light" } as const;
-const code = {
-  arc4: await codeToHtml(pythonCode.pendulumClock.arc4, opts),
-  arc6: await codeToHtml(pythonCode.pendulumClock.arc6, opts),
-};
+// Legacy unprefixed URL — content lives in
+// src/content/pages/<kind>/pendulum-clock/{en,ko}.mdx, served at
+// /en/physics/pendulum-clock/ and /ko/physics/pendulum-clock/. We keep this file as a
+// redirect stub (rather than 404) for any external bookmark or internal link
+// that still points at the unprefixed URL. Astro emits static redirect HTML
+// with meta refresh + canonical + robots:noindex.
+return Astro.redirect("/en/physics/pendulum-clock/", 301);
 ---
-
-<Base
-  title="The Pendulum Clock · Lemma"
-  description="A real pendulum's period depends on its amplitude. So how do mechanical clocks keep time? Linearize sin θ ≈ θ near zero, and the period becomes 2π√(L/g) — independent of amplitude. The clock runs on that approximation."
->
-  <PendulumClockIsland code={code} client:load />
-</Base>

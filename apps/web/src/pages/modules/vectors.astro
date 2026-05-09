@@ -1,19 +1,9 @@
 ---
-import { codeToHtml } from "shiki";
-import Base from "../../layouts/base.astro";
-import VectorsIsland from "../../views/vectors-island.tsx";
-import { pythonCode } from "../../data/code";
-
-const opts = { lang: "python", theme: "vitesse-light" } as const;
-const code = {
-  arc3: await codeToHtml(pythonCode.vectors.arc3, opts),
-  arc4: await codeToHtml(pythonCode.vectors.arc4, opts),
-};
+// Legacy unprefixed URL — content lives in
+// src/content/pages/<kind>/vectors/{en,ko}.mdx, served at
+// /en/modules/vectors/ and /ko/modules/vectors/. We keep this file as a
+// redirect stub (rather than 404) for any external bookmark or internal link
+// that still points at the unprefixed URL. Astro emits static redirect HTML
+// with meta refresh + canonical + robots:noindex.
+return Astro.redirect("/en/modules/vectors/", 301);
 ---
-
-<Base
-  title="Vectors · Lemma"
-  description="A point says where. A vector says how to move. The same tuple plays four roles — position, displacement, velocity, feature — across graphics, physics, and ML. Two operations (add and scale) carry every one of them."
->
-  <VectorsIsland code={code} client:load />
-</Base>

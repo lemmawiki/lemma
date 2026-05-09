@@ -29,6 +29,12 @@ export default defineConfig({
         defaultLocale: "en",
         locales: { en: "en", ko: "ko" },
       },
+      // Exclude unprefixed content-mirror stubs. They emit redirect HTML with
+      // robots:noindex anyway, but keeping them out of the sitemap saves crawl
+      // budget. `/` and `/graph` (entry-point hubs) are unaffected — their
+      // pillar segment is empty.
+      filter: (page) =>
+        !/^https:\/\/lemma\.wiki\/(finance|ml|physics|graphics|modules)\/[^/]+\/$/.test(page),
     }),
   ],
   vite: {

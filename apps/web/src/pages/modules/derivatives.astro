@@ -1,20 +1,9 @@
 ---
-import { codeToHtml } from "shiki";
-import Base from "../../layouts/base.astro";
-import DerivativesIsland from "../../views/derivatives-island.tsx";
-import { pythonCode } from "../../data/code";
-
-const opts = { lang: "python", theme: "vitesse-light" } as const;
-const code = {
-  arc2: await codeToHtml(pythonCode.derivatives.arc2, opts),
-  arc3: await codeToHtml(pythonCode.derivatives.arc3, opts),
-  arc5: await codeToHtml(pythonCode.derivatives.arc5, opts),
-};
+// Legacy unprefixed URL — content lives in
+// src/content/pages/<kind>/derivatives/{en,ko}.mdx, served at
+// /en/modules/derivatives/ and /ko/modules/derivatives/. We keep this file as a
+// redirect stub (rather than 404) for any external bookmark or internal link
+// that still points at the unprefixed URL. Astro emits static redirect HTML
+// with meta refresh + canonical + robots:noindex.
+return Astro.redirect("/en/modules/derivatives/", 301);
 ---
-
-<Base
-  title="The Derivative · Lemma"
-  description="A moving point leaves a trail. The derivative is not the trail — it is the arrow the trail wants to become at this instant. Secants shrink onto tangents; one machine becomes slope, velocity, and rate."
->
-  <DerivativesIsland code={code} client:load />
-</Base>

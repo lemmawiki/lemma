@@ -1,19 +1,9 @@
 ---
-import { codeToHtml } from "shiki";
-import Base from "../../layouts/base.astro";
-import LogarithmIsland from "../../views/logarithm-island.tsx";
-import { pythonCode } from "../../data/code";
-
-const opts = { lang: "python", theme: "vitesse-light" } as const;
-const code = {
-  arc1: await codeToHtml(pythonCode.logarithm.arc1, opts),
-  arc4: await codeToHtml(pythonCode.logarithm.arc4, opts),
-};
+// Legacy unprefixed URL — content lives in
+// src/content/pages/<kind>/log/{en,ko}.mdx, served at
+// /en/modules/log/ and /ko/modules/log/. We keep this file as a
+// redirect stub (rather than 404) for any external bookmark or internal link
+// that still points at the unprefixed URL. Astro emits static redirect HTML
+// with meta refresh + canonical + robots:noindex.
+return Astro.redirect("/en/modules/log/", 301);
 ---
-
-<Base
-  title="Log · Lemma"
-  description="The trick that turns × into +. The whole module is one equation."
->
-  <LogarithmIsland code={code} client:load />
-</Base>

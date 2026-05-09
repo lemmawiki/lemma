@@ -1,11 +1,9 @@
 ---
-import Base from "../../layouts/base.astro";
-import ParametricCurvesIsland from "../../views/parametric-curves-island.tsx";
+// Legacy unprefixed URL — content lives in
+// src/content/pages/<kind>/parametric-curves/{en,ko}.mdx, served at
+// /en/modules/parametric-curves/ and /ko/modules/parametric-curves/. We keep this file as a
+// redirect stub (rather than 404) for any external bookmark or internal link
+// that still points at the unprefixed URL. Astro emits static redirect HTML
+// with meta refresh + canonical + robots:noindex.
+return Astro.redirect("/en/modules/parametric-curves/", 301);
 ---
-
-<Base
-  title="Parametric Curves · Lemma"
-  description="A curve is not just a picture. Three motions can paint the same parabola — same image, different parametrizations. The distinction the word 'curve' was hiding."
->
-  <ParametricCurvesIsland client:load />
-</Base>

@@ -1,20 +1,9 @@
 ---
-import { codeToHtml } from "shiki";
-import Base from "../../layouts/base.astro";
-import LinearizationIsland from "../../views/linearization-island.tsx";
-import { pythonCode } from "../../data/code";
-
-const opts = { lang: "python", theme: "vitesse-light" } as const;
-const code = {
-  arc2: await codeToHtml(pythonCode.linearization.arc2, opts),
-  arc3: await codeToHtml(pythonCode.linearization.arc3, opts),
-  arc4: await codeToHtml(pythonCode.linearization.arc4, opts),
-};
+// Legacy unprefixed URL — content lives in
+// src/content/pages/<kind>/linearization/{en,ko}.mdx, served at
+// /en/modules/linearization/ and /ko/modules/linearization/. We keep this file as a
+// redirect stub (rather than 404) for any external bookmark or internal link
+// that still points at the unprefixed URL. Astro emits static redirect HTML
+// with meta refresh + canonical + robots:noindex.
+return Astro.redirect("/en/modules/linearization/", 301);
 ---
-
-<Base
-  title="Linearization · Lemma"
-  description="Most equations are hard. Their tangent line at a point is easy. Linearization is the everyday move that powers small-angle approximation, Newton's method, and gradient descent — valid in a regime, wrong outside it. The discipline is the regime."
->
-  <LinearizationIsland code={code} client:load />
-</Base>

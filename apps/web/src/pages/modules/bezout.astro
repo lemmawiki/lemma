@@ -1,19 +1,9 @@
 ---
-import { codeToHtml } from "shiki";
-import Base from "../../layouts/base.astro";
-import BezoutIsland from "../../views/bezout-island.tsx";
-import { pythonCode } from "../../data/code";
-
-const opts = { lang: "python", theme: "vitesse-light" } as const;
-const code = {
-  arc4: await codeToHtml(pythonCode.bezout.arc4, opts),
-  arc6: await codeToHtml(pythonCode.bezout.arc6, opts),
-};
+// Legacy unprefixed URL — content lives in
+// src/content/pages/<kind>/bezout/{en,ko}.mdx, served at
+// /en/modules/bezout/ and /ko/modules/bezout/. We keep this file as a
+// redirect stub (rather than 404) for any external bookmark or internal link
+// that still points at the unprefixed URL. Astro emits static redirect HTML
+// with meta refresh + canonical + robots:noindex.
+return Astro.redirect("/en/modules/bezout/", 301);
 ---
-
-<Base
-  title="Bezout's Theorem · Lemma"
-  description="Two curves of degrees d and e meet — projectively, complex-coordinated, multiplicity-counted — in exactly d·e points. Interactive."
->
-  <BezoutIsland code={code} client:load />
-</Base>

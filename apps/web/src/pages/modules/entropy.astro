@@ -1,11 +1,9 @@
 ---
-import Base from "../../layouts/base.astro";
-import EntropyIsland from "../../views/entropy-island.tsx";
+// Legacy unprefixed URL — content lives in
+// src/content/pages/<kind>/entropy/{en,ko}.mdx, served at
+// /en/modules/entropy/ and /ko/modules/entropy/. We keep this file as a
+// redirect stub (rather than 404) for any external bookmark or internal link
+// that still points at the unprefixed URL. Astro emits static redirect HTML
+// with meta refresh + canonical + robots:noindex.
+return Astro.redirect("/en/modules/entropy/", 301);
 ---
-
-<Base
-  title="Entropy · Lemma"
-  description="The expected number of yes/no questions to identify an outcome. log₂ N when uniform, less when not."
->
-  <EntropyIsland client:load />
-</Base>

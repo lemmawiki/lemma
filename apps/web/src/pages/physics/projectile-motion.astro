@@ -1,20 +1,9 @@
 ---
-import { codeToHtml } from "shiki";
-import Base from "../../layouts/base.astro";
-import ProjectileMotionIsland from "../../views/projectile-motion-island.tsx";
-import { pythonCode } from "../../data/code";
-
-const opts = { lang: "python", theme: "vitesse-light" } as const;
-const code = {
-  arc2: await codeToHtml(pythonCode.projectileMotion.arc2, opts),
-  arc3: await codeToHtml(pythonCode.projectileMotion.arc3, opts),
-  arc4: await codeToHtml(pythonCode.projectileMotion.arc4, opts),
-};
+// Legacy unprefixed URL — content lives in
+// src/content/pages/<kind>/projectile-motion/{en,ko}.mdx, served at
+// /en/physics/projectile-motion/ and /ko/physics/projectile-motion/. We keep this file as a
+// redirect stub (rather than 404) for any external bookmark or internal link
+// that still points at the unprefixed URL. Astro emits static redirect HTML
+// with meta refresh + canonical + robots:noindex.
+return Astro.redirect("/en/physics/projectile-motion/", 301);
 ---
-
-<Base
-  title="Projectile Motion · Lemma"
-  description="Throw a ball, ignore air. Horizontal motion keeps time; vertical motion loses to gravity. Two independent stories — uniform velocity, constant acceleration — meet only in the picture, and the picture is a parabola."
->
-  <ProjectileMotionIsland code={code} client:load />
-</Base>

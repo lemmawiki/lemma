@@ -1,20 +1,9 @@
 ---
-import { codeToHtml } from "shiki";
-import Base from "../../layouts/base.astro";
-import ConfidentWrongIsland from "../../views/confident-wrong-island.tsx";
-import { pythonCode } from "../../data/code";
-
-const opts = { lang: "python", theme: "vitesse-light" } as const;
-const code = {
-  arc2: await codeToHtml(pythonCode.confidentWrong.arc2, opts),
-  arc3: await codeToHtml(pythonCode.confidentWrong.arc3, opts),
-  arc5: await codeToHtml(pythonCode.confidentWrong.arc5, opts),
-};
+// Legacy unprefixed URL — content lives in
+// src/content/pages/<kind>/confident-wrong/{en,ko}.mdx, served at
+// /en/ml/confident-wrong/ and /ko/ml/confident-wrong/. We keep this file as a
+// redirect stub (rather than 404) for any external bookmark or internal link
+// that still points at the unprefixed URL. Astro emits static redirect HTML
+// with meta refresh + canonical + robots:noindex.
+return Astro.redirect("/en/ml/confident-wrong/", 301);
 ---
-
-<Base
-  title="Confidently Wrong · Lemma"
-  description="A model does not know it is right. It has scores. Softmax turns scores into probabilities; cross-entropy reads off the one for the correct answer. Confidence and truth are unrelated."
->
-  <ConfidentWrongIsland code={code} client:load />
-</Base>

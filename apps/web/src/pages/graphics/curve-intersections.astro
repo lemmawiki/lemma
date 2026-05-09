@@ -1,18 +1,9 @@
 ---
-import { codeToHtml } from "shiki";
-import Base from "../../layouts/base.astro";
-import CurveIntersectionsIsland from "../../views/curve-intersections-island.tsx";
-import { pythonCode } from "../../data/code";
-
-const opts = { lang: "python", theme: "vitesse-light" } as const;
-const code = {
-  arc4: await codeToHtml(pythonCode.curveIntersections.arc4, opts),
-};
+// Legacy unprefixed URL — content lives in
+// src/content/pages/<kind>/curve-intersections/{en,ko}.mdx, served at
+// /en/graphics/curve-intersections/ and /ko/graphics/curve-intersections/. We keep this file as a
+// redirect stub (rather than 404) for any external bookmark or internal link
+// that still points at the unprefixed URL. Astro emits static redirect HTML
+// with meta refresh + canonical + robots:noindex.
+return Astro.redirect("/en/graphics/curve-intersections/", 301);
 ---
-
-<Base
-  title="Curve Intersections · Lemma"
-  description="Two conics on a screen meet 4, 2, 1, or 0 times depending on the configuration. Bezout's theorem says the count is always 4 — the picture only shows the real-affine subset. Where the missing intersections live, and what a graphics engine does about it."
->
-  <CurveIntersectionsIsland code={code} client:load />
-</Base>
