@@ -20,6 +20,7 @@ export { default as Compute } from "./compute.astro";
 export { default as CodeBlock } from "./code-block.astro";
 export { default as JourneyDays } from "./journey-days.astro";
 export { default as Dialect } from "./dialect.astro";
+export { default as ListenButton } from "./listen-button.astro";
 
 // Widgets
 export { default as ShannonBars } from "./shannon-bars.astro";

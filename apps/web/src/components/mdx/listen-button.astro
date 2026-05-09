@@ -1,0 +1,7 @@
+---
+import { ListenButton as ListenButtonReact } from "../widgets/listen-button";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<ListenButtonReact language={lang} client:load />

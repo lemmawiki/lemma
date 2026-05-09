@@ -15,17 +15,25 @@
 //
 // The first heading inside renders as the page H1; subsequent paragraphs get
 // the lead-paragraph type styling. <Lede> is an optional callout-style summary.
+//
+// The Listen button auto-injects beside the kicker — every page becomes
+// audio-readable via browser TTS without authors having to opt in.
 import Kicker from "./kicker.astro";
+import { ListenButton as ListenButtonReact } from "../widgets/listen-button";
 
 interface Props {
   kicker?: string;
 }
 const { kicker } = Astro.props;
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
 ---
 
 <section
   class="mt-12 [&>h1]:m-0 [&>h1]:mb-6 [&>h1]:font-serif [&>h1]:text-[38px] [&>h1]:font-medium [&>h1]:leading-[1.18] [&>h1]:tracking-[-0.015em] [&>h1]:text-ink [&>h1]:max-md:text-[28px] [&>h2]:m-0 [&>h2]:mb-6 [&>h2]:font-serif [&>h2]:text-[38px] [&>h2]:font-medium [&>h2]:leading-[1.18] [&>h2]:tracking-[-0.015em] [&>h2]:text-ink [&>h2]:max-md:text-[28px] [&>p]:m-0 [&>p]:mb-5 [&>p]:font-serif [&>p]:text-[22px] [&>p]:leading-[1.45] [&>p]:text-ink-soft [&>p]:max-md:text-[18px] [&>p_em]:italic [&>p_em]:text-acc [&>p_strong]:font-semibold [&>p_strong]:text-ink"
 >
-  {kicker && <Kicker>{kicker}</Kicker>}
+  <div class="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+    {kicker ? <Kicker>{kicker}</Kicker> : <span></span>}
+    <ListenButtonReact language={lang} client:load />
+  </div>
   <slot />
 </section>
