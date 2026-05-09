@@ -1,32 +1,39 @@
-// Backlink-omission audit - run via `pnpm run audit:backlinks`.
-// Scans apps/web/src/views/*.tsx and lists places where a glossary term
-// appears as plain text but isn't wrapped in <Term>. Advisory; not part of
-// the build pipeline. Output: apps/web/audits/backlink-candidates.md.
+// Backlink-omission audit — run via `pnpm run audit:backlinks`.
+// Scans the MDX content collection (the canonical content surface since
+// commit 8e209a9) and lists places where a glossary term appears as plain
+// prose but isn't wrapped in <Term>. Advisory; not part of the build
+// pipeline. Output: apps/web/audits/backlink-candidates.md.
 //
-// Redaction order (false-positive control). All passes blank a region with
-// equal-length whitespace, so line/column in the source survive.
-//   1. imports / exports / line and block comments
-//   2. <Term ...>...</Term>             (already-wrapped — the whole block)
-//   3. <Code .../>, <Code>...</Code>    (rendered code)
-//   4. <span className={MONO}>...</span> (inline code)
-//   5. <h1..h6>, <div className={KICKER}> (titles & kickers — exempt)
-//   6. JSX attribute values              (className=, style=, etc.)
-//   7. *Narrow* JSX expressions: {ident}, {ident.ident}, {ident[N]}, {N}
-//      (anything with parens / commas / quotes / <  is preserved — those
-//       are usually pick(language, ...), <>jsx</>, etc.)
+// Redaction order (false-positive control). Each pass blanks a region with
+// equal-length whitespace so line/column in the source survive:
+//   1. frontmatter (--- ... ---)
+//   2. import / export blocks (multi-line)
+//   3. {/* JSX comments */}
+//   4. ``` fenced code blocks ``` and `inline code`
+//   5. markdown headings (`# …`, `## …`, …) — title surface, exempt
+//   6. <Term ...>…</Term>          — already wrapped (children too)
+//   7. <Formula ...>…</Formula>    — math symbols, not prose
+//   8. <CodeBlock /> and any self-closing JSX widget tag
+//   9. JSX attribute values        — name="…", name='…', name={…}
+//      (catches kicker="…", title="…", tag="…", lang="…", n={1}, …)
 //
 // Matching:
 //   - term.en — case-insensitive, \b-bounded
 //   - term.ko — case-sensitive substring (Korean has no word boundaries)
+//
+// What stays in scope: prose inside <Hook>, <Lede>, <Pin>, <Arc>, <ArcRow>
+// bodies, <Exercise> prompts, <Solution> answers, <Counterexample>,
+// <WhyNotTaught>, and bare paragraphs. That's where a missing <Term> wrap
+// matters; everything else is intentionally exempt.
 import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
-import { dirname, extname, join, relative } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import yaml from "js-yaml";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const SRC = join(ROOT, "src");
-const VIEWS = join(SRC, "views");
+const CONTENT = join(SRC, "content", "pages");
 const GLOSSARY = join(SRC, "data", "glossary");
 const REPORT_DIR = join(ROOT, "audits");
 const REPORT = join(REPORT_DIR, "backlink-candidates.md");
@@ -68,6 +75,15 @@ function loadGlossary() {
   return terms;
 }
 
+function walkMdx(root, out = []) {
+  for (const name of readdirSync(root)) {
+    const p = join(root, name);
+    if (isDirectory(p)) walkMdx(p, out);
+    else if (p.endsWith(".mdx")) out.push(p);
+  }
+  return out;
+}
+
 function blankOut(s) {
   // Preserve newlines so line numbers in the cleaned string match the source.
   return s.replace(/[^\n]/g, " ");
@@ -75,31 +91,33 @@ function blankOut(s) {
 
 function redact(raw) {
   let s = raw;
-  // 1. imports / exports / line and block comments
-  s = s.replace(/^[ \t]*(?:import|export)[^\n]*$/gm, blankOut);
-  s = s.replace(/\/\/[^\n]*/g, blankOut);
-  s = s.replace(/\/\*[\s\S]*?\*\//g, blankOut);
-  // 2. <Term>...</Term> — children too, since wrapped text isn't a candidate
+  // 1. Frontmatter — first --- ... --- block at the top.
+  s = s.replace(/^---\n[\s\S]*?\n---\n?/, blankOut);
+  // 2. import / export blocks. Multi-line braces handled greedily up to the
+  //    next "from" plus quoted source plus optional semicolon, OR a one-line
+  //    statement. We blank the whole line range either way.
+  s = s.replace(/^[ \t]*import\b[\s\S]*?from[ \t]+["'][^"']+["'];?[ \t]*$/gm, blankOut);
+  s = s.replace(/^[ \t]*export\b[^\n]*$/gm, blankOut);
+  // 3. JSX comments {/* ... */}
+  s = s.replace(/\{\/\*[\s\S]*?\*\/\}/g, blankOut);
+  // 4. Fenced code (``` ... ```) and inline code (`...`).
+  s = s.replace(/```[\s\S]*?```/g, blankOut);
+  s = s.replace(/`[^`\n]+`/g, blankOut);
+  // 5. Markdown headings — `# …`, `## …`, etc. (title surface).
+  s = s.replace(/^#{1,6}[ \t]+[^\n]*$/gm, blankOut);
+  // 6. <Term ...>...</Term> — including children, since the wrapped text is
+  //    already a backlink and shouldn't recur as a candidate.
   s = s.replace(/<Term\b[\s\S]*?<\/Term>/g, blankOut);
-  // 3. <Code ... /> and <Code>...</Code>
-  s = s.replace(/<Code\b[^>]*\/>/g, blankOut);
-  s = s.replace(/<Code\b[\s\S]*?<\/Code>/g, blankOut);
-  // 4. <span className={MONO}>...</span> — inline code
-  s = s.replace(/<span\b[^>]*className=\{MONO\}[^>]*>[\s\S]*?<\/span>/g, blankOut);
-  // 5. headings + meta kickers
-  s = s.replace(/<h[1-6]\b[\s\S]*?<\/h[1-6]>/g, blankOut);
-  s = s.replace(/<div\b[^>]*className=\{KICKER\}[^>]*>[\s\S]*?<\/div>/g, blankOut);
-  // 5b. Exercise `tag={{ en: "...", ko: "..." }}` — short label, not prose.
-  //     `prompt` and `solution` carry JSX bodies and are intentionally kept.
-  s = s.replace(/\btag=\{\{[\s\S]*?\}\}/g, blankOut);
-  // 6. JSX attribute values: name="..." | name='...' | name={short}
-  //    The {} variant is restricted to a single, brace-free body so we don't
-  //    eat into JSX children (those use balanced braces).
+  // 7. <Formula ...>...</Formula> — math/symbols, not natural prose.
+  s = s.replace(/<Formula\b[\s\S]*?<\/Formula>/g, blankOut);
+  // 8. Self-closing JSX widget tags: <CodeBlock />, <ReliabilityDiagram />,
+  //    <ScoreCooker />, etc. The opening tag carries no children; attributes
+  //    are caught by step 9 anyway, but blanking the whole tag keeps things
+  //    tidy.
+  s = s.replace(/<[A-Z][\w]*\b[^>]*\/>/g, blankOut);
+  // 9. JSX attribute values: name="...", name='...', name={short}.
+  //    Catches kicker="...", title="...", tag="...", lang="...", n={1}, etc.
   s = s.replace(/\b([a-zA-Z][\w-]*)=("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|\{[^{}]*\})/g, blankOut);
-  // 7. Narrow JSX expressions only — bare identifier paths or numbers.
-  //    Anything containing parens / commas / strings / `<` is preserved.
-  s = s.replace(/\{[ \t]*[a-zA-Z_$][\w$]*(?:\.[a-zA-Z_$][\w$]*|\[\d+\])*[ \t]*\}/g, blankOut);
-  s = s.replace(/\{[ \t]*\d+(?:\.\d+)?[ \t]*\}/g, blankOut);
   return s;
 }
 
@@ -125,12 +143,9 @@ function escapeRegex(str) {
 
 const glossary = loadGlossary();
 const candidates = [];
+const mdxFiles = walkMdx(CONTENT).sort();
 
-const viewFiles = readdirSync(VIEWS)
-  .filter((f) => extname(f) === ".tsx" && !f.endsWith("-island.tsx"))
-  .map((f) => join(VIEWS, f));
-
-for (const file of viewFiles) {
+for (const file of mdxFiles) {
   const raw = read(file);
   const cleaned = redact(raw);
 
@@ -184,13 +199,30 @@ for (const c of candidates) {
 const lines = [];
 lines.push("# Backlink candidates — manual review");
 lines.push("");
-lines.push("Places in `src/views/*.tsx` where a glossary term appears as plain text and");
-lines.push("is not wrapped in `<Term>`. Many will be intentional: re-mention of a term");
-lines.push("already wrapped in the same paragraph, plurals or conjugations not in the");
-lines.push("canonical form, or non-technical use of a word that happens to share spelling");
-lines.push("with a term. This is an audit checklist, not a blocker.");
+lines.push(
+  "Places in `src/content/pages/**/*.mdx` where a glossary term appears as plain prose and is not",
+);
+lines.push(
+  "wrapped in `<Term>`. Many will be intentional: re-mention of a term already wrapped earlier in",
+);
+lines.push(
+  "the same paragraph, plurals or conjugations not in the canonical form, or non-technical use of a",
+);
+lines.push(
+  "word that happens to share spelling with a term. This is an audit checklist, not a blocker.",
+);
 lines.push("");
-lines.push(`Generated by \`pnpm run audit:backlinks\`. ${glossary.length} terms scanned.`);
+lines.push(
+  "Exempt by construction: frontmatter, imports, JSX comments, fenced/inline code, markdown",
+);
+lines.push(
+  "headings, `<Term>` children, `<Formula>` bodies, self-closing widget tags, and JSX attribute",
+);
+lines.push("values (kicker, title, tag, lang, …).");
+lines.push("");
+lines.push(
+  `Generated by \`pnpm run audit:backlinks\`. ${glossary.length} terms scanned across ${mdxFiles.length} MDX files.`,
+);
 lines.push(`Total candidates: **${candidates.length}** across ${byFile.size} file(s).`);
 lines.push("");
 lines.push("> This report is a local build artifact and is not committed by default.");
@@ -218,6 +250,6 @@ mkdirSync(REPORT_DIR, { recursive: true });
 writeFileSync(REPORT, lines.join("\n"));
 
 console.log(
-  `[backlinks] ${candidates.length} candidate(s) across ${byFile.size} file(s) in ${viewFiles.length} view(s).`,
+  `[backlinks] ${candidates.length} candidate(s) across ${byFile.size} file(s) in ${mdxFiles.length} MDX file(s).`,
 );
 console.log(`[backlinks] report → ${relative(process.cwd(), REPORT)}`);
