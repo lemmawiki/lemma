@@ -1,0 +1,5 @@
+---
+import { PizzaSlider as PizzaSliderReact } from "../widgets/pizza-slider";
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+<PizzaSliderReact language={lang} client:load />

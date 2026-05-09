@@ -1,9 +1,9 @@
-import { AppProvider } from "../context/app-context";
+import { AppProvider, type Language } from "../context/app-context";
 import { Graph } from "./graph";
 
-export default function GraphIsland() {
+export default function GraphIsland({ language }: { language?: Language } = {}) {
   return (
-    <AppProvider>
+    <AppProvider language={language}>
       <Graph />
     </AppProvider>
   );

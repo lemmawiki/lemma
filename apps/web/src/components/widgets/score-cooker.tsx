@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useApp, pick } from "../../context/app-context";
+import { useContext, useState } from "react";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 
 // Three classes — kept in English so they read like a real classifier output
@@ -41,8 +41,9 @@ function format(n: number, digits = 2): string {
 // Three logits, one true label, one temperature dial. Bars view-toggles
 // between raw scores, post-softmax probabilities, and the loss column.
 // Punchline lives in the readout: confidence and truth are unrelated.
-export function ScoreCooker() {
-  const { language } = useApp();
+export function ScoreCooker({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [logits, setLogits] = useState<number[]>([2.0, 1.0, 0.5]);
   const [T, setT] = useState<number>(1.0);
   const [trueIdx, setTrueIdx] = useState<ClassIdx>(0);

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useApp, pick } from "../../context/app-context";
+import { useContext, useEffect, useRef, useState } from "react";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 
 // Widget — Loss Landscape (1D descent).
@@ -54,8 +54,9 @@ function fmt(n: number, d = 2): string {
   return Math.abs(n) > 1e6 ? n.toExponential(1) : n.toFixed(d);
 }
 
-export function LossLandscape() {
-  const { language } = useApp();
+export function LossLandscape({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [w, setW] = useState(0);
   const [lr, setLr] = useState(0.04);
   const [history, setHistory] = useState<number[]>([0]);

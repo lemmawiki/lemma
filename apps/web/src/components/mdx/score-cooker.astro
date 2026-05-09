@@ -1,0 +1,7 @@
+---
+import { ScoreCooker as ScoreCookerReact } from "../widgets/score-cooker";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<ScoreCookerReact language={lang} client:load />

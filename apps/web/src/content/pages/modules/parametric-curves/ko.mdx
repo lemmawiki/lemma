@@ -1,0 +1,142 @@
+---
+title: 매개변수 곡선 · Lemma
+description: '함수 γ : [0, 1] → ℝ². 그림도 상도 아니다 — 함수다. "같다"의 세 층.'
+breadcrumb:
+  parent: 그래프
+  parent_path: /graph
+  current: 모듈 · 매개변수 곡선
+---
+
+import { Term, Exercise, Solution, ToolSpec, SameCurve } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 정의의 위기">
+
+# "같은 곡선"이란 무엇인가?
+
+칠판에 <Formula>y = x²</Formula>을 그려놓고 무슨 곡선이냐고 물으면, 누구나 _곡선이지_ 하고 답한다. 그런데 아래에는 같은 그림이 세 가지 다른 방식으로 그려진다 — 그림은 똑같고, 그리는 움직임이 다르다. **그** 곡선은 셋 중 어느 쪽인가? 재생을 누르기 전에 머릿속으로 답을 한 번 정해둔다. 그 다음에 누른다.
+
+<Lede>
+  외부 응용이 아니라 <Term id="definitional-crisis">*정의의 위기*</Term>로 열리는 모듈: 같은 그림이
+  세 가지 방식으로 그려진다. 그 위기를 푸는 과정에서 "곡선"이 *무엇인지*가 다시 정의되고, 그
+  재정의가 아래로 흘러갈 응용들 (그래픽, 물리, 애니메이션) 의 도구가 된다.
+</Lede>
+
+</Hook>
+
+<ToolSpec>
+  <Fragment slot="definition">
+    함수 <Formula>γ : [0, 1] → ℝ²</Formula>. 그림도 상도 아니다 — *함수*다. "같다"의 세 층: 같은 상
+    (가장 약함), 단조 재매개화 동치 (기하학적), 함수로서 같음 (가장 엄격).
+  </Fragment>
+  <Fragment slot="applies">
+    질문이 *모양*이 아니라 *움직임*일 때. 베지에 곡선 (디자이너가 핸들을 끌고 컴퓨터는 γ(t)를 계산),
+    궤적 (γ(t) = 시간 t에서의 위치), 애니메이션 (움직임 경로는 그림이 아니라 매개변수화다), 호의
+    길이 적분.
+  </Fragment>
+  <Fragment slot="breaks">
+    그림만 필요할 때 — 종이에 그리기, 윤곽 맞추기 — 함수 기계는 과잉이다. 점들의 집합론으로 충분. 또
+    새는 곳: "같은 곡선이냐?"는 *세 층 중 어느 것*을 묻는지 정해지기 전에는 답이 없다.
+  </Fragment>
+</ToolSpec>
+
+<SameCurve />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="γ는 함수다, 모양이 아니다">
+
+<em className="italic text-ink-mute">
+  (어휘 약속: 이 글에서 "곡선"은 매개변수 곡선 — 함수 — 을 가리키고, 점들의 집합은 "상"이라 부른다.
+  한국어에서 "곡선"은 일상적으로 두 의미를 다 받는데, 한 단어가 두 대상을 함께 짊어지고 있다는 사실
+  자체가 이 페이지의 출발점이다.)
+</em>
+<Term id="parametrized-curve">매개변수 곡선</Term>은 함수 <Formula>γ : [0, 1] → ℝ²</Formula>다. 위의
+세 γ는 *서로 다른* 세 함수다. 셋은 우연히 같은 <Term id="image-of-curve">상</Term> — 집합
+<Formula>{"{γ(t) : t ∈ [0, 1]}"}</Formula>, 즉 포물선 <Formula>y = x²</Formula>의
+<Formula>x ∈ [−1, 1]</Formula> 구간 — 을 공유할 뿐이다. 상은 순서·속도·방문 횟수가 모두 빠진 *점들의
+집합*이고, 함수 γ는 그중 어느 것도 아니다. 두 매개변수 곡선이 같다는 건 모든 t에 대해
+<Formula>γ₁(t) = γ₂(t)</Formula>라는 뜻 — 다른 어떤 함수에서나 쓰는 그 일치 판정 그대로다. *그*
+기준으로 보면 위의 셋은 같은 그림자를 남기는 세 개의 서로 다른 곡선이다. 다만 함수 일치는 세 층 중
+가장 엄격한 한 층일 뿐이고, 다음 단계에서 선이 실제로 어디에 그어져야 하는지 본다.
+
+{/* TODO: Python code block for arc 1 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={2} title="같은 상이라도 같은 곡선인가?">
+
+§ 1의 엄격한 판정은 γ₁과 γ₂를 서로 다른 곡선으로 가른다 — 같은 그림을 같은 방향으로 그리는데, 속도만 다른데도 그렇다. 그건 너무 빡빡한 기준이다. 기하학적으로는 같다고 해야 한다. 미분기하학은 실제로 그렇게 한다: 단조 일대일 함수 <Term id="reparametrization">φ</Term> : <Formula>[0, 1] → [0, 1]</Formula>가 있을 때 γ와 <Formula>γ ∘ φ</Formula>를 같은 것으로 본다. <Formula>φ(u) = ((2u−1)³ + 1) / 2</Formula> (단조, <Formula>dφ/du = 3(2u−1)² ≥ 0</Formula>)로 두면 <Formula>γ₁ ∘ φ = γ₂</Formula>가 정확히 성립한다 — γ₁과 γ₂는 같은 곡선이고, 속도만 다를 뿐이다. γ₃에는 그런 짝이 없다 — 내부 점을 두 번 방문하는데, 단조 φ로는 한 번 방문 스케줄을 두 번 방문 스케줄로 바꿀 수 없기 때문이다. 엄격한 일치 (너무 빡빡)와 상의 일치 (너무 헐거움) 사이에 <Term id="reparametrization">재매개화</Term> 동치가 있고, 대부분의 수학자가 "같은 곡선"이라 부르는 건 바로 이것이다.
+
+{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+
+</ArcRow>
+
+<Pin>
+**"같다"의 세 층:**
+- **같은 상** — 그림: γ₁ ~ γ₂ ~ γ₃
+- **재매개화 동치** — 기하학적 곡선: γ₁ ~ γ₂; γ₃은 따로
+- **함수로서 같음** — 매개변수 곡선: 셋 다 다름
+
+그림은 가장 약한 층이고, 함수는 가장 엄격한 층이다. **기하학은 그 사이에 산다.** 학교 수학은 이 세 층을 *곡선*이라는 한 단어 안에 섞어 둔다. "같은 곡선인가?"라는 질문에 깔끔한 답이 없는 건, 그 한 단어가 세 가지를 한꺼번에 짊어지고 있어서다. 위에서 가지고 논 위젯 하나가 그 세 층을 한 그림 안에 담아 보여준다.
+
+</Pin>
+
+</Arc>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="위젯 읽기 · 트레일 밀도">
+
+γ₂를 재생하고 트레일을 보자. 점들이 _가장 빽빽이_ 모이는 곳은 원점 근처인가, 끝점 근처인가? 왜 그럴까? (트레일은 시간 간격이 일정하다 — 호 길이가 아니라.)
+
+<Solution>
+  *원점*에서 가장 빽빽하다. <Formula>x(u) = (2u−1)³</Formula>이면 속도{" "}
+  <Formula>dx/du = 6(2u−1)²</Formula>는 <Formula>u = 1/2</Formula>에서 0이 된다 — γ₂는 원점을
+  기어가다가 끝에서 질주한다. 시간 간격이 일정하니 느린 구간에 시간을 더 많이 쓰고, 점도 거기에
+  쌓인다. 상은 같은 포물선이고, 스케줄만 다를 뿐이다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="구성하기 · 같은 상, 다른 스케줄" noCalculator>
+
+상이 정확히 <Formula>y = x²</Formula>의 <Formula>x ∈ [−1, 1]</Formula> 구간이면서, t가 0 → 1로 가는 동안 그 포물선을 _세 번_ 훑는 γ : [0, 1] → ℝ²를 닫힌 식으로 써보자. (힌트: γ₃은 코사인을 써서 두 번 훑는다.)
+
+<Solution>
+  한 예: <Formula>γ(t) = (cos(3πt), cos²(3πt))</Formula>. t가 0 → 1로 가면 인자{" "}
+  <Formula>3πt</Formula>는 <Formula>[0, 3π]</Formula>를 지나고, 코사인은 한 주기 반을 돌아{" "}
+  <Formula>[−1, 1]</Formula>을 세 번 훑는다. 상은 <Formula>[−1, 1]</Formula> 위의 포물선{" "}
+  <Formula>y = x²</Formula>. 같은 그림자, 세 배 빠른 스케줄이다. 상만 봐서는 이 여정을 γ₁의 한
+  번짜리 여정과 구별할 수 없다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="악마의 문제 · '외연적 동등성'">
+
+주니어가 말한다: "출력이 같은 두 함수는 같은 함수다 — 외연적 동등성. 그러면 같은 상을 만들어내는 세 γ도 같은 곡선이어야 하는 거 아니냐." 어디가 잘못됐는지 한 문장으로 짚고, 매개변수 곡선의 올바른 일치 기준을 적어보자.
+
+<Solution>
+  잘못된 지점: γ의 외연적 동등성은 모든 t에서 <Formula>γ(t)</Formula>를 비교하는 것이지,{" "}
+  <Formula>{"{γ(t) : t}"}</Formula>를 집합으로 비교하는 게 아니다 — 주니어는 함수를 슬쩍 그 상으로
+  바꿔치기했다. 올바른 판정: <Formula>γ₁ = γ₂ ⇔ 모든 t에 대해 γ₁(t) = γ₂(t)</Formula>. 상이 같은 두
+  γ는 스케줄까지 점마다 일치해야만 같다.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  모듈: **매개변수 곡선**. 위기를 도입으로 삼은 스파이크가 정식 모듈로 자라난 결과. 이 모듈이
+  정밀하게 만든 *매개변수 vs 이미지* 구분을 그래픽의 베지에 곡선, 물리의 궤적, 애니메이션의 움직임
+  경로 같은 응용들이 소비한다.
+</PageFooter>

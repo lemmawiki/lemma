@@ -1,0 +1,7 @@
+---
+import { SameCurve as SameCurveReact } from "../widgets/same-curve";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<SameCurveReact language={lang} client:load />

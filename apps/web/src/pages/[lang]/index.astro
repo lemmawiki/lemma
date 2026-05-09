@@ -1,0 +1,22 @@
+---
+// Locale-prefixed home page (`/en`, `/ko`). Mounts the existing React Home
+// view inside the new locale-aware Page layout. Hubs aren't MDX content —
+// they're data-driven listings of applications/modules/spikes/glossary.
+import Page from "../../layouts/page.astro";
+import HomeIsland from "../../views/home-island.tsx";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "en" } }, { params: { lang: "ko" } }];
+}
+
+const lang = (Astro.params.lang as "en" | "ko") ?? "en";
+const title = lang === "ko" ? "Lemma" : "Lemma";
+const description =
+  lang === "ko"
+    ? "거꾸로 만든 인터랙티브 수학 교과서."
+    : "An interactive math textbook built backwards.";
+---
+
+<Page lang={lang} title={title} description={description}>
+  <HomeIsland language={lang} client:load />
+</Page>

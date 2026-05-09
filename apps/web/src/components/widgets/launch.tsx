@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { useApp, pick } from "../../context/app-context";
+import { useContext, useMemo, useState } from "react";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 import { Slider, Stat } from "./widget-primitives";
 
@@ -33,8 +33,9 @@ function fmt(n: number, d = 2): string {
   return Number.isFinite(n) ? n.toFixed(d) : "—";
 }
 
-export function Launch() {
-  const { language } = useApp();
+export function Launch({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [theta, setTheta] = useState(45);
   const [v0, setV0] = useState(20);
   const [g, setG] = useState(9.8);

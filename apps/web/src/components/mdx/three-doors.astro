@@ -1,0 +1,5 @@
+---
+import { ThreeDoors as ThreeDoorsReact } from "../widgets/three-doors";
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+<ThreeDoorsReact language={lang} client:load />

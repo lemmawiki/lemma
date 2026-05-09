@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
+import { useContext, useState, useMemo } from "react";
 import { futureValue, formatCurrency } from "../../lib/finance";
-import { useApp, pick } from "../../context/app-context";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 import { pillClass } from "./widget-primitives";
 
@@ -14,8 +14,9 @@ const START_YEAR = 2010;
 
 // Widget A — The Pizza Slider.
 // Drag P, r, t. Watch F. Toggle linear ↔ log. The exponential becomes a line in log space.
-export function PizzaSlider() {
-  const { language } = useApp();
+export function PizzaSlider({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [P, setP] = useState(41);
   const [r, setR] = useState(1.89); // 189% CAGR — the actual BTC rate, $41 → ~$1B in 16 years
   const [t, setT] = useState(16);

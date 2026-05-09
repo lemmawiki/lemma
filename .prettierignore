@@ -1,0 +1,11 @@
+# oxfmt's markdown formatter mangles JSX content inside MDX (rewrites
+# underscores in <Formula> as italic emphasis, breaking content). MDX is
+# excluded from auto-formatting; .md files (glossary, READMEs) still pass
+# through normally.
+**/*.mdx
+
+# Build artifacts and generated files (keep in sync with .gitignore as
+# needed; this file is also read by oxfmt as its default ignore source).
+dist
+.astro
+node_modules

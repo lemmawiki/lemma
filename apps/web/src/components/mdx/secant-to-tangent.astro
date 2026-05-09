@@ -1,0 +1,7 @@
+---
+import { SecantToTangent as SecantToTangentReact } from "../widgets/secant-to-tangent";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<SecantToTangentReact language={lang} client:load />

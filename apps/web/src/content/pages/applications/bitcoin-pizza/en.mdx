@@ -1,0 +1,173 @@
+---
+title: The Bitcoin Pizza · Lemma
+description: An interactive look at exp, log, and root through the most expensive meal in history.
+breadcrumb:
+  current: finance · the bitcoin pizza
+---
+
+import {
+  Term,
+  Exercise,
+  Solution,
+  Counterexample,
+  WhyNotTaught,
+  PizzaSlider,
+  ThreeDoors,
+} from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · may 22, 2010">
+
+# A Florida programmer named Laszlo Hanyecz paid <span className="font-semibold text-acc">10,000 BTC</span> for two Papa John's pizzas — about <span className="font-semibold text-acc">$41</span>.
+
+Sixteen years later, those 10,000 BTC are worth about **$1 billion**. The most expensive meal in history. So: _what annual rate_ turns $41 into $1B in 16 years? _When_ did Laszlo's dinner first cost a million dollars? And — the one that bites — _how much_ would it be worth in 2046 if BTC keeps that pace?
+
+<Lede>
+  You cannot answer any of these without three operations: <Term id="exponent">exp</Term>,{" "}
+  <Term id="logarithm">log</Term>, and <Term id="nth-root">n-th root</Term>. They are not three
+  topics. They are three doors of one room — and the same machine that *discovers* a story like
+  Bitcoin's also *detects* when a story is impossible. This page is the room.
+</Lede>
+
+</Hook>
+
+<PizzaSlider />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="How much? — projecting the pizza forward">
+
+If <Term id="bitcoin">Bitcoin</Term> keeps its historical pace, what's 10,000 BTC worth in 2046? Stack <Formula>×2.89</Formula> twenty more times on $1B. <Term id="compound-interest">Compound</Term> growth is repeated multiplication; repeated multiplication, compressed into one symbol, is <Term id="exponent">exponentiation</Term>. <Formula>F = P · (1 + r)^t</Formula>.
+
+</ArcRow>
+
+<ArcRow n={2} title="How long? — when did the pizza hit $1M?">
+
+Reverse the question: at BTC's actual rate, when did 10,000 BTC first cross **$1,000,000**? You can't multiply your way there — you have to _undo_ the exponent. The <Term id="logarithm">logarithm</Term> is exactly that: given the result, _count the steps_. <Formula>t = log(F / P) ÷ log(1 + r)</Formula>. Log _is_ the inverse of exp. They are defined by each other. Answer: about **9.5 years** in — late 2019. The pizza became a million-dollar pizza on a random Tuesday.
+
+</ArcRow>
+
+<ArcRow n={3} title="What rate? — was Laszlo's loss really 'extraordinary'?">
+
+We know $41 became $1B in 16 years. We don't know r. We can't undo the exponent (we don't know it); we can't take a log (we'd get the wrong unknown). We need a _third_ operation: the <Term id="nth-root">n-th root</Term>. <Formula>r = (F / P)^(1/t) − 1</Formula>. Finance calls this <Term id="cagr">CAGR</Term>. It is a fractional exponent — a 1/16th power. The number that comes out: **189% per year**. <Term id="spy">SPY</Term> does ~10%. Buffett's Berkshire (his investment company): ~20%. NVIDIA over 25 years: ~33%. Bitcoin: _189_. _Roots are exponents whose value is not a whole number._
+
+<Counterexample>
+  The single number "189% CAGR" hides 16 years of violence. Compute the CAGR over **2018 → 2022**
+  (peak-to-peak): it's around **3% per year**. Compute it over **2020 → 2021**: over **300%**. CAGR
+  is an *average exponent* — it assumes the rate was constant, which it never was. The same equation
+  that *discovered* the Bitcoin story *flattens* it the moment you compute CAGR. If you sell at the
+  wrong window, your "average" returns nothing like 189%.
+</Counterexample>
+
+</ArcRow>
+
+<Pin>
+  **One equation, three operations.** <Formula>F = P(1+r)^t</Formula> has three unknowns. Each
+  unknown picks a different door: **exp** for F, **log** for t, **root** for r. That is the entire
+  structural relationship between exp, log, and root. Memorize the equation, not the operations.
+</Pin>
+
+</Arc>
+
+<ThreeDoors />
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="read the graph">
+
+On the Pizza Slider above, leave it at the defaults: **P = $41**, **r = 189%**. Toggle the y-axis to **log**. Roughly when does Laszlo's $41 first cross **$1,000,000**? (Read it off the graph; no formula.)
+
+<Solution>
+  About **2019** — roughly 9–10 years in. The straight log-line meets the $1M grid line near year
+  9.5. (Sanity check: $41 × 24,000 = $984k, and 2.89^9.5 ≈ 24,000, so 9.5 years checks.)
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="compute by hand · Rule of 72" noCalculator>
+
+The <Term id="rule-of-72">Rule of 72</Term> at SPY's **8% per year**: how long for $1 to double? Then justify the rule using ln(2) ≈ 0.693 and ln(1 + r) ≈ r for small r. _Then_ ask yourself: would the rule still work at BTC's 189%? (Don't compute — just predict.)
+
+<Solution>
+  72 / 8 = **9 years**. Justification: (1+r)^t = 2 ⇒ t = ln(2) / ln(1+r) ≈ 0.693 / r. So t·(r in %)
+  ≈ 69.3, rounded up to 72 (lots of divisors). At BTC's 189%, the approximation ln(1+r) ≈ r breaks
+  badly — the "72" rule predicts doubling in 72/189 ≈ 0.38 years (≈4.5 months), but the true answer
+  is ln(2)/ln(2.89) ≈ **0.65 years** (≈8 months). The rule is a small-r tool. Pin this lesson —
+  exercise 6 will revisit it.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="write the equation">
+
+You buy **$100** of BTC today. Assume — generously — that BTC's CAGR slows to **50% per year** (about a quarter of its historical pace). Write the equation for its value in **10 years**, then solve.
+
+<Solution>
+  F = 100 · 1.5^10. Compute 1.5^10: 1.5² = 2.25, 1.5⁴ = 5.06, 1.5⁸ = 25.6, 1.5^10 = 1.5⁸ · 1.5² =
+  25.6 · 2.25 ≈ 57.7. So F ≈ **$5,770**. The "boring" half-pace future still puts $100 at almost $6k
+  in a decade. That's what compounding does even when slowed.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="compute by hand · the root" noCalculator>
+
+A friend put **$1,000** into BTC **5 years** ago. It is now **$32,000**. What was their CAGR? (Hint: notice 32 = 2⁵.)
+
+<Solution>
+  r = (32000/1000)^(1/5) − 1 = 32^(1/5) − 1 = (2⁵)^(1/5) − 1 = 2 − 1 = **100% per year**. Their
+  portfolio doubled every year. The trick was spotting that 32 is 2⁵, so the 5th root collapses to a
+  clean 2.
+</Solution>
+
+</Exercise>
+
+<Exercise number={5} tag="two curves cross">
+
+Investor A puts **$1,000,000** into **SPY at 8%/yr** in 2010. Investor B puts just **$100** into **BTC at 50%/yr** in 2010 (sober assumption, not the 189% historical). After how many years does B catch up to A?
+
+<Solution>
+  Set 100 · 1.5^t = 1,000,000 · 1.08^t. Divide: (1.5/1.08)^t = 10,000, so 1.389^t = 10,000. Take
+  log₁₀: t · log₁₀(1.389) = 4. With log₁₀(1.389) ≈ 0.143, t ≈ 4 / 0.143 ≈ **28 years** — i.e. around
+  2038. Lesson: in compounding, *rate beats principal*, but only if you give it enough time. The
+  break-even is set by the log of the principal gap.
+</Solution>
+
+</Exercise>
+
+<Exercise number={6} tag="the evil one · log as lie detector">
+
+Project Bitcoin forward. Today (2026): 10,000 BTC ≈ **$1B**. If BTC keeps its 16-year CAGR of **189%** for another **20 years** (until 2046), what is the pizza worth? Compare to global GDP (~$110T). What does the answer tell you about exponential stories? Use <Formula>log₁₀(2.89) ≈ 0.461</Formula>.
+
+<Solution>
+  F = 10⁹ · 2.89²⁰. Take log₁₀: log₁₀(F) = 9 + 20 · 0.461 = 9 + 9.22 = **18.22**. So F ≈ 10^18.22 ≈
+  **$1.7 × 10^18** — about **$1.7 quintillion**. Global GDP is ~$1.1 × 10^14. Ratio: ~**15,000×
+  global GDP**. The lesson is the punchline of this whole module: *exponentials cannot survive
+  contact with finite resources*. The same log that *discovered* Bitcoin's 189% rate also *predicts*
+  when that rate becomes nonsense. Logs aren't just inverse exponents. They are the bullshit
+  detector for any story told in compounding.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  Most textbooks open with `log(x)` as "the inverse of `eˣ`" — a definition without a question. The
+  reader learns the symbol before they learn the *need*. Lemma inverts the order: a
+  ten-thousand-bitcoin pizza is the question, and exp/log/root fall out as the only honest way to
+  answer it. The mathematics earns the page; the page does not earn the mathematics.
+</WhyNotTaught>
+
+<PageFooter>
+  application: **Bitcoin Pizza** · pillar: **Finance**. Next modules consume this one: continuous
+  compounding (introduces *e*), [log-likelihood](/en/modules/log), half-life (where 반감기 means
+  something else entirely).
+</PageFooter>

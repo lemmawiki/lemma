@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Mafs, Coordinates, Plot, Line, MovablePoint } from "mafs";
-import { useApp, pick } from "../../context/app-context";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 import { Slider, Stat } from "./widget-primitives";
 import { figureColors as C } from "../figures/theme";
@@ -24,8 +24,9 @@ const H_MAX = 1.5;
 const fmt = (n: number, d = 3) => (Number.isFinite(n) ? n.toFixed(d) : "—");
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
-export function SecantToTangent() {
-  const { language } = useApp();
+export function SecantToTangent({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [a, setA] = useState(1);
   const [h, setH] = useState(1);
 

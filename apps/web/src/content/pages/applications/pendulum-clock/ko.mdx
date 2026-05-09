@@ -1,0 +1,208 @@
+---
+title: 진자시계 · Lemma
+description: 시계는 변하지 않는 째깍이 필요하다. sin θ ≈ θ로 선형화하면 주기가 상수가 된다. 시계는 그 근사 위에 서 있다.
+breadcrumb:
+  current: 물리 · 진자시계
+---
+
+import {
+  Term,
+  Exercise,
+  Solution,
+  Counterexample,
+  WhyNotTaught,
+  TwoPendulums,
+} from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 시계가 기댄 거짓말">
+
+# 진폭을 두 배로 키웠는데, 왜 시계는 거의 같은 시간을 잴까?
+
+시계는 변하지 않는 째깍이 필요하다. 그런데 실제 진자의 흔들림은 진폭에 의존한다 — 세게 밀면 돌아오는 데 더 오래 걸린다. 그렇다면 세상은 어떻게 _원리적으로_ 진폭에 의존하는 장치 위에 하루 오차 몇 초의 시계를 세웠을까? **비밀은 작은 흔들림에서는 _거의_ 의존하지 않는다는 것.** 비선형 함수 하나를 0에서의 접선으로 바꾸면, 방정식은 주기가 *상수*인 조화진동자가 된다. 시계는 그 근사 위에 서 있다.
+
+<Lede>
+  아래 위젯에서: 보정이 **꺼짐**일 때 길이는 같지만 진폭이 매우 다른 두 진자가 *완벽히* 같은 박자로
+  흔들린다. 보정 **켜짐**으로 바꾸면 큰 진폭 쪽이 눈에 보이게 뒤처진다. 이 "거의"가 진자시계 공학의
+  전부.
+</Lede>
+
+</Hook>
+
+<TwoPendulums />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="시계가 요구하는 것">
+
+기계식 시계는 흔들림의 횟수를 센다. "1분"이 우리가 원하는 의미가 되려면, 매 흔들림이 _같은_ 시간이 걸려야 한다. 흔들림 진폭은 무엇이든 좋다 — 단, <Term id="period">주기</Term>가 *일정*해야 한다, 이번 째깍에서 탈진기가 얼마만큼의 에너지를 줬든 무관하게. 주기가 실제로 그 성질을 가지는지는 운동 방정식이 결정한다.
+
+</ArcRow>
+
+<ArcRow n={2} title="진짜 방정식">
+
+질량 <Formula>m</Formula>의 추가 길이 <Formula>L</Formula>의 강체 막대에 매달려 있을 때, 각 <Term id="acceleration">가속도</Term>를 만드는 유일한 힘은 <Term id="gravity">중력</Term>의 호 접선 성분 — 수직 아래에서 측정한 각 <Formula>θ</Formula>에 대해 <Formula>−mg sin θ</Formula>. 호를 따라 뉴턴 제2법칙을 쓰면:
+
+```
+θ̈ = −(g/L) · sin θ
+```
+
+이것은 _비선형_ 미분 방정식이다. 깔끔한 초등 해는 없고, 주기는 추가 출발한 진폭 <Formula>θ₀</Formula>에 _의존한다_. 세상이 정확히 이대로라면, 어떤 기계식 시계도 시간을 지킬 수 없다.
+
+</ArcRow>
+
+<ArcRow n={3} title="작은 각의 한 수">
+
+<Formula>sin θ</Formula>를 0 근처에서 보자. 원점에서의 <Term id="tangent">접선</Term>은
+<Formula>y = θ</Formula>. 그래서 작은 <Formula>θ</Formula> (라디안)에 대해
+<Formula>sin θ ≈ θ</Formula>. <Formula>θ = 5°</Formula> (≈ 0.087 rad)에서 오차는 약 0.1%.
+<Formula>30°</Formula>에서는 약 4.5%. <Formula>60°</Formula>에서는 거의 18% — 근사가 빠르게 깨진다.
+이게 <Term id="small-angle-approximation">작은 각 근사</Term>. 비선형 함수를 접선으로 바꾸는 일반적
+절차는 <Term id="linearization">선형화</Term>.
+
+위기: §2의 식은 어렵다. 한 수: 모든 곳에서 <Formula>sin θ</Formula>를 <Formula>θ</Formula>로 바꾼다. 거래: 새 식은 큰 흔들림에서는 틀린다. 도박: 실제 시계는 그게 안 틀리는 영역에서 작동한다.
+
+</ArcRow>
+
+<ArcRow n={4} title="선형화된 방정식">
+
+대입한다. 진자 방정식은:
+
+```
+θ̈ = −(g/L) · θ
+```
+
+그게 <Term id="simple-harmonic-motion">단순조화운동</Term>: 가속도가 변위의 음의 값에 비례. 일반해는 <Formula>θ(t) = θ₀ cos(ω·t + φ)</Formula>, <Formula>ω = √(g/L)</Formula>. 초기 조건 ("각 <Formula>θ₀</Formula>에서 정지 상태로 놓음")을 넣으면 위상 <Formula>φ</Formula>이 0이 되어 <Formula>θ(t) = θ₀ cos(√(g/L) · t)</Formula>가 남는다.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="시계 공식 — 진폭이 없는 주기">
+
+코사인의 주기는 <Formula>2π</Formula>, 각진동수 <Formula>ω</Formula>는 초당 <Formula>2π/T</Formula> 라디안. 그러므로:
+
+```
+T = 2π √(L/g)
+```
+
+_진폭이 사라졌다._ 주기는 막대 길이 <Formula>L</Formula>과 그 지역의 <Formula>g</Formula>에만 의존한다 — 추의 질량과 무관, 얼마나 크게 흔드는가와도 무관. 시계가 요구한 그 성질이, 선형화된 방정식의 깔끔한 따름결과로 떨어진다. 지구의 1m 막대는 <Formula>T ≈ 2.007 s</Formula>로 흔들리고, 달에서는 <Formula>g ≈ 1.62 m/s²</Formula>이라 같은 막대가 <Formula>T ≈ 4.93 s</Formula>로 흔들린다.
+
+</ArcRow>
+
+<ArcRow n={6} title="거짓말을 정직하게 들여다보기">
+
+진폭은 실제 주기에서 _사라지는_ 게 아니라 _작아진다_. 전개의 다음 항은 잘 알려져 있다:
+
+```
+T(θ₀) = T₀ · (1  +  θ₀²/16  +  …)
+```
+
+<Formula>θ₀ = 10°</Formula> (≈ 0.175 rad)에서 보정은 약 0.2% — 8분에 1초, 감내할 만함.
+<Formula>30°</Formula>에서는 1.7%, 30분에 30초 — 이미 디지털 손목시계보다 못함.
+<Formula>60°</Formula>에서는 6.9%, 시간당 6분 — 시계로는 쓸모없음. 위젯이 보여준다: 보정을 켠 채
+<Formula>θ_B = 60°</Formula>로 두면 몇 흔들림 안에 B가 A보다 눈에 띄게 뒤처진다.
+
+실제 진자시계가 작동한 건 탈진기가 추를 _작은_ 호 안에 가둬뒀기 때문이다. 17세기 시계공들은 남은 진폭 오차를 보정하려고 매다는 부위에 사이클로이드 "뺨"을 붙였고, 현대 설계는 호를 충분히 작게 유지해 선형 근사가 _거의_ 참인 영역에 머무르게 한다. 기술 전체가 그 거짓말이 통하는 영역을 중심으로 만들어졌다. 공식 자체보다 이게 더 핀에 박을 가치가 있는 교훈.
+
+{/* TODO: Python code block for arc 6 — code-mode integration deferred */}
+
+<Counterexample>
+  진폭만이 모델이 카펫 밑으로 쓸어 넣은 축은 아니다. <Formula>T = 2π√(L/g)</Formula>는{" "}
+  <Formula>g</Formula>가 고정이라고 가정한다 — 하지만 <Formula>g</Formula>는 고도 100m당 약 0.031%
+  줄어든다. 완벽히 맞춘 괘종시계를 런던에서 덴버 (≈1,600m)로 옮기면 주기가 약 0.025% 길어지고,
+  시계는 **하루에 약 21초** 늦는다. <Formula>sin θ</Formula>의 선형화는 시계가 의존하는 여러 거짓말
+  중 하나일 뿐 — 가장 눈에 띄는 한 줄에 불과하다.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **진자시계는 거짓말 위에서 돈다.** 실제 흔들림은 진폭에 의존한다 — 단, 작은 흔들림에서는 *거의*
+  의존하지 않는다. 식을 선형화하면 주기가 상수가 되고, 그 거짓말이 통하는 영역에서만 시계가 시계가
+  된다. "거의"가 곧 공학.
+</Pin>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="작은 각 주기 손계산" noCalculator>
+
+<Formula>L = 1 m</Formula>, <Formula>g = 10 m/s²</Formula>일 때 작은 각 주기
+<Formula>T = 2π√(L/g)</Formula>를 어림하라. 계산기 없이 <Formula>π² ≈ 10</Formula>을 활용.
+
+<Solution>
+  <Formula>L/g = 0.1</Formula>, 그러므로 <Formula>√(L/g) = √0.1 ≈ 0.316</Formula>. 이어서{" "}
+  <Formula>T ≈ 2π · 0.316 ≈ 6.28 · 0.316 ≈ 1.99 s</Formula>. (더 깔끔히:{" "}
+  <Formula>T = 2π · √(L/g)</Formula>이라 <Formula>T² = 4π²·L/g ≈ 40·0.1 = 4</Formula>, **T ≈ 2 s**.
+  *1초 진자* 는 반주기가 1초인 막대 — 지구에서 정확히 1m.)
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="달에서의 2초 진자">
+
+달에서는 <Formula>g_달 ≈ 1.62 m/s²</Formula>. 그곳에서 작은 각 주기 <Formula>T = 2 s</Formula>를 만들려면 길이 <Formula>L_달</Formula>은? 문제 1의 지구 길이와 비교하라.
+
+<Solution>
+  <Formula>T = 2π√(L/g)</Formula>와 <Formula>T = 2</Formula>에서{" "}
+  <Formula>L = g · (T/2π)² = g/π²</Formula>. <Formula>π² ≈ 9.87</Formula>,{" "}
+  <Formula>g_달 = 1.62</Formula>이므로 <Formula>L_달 ≈ 0.164 m</Formula> ≈ 16 cm. 지구는 1 m였다.
+  같은 째깍을 유지하는 달의 시계 진자는 약 6배 짧다. (반대로 같은 1 m 막대는 달에서 약{" "}
+  <Formula>4.93 s</Formula>마다 한 번 째깍한다.)
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="진폭이 사라진 자리">
+
+대수를 따라가자: <Formula>θ̈ = −(g/L) sin θ</Formula>에서 출발해 <Formula>sin θ ≈ θ</Formula>를 넣으면 왜 주기에서 <Formula>θ₀</Formula>가 사라지는지 한 문단으로 설명하라. 선형화 전에는 진폭 의존성이 _어디에_ 숨어 있었는지 정확히.
+
+<Solution>
+  선형화 전 우변은 <Formula>−(g/L)·sin θ</Formula>. 함수 <Formula>sin</Formula>은 입력보다 느리게
+  자란다: <Formula>θ = 1</Formula>에서 <Formula>sin 1 ≈ 0.84</Formula> (16% 작음). 그러니 큰 각에서
+  "변위당 복원 가속" 이 *<Formula>g/L</Formula>보다 작다* — 진자가 선형 법칙이 예측하는 것보다
+  느리게 가속되어 더 늦게 돌아온다. 복원 강도가 약해지는 비율이 <Formula>θ₀</Formula>에 의존하고,
+  그게 바로 <Formula>θ₀</Formula>가 주기에 들어오는 경로. <Formula>sin θ</Formula>를{" "}
+  <Formula>θ</Formula>로 바꾸면 복원 강도가 모든 <Formula>θ</Formula>에서 *변위에 정확히 비례*하게
+  되고, <Formula>θ₀</Formula>는 더 이상 돌아오는 속도를 바꾸지 않으므로 <Formula>T</Formula>가
+  그것에 의존하지 않게 된다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="60°에서 거짓말은 얼마나 큰가?" noCalculator>
+
+1차 보정 <Formula>T(θ₀) ≈ T₀ · (1 + θ₀²/16)</Formula>을 <Formula>θ₀ = 60°</Formula>에 적용. 상대 오차 <Formula>(T − T₀)/T₀</Formula>을 퍼센트로 어림하고, 시간당 몇 초인지 계산. 위젯과 확인.
+
+<Solution>
+  <Formula>60° = π/3 rad ≈ 1.05</Formula>; <Formula>θ₀² ≈ 1.10</Formula>;{" "}
+  <Formula>θ₀²/16 ≈ 0.069</Formula>. 그러므로 <Formula>(T − T₀)/T₀ ≈ 6.9%</Formula>. 1시간(3600
+  s)이면 약 **250초 느림** — 시간당 4분 이상. 그런 오차의 "시계"로는 아침과 저녁도 못 가린다.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  물리 교과서는 보통 선형화된 진자식을 *그* 진자 방정식으로 내놓고, 비선형 원본은 각주 한 줄로
+  밀어둔다. 독자는 시계가 *그냥* 단순조화진동자라고 믿고 떠난다. Lemma는 §2에 비선형 식을 그대로
+  두고, §3에서 선형화를 *발견*이 아니라 *한 수*로 부르며, §6에서 그 거짓말을 정직하게 들여다본다.
+  공학은 교과서보다 진실을 적게 말하지 않는다 — *모델이 어디서 통하는가*라는 한 가지 진실을 *더*
+  말한다.
+</WhyNotTaught>
+
+<PageFooter>
+  응용: **진자시계**. 자매 응용: [포물선 운동](/ko/physics/projectile-motion). 둘 다 작은 편차에서의
+  선형 거동에 기댄다 — 포물선은 공기저항을 무시하기 때문, 진자는 <Formula>sin θ − θ</Formula>를
+  무시하기 때문. 향후 소비 후보 모듈: *미분* 또는 *선형화* 모듈.
+</PageFooter>

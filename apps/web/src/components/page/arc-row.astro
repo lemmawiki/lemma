@@ -1,0 +1,31 @@
+---
+// One numbered step in an arc. Two-column grid: big serif numeral on the left,
+// title + prose on the right.
+//
+//   <ArcRow n={1} title="log₂ N — the equally-likely floor">
+//     Prose paragraph one.
+//
+//     Another paragraph.
+//   </ArcRow>
+interface Props {
+  n: number;
+  title?: string;
+}
+const { n, title } = Astro.props;
+---
+
+<div
+  class="grid grid-cols-[56px_1fr] gap-5 border-t border-rule py-5 max-md:grid-cols-[36px_1fr] max-md:gap-[14px]"
+>
+  <div
+    class="font-serif text-[38px] font-medium leading-none text-acc [font-feature-settings:'lnum'] max-md:text-[28px]"
+  >
+    {n}
+  </div>
+  <div
+    class="min-w-0 [&_h3]:m-0 [&_h3]:mb-2 [&_h3]:font-serif [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:tracking-[-0.01em] [&_h3]:text-ink [&_p]:m-0 [&_p]:mb-3 [&_p:last-child]:mb-0 [&_p]:text-[16.5px] [&_p]:text-ink-soft [&_p_strong]:font-semibold [&_p_strong]:text-ink [&_p_em]:italic [&_p_em]:text-acc-deep"
+  >
+    {title && <h3>{title}</h3>}
+    <slot />
+  </div>
+</div>

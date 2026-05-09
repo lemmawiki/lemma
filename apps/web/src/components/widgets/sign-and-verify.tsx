@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { useApp, pick } from "../../context/app-context";
+import { useContext, useMemo, useState } from "react";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 import { Slider, Row } from "./widget-primitives";
 
@@ -157,8 +157,9 @@ const SLIDER = {
   k: { min: 1, max: N - 1, step: 1 },
 };
 
-export function SignAndVerify() {
-  const { language } = useApp();
+export function SignAndVerify({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [d, setD] = useState(5);
   const [h, setH] = useState(3);
   const [k, setK] = useState(7);

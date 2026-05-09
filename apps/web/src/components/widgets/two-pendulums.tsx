@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useApp, pick } from "../../context/app-context";
+import { useContext, useState } from "react";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 import { Slider, Stat } from "./widget-primitives";
 
@@ -42,8 +42,9 @@ function periodCorrection(thetaRad: number): number {
   return 1 + (thetaRad * thetaRad) / 16;
 }
 
-export function TwoPendulums() {
-  const { language } = useApp();
+export function TwoPendulums({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [L, setL] = useState(1.0);
   const [g, setG] = useState(9.8);
   const [thetaA, setThetaA] = useState(8); // degrees

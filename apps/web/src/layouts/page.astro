@@ -1,0 +1,83 @@
+---
+// Layout for content-collection MDX pages. Renders <head>, the language-aware
+// header, and slots in MDX content. Old pages still use Base.astro directly;
+// this layout is for the new /[lang]/... routes.
+import Header from "../components/header.tsx";
+import "../styles/global.css";
+
+interface Props {
+  lang: "en" | "ko";
+  title?: string;
+  description?: string;
+}
+
+const {
+  lang,
+  title = "Lemma",
+  description = "An interactive math textbook built backwards.",
+} = Astro.props;
+
+const pathname = Astro.url.pathname;
+const ogImage = new URL("/og.png", Astro.site ?? "https://lemma.wiki").href;
+const canonical = new URL(pathname, Astro.site ?? "https://lemma.wiki").href;
+
+// Counterpart-locale URL for the alternate <link rel="alternate" hreflang>.
+function altPath(target: "en" | "ko"): string {
+  return pathname.replace(/^\/(en|ko)(?=\/|$)/, `/${target}`);
+}
+const altEn = new URL(altPath("en"), Astro.site ?? "https://lemma.wiki").href;
+const altKo = new URL(altPath("ko"), Astro.site ?? "https://lemma.wiki").href;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={altEn} />
+    <link rel="alternate" hreflang="ko" href={altKo} />
+    <link rel="alternate" hreflang="x-default" href={altEn} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta name="theme-color" content="#faf7f2" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Lemma" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Lemma" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={lang === "ko" ? "ko_KR" : "en_US"} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <main class="mx-auto max-w-[880px] px-7 pt-8 pb-24 max-md:px-[18px] max-md:pt-5 max-md:pb-16">
+      <Header pathname={pathname} language={lang} client:load />
+      <slot />
+    </main>
+  </body>
+</html>

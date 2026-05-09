@@ -1,0 +1,16 @@
+---
+// MDX wrapper for the React <Term/> component. Reads lang from Astro at build
+// time and passes it through; the React island renders client-side without
+// needing an AppProvider above it.
+import { Term as TermReact } from "../term";
+
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<TermReact id={id} language={lang} client:load>
+  <slot />
+</TermReact>

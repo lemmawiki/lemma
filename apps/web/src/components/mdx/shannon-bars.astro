@@ -1,0 +1,7 @@
+---
+import { ShannonBars as ShannonBarsReact } from "../widgets/shannon-bars";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<ShannonBarsReact language={lang} client:load />

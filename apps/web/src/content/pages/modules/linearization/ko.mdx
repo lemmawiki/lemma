@@ -1,0 +1,167 @@
+---
+title: 선형화 · Lemma
+description: 대부분의 식은 어렵다. 그 접선은 쉽다.
+breadcrumb:
+  parent: 그래프
+  parent_path: /graph
+  current: 모듈 · 선형화
+---
+
+import { Term, Exercise, Solution, TangentApproximation } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 일상적 한 수">
+
+# 대부분의 식은 어렵다. 그 접선은 쉽다.
+
+"작은 <Formula>θ</Formula>에서 <Formula>sin θ ≈ θ</Formula>" 또는 "여기 근처에선 선형적으로 자란다" 또는 "1차 근사에선" 이라고 말할 때마다 우리는 <Term id="linearization">선형화</Term>를 하고 있다. 이 패턴은 너무 흔해서 의식하지 않게 된다. 진자시계가 작동하는 이유, 뉴턴 방법이 깔린 자리, 경사하강법의 바닥 모두 여기. 대부분의 공학은 *그것이 통하는 영역에 머무는 일*에 대한 규율.
+
+<Lede>
+  아래 위젯에서 **a** (기준점)와 **x** (평가점)를 끌어보자. <Formula>a = 0</Formula>일 때{" "}
+  <Formula>sin</Formula>의 접선은 정확히 <Formula>y = x</Formula> — 작은 각 근사, 그림으로. **x**를{" "}
+  <Formula>0</Formula>에서 멀어지게 끌면 오차가 거리의 *제곱*으로 자란다.
+</Lede>
+
+</Hook>
+
+<TangentApproximation />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="왜 근사하는가">
+
+세상을 지배하는 함수는 대부분 *비선형*이다 — 진자의 <Formula>sin θ</Formula>, 트랜지스터의 지수형 전류, 중력의 <Formula>1/r²</Formula>, 신경망의 softmax. 닫힌 형태로 푸는 건 대부분의 경우 불가능. 그래서 우리는 _통제된_ 방식으로 정확성을 거래한다 — 관심 있는 점을 하나 정하고, 그 점 *근처*에서 비선형 함수를 가장 가까운 선형 함수로 교체하고, "충분히 가까운" 영역에서만 답이 맞다고 받아들인다.
+
+</ArcRow>
+
+<ArcRow n={2} title="한 점에서의 접선">
+
+매끄러운 점 <Formula>a</Formula>에서 함수 <Formula>f</Formula>는 값 <Formula>f(a)</Formula>와 기울기 <Formula>f'(a)</Formula>를 ([미분 모듈](/ko/modules/derivatives)로부터) 가진다. <Formula>(a, f(a))</Formula>를 지나며 그 기울기를 가지는 _유일한_ 직선이 <Term id="tangent">접선</Term>이다:
+
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`L_a(x)  =  f(a)  +  f'(a) · (x − a)`}</pre>
+
+그것이 <Formula>a</Formula>에서 <Formula>f</Formula>의 선형화. 함수와 두 가지 면에서 일치한다 — 기준에서 값이 같고 (<Formula>L_a(a) = f(a)</Formula>), 기준에서 기울기도 같다 (<Formula>L_a'(a) = f'(a)</Formula>). 둘 다 만족시키는 직선은 *유일*하다. 위젯의 점선 갈색 직선이 그것; <Formula>f(x) = sin x</Formula>, <Formula>a = 0</Formula>일 때 직선은 <Formula>L_0(x) = 0 + 1 · (x − 0) = x</Formula>.
+
+{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={3} title="오차는 제곱으로 자란다">
+
+매끄러운 함수에 대해 오차 <Formula>f(x) − L_a(x)</Formula>는 편차 <Formula>x − a</Formula>에 대해 *이차*로 거동한다. 편차를 두 배로 하면 오차는 약 네 배, 절반으로 하면 오차는 1/4. 이건 *선형이 아니라 이차* — 그래서 선형화가 유용하다. 기준에 가까워질수록 격차가 *아주 빠르게_ 닫힌다.
+
+구체적으로 <Formula>sin</Formula>의 <Formula>0</Formula>에서: 선두 오차항은 <Formula>−x³/6</Formula>이라 <Formula>오차 / (x − a)²</Formula> 비율이 <Formula>x</Formula>에 따라 천천히 표류 — 여기선 _삼차_ 항이 지배. 다른 함수들 (<Formula>e^x</Formula>, <Formula>√(1 + x)</Formula>, <Formula>1/(1 − x)</Formula>) 은 기준에서 2차 도함수가 0이 아니라 <Formula>오차 / (x − a)²</Formula>가 일정. 어느 쪽이든 경험칙은 같다 — *"작은" 편차에서는 선형 근사가 괜찮고, "큰" 편차에서는 *빠르게* 틀린다.*
+
+{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={4} title="이걸로 만들 수 있는 것">
+
+작은 영역에서 비선형을 선형으로 바꾸는 도구가 손에 들어오면, 세 가지 널리 쓰이는 알고리즘이 떨어진다:
+
+- **뉴턴 방법**으로 <Formula>f(x) = 0</Formula> 풀기. 현재 추측에서 선형화하고, *그 직선*이 0을 지나는 곳을 다음 추측으로 사용. 매 스텝이 한 번의 선형화. 수렴은 이차 — 한 스텝의 오차가 다음 스텝의 오차의 *제곱*이 된다.
+- **[경사하강법](/ko/ml/gradient-descent)**으로 손실 최소화. 1차 테일러 근사가 <Formula>L(w − η · ∇L) ≈ L(w) − η · ‖∇L‖²</Formula>이라고 말한다. <Formula>η</Formula>가 충분히 작아 선형화를 믿을 수 있으면 손실이 감소. 너무 크면 선형화가 거짓말 — 그 페이지의 위젯에서 <Formula>η = 0.27</Formula>일 때 보이는 폭발.
+- **[진자시계](/ko/physics/pendulum-clock)**가 의지하는 것은 단 하나의 선형화: <Formula>sin θ ≈ θ</Formula>. 비선형 ODE <Formula>θ̈ = −(g/L) sin θ</Formula>가 <Formula>θ̈ = −(g/L) θ</Formula>로 바뀌면서 닫힌 사인꼴 해와 일정 주기의 시계가 나온다. 기술 전체가 그 거짓말이 통하는 _작은 각 영역_ 안에 산다.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="함정 — 어디까지나 '거의'">
+
+모든 선형화는 기준 근처를 벗어나면 _틀린다_. 도구를 잘 쓴다는 것은 그 근처의 *경계를 재고 존중하는 일*에 대한 규율:
+
+- "선형화가 잘 된다"는 슬로건이 아니라, 선형 답이 충분히 좋은 *편차의 한계*를 인용할 것.
+- 다음 차수 항을 계산하거나 추정해 그것이 충분히 작은지 (또는 부호가 해를 끼치지 않는지) 확인할 것.
+- 설계로 영역 *안*에 머물 것 — 시계 탈진기는 호를 작게, ML 훈련 스케줄은 학습률을 줄이고, 제어 시스템은 동작점 근처에, 회로 설계자는 트랜지스터를 선형 영역에 바이어스. 머물 수 없으면 더 높은 차수의 방법이나 비선형 해법으로 넘어가고, 그 비용을 받아들일 것.
+
+그 문구 — "거짓말이 통하는 영역" — 은 진자시계 페이지가 닫히는 그 줄이다. 우연이 아니라, 이 모듈이 _이름 붙인_ 패턴이다. 모든 응용 수학 분야는 자기만의 그런 영역 목록을 가지고 있고, *얼마만큼 기댈 수 있는지를 정확히 아는 사람들*이 그 목록을 관리한다.
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **접선은 *기울기*를 정확히 맞추는 가장 싸구려 답이다.** 선형화는 어려운 문제를 쉬운 문제로 바꾼다
+  — 어떤 영역에서는 맞고, 그 밖에서는 늘 틀린다. 규율은 그 *영역*에 있다.
+</Pin>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="작은 각 손계산" noCalculator>
+
+<Formula>f(x) = sin x</Formula>를 <Formula>a = 0</Formula>에서 선형화하라. 그것으로
+<Formula>sin 0.1</Formula>을 어림하라. 실제값 (소수 3자리)은 <Formula>0.0998</Formula>. 오차는?
+그것이 <Formula>x</Formula>의 약 몇 분의 1인가?
+
+<Solution>
+  <Formula>L_0(x) = sin(0) + cos(0) · x = x</Formula>. 그러므로 <Formula>L_0(0.1) = 0.1</Formula>.
+  오차 <Formula>= 0.1 − 0.0998 = 0.0002</Formula> (3차항 규칙으로 약{" "}
+  <Formula>x³/6 ≈ 0.001/6 ≈ 0.000167</Formula>, 더 높은 차수 보정 포함). 오차는 <Formula>x</Formula>
+  의 약 <Formula>1/500</Formula> — 대부분의 엔지니어가 신경 쓰는 <Formula>0.5%</Formula> 임계 *훨씬*
+  아래.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="0에서의 지수함수" noCalculator>
+
+<Formula>f(x) = e^x</Formula>를 <Formula>a = 0</Formula>에서 선형화. <Formula>e^0.2</Formula>를
+어림. 실제값은 약 <Formula>1.2214</Formula>. <Formula>e^0.5</Formula> (실제값
+<Formula>1.6487</Formula>) 와 비교. 편차가 커지면 *상대* 오차 패턴은?
+
+<Solution>
+  <Formula>L_0(x) = e^0 + e^0 · x = 1 + x</Formula>. 그러므로 <Formula>L_0(0.2) = 1.2</Formula>{" "}
+  (실제 1.2214; 오차 <Formula>0.0214</Formula>, 약 **1.8%**). <Formula>L_0(0.5) = 1.5</Formula>{" "}
+  (실제 1.6487; 오차 <Formula>0.1487</Formula>, 약 **9%**). 편차는 <Formula>2.5배</Formula>, 오차는{" "}
+  <Formula>약 7배</Formula> — 이차 오차 스케일링이 예측한 <Formula>2.5² = 6.25배</Formula>에 가깝다.
+  *편차를 두 배로 하면 오차는 네 배* 규칙이 작동.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="뉴턴 스텝 = 선형화">
+
+어떤 비선형 <Formula>f</Formula>에 대해 <Formula>f(x) = 0</Formula>을 풀고 싶다고 하자. 추측 <Formula>x_n</Formula>이 있다. <Formula>x_n</Formula>에서 <Formula>f</Formula>를 선형화하고, 그 직선이 0과 만나는 점을 다음 추측으로 잡으면 다음 추측이 <Formula>x_(n+1) = x_n − f(x_n) / f'(x_n)</Formula>임을 보여라. 이 반복은 언제 깨지는가?
+
+<Solution>
+  <Formula>x_n</Formula>에서의 접선은 <Formula>L(x) = f(x_n) + f'(x_n)(x − x_n)</Formula>.{" "}
+  <Formula>L(x) = 0</Formula>으로 두고 <Formula>x</Formula>에 대해 풀면{" "}
+  <Formula>x = x_n − f(x_n)/f'(x_n)</Formula>. 깨지는 경우 — <Formula>f'(x_n) ≈ 0</Formula> (접선이
+  거의 수평이라 다음 추측이 무한대로 날아감), 또는 추측이 근에서 멀어 선형 근사가 *심하게
+  거짓말*하는 경우. 실제로는 선형화가 *충실한 영역*에서 출발해야 한다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="왜 경사하강법 η에 천장이 있나">
+
+손실의 1차 테일러 근사 <Formula>L(w + d) ≈ L(w) + ∇L(w) · d</Formula>는 작은 <Formula>‖d‖</Formula>에서만 정직하다. 경사하강법은 <Formula>d = −η · ∇L</Formula>을 고른다. 2차 항으로 [/ml/gradient-descent](/ko/ml/gradient-descent)의 토이 이차 손실에 <Formula>η</Formula> 천장이 <Formula>2/L''(w_)</Formula>에 있는 이유를 논증하라.
+
+<Solution>
+  1D 이차 손실 <Formula>L(w) = c·(w − w_)²/2</Formula>에서 <Formula>L''(w) = c</Formula> 모든
+  곳에서. <Formula>w</Formula>에서의 선형화로 다음 스텝 <Formula>w − η·c(w − w_)</Formula>가 변위{" "}
+  <Formula>u = w − w_</Formula>를 인자 <Formula>r = 1 − η·c</Formula>로 곱한다. 안정 수렴엔{" "}
+  <Formula>|r| &lt; 1</Formula>, 즉 <Formula>0 &lt; η &lt; 2/c = 2/L''(w_)</Formula>. 천장 위에선 매
+  스텝이 선형화의 주장을 *지나치고*, 갱신값이 폭발한다. 경사하강법 위젯이{" "}
+  <Formula>η = 0.25</Formula>에서 보여주는 그 경계 — 선형화가 *그 스텝 크기에서* 더 이상 믿을 만하지
+  않게 되는 지점.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  모듈: **선형화**. 소비처 (이미 또는 이름으로): [진자시계](/ko/physics/pendulum-clock),
+  [경사하강법](/ko/ml/gradient-descent), 그리고 "1차 근사"나 "작은 편차 영역"을 끌어다 쓸 미래의
+  모든 페이지.
+</PageFooter>

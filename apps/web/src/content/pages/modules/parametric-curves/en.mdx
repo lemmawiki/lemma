@@ -1,0 +1,133 @@
+---
+title: Parametric Curves · Lemma
+description: 'A function γ : [0, 1] → ℝ². Not its picture, not its image — the function. Three layers of "same".'
+breadcrumb:
+  parent: graph
+  parent_path: /graph
+  current: module · parametric curves
+---
+
+import { Term, Exercise, Solution, ToolSpec, SameCurve } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · definitional crisis">
+
+# What is "the same curve"?
+
+Drawing the parabola <Formula>y = x²</Formula> on a board, you'd say _this is a curve_. Below you'll see the same picture drawn three different ways — same paint, different motions. Which one is **the** curve? Pick an answer in your head before pressing play. Then play.
+
+<Lede>
+  A module that opens with a <Term id="definitional-crisis">*definitional crisis*</Term> instead of
+  an application: the same picture, drawn three different ways. The fix redefines what "a curve"
+  even is — and that redefinition is the tool downstream applications (graphics, physics, animation)
+  consume.
+</Lede>
+
+</Hook>
+
+<ToolSpec>
+  <Fragment slot="definition">
+    A function <Formula>γ : [0, 1] → ℝ²</Formula>. Not its picture, not its image — the *function*.
+    Three layers of "same": same image (loosest), same up to monotone reparametrization (geometric),
+    equal as functions (strictest).
+  </Fragment>
+  <Fragment slot="applies">
+    The question is *motion*, not just *shape*. Bezier curves (designer drags handles, computer
+    evaluates γ(t)), trajectories (γ(t) = position at time t), animations (motion path is a
+    parametrization, not the path image), arc-length integrals.
+  </Fragment>
+  <Fragment slot="breaks">
+    If only the picture matters — drawing on paper, fitting an outline — the function machinery is
+    overkill; point-set geometry suffices. The distinction also leaks: "is this the same curve?" has
+    no clean answer until you say *which of the three layers* you mean.
+  </Fragment>
+</ToolSpec>
+
+<SameCurve />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="γ is a function, not a shape">
+
+A <Term id="parametrized-curve">parametrized curve</Term> is a function <Formula>γ : [0, 1] → ℝ²</Formula>. The three γ above are three _different_ functions. They happen to share an <Term id="image-of-curve">image</Term> — the set <Formula>{"{γ(t) : t ∈ [0, 1]}"}</Formula>, which is the parabola <Formula>y = x²</Formula> on <Formula>x ∈ [−1, 1]</Formula> — but the image is a _set of points_, stripped of order, speed, and visit count. The function γ is none of those things. Two parametrized curves are equal when <Formula>γ₁(t) = γ₂(t)</Formula> for every t — the same equality you'd use for any other function. By _that_ test, the three γ above are three different curves that happen to leave the same shadow. But functional equality is only the strictest of three layers; the next step locates where the line should actually be drawn.
+
+{/* TODO: Python code block for arc 1 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={2} title="Same image, but is it the same curve?">
+
+Step 1's strict test separates γ₁ from γ₂ even though they paint the same picture in the same direction at different paces. That feels too strict — geometrically they ought to be the same. Differential geometry agrees: it identifies γ with <Formula>γ ∘ φ</Formula> whenever <Term id="reparametrization">φ</Term> is a monotone bijection <Formula>[0, 1] → [0, 1]</Formula>. With <Formula>φ(u) = ((2u−1)³ + 1) / 2</Formula> (monotone since <Formula>dφ/du = 3(2u−1)² ≥ 0</Formula>), one checks <Formula>γ₁ ∘ φ = γ₂</Formula> exactly: γ₁ and γ₂ are the same curve at different paces. γ₃ has no such partner — it visits each interior image point twice, and no monotone φ can take a once-visit schedule to a twice-visit one. So between strict equality (too tight) and image equality (too loose) sits <Term id="reparametrization">reparametrization</Term> equivalence — and that is what most working mathematicians mean by "the same curve."
+
+{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+
+</ArcRow>
+
+<Pin>
+**Three layers of "same":**
+- **same image** — the picture: γ₁ ~ γ₂ ~ γ₃
+- **same up to reparametrization** — the geometric curve: γ₁ ~ γ₂; γ₃ stands alone
+- **equal as functions** — the parametrized curve: all three differ
+
+The picture is the weakest layer; the function is the strictest. **Geometry lives in between.** School math conflates all three under the single word _curve_; that is why "is this the same curve?" has no clean answer — the word was quietly carrying three different objects. The widget you played with above is one diagram showing all three at once.
+
+</Pin>
+
+</Arc>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="read the widget · trail density">
+
+Play γ₂ and look at the trail. Where are the points _most_ tightly packed — near the origin, or near the endpoints? Why? (Trail spacing is constant in time, not in arc length.)
+
+<Solution>
+  Densest *at the origin*. With <Formula>x(u) = (2u−1)³</Formula>, the speed{" "}
+  <Formula>dx/du = 6(2u−1)²</Formula> vanishes at <Formula>u = 1/2</Formula> — γ₂ crawls through the
+  origin and sprints through the endpoints. Equal time steps spend most of their time near the slow
+  point, so trail dots pile up there. The image is the same parabola; only the schedule differs.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="construct · same image, different schedule" noCalculator>
+
+Write a γ : [0, 1] → ℝ² whose image is exactly <Formula>y = x²</Formula> on <Formula>x ∈ [−1, 1]</Formula>, but which traces that parabola _three times_ as t goes 0 → 1. Give a closed-form expression. (Hint: the round trip γ₃ traces it twice using cosine.)
+
+<Solution>
+  One choice: <Formula>γ(t) = (cos(3πt), cos²(3πt))</Formula>. As t runs 0 → 1, the argument{" "}
+  <Formula>3πt</Formula> sweeps <Formula>[0, 3π]</Formula>; cosine completes one and a half full
+  periods, traversing <Formula>[−1, 1]</Formula> three times. Image: the parabola{" "}
+  <Formula>y = x²</Formula> on <Formula>[−1, 1]</Formula>. Same shadow, triple-pace schedule. The
+  image cannot tell this trip apart from γ₁'s single one.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="the evil one · 'extensional equality'">
+
+A junior says: "Two functions with the same outputs are the same function — that's extensional equality. Three γ producing the same image must be the same curve." Find the bug in one sentence. Then state the correct equality test for parametrized curves.
+
+<Solution>
+  The bug: extensional equality of γ compares <Formula>γ(t)</Formula> at every t, not{" "}
+  <Formula>{"{γ(t) : t}"}</Formula> as a set; the junior swapped the function for its image. Correct
+  test: <Formula>γ₁ = γ₂ ⇔ γ₁(t) = γ₂(t) for all t</Formula>. Two γ with the same image are equal
+  iff the schedule also matches, point by point.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  module: **Parametric Curves**. The crisis-as-hook spike that became a real module. Downstream
+  consumers — Bezier curves in graphics, trajectories in physics, motion paths in animation — plug
+  into the parametrization-vs-image distinction this module makes precise.
+</PageFooter>

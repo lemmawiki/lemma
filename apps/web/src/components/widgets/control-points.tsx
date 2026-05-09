@@ -1,5 +1,5 @@
-import { useMemo, useRef, useState } from "react";
-import { useApp, pick } from "../../context/app-context";
+import { useContext, useMemo, useRef, useState } from "react";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 
 // Widget — Control Points.
@@ -73,8 +73,9 @@ const DEFAULT_CONTROLS: Pt[] = [
   { x: 450, y: 240 },
 ];
 
-export function ControlPoints() {
-  const { language } = useApp();
+export function ControlPoints({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [controls, setControls] = useState<Pt[]>(DEFAULT_CONTROLS);
   const [t, setT] = useState(0.5);
   const [showLayers, setShowLayers] = useState(true);

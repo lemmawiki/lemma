@@ -1,0 +1,161 @@
+---
+title: Curve Intersections · Lemma
+description: Drag two conics. Sometimes you see four crossings. Sometimes two. Sometimes none. Bezout says the count is still four — where did the missing intersections go?
+breadcrumb:
+  current: graphics · curve intersections
+---
+
+import { Term, Exercise, Solution, ConicIntersect } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · the count that won't sit still">
+
+# Where do the missing intersections go?
+
+Drag two conics on a screen. Sometimes you see **four** crossings. Sometimes **two**. Sometimes **one**. Sometimes **none**. A physics engine doing collision, a vector tool doing clipping, a font rasterizer doing outline cleanup, a ray tracer doing picking — all of them need a _stable_ answer to "how many?" What you see on screen flickers; the math underneath does not.
+
+<Lede>
+  [Bezout's theorem](/en/modules/bezout) says the count is always **4** for two conics — counted in
+  the right number system, on the right plane, with the right multiplicity. The widget below is the
+  same one the Bezout module ships with; here it answers a different question: *which subset of
+  those 4 is what the screen actually shows?*
+</Lede>
+
+</Hook>
+
+<ConicIntersect />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="What the screen sees vs. what is there">
+
+Two real curves on a 2D plane. The "visible count" is just _the number of points your eye finds at the same pixel_ — real coordinates, both finite. That is the count a naive collision detector returns by raster sampling, or a CAD engine returns by approximate root-finding. It depends on where the curves happen to be drifting today and is not stable under tiny perturbations.
+
+Try the widget. The <Formula>general</Formula> preset shows 4 real crossings — visible count agrees with Bezout. The <Formula>tangent</Formula> preset drops to 3 visible — turn on _show multiplicity_ and one of those gets a <Formula>×2</Formula> tag. The <Formula>disjoint</Formula> preset shows 0 visible — turn on _show complex_ and four open dots appear in the side panel. None of the missing intersections were lost. They just left the real-affine plane.
+
+</ArcRow>
+
+<ArcRow n={2} title="Three places they hide">
+
+Bezout's repair (covered fully in the [Bezout module](/en/modules/bezout)) tells you exactly where the missing crossings went. Three corrections; three places to look.
+
+- **Tangency.** Two crossings collapsed onto one geometric point — the algebra still says two, but the renderer sees one dot. The bookkeeping is <Term id="intersection-multiplicity">intersection multiplicity</Term>: a tangent intersection counts as 2.
+- **Off the visible plane.** The intersection points have complex coordinates — they exist as solutions of the algebra but cannot be plotted in the real <Formula>(x, y)</Formula> grid. Two disjoint circles still intersect at <Formula>(3/2, ± i √5 / 2)</Formula>; the screen has nowhere to put those.
+- **At infinity.** Some intersections live on the line at infinity. Every two distinct circles, no matter where they sit, share the two _circular points_ <Formula>I = [1 : i : 0]</Formula> and <Formula>J = [1 : −i : 0]</Formula> — that's two of their four Bezout intersections, off-screen and complex, accounted for whether you like it or not. The fix is the <Term id="projective-plane">projective plane</Term>.
+
+</ArcRow>
+
+<ArcRow n={3} title="Why a graphics engine cares about the stable count">
+
+An engine that only watches "visible count" is fragile. Two near-tangent circles can have visible-count 0, 1, or 2 depending on a sub-pixel jitter. A renderer that reports "no intersection" one frame and "two intersections" the next is reporting numerical noise as physics. The fix is to compute the _algebraic_ count — the one Bezout guarantees — and then classify each root.
+
+Practically: solve the y-resultant (a quartic in x), find its 4 complex roots with multiplicity, then label each one as _real-affine_ (visible), _complex_ (off-plane), or _at infinity_ (asymptotic). The visible count is the size of the first bucket. Tangencies are marked by repeated roots, not by "two roots that happen to be very close." A _multiplicity-2 real root_ and _two distinct real roots within ε of each other_ are different geometric situations that look identical on screen — the algebraic classification keeps them apart.
+
+</ArcRow>
+
+<ArcRow n={4} title="What the engine actually computes">
+
+The pipeline is short. (1) <Term id="resultant">Eliminate one variable</Term> from the two conic equations to get a single polynomial in the other — a quartic when both inputs are degree 2. (2) Find its roots numerically (Durand–Kerner or similar). (3) Recover the corresponding y-coordinates by linear back-substitution. (4) Tag each intersection as real-affine, complex, or at infinity. The widget above performs steps 1–4 every time you move a slider.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="Where this shows up in a graphics stack">
+
+The same Bezout-and-classify logic, in different costumes, runs in:
+
+- **Collision detection.** Two convex shapes (circles, ellipses, capsules) meet how many times? Bezout gives the upper bound; tangency-with-multiplicity detects glancing contact; "0 real, 4 complex" reports clearly disjoint.
+- **Vector clipping.** When you intersect two paths in Illustrator/Figma, the tool computes algebraic intersections of cubic Bezier segments — degree 3 × degree 3 = up to 9 algebraic, classified into visible / out-of-segment / tangent.
+- **Ray–curve picking.** A line (degree 1) meets a conic (degree 2) in 2 algebraic points. The mouse picks the first real-affine one along the ray. If both are complex, the click misses.
+- **Font outline rasterization.** A horizontal scanline (degree 1) crosses a glyph outline (Beziers up to degree 3) in d·1 = d points. Counting those with multiplicity gives the even-odd fill rule for free.
+
+In every case the surface story is "count and classify"; the deep story is Bezout's theorem and a root-classifier. The shape changes; the count protocol doesn't.
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **Real intersections come and go. Bezout's count never does.** What the screen shows is the
+  real-affine subset of a number that doesn't change. A graphics engine keeps the count and
+  classifies each member; the picture is just one bucket.
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="line meets circle" noCalculator>
+
+The line <Formula>y = mx + c</Formula> meets the unit circle <Formula>x² + y² = 1</Formula> in how many points, by Bezout? For what range of <Formula>(m, c)</Formula> are all of those visible (real-affine), and for what range do the missing ones become complex? Sketch one example of each.
+
+<Solution>
+  Bezout: 1·2 = **2**. Substitute to get <Formula>(1+m²)x² + 2mc·x + (c²−1) = 0</Formula>;
+  discriminant is <Formula>4(m² + 1 − c²)</Formula>. **Two real-affine** when{" "}
+  <Formula>c² &lt; m² + 1</Formula> (the line crosses the disk). **Tangent (multiplicity 2)** when{" "}
+  <Formula>c² = m² + 1</Formula>. **Two complex** when <Formula>c² &gt; m² + 1</Formula> (the line
+  misses the circle entirely on the real plane). Same Bezout count of 2 in all three cases.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="two circles share infinity">
+
+Take any two distinct circles. Bezout says they meet 4 times. Yet the picture on screen never shows more than 2 real-affine intersections. Where are the other 2 always? (Hint: the <Term id="homogenize">homogenized</Term> equation of any circle, evaluated at the line at infinity <Formula>Z = 0</Formula>, depends only on the leading term.)
+
+<Solution>
+  Homogenize <Formula>x² + y² + ax + by + c = 0</Formula> →{" "}
+  <Formula>X² + Y² + aXZ + bYZ + cZ² = 0</Formula>. At <Formula>Z = 0</Formula>:{" "}
+  <Formula>X² + Y² = 0</Formula>, so <Formula>[X : Y : 0] = [1 : ± i : 0]</Formula> — independent of{" "}
+  <Formula>a, b, c</Formula>. So *every* circle passes through <Formula>I = [1 : i : 0]</Formula>{" "}
+  and <Formula>J = [1 : −i : 0]</Formula> at infinity. Two distinct circles share both. Bezout's 4 =
+  (≤ 2 real-affine) + (2 complex at infinity). When the real-affine count drops below 2,
+  multiplicity or complex-affine intersections fill the gap.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="tangent vs near-miss" noCalculator>
+
+An engine has two parameters: an angle <Formula>θ</Formula> and a tolerance <Formula>ε</Formula>. As <Formula>θ</Formula> sweeps through a tangent configuration, the visible-count goes 2 → 1 → 0 → 1 → 2. The "tangent" instant is one configuration; the surrounding "near-tangent" instants are different. State the difference algebraically (one root with multiplicity 2 vs two roots within ε), and explain why a robust engine should not dedupe based on raw <Formula>ε</Formula>-distance.
+
+<Solution>
+  At the tangent instant, the resultant has a *repeated* real root <Formula>x = a</Formula> — the
+  polynomial factors as <Formula>(x − a)² · q(x)</Formula>. Near-tangent has two close but *simple*
+  real roots <Formula>a ± δ</Formula>. Both look like "one point" to a tolerance-based deduplicator
+  with <Formula>ε &gt; δ</Formula>; but the tangent case has different physics (no transverse
+  crossing — the curves graze and separate) and different robustness behaviour (stable under
+  perturbation in one direction; unstable in the other). Robust engines compute exact discriminants
+  when possible, or use interval arithmetic to bound the multiplicity decision — never raw distance
+  alone.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="the cubic that won't fit">
+
+You're computing intersections of a horizontal line <Formula>y = 0</Formula> with the cubic <Formula>y = x³ + 1</Formula>. Bezout predicts 1·3 = 3. How many real-affine? Where are the others? (No <Formula>i</Formula> required for the visible ones; one for each of the others.)
+
+<Solution>
+  Solve <Formula>x³ + 1 = 0</Formula>: roots are the cube roots of −1, i.e.{" "}
+  <Formula>x = −1</Formula>, <Formula>x = e^(iπ/3) = ½ + i√3/2</Formula>, and{" "}
+  <Formula>x = e^(−iπ/3) = ½ − i√3/2</Formula>. **One real-affine intersection** at{" "}
+  <Formula>(−1, 0)</Formula> — the only point you'll see plotted. **Two complex** at the conjugate
+  pair, off the real plane. Bezout count: 3, picture count: 1, missing count: 2 complex.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  application: **Curve Intersections**. Consumes the [Bezout](/en/modules/bezout) module — same
+  theorem, different question: "*which subset of the count is on screen?*" Sister application:
+  [Bitcoin Signature](/en/finance/bitcoin-signature), the other Bezout consumer.
+</PageFooter>

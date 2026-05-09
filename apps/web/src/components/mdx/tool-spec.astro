@@ -1,0 +1,43 @@
+---
+// Pure Astro ToolSpec — no React. The dt labels are auto-localized from the
+// current locale. Body for each row comes from a named slot.
+//
+//   <ToolSpec>
+//     <Fragment slot="definition">
+//     Prose...
+//     </Fragment>
+//     <Fragment slot="applies">
+//     Prose...
+//     </Fragment>
+//     <Fragment slot="breaks">
+//     Prose...
+//     </Fragment>
+//   </ToolSpec>
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+const labels = {
+  en: { kicker: "tool spec", what: "what", applies: "applies when", breaks: "breaks when" },
+  ko: { kicker: "도구 사양", what: "정의", applies: "적용", breaks: "한계" },
+}[lang];
+---
+
+<section
+  class="mt-12 rounded-[10px] border border-rule bg-bg-card px-6 py-5 max-md:-mx-[18px] max-md:rounded-none max-md:border-x-0 max-md:px-3 max-md:py-4"
+>
+  <div class="mb-3.5 font-mono text-xs uppercase tracking-[0.1em] text-ink-mute">
+    {labels.kicker}
+  </div>
+  <dl
+    class="grid grid-cols-[120px_1fr] gap-x-5 gap-y-3 text-[15px] leading-[1.55] text-ink-soft max-md:grid-cols-[88px_1fr] max-md:gap-x-3 max-md:text-[14.5px] [&_strong]:font-semibold [&_strong]:text-ink [&_em]:italic [&_em]:text-acc-deep [&_p]:m-0"
+  >
+    <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">{labels.what}</dt>
+    <dd class="m-0"><slot name="definition" /></dd>
+
+    <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
+      {labels.applies}
+    </dt>
+    <dd class="m-0"><slot name="applies" /></dd>
+
+    <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-acc-deep">{labels.breaks}</dt>
+    <dd class="m-0"><slot name="breaks" /></dd>
+  </dl>
+</section>

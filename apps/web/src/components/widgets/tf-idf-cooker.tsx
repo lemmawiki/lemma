@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { useApp, pick } from "../../context/app-context";
+import { useContext, useMemo, useState } from "react";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 
 // Four toy docs. Kept English so the example reads the same in both locales —
@@ -50,8 +50,9 @@ function fmt(n: number, digits = 3): string {
   return s;
 }
 
-export function TfIdfCooker() {
-  const { language } = useApp();
+export function TfIdfCooker({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [query, setQuery] = useState<string>("cat");
   const [method, setMethod] = useState<Method>("tfidf");
 

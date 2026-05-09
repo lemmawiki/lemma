@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useApp, pick } from "../../context/app-context";
+import { useContext, useState } from "react";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 
 const W = 720;
@@ -13,8 +13,9 @@ const BOT_Y = 190;
 // Two parallel axes. Top: linear 0..1000. Bottom: log10 1..1000. Drag a, b on
 // the bottom (log) axis. The product a·b appears on BOTH axes — landing on the
 // product on top, and on the SUM of log-distances on bottom. Same point.
-export function TwoStacks() {
-  const { language } = useApp();
+export function TwoStacks({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [a, setA] = useState(2);
   const [b, setB] = useState(3);
 

@@ -1,0 +1,209 @@
+---
+title: Bezout's Theorem · Lemma
+description: Two algebraic curves of degrees d and e in the projective plane meet in exactly d·e points — counted with multiplicity, over the algebraic closure.
+breadcrumb:
+  parent: graph
+  parent_path: /graph
+  current: module · Bezout's theorem
+---
+
+import { Term, Exercise, Solution, ToolSpec, ConicIntersect } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · the product rule">
+
+# A line meets a parabola in <span className="font-semibold text-acc">two</span> points. Two circles in <span className="font-semibold text-acc">two</span>. A cubic and a line in <span className="font-semibold text-acc">three</span>. Multiply the _degrees_ of the curves and you get the count.
+
+Except _parallel_ lines meet in zero. A line _tangent_ to a parabola in one. Two _disjoint_ circles in zero. The product rule breaks. The repair is not a footnote — it rewrites what the plane _is_.
+
+<Lede>The repair takes three moves. The widget below runs through them.</Lede>
+
+</Hook>
+
+<ToolSpec>
+  <Fragment slot="definition">
+    Two algebraic curves of degrees <Formula>d</Formula> and <Formula>e</Formula> in the projective
+    plane meet in exactly <Formula>d·e</Formula> points — counted with multiplicity, over the
+    algebraic closure. The naive count fails three ways; the theorem is the simultaneous repair.
+  </Fragment>
+  <Fragment slot="applies">
+    You need an *exact* intersection count, not "around d·e". Elliptic-curve cryptography (the
+    chord-and-tangent group law uses Bezout to know that a line meets a cubic in exactly 3 points),
+    conic intersections, classical algebraic geometry, computer algebra system invariants.
+  </Fragment>
+  <Fragment slot="breaks">
+    Stay on the affine plane over ℝ and the count fails everywhere — parallel lines (need projective
+    infinity), tangents (need multiplicity), disjoint real circles (need complex coordinates). The
+    three failures are not bugs in Bezout; they are signals that *your plane is too small*. Open
+    transcendental curves (sin x meets a line in infinitely many points) are out of scope — not
+    algebraic.
+  </Fragment>
+</ToolSpec>
+
+<ConicIntersect />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="Three failures of the naive count">
+
+Take a line of degree 1 and a parabola of degree 2. Substitute <Formula>y = mx + c</Formula> into <Formula>y = x²</Formula> and you get a quadratic in x — two roots, two intersections. <Formula>1 · 2 = 2</Formula>. Clean. Now break it three ways: (a) two _parallel_ lines <Formula>y = x</Formula> and <Formula>y = x + 1</Formula> — substitute and you get <Formula>0 = 1</Formula>, a contradiction; zero intersections, not the predicted <Formula>1 · 1 = 1</Formula>. (b) The line <Formula>y = 0</Formula> is _tangent_ to <Formula>y = x²</Formula> at the origin — they meet at one point, not two. (c) Two _disjoint_ unit circles <Formula>x² + y² = 1</Formula> and <Formula>(x − 3)² + y² = 1</Formula> share zero points, not four.
+
+The product rule is right often enough to look like a theorem, and wrong often enough to look like a guess. Either it's a guess, or the plane is the wrong stage. We take the second option.
+
+</ArcRow>
+
+<ArcRow n={2} title="Fix #1 — the projective plane">
+
+A line is a _direction_ plus an offset. Parallel lines share a direction. Suppose we add a new _point_ to the plane for each direction — call it the <Term id="point-at-infinity">point at infinity</Term> for that direction. Then any two parallel lines, sharing a direction, share that one extra point. Two non-parallel lines still meet at their usual one place. So _every_ two distinct lines now meet at exactly one point. Add up all the points at infinity (one per direction) and you've added one extra _line_ — the line at infinity. The plane plus that line is the <Term id="projective-plane">projective plane</Term> <Formula>ℝℙ²</Formula>.
+
+The clean way to write a projective point is <Formula>[X : Y : Z]</Formula> — three numbers, not all zero, up to overall scale (so <Formula>[2 : 2 : 0], [1 : 1 : 0], [5 : 5 : 0]</Formula> are the same point). Affine (ordinary, finite) points are <Formula>[x : y : 1]</Formula>. Points at infinity are <Formula>[X : Y : 0]</Formula>: the _direction_ <Formula>(X, Y)</Formula>. The two parallel lines from §1 both pass through <Formula>[1 : 1 : 0]</Formula> — the "direction (1, 1)" point. Failure (a) is fixed.
+
+</ArcRow>
+
+<ArcRow n={3} title="Fix #2 — multiplicity">
+
+A tangent line meets a parabola at one geometric point but a _double_ algebraic point. Substitute <Formula>y = 0</Formula> into <Formula>y = x²</Formula>: the equation becomes <Formula>x² = 0</Formula>, with <Formula>x = 0</Formula> as a _repeated root_. Polynomials remember what pictures forget. Define the <Term id="intersection-multiplicity">intersection multiplicity</Term> of two curves at a point as the order to which the eliminated polynomial vanishes there. A transverse crossing is multiplicity 1; a simple tangency is 2; a triple tangency 3; and so on. Bezout's count is _multiplicity-counted_, never raw.
+
+In the widget above, switch to the **tangent** preset and turn on _show multiplicity_: the tangent point earns its <Formula>×2</Formula> label, and the visible 3 jumps to 4. Failure (b) fixed.
+
+</ArcRow>
+
+<ArcRow n={4} title="Fix #3 — complex coordinates">
+
+The disjoint circles <Formula>x² + y² = 1</Formula> and <Formula>(x − 3)² + y² = 1</Formula> seem to meet nowhere. Subtract them: <Formula>−6x + 9 = 0</Formula>, so <Formula>x = 3/2</Formula>. At that x the first circle gives <Formula>y² = 1 − 9/4 = −5/4</Formula> — no real <Formula>y</Formula>, but two perfectly good complex ones: <Formula>y = ± i √5 / 2</Formula>. The two circles really do meet at two points <Formula>(3/2, ± i √5 / 2)</Formula> — they just live in <Formula>ℂ²</Formula>, not <Formula>ℝ²</Formula>.
+
+In the widget, the **disjoint** preset shows zero real intersections — turn on _show complex_, and four open dots appear in the side panel: the four Bezout-promised intersections, projected onto the complex x-plane. Failure (c) fixed.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="The statement">
+
+Three fixes in: <Term id="projective-plane">projective plane</Term>, complex coordinates, <Term id="intersection-multiplicity">multiplicity</Term>. The product rule is now a theorem.
+
+</ArcRow>
+
+<Pin>
+  **Bezout.** Two plane curves of degrees <Formula>d</Formula> and <Formula>e</Formula> with no
+  common component meet — in <Formula>ℂℙ²</Formula>, counted with multiplicity — in exactly{" "}
+  <Formula>d · e</Formula> points.
+</Pin>
+
+<ArcRow n={6} title="Why it works — the resultant">
+
+Eliminate one variable. Two polynomials <Formula>f(x, y), g(x, y)</Formula>, viewed as polynomials in <Formula>y</Formula> with coefficients depending on <Formula>x</Formula>, share a root iff their <Term id="resultant">resultant</Term> in <Formula>y</Formula> vanishes. If <Formula>f</Formula> has <Formula>y</Formula>-degree <Formula>d</Formula> and <Formula>g</Formula> has <Formula>y</Formula>-degree <Formula>e</Formula>, the resultant is a polynomial in <Formula>x</Formula> of degree <Formula>d · e</Formula> — and its <Formula>d · e</Formula> complex roots (with multiplicity) are the <Formula>x</Formula>-coordinates of the <Formula>d · e</Formula> intersections. Two conics: a quartic in <Formula>x</Formula>. Four roots. Four intersections. The widget above is exactly this quartic, solved.
+
+{/* TODO: Python code block for arc 6 — code-mode integration deferred */}
+
+</ArcRow>
+
+</Arc>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="read the widget">
+
+Switch to the **disjoint** preset. The counter shows real = 0. Which toggles do you need to set so the visible total reaches 4? Then do the same for **tangent** and **partial**. State, in one sentence each, what each preset is "missing" from the naive view.
+
+<Solution>
+  **Disjoint** needs *show complex*: all four roots have nonzero imaginary parts; the real plane
+  sees nothing. **Tangent** needs *show multiplicity*: three points are visible but one of them is a
+  tangency that counts twice. **Partial** needs *both*: two real transverse intersections plus a
+  complex conjugate pair off the real plane.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="compute by hand · degree 1 × 2" noCalculator>
+
+Find all intersections of <Formula>y = x²</Formula> and <Formula>y = 2x − 1</Formula>. Bezout predicts 1 · 2 = 2. Identify what (in this case) closes the gap between geometry and algebra.
+
+<Solution>
+  Substitute: <Formula>x² = 2x − 1</Formula>, i.e. <Formula>x² − 2x + 1 = (x − 1)² = 0</Formula>.
+  The geometric intersection is a single point <Formula>(1, 1)</Formula> — the line is tangent to
+  the parabola there. The algebra reports <Formula>x = 1</Formula> as a *double* root, so the
+  intersection has <Term id="intersection-multiplicity">multiplicity</Term> 2. Bezout count: 1
+  (point) × 2 (multiplicity) = 2 ✓. The gap was closed by *multiplicity*.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="infinity coordinates">
+
+Two parallel lines <Formula>y = x</Formula> and <Formula>y = x + 1</Formula>. Write their unique intersection as a point <Formula>[X : Y : Z]</Formula> in <Term id="projective-plane">ℝℙ²</Term>. (Hint: rewrite each line as a homogeneous equation in <Formula>X, Y, Z</Formula> and solve.)
+
+<Solution>
+  <Term id="homogenize">Homogenize</Term> <Formula>y = x</Formula> by setting{" "}
+  <Formula>x = X/Z, y = Y/Z</Formula>: <Formula>Y = X</Formula>. Same for the second line:{" "}
+  <Formula>Y = X + Z</Formula>. Subtracting: <Formula>Z = 0</Formula>. Combined with{" "}
+  <Formula>Y = X</Formula>: the point is <Formula>[1 : 1 : 0]</Formula> — the{" "}
+  <Term id="point-at-infinity">point at infinity</Term> in the direction <Formula>(1, 1)</Formula>.
+  Bezout count: 1 · 1 = 1 ✓.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="the evil one · cubic at the origin">
+
+Consider <Formula>y = x³</Formula> (cubic, degree 3) and the line <Formula>y = 0</Formula> (degree 1). Bezout predicts 3 intersections. Geometrically, you see one — at the origin. State precisely how Bezout is satisfied, and contrast this case with exercise 2.
+
+<Solution>
+  Substitute: <Formula>x³ = 0</Formula>, so <Formula>x = 0</Formula> is a *triple* root. The single
+  geometric point at the origin has <Term id="intersection-multiplicity">multiplicity</Term> 3.
+  Bezout: 1 × 3 = 3 ✓. The difference from exercise 2: there, two algebraic crossings collapsed into
+  one tangency (multiplicity 2). Here, three collapse into one inflectional contact (multiplicity
+  3). The plane sees one dot in both cases; algebra sees the difference.
+</Solution>
+
+</Exercise>
+
+<Exercise number={5} tag="two-circle infinity">
+
+Take any two non-coincident circles <Formula>x² + y² + a x + b y + c = 0</Formula>. Their degrees multiply to 4, but you typically see at most 2 affine intersections. Where are the other two? (Hint: <Term id="homogenize">homogenize</Term> and look at the line at infinity <Formula>Z = 0</Formula>.) These two points have a name. What is the consequence: are they shared by _all_ circles, or are they specific to a given pair?
+
+<Solution>
+  Homogenize: <Formula>X² + Y² + a X Z + b Y Z + c Z² = 0</Formula>. At <Formula>Z = 0</Formula>:{" "}
+  <Formula>X² + Y² = 0</Formula>, i.e. <Formula>[1 : ± i : 0]</Formula>. These two complex{" "}
+  <Term id="point-at-infinity">points at infinity</Term> are called the *circular points*{" "}
+  <Formula>I = [1 : i : 0]</Formula> and <Formula>J = [1 : −i : 0]</Formula>. Every circle contains
+  them (the equation is independent of <Formula>a, b, c</Formula>), so *any* two distinct circles
+  share both. Two circles' Bezout count of 4 is always: (≤ 2 affine) + (2 at infinity, namely I and
+  J). When the affine count drops from 2, multiplicity or complex affine points fill in.
+</Solution>
+
+</Exercise>
+
+<Exercise number={6} tag="synthesis · the elliptic curve seed">
+
+Let <Formula>E : y² = x³ − x</Formula> (degree 3) and a line <Formula>L : y = m x + c</Formula> (degree 1). Bezout: three intersections. Suppose all three are affine, with x-coordinates <Formula>x₁, x₂, x₃</Formula>. Show that <Formula>x₁ + x₂ + x₃ = m²</Formula>. (This identity is the seed of the elliptic-curve group law — given two points on E, the third intersection of their chord is geometrically determined, and Vieta gives its x-coordinate for free.)
+
+<Solution>
+  Substitute <Formula>y = m x + c</Formula> into the curve: <Formula>(m x + c)² = x³ − x</Formula>,
+  i.e. <Formula>x³ − m² x² − (2 m c + 1) x − c² = 0</Formula>. By{" "}
+  <Term id="vieta-formulas">Vieta's formulas</Term> on this monic (leading coefficient 1) cubic, the
+  sum of roots is the negative of the <Formula>x²</Formula> coefficient: −(−m²) = m². Hence{" "}
+  <Formula>x₁ + x₂ + x₃ = m²</Formula>. Geometrically: pick two points <Formula>P₁, P₂</Formula> on{" "}
+  <Formula>E</Formula>, draw the chord through them; the line meets <Formula>E</Formula> at exactly
+  one more point <Formula>P₃</Formula> (Bezout demands a third), and you read off{" "}
+  <Formula>x₃ = m² − x₁ − x₂</Formula> with no further work. The group law on <Formula>E</Formula>{" "}
+  defines <Formula>P₁ + P₂ = − P₃</Formula> from this very fact.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  module: **Bezout's Theorem**. The chord-and-tangent construction in exercise 6 is one short step
+  from a proper module on elliptic-curve arithmetic — and from there, ECDSA /{" "}
+  <Term id="bitcoin">Bitcoin</Term> signatures plug into the **finance** pillar via the existing
+  [Bitcoin Pizza](/en/finance/bitcoin-pizza).
+</PageFooter>

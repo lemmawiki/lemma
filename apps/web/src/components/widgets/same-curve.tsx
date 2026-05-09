@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Mafs, Coordinates, Plot, Point } from "mafs";
-import { useApp } from "../../context/app-context";
+import { AppContext, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 
 // Spike widget — Same Curve?
@@ -117,8 +117,10 @@ type TrailPoint = {
 const PILL_BASE =
   "inline-flex items-center gap-2 rounded-full border bg-bg-card px-3.5 py-1.5 font-mono text-[12.5px] transition disabled:cursor-not-allowed disabled:opacity-50";
 
-export function SameCurve() {
-  const { language, mode } = useApp();
+export function SameCurve({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
+  const mode = ctx?.mode ?? "general";
   const L = LABELS[language];
 
   const [active, setActive] = useState<ParamIdx>(0);

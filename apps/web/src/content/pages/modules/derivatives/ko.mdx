@@ -1,0 +1,187 @@
+---
+title: 미분 · Lemma
+description: 순간 변화율. f'(a) = lim h→0 (f(a+h) − f(a)) / h.
+breadcrumb:
+  parent: 그래프
+  parent_path: /graph
+  current: 모듈 · 미분
+---
+
+import { Term, Exercise, Solution, ToolSpec, SecantToTangent } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 자취가 되려는 화살표">
+
+# 곡선은 _지금_ 무엇을 하고 있는가?
+
+움직이는 점은 자취를 남긴다. **미분은 그 자취가 아니다.** 지금 이 순간, 자취가 되려고 하는 화살표다. 평균 속도는 두 점을 알고 나누지만, 순간 속도는 한 점만 알고도 어떻게든 숫자를 가진다. 그 숫자 — 물리·ML·공학의 모든 *변화율*이 결국 이것 — 는 두 점을 지나는 할선이 한 점에서의 접선으로 무너지도록 *강제*하는 데서 나온다.
+
+<Lede>
+  아래 위젯: <Formula>y = x²</Formula> 위의 두 점을 잇는 주황색 **할선**. **h**를 0으로 끌면 할선이
+  갈색 **접선**으로 회전해 무너진다. 그 기울기가 수렴하는 값이 그 점에서의 미분 — 곡선의 *순간
+  방향*이 한 숫자로 응축된 것.
+</Lede>
+
+</Hook>
+
+<ToolSpec>
+  <Fragment slot="definition">
+    순간 변화율. <Formula>f'(a) = lim h→0 (f(a+h) − f(a)) / h</Formula>. 자취가 지금 이 순간 되려는
+    화살표 — 두 번째 점이 첫 번째 점으로 무너지면서, 할선 기울기들이 하나의 접선 기울기로 응축된 것.
+  </Fragment>
+  <Fragment slot="applies">
+    *변화율*이 등장하는 모든 곳. 속도 (위치 → 속력), 경사하강 (손실 → 한 걸음 방향), 작은 각 근사 (0
+    근처 sin θ ≈ θ), 물리·ML·제어의 국소 선형화. 한 기계, 네 이름: 기울기·속도·변화율·그래디언트.
+  </Fragment>
+  <Fragment slot="breaks">
+    극한이 존재해야 한다. 뾰족한 모서리 (0에서의 |x|), 점프 (계단 함수), 병적인 진동 (어디서도 미분
+    불가능한 바이어슈트라스 함수)에는 미분이 없다. ML에서는 숨은 비미분 지점들 — ReLU의 0, 맥스풀링,
+    지시 함수 — 을 *관례*로 메운다. 수학이 아니라 합의로 메운다는 뜻 — 거기를 지나는 그래디언트는
+    사실이 아니라 선택이다.
+  </Fragment>
+</ToolSpec>
+
+<SecantToTangent />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="Δ 분의 Δ — 평균 변화율">
+
+<Formula>t = 0 s</Formula>에 <Formula>x = 1 km</Formula>에서 출발해 <Formula>t = 4 s</Formula>에
+<Formula>x = 9 km</Formula>에 도착했다. 당신의 *평균* 속도는
+<Formula>(9 − 1) / (4 − 0) = 2 km/s</Formula>. 이 수는 여행 전체를 묘사하지만,
+<Formula>t = 2 s</Formula>에서 *무엇을 하고 있었는지* 는 알려주지 않는다. 위치 그래프 위
+<Formula>(0, 1)</Formula>과 <Formula>(4, 9)</Formula>를 잇는 직선이 <Term id="secant">할선</Term>,
+그 기울기가 평균. *극한 없이 계산할 수 있다.*
+
+{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={2} title="구간을 0으로 — 순간 변화율">
+
+"<Formula>t = 2 s</Formula>에서 _무엇을 하고 있었나_"는 할선의 두 점이 하나로 합쳐져야 답할 수 있다. 고정 기준 <Formula>a = 2</Formula>와 작은 구간 <Formula>h</Formula>를 잡고 <Formula>(f(a+h) − f(a)) / h</Formula>를 계산하며 <Formula>h</Formula>를 줄여보자. <Formula>f(t) = t²</Formula>에 대해:
+
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`(f(2+h) − f(2)) / h
+   = ((2+h)² − 4) / h
+   = (4 + 4h + h² − 4) / h
+   = 4 + h            ← independent of how big h is, except for the +h tail`}</pre>
+
+<Formula>h → 0</Formula>일 때 식은 <Formula>4</Formula>로 수렴한다. 어딘가 모호하게 "다가간다"는 게
+아니라 값은 *정확히* <Formula>4 + h</Formula>이고 <Formula>h</Formula>는 원하는 만큼 작게 만들 수
+있다. 극한에서 살아남는 수 **4**가 <Formula>t = 2</Formula>에서 <Formula>t²</Formula>의
+<Term id="derivative">미분</Term>: <Formula>f'(2) = 4</Formula>. 기하적으로는
+<Formula>(2, 4)</Formula>를 지나는 <Term id="tangent">접선</Term>의 기울기.
+
+{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={3} title="기계는 하나, 이름은 셋 — 기울기·속도·변화율">
+
+레시피 — 두 점을 잡고, 할선 기울기를 계산하고, 구간을 줄이고, 극한을 취한다 — 는 무엇을 넣든 같은 종류의 수를 낸다. <Formula>f</Formula>가 시간 대 위치 함수면 미분은 <Term id="velocity">속도</Term>. 가격 대 수익 그래프면 미분은 "한계수익." 종이에 그린 곡선이면 미분은 각 점에서의 접선 기울기. _연산은 같다; 축에 무엇을 놓느냐에 따라 물리적 또는 기하적 해석이 달라질 뿐._
+
+표준 패턴: <Formula>x^n</Formula>의 미분은 <Formula>n·x^(n−1)</Formula>. 위젯이 <Formula>n = 2</Formula> 경우를 보여준다 — 기준 a를 끌면 <Formula>2a</Formula>가 읽힌다. 같은 기계가 <Formula>sin x</Formula>에 적용되면 <Formula>cos x</Formula>를 내고, <Formula>e^x</Formula>에 적용되면 <Formula>e^x</Formula>를 그대로 돌려주고, 상수에 적용되면 0. 이 이름들 — "미분법" — 은 장부일 뿐. 바닥의 한 연산은 _할선 기울기의 극한_.
+
+</ArcRow>
+
+<ArcRow n={4} title="두 번 미분하면 — 가속도">
+
+함수의 미분은 그 자체로 함수다. 한 번 더 미분할 수 있다. <Formula>f(t) = t²</Formula>의 경우: <Formula>f'(t) = 2t</Formula> (직선), <Formula>f''(t) = 2</Formula> (상수). 위치를 두 번 미분하면 <Term id="acceleration">가속도</Term> — 속도의 변화율. 자유낙하에서는 상수 <Formula>−g</Formula>.
+
+그 사다리 — 위치, 속도, 가속도 — 는 미분이라는 도구만 있으면 "뉴턴 제2법칙" 전체와 같은 내용이 된다: 힘 = 질량 × 위치의 두 번째 미분. 입문 물리의 대부분은 이 한 사실의 대수·기하적 따름결과.
+
+</ArcRow>
+
+<ArcRow n={5} title="이 모듈이 어디서 소비되는가">
+
+이미 두 페이지가 미분을 _암묵적으로_ 사용해왔다. 이제 가리킬 대상이 생겼다.
+
+- [**포물선 운동**](/ko/physics/projectile-motion) — 운동 방정식 <Formula>x(t) = v₀ cos θ · t</Formula>와 <Formula>y(t) = v₀ sin θ · t − ½ g t²</Formula>의 미분이 <Formula>vₓ = v₀ cos θ</Formula> (상수)와 <Formula>v_y(t) = v₀ sin θ − g t</Formula> (선형, 포물선 위젯이 보여주는 그 속도). *위치*를 미분하면 곧 *속도_.
+- [**진자시계**](/ko/physics/pendulum-clock) — 식 <Formula>θ̈ = −(g/L) sin θ</Formula>는 _왼쪽은 θ의 두 번 미분, 오른쪽은 θ의 함수_. "선형화" 한 수가 <Formula>sin θ</Formula>를 <Formula>θ</Formula>로 바꿔 <Formula>θ̈ = −(g/L) θ</Formula>를 남긴다 — 미분 도구가 알아보고 풀 수 있는 단순조화진동자 방정식.
+
+[/graph](/ko/graph)가 이제 이걸 반영한다: 두 physics 응용이 모두 <Formula>parametric-curves</Formula>와 <Formula>derivatives</Formula>를 소비한다. 모듈이 _모듈이 해야 하는_ 일을 하기 시작했다.
+
+{/* TODO: Python code block for arc 5 — code-mode integration deferred */}
+
+</ArcRow>
+
+<Pin>
+  **Δ는 구간을 안다. d는 순간을 안다.** 미분은 구간이 0으로 줄어들 때 Δ가 되는 것 — 그리고 그
+  살아남는 극한이, 물리가 *변화율*이라 부르는 모든 것.
+</Pin>
+
+</Arc>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="평균 변화율 손계산" noCalculator>
+
+<Formula>f(t) = t²</Formula>에서 구간 <Formula>[1, 3]</Formula>의 평균 변화율을 계산. 다음
+<Formula>[1, 1.1]</Formula>, 다음 <Formula>[1, 1.001]</Formula>. 어떤 패턴이 보이는가?
+
+<Solution>
+  <Formula>(9 − 1)/(3 − 1) = 4</Formula>. 다음 <Formula>(1.21 − 1)/0.1 = 2.1</Formula>. 다음{" "}
+  <Formula>(1.002001 − 1)/0.001 = 2.001</Formula>. 값들이 **<Formula>2 + h</Formula>** 패턴 (
+  <Formula>h = 2, 0.1, 0.001</Formula>). <Formula>h → 0</Formula>의 극한은 **2** — 미분{" "}
+  <Formula>f'(1)</Formula>.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="t = 3에서 순간 변화율" noCalculator>
+
+<Formula>f(t) = t²</Formula>에서 할선 기울기 정의로부터 <Formula>f'(3)</Formula>를 유도하라. 모든
+대수 단계 표시.
+
+<Solution>
+  <Formula>
+    (f(3+h) − f(3)) / h = ((3+h)² − 9) / h = (9 + 6h + h² − 9) / h = (6h + h²) / h = 6 + h
+  </Formula>
+  . 이제 <Formula>h → 0</Formula>: **f'(3) = 6**. (같은 패턴: 임의의 <Formula>a</Formula>에 대해{" "}
+  <Formula>(2a)·h + h²</Formula>를 <Formula>h</Formula>로 나누면 <Formula>2a + h → 2a</Formula>.
+  그래서 <Formula>d/dt [t²] = 2t</Formula>.)
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="곡선에서 접선 기울기">
+
+위젯은 <Formula>y = x²</Formula>를 보여준다. 공식 없이, **a**를 움직이고 **h**를 줄여서 <Formula>x = 0.5</Formula>와 <Formula>x = 1.5</Formula>에서 접선 기울기를 읽어라. 두 수를 모두 만족시키는 규칙을 한 줄로 진술.
+
+<Solution>
+  <Formula>x = 0.5</Formula>에서 기울기 **1**. <Formula>x = 1.5</Formula>에서 **3**. 규칙:{" "}
+  <Formula>m(x) = 2x</Formula>. 그림에서 직접 <Formula>d/dx [x²] = 2x</Formula>를 확인 — 대수 극한을
+  한 번도 거치지 않고.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="포물선 운동 미분" noCalculator>
+
+포물선 운동의 세로 위치는 <Formula>y(t) = v₀ sin θ · t − ½ g t²</Formula>. 같은 <Formula>(f(a+h) − f(a)) / h</Formula> 레시피로 <Formula>v_y(t) = dy/dt</Formula>를 유도하라. 포물선 위젯의 **v_y** 값과 일치하는지 확인.
+
+<Solution>
+  <Formula>y(t+h) = v₀ sin θ · (t+h) − ½ g (t+h)²</Formula>. 여기서 <Formula>y(t)</Formula>를 빼고{" "}
+  <Formula>h</Formula>로 나눈다: <Formula>v₀ sin θ</Formula> 항은 <Formula>v₀ sin θ</Formula>를
+  기여, <Formula>½ g</Formula> 항은 <Formula>½ g (2t + h) = g t + ½ g h</Formula>를 기여. 부호 빼기
+  후 <Formula>h → 0</Formula>: **<Formula>v_y(t) = v₀ sin θ − g t</Formula>**. 포물선-운동 위젯이
+  임의의 <Formula>t</Formula>에서 표시하는 그 식.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  모듈: **미분**. 소비처: [포물선 운동](/ko/physics/projectile-motion),
+  [진자시계](/ko/physics/pendulum-clock). 향후 ML/금융 응용도 "손실의 변화율," "순간 수익률"을 위해
+  이걸 소비하게 된다.
+</PageFooter>

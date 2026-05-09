@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Mafs, Coordinates, Vector, Line, MovablePoint, Point } from "mafs";
-import { useApp, pick } from "../../context/app-context";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 import { Slider, pillClass } from "./widget-primitives";
 import { figureColors as C } from "../figures/theme";
@@ -108,8 +108,9 @@ const ROLE_LABELS: Record<
 const fmt = (n: number, d = 1) => n.toFixed(d);
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
-export function VectorRoles() {
-  const { language } = useApp();
+export function VectorRoles({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [ax, setAx] = useState(2);
   const [ay, setAy] = useState(1);
   const [vx, setVx] = useState(3);

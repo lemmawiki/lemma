@@ -1,0 +1,7 @@
+---
+import { TangentApproximation as TangentApproximationReact } from "../widgets/tangent-approximation";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<TangentApproximationReact language={lang} client:load />

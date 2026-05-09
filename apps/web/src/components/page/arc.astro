@@ -1,0 +1,22 @@
+---
+// The numbered-arc section. Wraps a kicker + a sequence of <ArcRow> children.
+//
+//   <Arc kicker="the arc">
+//     <ArcRow n={1} title="...">
+//       Prose...
+//     </ArcRow>
+//     ...
+//     <Pin>...</Pin>
+//   </Arc>
+import Kicker from "./kicker.astro";
+
+interface Props {
+  kicker?: string;
+}
+const { kicker } = Astro.props;
+---
+
+<section class="mt-14">
+  {kicker && <Kicker>{kicker}</Kicker>}
+  <slot />
+</section>

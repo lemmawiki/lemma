@@ -1,0 +1,30 @@
+---
+// Top-of-page breadcrumb. The "home" link always uses the current locale prefix.
+//
+//   <Breadcrumb lang={lang} parent={{ href: "/graph", label: "graph" }}>
+//     module · entropy
+//   </Breadcrumb>
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+interface Props {
+  lang: "en" | "ko";
+  parent?: { href: string; label: string };
+}
+const { lang, parent } = Astro.props;
+const home = getRelativeLocaleUrl(lang, "/");
+const parentHref = parent ? getRelativeLocaleUrl(lang, parent.href.replace(/^\//, "")) : null;
+---
+
+<nav
+  class="mt-7 font-mono text-xs tracking-[0.04em] text-ink-mute [&_a]:text-ink-mute [&_a]:no-underline hover:[&_a]:text-acc"
+>
+  <a href={home}>Lemma</a>
+  {parent && parentHref && (
+    <>
+      <span class="mx-2 text-rule">/</span>
+      <a href={parentHref}>{parent.label}</a>
+    </>
+  )}
+  <span class="mx-2 text-rule">/</span>
+  <span class="uppercase tracking-[0.06em] text-ink"><slot /></span>
+</nav>

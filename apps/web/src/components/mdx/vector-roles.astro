@@ -1,0 +1,7 @@
+---
+import { VectorRoles as VectorRolesReact } from "../widgets/vector-roles";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<VectorRolesReact language={lang} client:load />

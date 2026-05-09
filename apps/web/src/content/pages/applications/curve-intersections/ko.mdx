@@ -1,0 +1,155 @@
+---
+title: 곡선의 교차 · Lemma
+description: 두 이차곡선을 끌어보라. 어떤 때는 교점 네 개, 어떤 때는 둘, 하나, 없음. 베주는 여전히 4라 한다 — 사라진 교점은 어디로 갔을까?
+breadcrumb:
+  current: 그래픽 · 곡선의 교차
+---
+
+import { Term, Exercise, Solution, ConicIntersect } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 가만히 있지 않는 수">
+
+# 사라진 교점들은 어디로 갔을까?
+
+화면 위 두 이차곡선을 끌어보라. 어떤 때는 교점 **네 개**, 어떤 때는 **둘**, **하나**, **없음**. 충돌을 계산하는 물리 엔진, 클리핑하는 벡터 도구, 외곽선을 정리하는 폰트 래스터라이저, 픽킹하는 레이 트레이서 — 모두 "몇 개?"에 _흔들리지 않는_ 답이 필요하다. 눈에 보이는 수는 깜빡인다. 그 밑의 수학은 그렇지 않다.
+
+<Lede>
+  [베주 정리](/ko/modules/bezout)는 두 이차곡선의 교점이 늘 **4개**라고 말한다 — 올바른 수 체계,
+  올바른 평면, 올바른 중복도로 셀 때. 아래 위젯은 베주 모듈에 실린 그 위젯과 *같은 것*이다. 여기서는
+  다른 질문에 답한다: *그 4개 중 화면이 *실제로* 보여주는 부분집합이 무엇인가?*
+</Lede>
+
+</Hook>
+
+<ConicIntersect />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="화면이 보는 것 vs 거기 있는 것">
+
+2D 평면 위의 두 실수 곡선. *눈에 보이는 수*는 _같은 픽셀에서 두 곡선이 만나는 점의 수_ — 좌표가 실수이고 둘 다 유한할 때. 단순한 충돌 검출기가 래스터 샘플링으로 내놓는 수, CAD 엔진이 근사 근-찾기로 내놓는 수가 그것이다. 오늘 곡선들이 표류한 위치에 의존하고, 작은 섭동에도 흔들린다.
+
+위젯에서: <Formula>일반</Formula> 프리셋은 실수 교점 4개 — 눈에 보이는 수와 베주 셈이 일치. <Formula>접</Formula> 프리셋은 3개로 보이지만 *중복도 표시*를 켜면 그중 하나에 <Formula>×2</Formula> 라벨이 붙는다. <Formula>분리</Formula> 프리셋은 0개로 보이지만 *복소 보기*를 켜면 옆 패널에 빈 동그라미 네 개가 뜬다. 사라진 교점은 잃어버린 게 아니다. 실-아핀 평면을 떠났을 뿐.
+
+</ArcRow>
+
+<ArcRow n={2} title="세 가지 숨는 곳">
+
+베주의 수선 (자세한 건 [베주 모듈](/ko/modules/bezout)에)이 사라진 교점이 어디로 갔는지 정확히 말해준다. 세 가지 보정, 세 군데 검색 위치.
+
+- **접점.** 두 교점이 한 기하 점으로 무너짐 — 대수는 여전히 둘이라 하지만 렌더러는 한 점만 본다. 장부는 <Term id="intersection-multiplicity">교차 중복도</Term>: 접 교점은 2로 센다.
+- **보이는 평면 밖.** 교점의 좌표가 복소수 — 대수의 해로는 존재하지만 실수 <Formula>(x, y)</Formula> 격자 위에 그릴 수 없다. 떨어진 두 단위원도 <Formula>(3/2, ± i √5 / 2)</Formula>에서 교차한다. 화면엔 이 점을 놓을 자리가 없다.
+- **무한대.** 어떤 교점은 무한원선 위에 산다. 서로 다른 두 원은 어디 있든 항상 두 _원형점_ <Formula>I = [1 : i : 0]</Formula>과 <Formula>J = [1 : −i : 0]</Formula>을 공유한다 — 베주 셈 4개 중 2개가 이미 화면 밖, 복소, 자동 적립. 보정은 <Term id="projective-plane">사영평면</Term>.
+
+</ArcRow>
+
+<ArcRow n={3} title="그래픽 엔진이 *흔들리지 않는 수*를 챙기는 이유">
+
+"보이는 수"만 보는 엔진은 부서지기 쉽다. 거의-접하는 두 원은 서브-픽셀 진동에 따라 보이는 수가 0, 1, 또는 2일 수 있다. 한 프레임에 "교점 없음", 다음 프레임에 "교점 둘"이라고 보고하는 렌더러는 수치 잡음을 물리로 보고하는 셈이다. 해법은 _대수적_ 수 — 베주가 보장하는 그 수 — 를 계산한 뒤 각 근을 *분류*하는 것.
+
+실제로는: y-종결식(x에 대한 4차)을 풀고, 중복도 포함한 4개의 복소근을 찾은 뒤, 각 근을 _실-아핀_ (보임), _복소_ (평면 밖), _무한원_ (점근적) 중 하나로 라벨링한다. 보이는 수는 첫 번째 버킷의 크기. 접은 *중복근*으로 표시되지, "우연히 매우 가까운 두 근"이 아니다. *중복도 2의 실수 근 하나*와 *서로 ε 이내의 서로 다른 실수 근 둘*은 화면상 똑같아 보이지만 _기하적으로 다른 상황_ — 대수적 분류가 둘을 구분해준다.
+
+</ArcRow>
+
+<ArcRow n={4} title="엔진이 실제로 계산하는 것">
+
+파이프라인은 짧다. (1) 두 이차곡선 식에서 <Term id="resultant">한 변수를 소거</Term>해 다른 변수의 단일 다항식을 얻는다 — 둘 다 차수 2면 4차식. (2) 그 근을 수치적으로 찾는다 (Durand–Kerner 등). (3) 대응하는 y 좌표를 선형 역대입으로 복구. (4) 각 교점을 실-아핀, 복소, 무한 중 하나로 라벨링. 위 위젯은 슬라이더를 움직일 때마다 1–4를 매번 수행한다.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="그래픽 스택 안의 자리">
+
+같은 _베주-와-분류_ 로직이 옷만 바꿔서 다음에서 작동한다:
+
+- **충돌 검출.** 두 볼록 도형 (원·타원·캡슐)의 교차 횟수는? 베주가 상한, 접 + 중복도가 스치는 접촉 검출, "실수 0 + 복소 4"가 명확한 분리를 보고.
+- **벡터 클리핑.** Illustrator/Figma의 두 경로 교차 계산 — 3차 베지에 × 3차 베지에 = 최대 9개의 대수 교점을 보임/구간 밖/접으로 분류.
+- **레이-곡선 픽킹.** 직선 (차수 1)과 이차곡선 (차수 2)은 대수 교점 2개. 마우스 클릭은 레이를 따라 첫 번째 실-아핀 교점을 고른다. 둘 다 복소면 클릭이 빗나간다.
+- **폰트 외곽선 래스터화.** 수평 스캔라인 (차수 1)이 글리프 외곽선 (3차까지의 베지에)을 d·1 = d개의 점에서 가른다. 중복도 포함 카운트가 짝-홀 채움 규칙을 *공짜*로 준다.
+
+모든 경우에서 표면의 이야기는 "세고 분류한다"이고, 깊은 이야기는 베주 정리 + 근 분류기. 모양은 달라지지만 *셈의 프로토콜*은 그대로.
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **실수 교점은 왔다 갔다 한다. 베주의 수는 그렇지 않다.** 화면이 보여주는 건 변하지 않는 그 수의
+  *실-아핀* 부분집합. 그래픽 엔진은 수 자체를 유지하고 각 원소를 분류한다 — 그림은 그 한 버킷일 뿐.
+</Pin>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="직선과 원" noCalculator>
+
+직선 <Formula>y = mx + c</Formula>는 단위원 <Formula>x² + y² = 1</Formula>과 베주 셈으로 몇 점에서 만나나? 어떤 <Formula>(m, c)</Formula> 범위에서 모두 보이고 (실-아핀), 어떤 범위에서 사라진 것이 복소가 되는가? 각각 한 예씩 그려보라.
+
+<Solution>
+  베주: 1·2 = **2**. 대입하면 <Formula>(1+m²)x² + 2mc·x + (c²−1) = 0</Formula>, 판별식{" "}
+  <Formula>4(m² + 1 − c²)</Formula>. **실-아핀 둘**은 <Formula>c² &lt; m² + 1</Formula>일 때 (직선이
+  원반을 가로지름). **접 (중복도 2)**은 <Formula>c² = m² + 1</Formula>. **복소 둘**은{" "}
+  <Formula>c² &gt; m² + 1</Formula> (실평면에서 원과 만나지 않음). 세 경우 모두 베주 셈은 동일한 2.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="두 원은 무한원을 공유한다">
+
+서로 다른 두 원을 잡자. 베주는 4번 만난다고 한다. 그런데 화면 그림은 실-아핀 교점이 항상 2개 이하다. 나머지 2개는 _항상_ 어디에 있나? (힌트: 원의 <Term id="homogenize">동차화</Term>식을 무한원선 <Formula>Z = 0</Formula>에 대입하면 최고차 항만 남는다.)
+
+<Solution>
+  <Formula>x² + y² + ax + by + c = 0</Formula>을 동차화하면{" "}
+  <Formula>X² + Y² + aXZ + bYZ + cZ² = 0</Formula>. <Formula>Z = 0</Formula>에서{" "}
+  <Formula>X² + Y² = 0</Formula>, 즉 <Formula>[X : Y : 0] = [1 : ± i : 0]</Formula> —{" "}
+  <Formula>a, b, c</Formula>와 무관. 그러므로 *모든* 원이 <Formula>I = [1 : i : 0]</Formula>과{" "}
+  <Formula>J = [1 : −i : 0]</Formula>을 무한원에서 지난다. 서로 다른 두 원은 둘 다 공유. 베주 4 = (≤
+  2 실-아핀) + (2 복소 무한원). 실-아핀 수가 2 이하로 내려가면 중복도 또는 복소-아핀 교점이 그
+  자리를 메운다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="접 vs 거의-빗나감" noCalculator>
+
+엔진에 매개변수 둘: 각도 <Formula>θ</Formula>와 허용오차 <Formula>ε</Formula>. <Formula>θ</Formula>가 접 배치를 지나갈 때 보이는 수는 2 → 1 → 0 → 1 → 2로 변한다. _접_ 순간은 하나의 배치, 그 주변 _거의-접_ 순간은 다른 배치. 대수적으로 차이를 진술하고 (중복도 2의 한 근 vs ε 이내의 서로 다른 두 근), 왜 견고한 엔진이 단순 <Formula>ε</Formula>-거리로 중복제거하면 안 되는지 설명하라.
+
+<Solution>
+  접 순간엔 종결식이 *중근* <Formula>x = a</Formula>를 가진다 — 다항식이{" "}
+  <Formula>(x − a)² · q(x)</Formula>로 인수분해된다. 거의-접은 가까운 *단순* 실수 근 둘{" "}
+  <Formula>a ± δ</Formula>. 둘 다 <Formula>ε &gt; δ</Formula>인 허용오차 기반 중복제거기에는 "한
+  점"으로 보인다. 그러나 접 경우는 물리가 다르다 (가로지름 없음 — 곡선이 스치고 분리), 견고성 거동도
+  다르다 (한 방향으로 섭동에 안정, 반대로는 불안정). 견고한 엔진은 가능하면 정확한 판별식을
+  계산하거나, 구간 산술로 중복도 결정의 경계를 잡는다 — 단순 거리만 보지 않는다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="맞지 않는 삼차">
+
+수평 직선 <Formula>y = 0</Formula>과 3차 곡선 <Formula>y = x³ + 1</Formula>의 교점을 계산한다. 베주 예측: 1·3 = 3. 실-아핀은 몇 개? 나머지는 어디? (보이는 것에는 <Formula>i</Formula>가 필요 없고, 나머지에는 각각 하나씩.)
+
+<Solution>
+  <Formula>x³ + 1 = 0</Formula>을 풀면 −1의 세제곱근: <Formula>x = −1</Formula>,{" "}
+  <Formula>x = e^(iπ/3) = ½ + i√3/2</Formula>, <Formula>x = e^(−iπ/3) = ½ − i√3/2</Formula>.
+  **실-아핀 교점 하나**는 <Formula>(−1, 0)</Formula> — 그래프에 찍히는 유일한 점. **복소 둘**은 켤레
+  쌍, 실평면 밖. 베주 셈: 3, 그림 셈: 1, 사라진 셈: 복소 2.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  응용: **곡선의 교차**. [베주](/ko/modules/bezout) 모듈을 소비한다 — 같은 정리, 다른 질문: "*그 셈
+  중 화면에 있는 부분집합은?*" 자매 응용: [비트코인 서명](/ko/finance/bitcoin-signature), 또 다른
+  베주 소비자.
+</PageFooter>

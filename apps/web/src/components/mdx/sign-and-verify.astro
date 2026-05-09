@@ -1,0 +1,7 @@
+---
+import { SignAndVerify as SignAndVerifyReact } from "../widgets/sign-and-verify";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<SignAndVerifyReact language={lang} client:load />

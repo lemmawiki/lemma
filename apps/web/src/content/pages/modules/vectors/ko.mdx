@@ -1,0 +1,166 @@
+---
+title: 벡터 · Lemma
+description: 왜 그래픽, 물리, 머신러닝은 모두 같은 화살표를 훔쳐 쓸까?
+breadcrumb:
+  parent: 그래프
+  parent_path: /graph
+  current: 모듈 · 벡터
+---
+
+import { Term, Exercise, Solution, VectorRoles } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 같은 화살표, 네 가지 옷">
+
+# 왜 그래픽, 물리, 머신러닝은 모두 같은 화살표를 훔쳐 쓸까?
+
+<Formula>(3, 4)</Formula>. 이것은 화면 위의 점인가, 어떻게 움직일지 보여주는 화살표인가, 속도인가,
+사과를 표현하는 특징 벡터인가? 답은 *무엇을 하느냐*에 달렸다 — 그리고 그게
+<Term id="vector">벡터</Term>가 응용 전반에서 *가장 많이 공유되는* 수학인 이유다. 튜플은 같다.
+산술도 같다. 역할이 바뀌고, 그에 따라 옷이 바뀐다.
+
+<Lede>
+  아래 위젯: 튜플 하나 <Formula>A</Formula>, 튜플 하나 <Formula>v</Formula>, 결과{" "}
+  <Formula>A + cv</Formula>. 역할 버튼을 누르면 — 기본/그래픽/물리/ML — 라벨만 바뀌고 그림은
+  그대로다. 그림은 *바뀔 수가 없다*; 그것에 *대해 들려주는* 이야기만 바뀐다.
+</Lede>
+
+</Hook>
+
+<VectorRoles />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="한 튜플, 여러 일">
+
+표기 <Formula>(3, 4)</Formula>은 어딘가를 가리키는 손가락 — 하지만 가리키는 *것*은 아주 다양하다. 2D 평면 위의 *위치*로 읽으면, 오른쪽 3 아래(혹은 위로) 4. *<Term id="displacement">변위</Term>*로 읽으면 명령: "어디서든 오른쪽 3, 위로 4 가라." *속도*로 읽으면 비율: 초당 가로 3, 세로 4. 과일 분류기의 *특징 벡터*로 읽으면 (단맛 3, 신맛 4) — 기하적 해석이 _전혀 없는_ 추상 특징 공간의 좌표. **튜플은 자신이 무엇인지 말하지 않는다.**
+
+이 모호성이 벡터를 유용하게 만드는 *이유*다. "두 개 이상의 수를 묶어 하나로 다루기"를 원하는 모든 응용이 같은 도구 — 한 벌의 산술, 한 벌의 항등식 — 을 물려받고, 자기 영역의 방식으로 *해석*하는 것이 응용의 일이 된다.
+
+</ArcRow>
+
+<ArcRow n={2} title="점: 어디인지">
+
+역할이 "위치"일 때, 튜플은 공간 안의 _주소_. *어디*에 답하지, *어떻게 움직일지*에 답하지 않는다. 원점을 바꾸면 위치는 바뀐다 — 같은 물리적 점이 한 좌표계에서 <Formula>(3, 4)</Formula>이지만, 원점이 그 점에 놓인 좌표계에서는 <Formula>(0, 0)</Formula>이 된다. *위치는 원점에 의존*한다.
+
+</ArcRow>
+
+<ArcRow n={3} title="벡터: 어떻게 움직일지">
+
+역할이 "변위"일 때, 튜플은 _이동 레시피_: 어디 있든 x를 3 더하고 y를 4 더하라. 결정적으로, 이것은 _원점-자유_ — 좌표계 원점을 옮겨도 두 점 사이의 변위는 변하지 않는다. 그래서 포물선-운동 식과 경사하강법 갱신식이 축을 어디에 놓든 같은 모양으로 보인다.
+
+두 점을 빼면 벡터가 된다: <Formula>v = B − A</Formula>는 A에서 B로의 변위. 점에 벡터를 더하면 다른 점이 된다: <Formula>A + v = B</Formula>. 두 점과 한 벡터는 같은 그림 안에 살지만, 벡터만 *방향-차원*을 가진다.
+
+{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={4} title="성분: 쪼개고, 계산하고, 합치기">
+
+2D 벡터는 x-, y- <Term id="component">성분</Term>으로 분해된다: <Formula>v = (v_x, v_y) = v_x · x̂ + v_y · ŷ</Formula>, 여기서 <Formula>x̂</Formula>와 <Formula>ŷ</Formula>는 각 축의 단위 벡터. 두 벡터의 덧셈은 성분별: <Formula>(a, b) + (c, d) = (a + c, b + d)</Formula>. 벡터에 <Term id="scalar">스칼라</Term> <Formula>c</Formula>를 곱하면 각 성분이 늘어난다: <Formula>c · (a, b) = (c·a, c·b)</Formula>.
+
+_분해-계산-재조립_ 패턴은 너무 보편적이라 의식하지 않게 된다. 포물선-운동 페이지는 발사 속도를 <Formula>(v₀ cos θ, v₀ sin θ)</Formula>로 쪼개 각 성분을 1D 운동으로 돌린다. 경사하강법 갱신은 <Formula>w − η·∇L</Formula>을 벡터 뺄셈으로 적지만, 모든 실제 구현은 그 아래 배열에 대해 *성분별*로 한다. 성분은 _벡터 산술이 소프트웨어 안에서 스칼라 산술이 되는 방식_.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="두 연산, 예외 없음">
+
+벡터 산술에는 단 두 연산이 있다 — 두 벡터를 더한다, 하나를 수로 늘인다. 둘이 합쳐 이 수학 스택 전체에서 "선형"이라 불리는 모든 것을 묘사한다. 이 둘로 만들 수 있는 것들:
+
+- **선형 보간.** <Formula>lerp(A, B, t) = (1 − t)·A + t·B</Formula> — 덧셈 한 번, 스칼라배 두 번. 베지에 곡선이 깔린 그 원시 연산.
+- **평행 이동.** 도형의 모든 점을 같은 벡터 <Formula>v</Formula>로 옮긴다 — 모든 좌표 <Formula>P</Formula>를 <Formula>P + v</Formula>로 교체.
+- **선형 결합.** <Formula>c₁v₁ + c₂v₂ + ⋯</Formula> 꼴의 모든 식. 계수 합이 1인 *볼록 결합*은 베지에 위젯이 제어점을 층별로 무너뜨리는 방식.
+- **기저 분해.** 2D 평면의 임의 벡터는 <Formula>v_x · x̂ + v_y · ŷ</Formula>. 다른 기저를 고르면 성분은 바뀌지만 벡터는 그대로 — 포물선-운동 페이지가 *가로/세로 운동의 독립성*을 이야기하며 암시했던 정확히 그 상황.
+
+약속: 성분별 덧셈과 스칼라배가 정의되는 모든 양이 이 도구 상자를 그대로 쓸 수 있다. 수, 점, 색, 소리, 함수 공간, 신경망 매개변수 — 전부 자격이 있다. *튜플이 역할에 침묵한다*는 점이 도구가 영역을 가로질러 가는 이유.
+
+</ArcRow>
+
+<ArcRow n={6} title="이 모듈이 어디서 소비되는가">
+
+Lemma의 모든 응용이 벡터를 *직접 소비*하거나 더 높은 수준의 추상 안에 _숨겨서_ 쓴다. 위젯의 역할 토글은 수사가 아니다 — 각 역할이 실제로 그 산술을 수행하는 살아있는 응용에 대응한다.
+
+- [**베지에 곡선**](/ko/graphics/bezier-curves) — <Term id="control-point">제어점</Term>은 점이고, 재귀 lerp는 그 점들의 _볼록 결합_, 결과로 나오는 곡선은 매개변수 <Formula>t</Formula>가 만드는 위치 벡터의 경로.
+- [**포물선 운동**](/ko/physics/projectile-motion) — 발사 속도는 벡터, <Formula>(v₀ cos θ, v₀ sin θ)</Formula>로 성분 분해. 시간에 따른 위치는 또 다른 벡터로, 성분별 계산.
+- [**경사하강법**](/ko/ml/gradient-descent) — 토이 위젯의 <Formula>w</Formula>가 스칼라인 건 토이가 매개변수를 하나만 갖기 때문. 실제 버전은 매개변수 *벡터*에서 작동하고, 기울기는 편미분의 벡터, 한 스텝은 _벡터 뺄셈_.
+- [**비트코인 서명**](/ko/finance/bitcoin-signature) — 곡선 위의 점은 2-튜플, 현·접선 군 법칙은 점 산술로 묘사되지만, 모든 구현은 그 아래의 좌표 *벡터*에서 일한다.
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **튜플은 역할에 대해 침묵한다.** 성분별로 더하라. 수로 늘여라. 산술은 그대로 남는다; 바뀌는 것은
+  응용이 그 답에게 입히는 옷뿐이다.
+</Pin>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="손으로 더하기" noCalculator>
+
+<Formula>A = (2, 1)</Formula>, <Formula>v = (3, 4)</Formula>. <Formula>A + v</Formula>,
+<Formula>A − v</Formula>, <Formula>2v</Formula>를 계산. 셋을 모눈종이에 그려보고, 첫째가 왜 *"내가
+어디로 가는가?"*, 둘째가 *"어디서 왔는가?"*, 셋째가 *"내 한 걸음이 두 배 길면?"*에 답하는지 한
+문장으로 설명.
+
+<Solution>
+  <Formula>A + v = (5, 5)</Formula>: <Formula>(2, 1)</Formula>에서 오른쪽 3 + 위로 4를 걸으면{" "}
+  <Formula>(5, 5)</Formula>. <Formula>A − v = (−1, −3)</Formula>: *반대로* 걷는다 — 마지막 걸음이
+  A에서 끝났다면 출발점이 거기였다는 의미. <Formula>2v = (6, 8)</Formula>: 같은 방향, 거리만 두 배 —
+  원점에서 한 걸음 대신 두 걸음을 갔을 때의 도착점.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="발사 속도 분해" noCalculator>
+
+공이 <Formula>v₀ = 10 m/s</Formula>, 수평 위쪽 <Formula>θ = 30°</Formula>로 던져진다. 속도를 <Formula>(v_x, v_y)</Formula>로 분해하라. <Formula>cos 30° = √3/2 ≈ 0.87</Formula>, <Formula>sin 30° = 1/2</Formula>. 비행 0.4 s 후의 변위 벡터는? (이 문제에서는 중력 무시.)
+
+<Solution>
+  <Formula>v = (10·0.87, 10·0.5) = (8.7, 5.0) m/s</Formula>. <Formula>Δt = 0.4 s</Formula> 후 변위:{" "}
+  <Formula>0.4 · v = (3.48, 2.0) m</Formula>. 던진 방향을 가리키는, 길이{" "}
+  <Formula>10 · 0.4 = 4 m</Formula>의 벡터. 같은 벡터, 두 가지 묘사.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="접선 벡터">
+
+제어점 <Formula>P₀, P₁, P₂, P₃</Formula>의 베지에 곡선에서 <Formula>t = 0</Formula>의 접선은 <Formula>P₁ − P₀</Formula> 방향. *그 벡터*가 — <Formula>P₁</Formula>의 위치 자체가 아니라 — 왜 "출발 방향"이라 불려야 마땅한가?
+
+<Solution>
+  위치 <Formula>P₁</Formula>은 원점이 어디 있는지에 의존 — 캔버스를 옮기면 <Formula>P₁</Formula>이
+  바뀌지만 곡선의 *모양*은 그대로다. 벡터 <Formula>P₁ − P₀</Formula>은 원점-자유 — 위치가 아니라
+  변위. <Formula>P₀</Formula>에서 곡선이 *떠나는 방향*을 잡고, 이는 곡선의 성질이지 종이를 책상
+  어디에 놓느냐의 성질이 아니다. 이 모듈이 고집하는 *위치 vs 변위* 구분 그대로.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="기울기는 벡터다">
+
+토이 경사하강법 페이지는 매개변수 하나 <Formula>w</Formula>와 기울기 하나 <Formula>L'(w)</Formula> — 둘 다 스칼라. 매개변수 둘 <Formula>(w₁, w₂)</Formula>면 손실은 편미분 둘 <Formula>(∂L/∂w₁, ∂L/∂w₂)</Formula>를 가진다. 하강 스텝 <Formula>w ← w − η · ∇L</Formula>을 성분 형태로 쓰자. 이 모듈의 어느 산술을 쓰고 있는가?
+
+<Solution>
+  성분 형태: <Formula>(w₁, w₂) ← (w₁ − η·∂L/∂w₁, w₂ − η·∂L/∂w₂)</Formula>. 우변은 *벡터 뺄셈*{" "}
+  <Formula>(w₁, w₂) − η·(∂L/∂w₁, ∂L/∂w₂)</Formula> — 덧셈 (음의 부호와 함께)과 스칼라 곱, 벡터에
+  필요한 단 두 연산. 더 높은 차원의 모든 ML 훈련이 같은 한-줄 갱신; 기울기가 더 긴 벡터가 될 뿐이다.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  모듈: **벡터**. Lemma의 모든 응용이 (명시적으로든 암묵적으로든) 소비. 시작은 *"왜 네 필러가 모두
+  같은 화살표를 쓰는가?"*, 끝은 *"두 연산 — 더하기와 늘이기 — 을 공유하기 때문."*
+</PageFooter>

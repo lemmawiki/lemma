@@ -1,0 +1,7 @@
+---
+import { ControlPoints as ControlPointsReact } from "../widgets/control-points";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<ControlPointsReact language={lang} client:load />

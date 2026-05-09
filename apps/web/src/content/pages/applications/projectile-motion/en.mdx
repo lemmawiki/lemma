@@ -1,0 +1,180 @@
+---
+title: Projectile Motion · Lemma
+description: Throw a ball. Ignore air. Horizontal motion keeps time; vertical motion loses to gravity. Their joint trace is a parabola.
+breadcrumb:
+  current: physics · projectile motion
+---
+
+import { Term, Exercise, Solution, Counterexample, WhyNotTaught, Launch } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · gravity's signature">
+
+# Why does gravity write a parabola, every time?
+
+Throw a ball. Ignore air. Its horizontal motion keeps time — the same speed forever. Its vertical motion loses to <Term id="gravity">gravity</Term> — slower up, faster down. **Two perpendicular stories, neither aware of the other**, and yet their shared trace is a <Term id="parabola">parabola</Term>. Not a special property of parabolas — a recipe. Constant velocity meets constant acceleration; their joint picture is quadratic.
+
+<Lede>
+  Drag the angle, the speed, and gravity in the widget. The path always closes back to the ground;
+  the apex is always halfway across; the brown **vₓ** arrow stays the same length while the blue
+  **v_y** arrow zeroes at the top and reverses on the way down. That's the whole picture.
+</Lede>
+
+</Hook>
+
+<Launch />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="Two motions, one ball">
+
+Once the ball leaves your hand, the only force on it is <Term id="gravity">gravity</Term> — pulling straight down. Nothing pushes it horizontally. So horizontally, it carries on at whatever <Term id="velocity">velocity</Term> you launched it with — uniform, forever, until it lands. Vertically, gravity slows it on the way up, stops it briefly at the apex, and speeds it up on the way down. _The horizontal motion has no idea there's gravity. The vertical motion has no idea there's a horizontal velocity._ Each is a one-dimensional problem; we solve them in parallel and only later combine them into a 2D picture.
+
+</ArcRow>
+
+<ArcRow n={2} title="Equations of motion">
+
+Split the launch velocity into components: <Formula>vₓ = v₀ cos θ</Formula>, <Formula>v_y = v₀ sin θ</Formula>. The horizontal component is constant; the vertical component decreases at a rate of <Formula>g</Formula> (the constant downward <Term id="acceleration">acceleration</Term>): <Formula>v_y(t) = v₀ sin θ − g·t</Formula>. Integrate once and you get position:
+
+```
+x(t) = v₀ cos θ · t
+y(t) = v₀ sin θ · t − ½ g t²
+```
+
+That pair is a [parametric curve](/en/modules/parametric-curves): two functions of a shared time parameter <Formula>t</Formula>. The _image_ of this curve is the shape on the field; the _parametrization_ is the actual motion in time. Same image can be painted by many parametrizations — we'll see one shortly.
+
+{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={3} title="Eliminate time, see the parabola">
+
+Solve <Formula>x(t) = v₀ cos θ · t</Formula> for <Formula>t</Formula>: <Formula>t = x / (v₀ cos θ)</Formula>. Plug into <Formula>y(t)</Formula>:
+
+```
+y(x) = (tan θ) · x  −  g · x² / (2 v₀² cos²θ)
+```
+
+That is a quadratic in <Formula>x</Formula>. The trace of two independent linear processes (in <Formula>t</Formula>) is necessarily quadratic (in <Formula>x</Formula>) — and the graph of a quadratic is a <Term id="parabola">parabola</Term>. The parabola is the _image_ of the motion. The motion is the _parametrization_. The image hides the time axis; you can read shape off it, but you cannot tell how fast the ball got there.
+
+{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={4} title="What you can read off without solving anything">
+
+Four facts fall out of the formula.
+
+- **Time to peak.** Vertical velocity <Formula>v_y(t) = v₀ sin θ − g·t</Formula> hits zero at <Formula>t_peak = v₀ sin θ / g</Formula>. That is when the ball is highest.
+- **Time to land.** By symmetry, the down-trip mirrors the up-trip: <Formula>t_land = 2 · t_peak</Formula>. The widget's stat row shows it.
+- **Range.** <Formula>R = v₀ cos θ · t_land = v₀² sin(2θ) / g</Formula>. Maximum at <Formula>2θ = 90°</Formula>, i.e. launch angle <Formula>θ = 45°</Formula>. The longest throw is the one split evenly between up and forward.
+- **Symmetry.** The peak sits at <Formula>x = R/2</Formula>. The speed at impact equals the speed at launch (same <Formula>vₓ</Formula>, equal-magnitude opposite-sign <Formula>v_y</Formula>). Without drag, the ball loses no energy to the air.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="Same image, different motions">
+
+The image-vs-parametrization distinction the [parametric-curves](/en/modules/parametric-curves) module makes precise applies right here. Look at <Formula>y(x) = (tan θ) x − g x² / (2 v₀² cos²θ)</Formula>: the shape of the parabola depends only on <Formula>θ</Formula> and the ratio <Formula>g/v₀²</Formula>. Double both <Formula>v₀</Formula> and <Formula>g</Formula> together by appropriate factors and you get the _same parabola, traversed in a different time_. A throw on the Moon with the right matching speed paints exactly the same shape as a throw on Earth — but slower, because the Moon's clock for the same shape ticks differently.
+
+That is the same lesson as Bezier curves and as the parametric-curves spike that became a module: the picture is one thing, the motion that paints it is another. Two parametrizations can disagree on every detail except the _image_ they produce.
+
+<Counterexample>
+  The parabola is the trajectory you get *when you ignore air*. A baseball thrown at 40 m/s has
+  Reynolds number ~10⁵; drag is not a small correction. Compute the same equations with quadratic
+  drag <Formula>F_d = ½ ρ C_d A v²</Formula> for a 145 g ball, and the range at **θ = 45°** drops
+  from **~163 m** (vacuum) to **~98 m** (air) — *and* the optimal angle shifts from **45°** to
+  **~38°**. The clean parabola is a vacuum object; real outdoor motion is one of those, asymmetric,
+  foreshortened.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **Horizontal keeps time. Vertical loses to gravity.** Their independent stories — uniform velocity
+  meeting constant acceleration — trace a parabola. The shape is the recipe; the motion is the
+  story.
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="time to the peak" noCalculator>
+
+A ball is launched at <Formula>v₀ = 20 m/s</Formula>, <Formula>θ = 30°</Formula>, with <Formula>g = 10 m/s²</Formula>. Find <Formula>t_peak</Formula> and the maximum height. Use <Formula>sin 30° = 1/2</Formula>.
+
+<Solution>
+  <Formula>v_y(0) = v₀ sin 30° = 10 m/s</Formula>. Setting <Formula>v_y(t) = 10 − 10·t = 0</Formula>{" "}
+  gives **t_peak = 1 s**. Max height{" "}
+  <Formula>= v_y(0)·t_peak − ½ g t_peak² = 10·1 − ½·10·1 = 5 m</Formula>. (Same as{" "}
+  <Formula>v_y(0)² / (2g) = 100/20 = 5 m</Formula>.)
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="derive the range formula">
+
+Starting from <Formula>x(t_land) = v₀ cos θ · t_land</Formula> and <Formula>t_land = 2 v₀ sin θ / g</Formula>, derive <Formula>R = v₀² sin(2θ) / g</Formula>. Confirm in the widget that the range is largest at <Formula>θ = 45°</Formula>.
+
+<Solution>
+  <Formula>R = v₀ cos θ · (2 v₀ sin θ / g) = (2 v₀² sin θ cos θ) / g = v₀² sin(2θ) / g</Formula>{" "}
+  using the double-angle identity <Formula>sin(2θ) = 2 sin θ cos θ</Formula>. Maximum of{" "}
+  <Formula>sin(2θ)</Formula> is 1 at <Formula>2θ = 90°</Formula>, i.e. **θ = 45°**.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="same image, different time">
+
+Two throws have the same launch angle <Formula>θ = 45°</Formula>: one with <Formula>(v₀, g) = (20, 10)</Formula>, the other with <Formula>(v₀, g) = (40, 40)</Formula>. Show that they paint the _same parabola_ <Formula>y(x)</Formula>, but the second is _faster_ in time. Which quantity controls the image, and which controls the motion?
+
+<Solution>
+  <Formula>y(x) = (tan θ) x − g·x² / (2 v₀² cos²θ)</Formula> depends only on <Formula>θ</Formula>{" "}
+  and <Formula>g/v₀²</Formula>. For both throws this ratio equals{" "}
+  <Formula>10/400 = 40/1600 = 0.025</Formula>, so same parabola. But{" "}
+  <Formula>t_land = 2 v₀ sin θ / g</Formula> evaluates to <Formula>√2 · 20/10 ≈ 2.83 s</Formula> for
+  the first and <Formula>√2 · 40/40 ≈ 1.41 s</Formula> for the second — half the flight time.
+  **Image: <Formula>(θ, g/v₀²)</Formula>**; **motion: anything else, including absolute v₀ and g.**
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="speed at impact">
+
+Without doing any time calculation, argue that the ball's _speed_ at impact equals its launch speed <Formula>v₀</Formula>. (Same height, no drag.) What about the angle the velocity vector makes with the ground at impact?
+
+<Solution>
+  By symmetry of the parabola and the time-reversal symmetry of constant acceleration: at landing,{" "}
+  <Formula>vₓ</Formula> is unchanged (no horizontal force), and <Formula>v_y</Formula> has equal
+  magnitude but opposite sign of its launch value. So{" "}
+  <Formula>|v_impact|² = vₓ² + v_y² = v₀²</Formula> — same speed. Direction: launch was at{" "}
+  <Formula>+θ</Formula> above the ground, impact is at <Formula>−θ</Formula> below — equal angle,
+  opposite side.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  Most physics intros open with "objects in projectile motion follow a parabolic path" — stated as a
+  fact about *nature*, not as a consequence of two assumptions (no air, constant g). The reader
+  files away "parabola" without knowing what they traded for it. Lemma keeps the two motions visible
+  — horizontal uniform, vertical free-fall — so the parabola arrives as a *theorem*, not a slogan.
+  And the counterexample above admits the obvious: outdoors, the parabola is already wrong.
+</WhyNotTaught>
+
+<PageFooter>
+  application: **Projectile Motion**. Consumes the [Parametric
+  Curves](/en/modules/parametric-curves) module — the parabola is the image; the equations of motion
+  are the parametrization.
+</PageFooter>

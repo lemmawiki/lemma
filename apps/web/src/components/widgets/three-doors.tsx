@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   futureValue,
   yearsToTarget,
@@ -7,14 +7,15 @@ import {
   formatYears,
   formatPercent,
 } from "../../lib/finance";
-import { useApp, pick } from "../../context/app-context";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 
 type Door = "F" | "t" | "r";
 
 // Widget B — Three Doors. One equation. Three unknowns. Three operations.
-export function ThreeDoors() {
-  const { language } = useApp();
+export function ThreeDoors({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [door, setDoor] = useState<Door>("F");
 
   const [P, setP] = useState(41);

@@ -1,0 +1,168 @@
+---
+title: Linearization · Lemma
+description: Most equations are hard. Their tangent line is easy.
+breadcrumb:
+  parent: graph
+  parent_path: /graph
+  current: module · linearization
+---
+
+import { Term, Exercise, Solution, TangentApproximation } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · the everyday move">
+
+# Most equations are hard. Their tangent line is easy.
+
+Every time you say "for small <Formula>θ</Formula>, <Formula>sin θ ≈ θ</Formula>" or "near here, things grow linearly" or "to a first approximation," you are <Term id="linearization">linearizing</Term>. The pattern is so common we stop noticing it. The pendulum clock works because of it. Newton's method is built on it. Gradient descent is built on it. Most engineering is the discipline of _staying in the regime where it holds_.
+
+<Lede>
+  In the widget below, drag **a** (the anchor) and **x** (where to evaluate). With{" "}
+  <Formula>a = 0</Formula>, the tangent line of <Formula>sin</Formula> is exactly{" "}
+  <Formula>y = x</Formula> — the small-angle approximation, in pictures. Drag **x** away from{" "}
+  <Formula>0</Formula> and watch the error grow as the square of the distance.
+</Lede>
+
+</Hook>
+
+<TangentApproximation />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="Why we approximate">
+
+The functions that govern the world are mostly _nonlinear_: a pendulum's <Formula>sin θ</Formula>, a transistor's exponential current, a gravitational force's <Formula>1/r²</Formula>, a neural network's softmax. Solving them in closed form is, in most cases, impossible. So we trade away exactness in a controlled way: pick a point we care about, replace the nonlinear function with the closest linear function in a neighbourhood of that point, and accept that the answer is correct only "near enough."
+
+</ArcRow>
+
+<ArcRow n={2} title="The tangent line at a point">
+
+At any smooth point <Formula>a</Formula>, the function <Formula>f</Formula> has both a value <Formula>f(a)</Formula> and a slope <Formula>f'(a)</Formula> (from the [derivatives module](/en/modules/derivatives)). The unique line passing through <Formula>(a, f(a))</Formula> with that slope is the <Term id="tangent">tangent line</Term>:
+
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`L_a(x)  =  f(a)  +  f'(a) · (x − a)`}</pre>
+
+That is the linearization of <Formula>f</Formula> at <Formula>a</Formula>. It matches the function in two ways: <Formula>L_a(a) = f(a)</Formula> (same value at the anchor) and <Formula>L_a'(a) = f'(a)</Formula> (same slope at the anchor). No other line can claim both. The widget draws this line with the dashed brown stroke; for <Formula>f(x) = sin x</Formula> at <Formula>a = 0</Formula>, the line is <Formula>L_0(x) = 0 + 1 · (x − 0) = x</Formula>.
+
+{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={3} title="Error grows as a square">
+
+For any smooth function, the error <Formula>f(x) − L_a(x)</Formula> behaves like a quadratic in the deviation <Formula>x − a</Formula>. Doubling the deviation roughly quadruples the error; halving it cuts the error to a quarter. This is _quadratic, not linear* — and it is the reason linearization is useful: the gap closes very quickly as you approach the anchor.
+
+Concretely for <Formula>sin</Formula> at <Formula>0</Formula>: the leading error term is <Formula>−x³/6</Formula>, so <Formula>error / (x − a)²</Formula> drifts slowly with <Formula>x</Formula> rather than staying constant — the cubic term dominates here. Other functions (<Formula>e^x</Formula>, <Formula>√(1 + x)</Formula>, <Formula>1/(1 − x)</Formula>) have a constant <Formula>error / (x − a)²</Formula> ratio because their second derivative at the anchor is nonzero. Either way, the rule of thumb is the same: _"small" deviations make linear approximation fine; "large" deviations make it wrong, fast._
+
+{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={4} title="What this lets you build">
+
+Once you have a tool that turns nonlinear into linear in a small region, three widely-used algorithms fall out:
+
+- **Newton's method** for solving <Formula>f(x) = 0</Formula>. Linearize at the current guess, find where _that line_ crosses zero, use that as the next guess. Each step is one linearization. Convergence is quadratic — a step's error becomes the next step's error squared.
+- **[Gradient descent](/en/ml/gradient-descent)** for minimizing a loss. The first-order Taylor approximation says <Formula>L(w − η · ∇L) ≈ L(w) − η · ‖∇L‖²</Formula>. If <Formula>η</Formula> is small enough that the linearization is trustworthy, the loss decreases. Too big and the linearization lies — the explosion you see at <Formula>η = 0.27</Formula> in that page's widget.
+- **[The pendulum clock](/en/physics/pendulum-clock)** runs on a single linearization: <Formula>sin θ ≈ θ</Formula>. The nonlinear ODE <Formula>θ̈ = −(g/L) sin θ</Formula> becomes <Formula>θ̈ = −(g/L) θ</Formula>, with a closed-form sinusoidal solution and a constant-period clock. The whole technology lives inside the small-angle regime where the lie holds.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="The catch — only 'almost'">
+
+Every linearization is wrong outside its anchor's neighbourhood. The discipline of using the tool well is the discipline of measuring and respecting that neighbourhood:
+
+- Quote a _bound on the deviation_ for which the linear answer is good enough — not just a slogan that "linearization works."
+- Compute or estimate the next-order term and check that it is small (or that its sign won't bite you).
+- Stay _inside_ the regime by design: clock escapements force small arcs; ML training schedules shrink the learning rate; control systems stay near operating points; circuit designers bias transistors into the linear region. When you can't stay there, switch to a higher-order method or a nonlinear solver — and accept the cost.
+
+That phrase — "the regime where the lie holds" — is the same one the pendulum page closes on. It is not coincidence; it is the pattern this module names. Every applied-math discipline has a private inventory of such regimes, kept by people who know exactly how far they can lean.
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **The tangent line is the cheapest answer that still gets the slope right.** Linearization
+  replaces a hard problem with an easy one — valid in a regime, wrong outside it, always. The
+  discipline is the regime.
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="small-angle by hand" noCalculator>
+
+Linearize <Formula>f(x) = sin x</Formula> at <Formula>a = 0</Formula>. Use the linearization to estimate <Formula>sin 0.1</Formula>. The true value (3 decimals) is <Formula>0.0998</Formula>. What is the error? About what fraction of <Formula>x</Formula> is it?
+
+<Solution>
+  <Formula>L_0(x) = sin(0) + cos(0) · x = x</Formula>. So <Formula>L_0(0.1) = 0.1</Formula>. Error{" "}
+  <Formula>= 0.1 − 0.0998 = 0.0002</Formula> (about <Formula>x³/6 ≈ 0.001/6 ≈ 0.000167</Formula> by
+  the cubic-term rule — we also have higher-order correction). The error is about{" "}
+  <Formula>1/500</Formula> of <Formula>x</Formula>, well below the <Formula>0.5%</Formula> threshold
+  most engineers care about.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="exponential at zero" noCalculator>
+
+Linearize <Formula>f(x) = e^x</Formula> at <Formula>a = 0</Formula>. Estimate <Formula>e^0.2</Formula>. The true value is about <Formula>1.2214</Formula>. Compare with <Formula>e^0.5</Formula> (true: <Formula>1.6487</Formula>). What does the relative error pattern look like as the deviation grows?
+
+<Solution>
+  <Formula>L_0(x) = e^0 + e^0 · x = 1 + x</Formula>. So <Formula>L_0(0.2) = 1.2</Formula> (true
+  1.2214; error <Formula>0.0214</Formula>, about **1.8%**). And <Formula>L_0(0.5) = 1.5</Formula>{" "}
+  (true 1.6487; error <Formula>0.1487</Formula>, about **9%**). The deviation grew{" "}
+  <Formula>2.5×</Formula>; the error grew <Formula>~7×</Formula> — close to the predicted{" "}
+  <Formula>2.5² = 6.25×</Formula> for a quadratic-error scaling. That's the rule "doubling deviation
+  quadruples error" in action.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="Newton step as linearization">
+
+Suppose you want to solve <Formula>f(x) = 0</Formula> for some nonlinear <Formula>f</Formula>. You have a guess <Formula>x_n</Formula>. Linearize <Formula>f</Formula> at <Formula>x_n</Formula> and find where *that line* crosses zero. Show that the next guess is <Formula>x_(n+1) = x_n − f(x_n) / f'(x_n)</Formula>. What breaks this iteration?
+
+<Solution>
+  The tangent line at <Formula>x_n</Formula> is <Formula>L(x) = f(x_n) + f'(x_n)(x − x_n)</Formula>.
+  Set <Formula>L(x) = 0</Formula> and solve for <Formula>x</Formula>:{" "}
+  <Formula>x = x_n − f(x_n)/f'(x_n)</Formula>. Breaks when <Formula>f'(x_n) ≈ 0</Formula> (the
+  tangent is nearly horizontal — the next guess flies off to infinity), or when the guess is far
+  from a root and the linear approximation lies badly. In practice, Newton needs a starting guess in
+  the basin where the linearization is faithful.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="why gradient descent's η has a ceiling">
+
+The first-order Taylor approximation of the loss <Formula>L(w + d) ≈ L(w) + ∇L(w) · d</Formula> is honest only for small <Formula>‖d‖</Formula>. The gradient descent step chooses <Formula>d = −η · ∇L</Formula>. Use the second-order term to argue why the toy quadratic loss in [/ml/gradient-descent](/en/ml/gradient-descent) has a hard <Formula>η</Formula> ceiling at <Formula>2/L''(w_)</Formula>.
+
+<Solution>
+  For a 1D quadratic loss <Formula>L(w) = c·(w − w_)²/2</Formula>, <Formula>L''(w) = c</Formula>{" "}
+  everywhere. Linearization at <Formula>w</Formula> says the next step{" "}
+  <Formula>w − η·c(w − w_)</Formula> moves the displacement <Formula>u = w − w_</Formula> by the
+  factor <Formula>r = 1 − η·c</Formula>. Stable convergence requires <Formula>|r| &lt; 1</Formula>,
+  i.e. <Formula>0 &lt; η &lt; 2/c = 2/L''(w_)</Formula>. Above this ceiling, every step *overshoots*
+  the linearization's claim, and the iterates explode. This is exactly the boundary the
+  gradient-descent widget shows at <Formula>η = 0.25</Formula>: the linearization stops being
+  trustworthy for the chosen step size.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  module: **Linearization**. Consumed (now or by name) by [The Pendulum
+  Clock](/en/physics/pendulum-clock), [Gradient Descent](/en/ml/gradient-descent), and any future
+  page that reaches for "first-order approximation" or "small-deviation regime."
+</PageFooter>

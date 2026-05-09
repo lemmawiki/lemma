@@ -1,0 +1,62 @@
+---
+// Server-side glossary list. Takes a list of term ids and renders the entries
+// that exist in the glossary, in the order they appeared. Both EN and KO labels
+// shown side-by-side; the body is the prose for the current locale.
+//
+// Usage from the dynamic route:
+//
+//   const ids = Array.from(entry.body.matchAll(/<Term\s+id=["']([^"']+)["']/g))
+//     .map((m) => m[1]);
+//   <GlossaryUsed lang={lang} ids={ids} />
+import Kicker from "./kicker.astro";
+import { glossaryById } from "../../data/glossary";
+
+interface Props {
+  lang: "en" | "ko";
+  ids: string[];
+}
+const { lang, ids } = Astro.props;
+
+const seen = new Set<string>();
+const orderedIds = ids.filter((id) => {
+  if (seen.has(id)) return false;
+  seen.add(id);
+  return Boolean(glossaryById[id]);
+});
+
+const kicker =
+  lang === "ko"
+    ? `용어집 · 이 페이지에서 쓰임 · ${orderedIds.length}`
+    : `glossary · used on this page · ${orderedIds.length}`;
+---
+
+{
+  orderedIds.length > 0 && (
+    <section class="mt-14">
+      <Kicker>{kicker}</Kicker>
+      <div class="grid grid-cols-2 gap-3 max-md:grid-cols-1">
+        {orderedIds.map((id) => {
+          const g = glossaryById[id]!;
+          const en = g.locales.en;
+          const ko = g.locales.ko;
+          const view = g.locales[lang] ?? en;
+          return (
+            <div class="rounded-md border border-rule bg-bg-card px-4 py-3.5 text-[14.5px] leading-[1.5]">
+              <div class="mb-1.5 flex items-baseline gap-2">
+                <span class="font-serif text-base font-semibold text-ink">{en?.term ?? id}</span>
+                <span class="text-ink-mute">·</span>
+                <span class="font-sans text-[15px] font-medium text-acc">{ko?.term ?? id}</span>
+              </div>
+              <div class="text-ink-soft">{view?.body}</div>
+              {view?.flag && (
+                <div class="mt-2 border-t border-dashed border-rule pt-2 text-[13px] text-acc-deep">
+                  ⚠ {view.flag}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  )
+}

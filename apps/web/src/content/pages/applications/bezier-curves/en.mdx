@@ -1,0 +1,175 @@
+---
+title: Bezier Curves · Lemma
+description: A designer drags four handles. One operation — linear interpolation between two points — applied recursively, draws every smooth curve in computer graphics.
+breadcrumb:
+  current: graphics · bezier curves
+---
+
+import {
+  Term,
+  Exercise,
+  Solution,
+  Counterexample,
+  WhyNotTaught,
+  ControlPoints,
+} from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · a few handles, a smooth path">
+
+# How does a computer turn a few points into a smooth curve?
+
+A designer drags four handles. A movie character gets a smooth cheek, a car gets a perfect hood, a letter gets its curve. The handles are not _on_ the curve; they pull at it like magnets. Move one handle and only the part of the curve nearby changes — the rest sits still. **One operation, applied recursively, is doing all of this.** That operation is linear interpolation between two points.
+
+<Lede>
+  Drag any handle in the widget below. Slide **t** across the bottom and watch the construction
+  collapse layer by layer onto a single point — that point traces the curve.
+</Lede>
+
+</Hook>
+
+<ControlPoints />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="Why not just connect the dots?">
+
+Imagine asking a computer for "a smooth curve passing through these five points." A first attempt: fit a single polynomial. It works for two or three points; for five or more it oscillates wildly between them (the Runge phenomenon). Splines fix this by stitching local pieces together — but each piece still has to be defined. Bezier's idea is different: don't ask for a curve _through_ the points; ask for one _shaped by_ them. The points become handles, not anchors.
+
+</ArcRow>
+
+<ArcRow n={2} title="The two-point case — lerp">
+
+Between two points <Formula>P₀</Formula> and <Formula>P₁</Formula>, the linear interpolation <Term id="lerp">lerp</Term> is <Formula>lerp(P₀, P₁, t) = (1−t)·P₀ + t·P₁</Formula>. At <Formula>t = 0</Formula> you sit on <Formula>P₀</Formula>, at <Formula>t = 1</Formula> on <Formula>P₁</Formula>, and in between you trace the straight line. This is so simple it looks like nothing. But it is the _only_ tool Bezier curves need.
+
+{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={3} title="Recursive lerp — De Casteljau">
+
+With four <Term id="control-point">control points</Term> <Formula>P₀, P₁, P₂, P₃</Formula>, do this. Lerp every adjacent pair at <Formula>t</Formula> to get three new points. Lerp those pairs to get two. Lerp those to get one. That last point is <Formula>B(t)</Formula>, the curve at parameter <Formula>t</Formula>. Each "layer" reduces the count by one; with <Formula>n+1</Formula> controls, you stop after <Formula>n</Formula> layers. This is <Term id="de-casteljau">De Casteljau's algorithm</Term>, and it is exactly equivalent to the polynomial form <Formula>B(t) = (1−t)³P₀ + 3(1−t)²t·P₁ + 3(1−t)t²·P₂ + t³P₃</Formula> — same numbers, kinder bookkeeping.
+
+In the widget, each layer is drawn in its own color: the dashed gray polygon connects the original controls, orange the level-1 lerps, brown the level-2 lerps, and the final green dot is <Formula>B(t)</Formula>. Sweep <Formula>t</Formula> across the slider — the construction collapses, the green dot moves, and its trace _is_ the curve. The curve is not drawn by a separate formula; it is the locus of recursion.
+
+{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={4} title="What you can read off the picture">
+
+Four facts fall out without proof, just from staring at the construction.
+
+- **Endpoints.** At <Formula>t = 0</Formula> every lerp returns the left point, so <Formula>B(0) = P₀</Formula>. Symmetrically <Formula>B(1) = P₃</Formula>. _The curve passes through the first and last control points._
+- **Tangents at endpoints.** The level-1 lerps near <Formula>t = 0</Formula> sit on segments <Formula>P₀P₁</Formula>; the curve emerges along that direction. So _the curve leaves <Formula>P₀</Formula> heading toward <Formula>P₁</Formula>_, and arrives at <Formula>P₃</Formula> along <Formula>P₂P₃</Formula>. Designers use this to "make two curves meet smoothly": align their end-handles.
+- **Convex hull.** Every layer of lerps is a convex combination of the previous layer; the final point is a convex combination of the controls. So the curve lives inside the polygon's convex hull and never escapes — useful for collision bounds and clipping.
+- **The control polygon is not the curve.** It bounds the curve, points along it, can be moved to drag the curve — but the curve sits _inside_ the polygon, smoothed away from its corners.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="Why every graphics stack ships this">
+
+The properties above are exactly what a tool needs. **Local control** — moving one handle changes only the nearby curve. **Affine invariance** — transform the controls, and the curve transforms the same way (rotate, scale, translate without re-evaluating the formula). **Numerical stability** — De Casteljau is just lerps, no high-degree polynomial cancellation. **Composable** — splice many cubic Beziers end-to-end with matching tangents and you get B-splines, the workhorse of CAD and animation.
+
+Concretely: TrueType fonts use quadratic Beziers; PostScript and most modern fonts use cubic; SVG `path` data is a Bezier syntax with shorthand; Figma, Illustrator, Inkscape — all the same recursion at the bottom; Pixar's smooth animation curves and the "ease-in-out" timing function in CSS are cubic Beziers picked by hand. One algorithm, four handles, an entire industry of curves.
+
+The deeper bridge: Bezier curves consume the [parametric-curves](/en/modules/parametric-curves) module. The _image_ of the curve is the smooth path; the _parametrization_ is <Formula>t ↦ B(t)</Formula>. Designers usually only see the image; the parametrization is what the renderer steps through to draw it.
+
+<Counterexample>
+  Bezier's "smooth" is a *local* claim, not a global one. A cubic Bezier whose control polygon makes
+  a sharp loop will produce a self-intersecting curve — still smooth in the differential sense
+  (B'(t) is continuous), but visually pathological. Try the widget with{" "}
+  <Formula>P₀ = (60, 80), P₁ = (440, 240), P₂ = (60, 240), P₃ = (440, 80)</Formula>: a self-crossing
+  Z. Designers' "smooth" and differential geometry's "smooth" diverge here, and the four-handle
+  abstraction does nothing to warn you.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **Bezier is lerp, recursively.** One operation between two points, applied to adjacent pairs, then
+  to the new pairs, then again. Move a handle and the lerps follow; the curve follows the lerps.
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="lerp by hand" noCalculator>
+
+Compute <Formula>lerp((0, 0), (4, 2), 0.25)</Formula>. Then <Formula>lerp((0, 0), (4, 2), 0.75)</Formula>. Sketch both points between the endpoints.
+
+<Solution>
+  At t = 0.25: <Formula>(0.75·0, 0.75·0) + (0.25·4, 0.25·2) = (1, 0.5)</Formula>. At t = 0.75:{" "}
+  <Formula>(3, 1.5)</Formula>. Both lie on the segment from (0,0) to (4,2), at quarter and
+  three-quarter distance.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="midpoint of a cubic" noCalculator>
+
+For the cubic Bezier with controls <Formula>P = [(0, 0), (1, 2), (3, 2), (4, 0)]</Formula>, compute <Formula>B(0.5)</Formula> by De Casteljau. Show every layer.
+
+<Solution>
+  Layer 1: <Formula>L₀ = (0.5, 1), L₁ = (2, 2), L₂ = (3.5, 1)</Formula>. Layer 2:{" "}
+  <Formula>M₀ = (1.25, 1.5), M₁ = (2.75, 1.5)</Formula>. Layer 3 (final):{" "}
+  <Formula>B(0.5) = (2, 1.5)</Formula>. Note the final two layers are flat at{" "}
+  <Formula>y = 1.5</Formula> — the curve passes its midpoint parallel to the x-axis here.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="tangents at endpoints">
+
+Why does the cubic Bezier curve _start_ in the direction of <Formula>P₁ − P₀</Formula> and _end_ in the direction of <Formula>P₃ − P₂</Formula>? Argue geometrically from De Casteljau, then confirm by computing <Formula>B'(0)</Formula> from the polynomial form.
+
+<Solution>
+  Geometric: at <Formula>t = 0</Formula> the level-1 lerps are exactly <Formula>P₀, P₁, P₂</Formula>{" "}
+  (each lerp returns its left endpoint). For very small <Formula>t</Formula>, the construction is
+  dominated by the segment from <Formula>P₀</Formula> to <Formula>P₁</Formula>, so the curve heads
+  that way. Algebraic: differentiate <Formula>B(t) = (1−t)³P₀ + 3(1−t)²t·P₁ + …</Formula> and
+  evaluate at 0: <Formula>B'(0) = 3(P₁ − P₀)</Formula>. Same direction, magnitude scaled by 3.
+  Endpoint-symmetric for <Formula>B'(1) = 3(P₃ − P₂)</Formula>.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="polygon vs curve">
+
+The control polygon and the Bezier curve have the same first and last point and roughly the same shape. List **three** ways they differ. Use the widget to construct an example where the differences are obvious.
+
+<Solution>
+  (1) The polygon has corners at <Formula>P₁</Formula> and <Formula>P₂</Formula>; the curve is
+  smooth (no corners). (2) The polygon *passes through* all controls; the curve only touches{" "}
+  <Formula>P₀</Formula> and <Formula>P₃</Formula>. (3) The polygon's segments are straight; the
+  curve's pieces between samples are not — they bend toward the inner controls. Bonus visible
+  difference: drag <Formula>P₁</Formula> wildly while keeping <Formula>P₀, P₂, P₃</Formula> fixed —
+  the polygon has a sharp peak there, the curve is rounded.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  Computer-graphics texts usually present Bezier curves through their *Bernstein basis* formula —{" "}
+  <Formula>B(t) = Σ b_i,n(t) · P_i</Formula> — a polynomial sum the reader has no reason to trust.
+  Lemma starts at the other end: *lerp*, the one operation a designer already knows. Three lerps,
+  recursively, *derive* the Bernstein form. Industry uses the formula; understanding starts at the
+  recursion. The Bernstein basis is a consequence, not a starting point.
+</WhyNotTaught>
+
+<PageFooter>
+  application: **Bezier Curves**. Consumes the [Parametric Curves](/en/modules/parametric-curves)
+  module — the curve is an image; the construction is the parametrization.
+</PageFooter>

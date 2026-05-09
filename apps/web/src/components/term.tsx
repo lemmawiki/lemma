@@ -1,13 +1,26 @@
-import { useState, useRef, useEffect } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { glossaryById, type Locale } from "../data/glossary";
-import { useApp } from "../context/app-context";
+import { AppContext, type Language } from "../context/app-context";
 import { useTermsRegistry } from "../context/terms-context";
 
 // A term in either language; hover shows the counterpart and a one-line gloss.
 // Click pins the popover open. Self-registers in the page's TermsContext so
 // the page's Glossary section can show only the terms actually used here.
-export function Term({ id, children }: { id: string; children?: React.ReactNode }) {
-  const { language } = useApp();
+//
+// Locale resolution: explicit `language` prop > AppContext > "en". Letting the
+// prop win lets MDX-rendered islands receive locale from the URL without
+// requiring an AppProvider in scope.
+export function Term({
+  id,
+  children,
+  language: langProp,
+}: {
+  id: string;
+  children?: React.ReactNode;
+  language?: Language;
+}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const registry = useTermsRegistry();
   const entry = glossaryById[id];
   const [pinned, setPinned] = useState(false);

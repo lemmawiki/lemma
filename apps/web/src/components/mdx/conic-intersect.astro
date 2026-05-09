@@ -1,0 +1,7 @@
+---
+import { ConicIntersect as ConicIntersectReact } from "../widgets/conic-intersect";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<ConicIntersectReact language={lang} client:load />

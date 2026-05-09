@@ -1,0 +1,191 @@
+---
+title: Entropy · Lemma
+description: The expected number of yes/no questions to identify an outcome. log₂ N when uniform, less when not.
+breadcrumb:
+  parent: graph
+  parent_path: /graph
+  current: module · entropy
+---
+
+import { Term, Exercise, Solution, ToolSpec, ShannonBars } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · 20 questions, with a twist">
+
+# How many yes/no questions to find one item in 1,024?
+
+Halve the list each time and the answer is **10** — <Term id="logarithm">log₂(1,024)</Term>. The dictionary search from the log module, in new clothes. **But the items are not all equally likely.** If "the" is a thousand times more frequent than "antidisestablishmentarianism", asking about the rare one first is wasted breath. The right number of questions, on average, is no longer <Formula>log₂ N</Formula>. It is _entropy_.
+
+<Lede>
+  **Entropy = the average number of yes/no questions needed.** When everything is equally likely, it
+  collapses to <Formula>log₂ N</Formula>. When one outcome dominates, it falls toward 0. Wordle,
+  Huffman compression, password strength, decision trees — all are bumping against the same number.
+</Lede>
+
+</Hook>
+
+<ToolSpec>
+  <Fragment slot="definition">
+    <Formula>H(X) = −Σ pᵢ log₂ pᵢ</Formula>. The expected number of yes/no questions, on average, to
+    identify which outcome of <Formula>X</Formula> occurred. Reduces to <Formula>log₂ N</Formula>{" "}
+    when the N outcomes are equally likely (maximum); collapses to 0 when one outcome has
+    probability 1 (minimum).
+  </Fragment>
+  <Fragment slot="applies">
+    Uncertainty has structure: Wordle (information gain per guess), Huffman / arithmetic compression
+    (the Shannon bound), password strength (NIST entropy), decision-tree splits (information-gain
+    criterion), language-model perplexity (<Formula>2^H</Formula>), KL divergence and mutual
+    information.
+  </Fragment>
+  <Fragment slot="breaks">
+    You don't actually know <Formula>p</Formula> — entropy is defined on a distribution, and
+    estimating one from a sample is its own problem. Continuous distributions need *differential
+    entropy* (different sign behavior, not non-negative). Entropy uses only the marginal{" "}
+    <Formula>p</Formula>; identical marginals can hide very different joint structure (mutual
+    information, not entropy, captures that).
+  </Fragment>
+</ToolSpec>
+
+<ShannonBars />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="log₂ N — the equally-likely floor">
+
+Start where the log module ended. With <Formula>N</Formula> equally-likely outcomes, halving the candidate set each question takes <Formula>log₂ N</Formula> questions. A standard deck: <Formula>log₂ 52 ≈ 5.7</Formula> bits — six questions identify any card. Two coin flips: <Formula>log₂ 4 = 2</Formula> bits. A 64-bit random integer: _64 bits_, by definition. The unit "<Term id="bit">bit</Term>" is the answer to one yes/no question with two equally likely outcomes — and <Formula>log₂ N</Formula> is how many such questions to specify one of N.
+
+</ArcRow>
+
+<ArcRow n={2} title="Surprise, weighted">
+
+When outcomes have unequal probabilities, "halve the list" stops being optimal. A question that splits a list into 90% / 10% gives you only _some information_: the 90% answer barely narrowed anything. The right accounting is per-outcome: <Term id="surprise">surprise</Term> of an event with probability <Formula>p</Formula> is <Formula>−log₂ p</Formula> — the bits revealed by learning that outcome. Common events carry low surprise; rare events carry high. The expected surprise is _entropy_:
+
+<pre class="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`H(X) = −Σ p_i log₂ p_i  =  Σ p_i · (−log₂ p_i)
+                            ↑
+                 probability × surprise, summed`}</pre>
+
+Two anchors. **Uniform p = 1/N for every i**: <Formula>H = log₂ N</Formula> — the equally-likely floor from arc 1, now recovered as the _maximum_. **Spike p = 1 on one outcome, 0 elsewhere**: <Formula>H = 0</Formula> — no questions, no information, no uncertainty. Every distribution sits between those two and the widget above lets you slide along that line.
+
+</ArcRow>
+
+<ArcRow n={3} title="Why the average matters — Shannon's bound">
+
+In 1948 Shannon proved that no code can compress a stream of symbols below <Formula>H(X)</Formula> bits per symbol on average — the <Term id="shannon-bound">Shannon bound</Term>. English text has per-character entropy around 1.0–1.5 bits (down from the naive log₂ 26 ≈ 4.7) because letters are not independent and are not equally likely; that gap is exactly the room compression has to work in. zip and gzip live there. The bound is tight in two senses: _no_ code can beat it, and _some_ codes (Huffman within 1 bit, arithmetic arbitrarily close) hit it. Entropy is not a measurement people invented — it is the floor everyone independently reinvented hitting.
+
+</ArcRow>
+
+<ArcRow n={4} title="Information gain — Wordle's optimal first guess">
+
+Wordle: pick a 5-letter guess; the game returns one of <Formula>3⁵</Formula> feedback patterns (each tile gray/yellow/green); each pattern partitions the remaining candidate words. A guess gives you <Formula>IG = H(words) − E[H(words | feedback)]</Formula> bits of <Term id="information-gain">information gain</Term> on average. Maximizing IG is what every Wordle solver, ever, does — though most do it by intuition. The numerical winner over the official ~2,300-word answer list is _SALET_ (an old word for a helmet) at ≈ 5.88 bits, beating CRANE (5.79) and ADIEU (5.49). The "obvious" answer (vowels) loses to "split letters across feedback patterns evenly", which is exactly maximum-entropy behavior on the feedback distribution.
+
+Same machinery underlies decision-tree splits in machine learning ("which feature partitions labels into the most uncertainty-reducing groups?"), 20 Questions strategy ("ask the question with the highest expected information gain"), and the binary-search-vs-fingerprint-lookup contrast in algorithms.
+
+</ArcRow>
+
+<ArcRow n={5} title="Where this module flows next">
+
+The same definition reappears under new names. <Term id="cross-entropy">Cross-entropy</Term> (the loss at the heart of [classification](/en/ml/confident-wrong)) is _your_ entropy plus a penalty when your model's predicted distribution differs from the truth. KL divergence, mutual information, perplexity in language models — all consume this module. Password strength is just <Formula>log₂</Formula> of the keyspace under the assumption of a uniform attacker, which is the special case of arc 1. Every time someone says "this carries more information" or "that's redundant", they are gesturing at a number this module makes precise.
+
+</ArcRow>
+
+<Pin>
+  **H = −Σ p log₂ p.** Probability times surprise, summed. Equals <Formula>log₂ N</Formula> when
+  uniform, falls to 0 when one outcome wins outright. Everything else — the Shannon bound, Wordle's
+  first guess, password strength, cross-entropy loss — is a corollary.
+</Pin>
+
+</Arc>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="read the widget · the uniform max">
+
+On the Shannon Bars widget, click the **uniform** preset. What is H? Now click **spike**: estimate H without computing — is it above or below 1 bit?
+
+<Solution>
+  Uniform: **H = 2 bits** = log₂(4). Spike (raw [10, 1, 1, 1]): the dominant outcome has p ≈ 0.77
+  with surprise ≈ 0.38 bits; the three minorities have p ≈ 0.077 with surprise ≈ 3.7 bits each.
+  Weighted: H ≈ 0.77·0.38 + 3·(0.077·3.7) ≈ **1.16 bits** — just above 1. The intuition "spike means
+  low entropy" is directionally right; the actual number is higher than people guess because the
+  rare outcomes still carry weight.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="compute by hand · uniform N" noCalculator>
+
+Compute H for uniform distributions over **N = 2, 4, 8, 16**. State the pattern.
+
+<Solution>
+  For uniform: H = log₂(N). N=2 → 1, N=4 → 2, N=8 → 3, N=16 → 4. Each doubling of N adds exactly one
+  bit. The unit of entropy is the bit because *H* counts binary-decision equivalents.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="write the equation · 1/2, 1/4, 1/8, 1/8">
+
+Compute H for <Formula>p = (1/2, 1/4, 1/8, 1/8)</Formula>. Compare to the uniform-4 case.
+
+<Solution>
+  H = (1/2)·1 + (1/4)·2 + (1/8)·3 + (1/8)·3 = 1/2 + 1/2 + 3/8 + 3/8 = **1.75 bits**. Uniform-4 is
+  2.0 bits. The non-uniform distribution carries less information per symbol, which means a code can
+  spend fewer than 2 bits per symbol on average. Huffman spends exactly {`{1, 2, 3, 3}`} bits on
+  these — hitting the bound exactly.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="Wordle · why splits matter">
+
+You guess CRANE; against a 2,300-word answer list it produces 200 distinct feedback patterns and partitions the candidates accordingly. The largest partition has 168 words; the average IG is 5.79 bits. SALET produces 205 patterns, largest 119, IG 5.88. Even though both reduce uncertainty by ≈ log₂ 2300 = 11.2 bits, why is SALET "better"? Answer in one sentence about the worst case.
+
+<Solution>
+  SALET's worst-case partition (119 words remaining, log₂ 119 ≈ 6.9 bits left) is smaller than
+  CRANE's (168 words, log₂ 168 ≈ 7.4 bits) — even when the unlucky feedback pattern hits, you have a
+  better second move. Average IG and worst-case partition size are *different* objectives that
+  usually agree but not always; choose the one your problem cares about.
+</Solution>
+
+</Exercise>
+
+<Exercise number={5} tag="the evil one · 'uniform = lowest entropy'" noCalculator>
+
+A junior says: "uniform distribution has minimum entropy because it's the most boring — every outcome the same." Refute in one sentence. State the actual minimum.
+
+<Solution>
+  Uniform is *maximum*, not minimum: every yes/no question has equal information in either
+  direction, so it takes the most questions on average. The minimum is **H = 0**, achieved when one
+  outcome has probability 1 and all others 0 — there is nothing to ask about, so zero questions are
+  needed.
+</Solution>
+
+</Exercise>
+
+<Exercise number={6} tag="passwords · NIST entropy">
+
+Two passwords. (a) 8 random characters from {`{a–z, A–Z, 0–9}`} = 62 symbols. (b) 6 random English words from a dictionary of 7,776 (the Diceware list). Which has higher entropy? Use <Formula>log₂ 62 ≈ 5.95</Formula>, <Formula>log₂ 7776 ≈ 12.92</Formula>.
+
+<Solution>
+  (a) 8 × 5.95 ≈ **47.6 bits**. (b) 6 × 12.92 ≈ **77.5 bits**. The passphrase wins by a factor of{" "}
+  <Formula>2³⁰</Formula> in attacker work, and is famously easier to remember. xkcd 936's "correct
+  horse battery staple" rests on this calculation.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  module: **Entropy**. Built on [the logarithm](/en/modules/log). Currently consumed by no
+  application page on its own (*cross-entropy* already lives inside [Confidently
+  Wrong](/en/ml/confident-wrong)); the planned consumers are *Wordle*, *JPEG*, and *password
+  strength*.
+</PageFooter>

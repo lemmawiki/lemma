@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useApp, pick } from "../../context/app-context";
+import { useContext, useState } from "react";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 import { Slider, Stat, pillClass } from "./widget-primitives";
 
@@ -32,8 +32,9 @@ function entropy(ps: number[]): number {
   return h;
 }
 
-export function ShannonBars() {
-  const { language } = useApp();
+export function ShannonBars({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   // Raw weights, not probabilities — we normalize on render. Default: a
   // mildly-tilted distribution so H is visibly less than log₂(4) = 2.
   const [raw, setRaw] = useState<number[]>([4, 3, 2, 1]);

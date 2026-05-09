@@ -1,0 +1,7 @@
+---
+import { DoublingLadder as DoublingLadderReact } from "../widgets/doubling-ladder";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<DoublingLadderReact language={lang} client:load />

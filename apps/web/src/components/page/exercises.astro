@@ -1,0 +1,18 @@
+---
+// Wrapper for the exercises section. Children are <Exercise> components
+// (or any other content). The kicker is bilingual at the layout level — pages
+// don't need to repeat it.
+import Kicker from "./kicker.astro";
+
+interface Props {
+  lang: "en" | "ko";
+  kicker?: string;
+}
+const { lang, kicker } = Astro.props;
+const defaultKicker = lang === "ko" ? "exercises · 손으로 풀기" : "exercises · 손으로 풀기";
+---
+
+<section class="mt-14">
+  <Kicker>{kicker ?? defaultKicker}</Kicker>
+  <slot />
+</section>

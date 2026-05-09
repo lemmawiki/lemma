@@ -1,0 +1,173 @@
+---
+title: Vectors · Lemma
+description: Why do graphics, physics, and ML all steal the same arrow?
+breadcrumb:
+  parent: graph
+  parent_path: /graph
+  current: module · vectors
+---
+
+import { Term, Exercise, Solution, VectorRoles } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · same arrow, four costumes">
+
+# Why do graphics, physics, and ML all steal the same arrow?
+
+<Formula>(3, 4)</Formula>. Is that a point on a screen, an arrow showing how to move, a velocity, or
+a feature representation of an apple? It depends on what you're doing — and that is the whole reason
+<Term id="vector">vectors</Term> are the most-shared piece of mathematics across applications. The
+tuple is the same. The arithmetic is the same. The role changes, and so does the costume.
+
+<Lede>
+  In the widget below: one tuple <Formula>A</Formula>, one tuple <Formula>v</Formula>, the result{" "}
+  <Formula>A + cv</Formula>. Click the role buttons — generic, graphics, physics, ml — and the
+  labels change without the picture changing. The picture *can't* change; only the story you tell
+  about it can.
+</Lede>
+
+</Hook>
+
+<VectorRoles />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="One tuple, several jobs">
+
+The notation <Formula>(3, 4)</Formula> is a finger pointing somewhere — but it can point at very different things. As a _position_ on a 2D plane, it's the point three units right and four up. As a _<Term id="displacement">displacement</Term>_, it's an instruction: "go three right, four up, from wherever you are." As a _velocity_, it's a rate: three horizontal units per second, four vertical. As a _feature vector_ for a fruit-classifier, it might be (sweetness 3, tartness 4) — coordinates in an abstract feature space with no geometric interpretation at all. **The tuple is silent on which one it is.**
+
+The same ambiguity is what makes vectors useful. Every application that wants to talk about "two-or-more-numbers-bundled-together-and-treated-as-one" inherits the same tools — a single arithmetic, a single set of identities — and the application's job is to _interpret_ the bundle in its specific way.
+
+</ArcRow>
+
+<ArcRow n={2} title="Point: where">
+
+When the role is "location," the tuple is an _address_ in space. It answers _where_, not _how to move_. A position changes when you choose a different origin — the very same physical point becomes <Formula>(3, 4)</Formula> in one coordinate system and <Formula>(0, 0)</Formula> in a system whose origin sits at that point. Positions are origin-dependent.
+
+</ArcRow>
+
+<ArcRow n={3} title="Vector: how to move">
+
+When the role is "displacement," the tuple is a _recipe for motion_: from wherever you are, change your x by 3 and your y by 4. Crucially, this is _origin-free_ — moving the coordinate system's origin doesn't change the displacement between two points. That is why the projectile-motion equations and the gradient-descent update equation look the same regardless of where you place your axes.
+
+Subtracting two points gives a vector: <Formula>v = B − A</Formula> is the displacement from A to B. Adding a vector to a point gives another point: <Formula>A + v = B</Formula>. Two points and one vector live in the same picture, but only the vector is dimension-of-direction.
+
+{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={4} title="Components: split, work, reassemble">
+
+A 2D vector decomposes into x- and y-<Term id="component">components</Term>: <Formula>v = (v_x, v_y) = v_x · x̂ + v_y · ŷ</Formula>, where <Formula>x̂</Formula> and <Formula>ŷ</Formula> are the unit vectors along each axis. Adding two vectors is component-wise: <Formula>(a, b) + (c, d) = (a + c, b + d)</Formula>. Multiplying a vector by a <Term id="scalar">scalar</Term> <Formula>c</Formula> stretches each component: <Formula>c · (a, b) = (c·a, c·b)</Formula>.
+
+The decompose-compute-recompose pattern is so universal you stop noticing it. The projectile-motion page splits a launch velocity into <Formula>(v₀ cos θ, v₀ sin θ)</Formula> and runs each component as a 1D motion. The gradient-descent update writes <Formula>w − η·∇L</Formula> as a vector subtraction, but every real implementation does it component-wise on the underlying array. Components are how vector arithmetic becomes scalar arithmetic in software.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="Two operations, no exceptions">
+
+Vector arithmetic has only two operations: add two vectors, scale one by a number. Together they describe everything called a "linear" operation in this entire stack of math. From these two you can build:
+
+- **Linear interpolation.** <Formula>lerp(A, B, t) = (1 − t)·A + t·B</Formula> — one add and two scales. The same primitive that builds Bezier curves.
+- **Translation.** Move every point of a shape by the same vector <Formula>v</Formula> — replace every coordinate <Formula>P</Formula> with <Formula>P + v</Formula>.
+- **Linear combination.** Any expression of the form <Formula>c₁v₁ + c₂v₂ + ⋯</Formula>. Convex combinations (where all coefficients sum to 1) are how the Bezier widget collapses control points layer by layer.
+- **Decomposition into bases.** Any vector in a 2D plane is <Formula>v_x · x̂ + v_y · ŷ</Formula>. Choose a different basis and the components change without changing the vector — exactly the situation arc 6 of the projectile-motion page hints at when it discusses the independence of horizontal and vertical motion.
+
+The promise: any quantity that admits component-wise addition and scalar scaling can use this entire toolkit. Numbers, points, colors, sounds, function spaces, neural-network parameters — all of them count. The tuple's silence on role is what lets the toolkit travel.
+
+</ArcRow>
+
+<ArcRow n={6} title="Where this module gets consumed">
+
+Every application Lemma ships either consumes vectors directly or hides them inside a higher-level abstraction. The widget's role toggle is not just rhetoric — each role corresponds to a live application that actually performs that arithmetic.
+
+- [**Bezier curves**](/en/graphics/bezier-curves) — <Term id="control-point">control points</Term> are points; the recursive lerp uses convex combinations of those points; the resulting curve is a path of position vectors parametrized by <Formula>t</Formula>.
+- [**Projectile motion**](/en/physics/projectile-motion) — launch velocity is a vector, decomposed into <Formula>(v₀ cos θ, v₀ sin θ)</Formula>. The position over time is another vector, computed component-wise.
+- [**Gradient descent**](/en/ml/gradient-descent) — the parameter <Formula>w</Formula> in the toy widget is a scalar only because the toy has one parameter. The real version operates on a parameter _vector_; the gradient is the vector of partial derivatives; the descent step is vector subtraction.
+- [**Bitcoin signatures**](/en/finance/bitcoin-signature) — points on the curve are 2-tuples; the chord-and-tangent group law is described as point arithmetic, but every implementation works on the underlying coordinate vectors.
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **The tuple is silent on role.** Add component-wise. Scale by a number. The arithmetic stays the
+  same; what changes is the costume the application gives the answer.
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="add by hand" noCalculator>
+
+<Formula>A = (2, 1)</Formula>, <Formula>v = (3, 4)</Formula>. Compute <Formula>A + v</Formula>,
+<Formula>A − v</Formula>, and <Formula>2v</Formula>. Sketch all three on graph paper and explain in
+one sentence why the first answers *"where do I end up?"*, the second *"where did I come from?"*,
+and the third *"what if my step is twice as long?"*
+
+<Solution>
+  <Formula>A + v = (5, 5)</Formula>: walk from <Formula>(2, 1)</Formula> by 3 right and 4 up, end up
+  at <Formula>(5, 5)</Formula>. <Formula>A − v = (−1, −3)</Formula>: walk *backwards* — that's where
+  you would have started if your final step ended at A. <Formula>2v = (6, 8)</Formula>: same
+  direction, twice the distance — the point you'd land at if you took two of those steps from the
+  origin instead of one.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="decompose a launch velocity" noCalculator>
+
+A ball is thrown at <Formula>v₀ = 10 m/s</Formula> at angle <Formula>θ = 30°</Formula> above horizontal. Decompose the velocity into <Formula>(v_x, v_y)</Formula> using <Formula>cos 30° = √3/2 ≈ 0.87</Formula>, <Formula>sin 30° = 1/2</Formula>. After 0.4 s of flight (ignoring gravity for this exercise), what's the displacement vector?
+
+<Solution>
+  <Formula>v = (10·0.87, 10·0.5) = (8.7, 5.0) m/s</Formula>. Displacement after{" "}
+  <Formula>Δt = 0.4 s</Formula>: <Formula>0.4 · v = (3.48, 2.0) m</Formula>. The vector pointing in
+  the throw's direction with length <Formula>10 · 0.4 = 4 m</Formula>. Same vector, two ways of
+  describing it.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="the tangent vector">
+
+On a Bezier curve with control points <Formula>P₀, P₁, P₂, P₃</Formula>, the tangent at <Formula>t = 0</Formula> points in the direction <Formula>P₁ − P₀</Formula>. Why is that vector — not the position of <Formula>P₁</Formula> by itself — the right thing to call the "starting direction"?
+
+<Solution>
+  The position <Formula>P₁</Formula> depends on where the origin sits; moving the canvas changes{" "}
+  <Formula>P₁</Formula> but doesn't change the shape of the curve. The vector{" "}
+  <Formula>P₁ − P₀</Formula> is origin-free — it's a displacement, not a position. It captures *the
+  direction the curve heads from <Formula>P₀</Formula>*, which is a property of the curve, not of
+  where you put the page on the desk. That's exactly the position/displacement distinction this
+  module insists on.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="the gradient is a vector">
+
+The toy gradient-descent page has one parameter <Formula>w</Formula> and one gradient <Formula>L'(w)</Formula> — both scalars. With two parameters <Formula>(w₁, w₂)</Formula>, the loss has two partial derivatives <Formula>(∂L/∂w₁, ∂L/∂w₂)</Formula>. Write the descent step <Formula>w ← w − η · ∇L</Formula> in component form. Which arithmetic from this module are you using?
+
+<Solution>
+  Component form: <Formula>(w₁, w₂) ← (w₁ − η·∂L/∂w₁, w₂ − η·∂L/∂w₂)</Formula>. The right side is
+  *vector subtraction* <Formula>(w₁, w₂) − η·(∂L/∂w₁, ∂L/∂w₂)</Formula> — addition (with a negative
+  sign) and scalar multiplication, the only two operations vectors need. All ML training in higher
+  dimensions is the same one-line update; the gradient just becomes a longer vector.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  module: **Vectors**. Consumed (directly or implicitly) by every other application Lemma ships.
+  Started as *"why do four pillars all use the same arrow?"*, ends as *"because they share two
+  operations: add and scale."*
+</PageFooter>

@@ -1,0 +1,163 @@
+---
+title: Confidently Wrong · Lemma
+description: Softmax compresses scores into something that looks like probability; cross-entropy punishes the probability of the right answer. The trap is between the two.
+breadcrumb:
+  current: ml / dl · confidently wrong
+---
+
+import {
+  Term,
+  Exercise,
+  Solution,
+  Counterexample,
+  WhyNotTaught,
+  ScoreCooker,
+} from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · scores → probabilities → confidence">
+
+# Why is the model so confident about a wrong answer?
+
+A model does not _know_ it is right. It has scores. <Term id="softmax">Softmax</Term> turns those scores into numbers that look like probabilities. <Term id="cross-entropy">Cross-entropy</Term> punishes the probability the model gave to the correct answer. The trap is hidden in plain sight: **a bad score can still become a very confident probability**. That is the entire page. Everything else is consequence.
+
+<Lede>**Softmax does not check truth.** It only compares scores.</Lede>
+
+</Hook>
+
+<ScoreCooker />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="Scores aren't probabilities">
+
+The last layer of a classifier outputs three numbers — one per class. They are not constrained to be positive. They are not constrained to sum to anything. They are just <Term id="logit">logits</Term>: raw scores. <Formula>z = [2.0, 1.0, 0.5]</Formula> says only that the model "leaned" toward class 0 the most. It does not say "65% chance of class 0." That number doesn't exist yet.
+
+We need a function that maps three real numbers to three positive numbers summing to 1. Many such functions exist. The one we use is softmax — and the reason it's _that_ one, not another, is the point of the next step.
+
+</ArcRow>
+
+<ArcRow n={2} title="Softmax — exponentiate, then normalize">
+
+Softmax is two steps. First, raise everything to <Formula>e</Formula>: <Formula>[e^2.0, e^1.0, e^0.5] ≈ [7.39, 2.72, 1.65]</Formula>. Now they're all positive. Second, divide by the sum so they sum to 1: <Formula>≈ [0.629, 0.231, 0.140]</Formula>. Done. Three numbers, all positive, sum to 1 — looks exactly like a probability distribution.
+
+The exp step is not arbitrary. It guarantees positivity (any real exponent of <Formula>e</Formula> is positive) and it makes softmax depend only on _differences_ of logits — adding the same constant to every logit changes nothing. The downstream effect is profound: softmax doesn't know the absolute scale of your scores. It only sees who's ahead, by how much.
+
+{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={3} title="Cross-entropy — punish the probability you gave the correct answer">
+
+Now there's a probability vector. Suppose the truth is class 0. The number we care about is <Formula>p_0</Formula> — what the model gave to the right answer. The training signal we want should be 0 when <Formula>p_0 = 1</Formula> (perfect) and large when <Formula>p_0</Formula> is small (confidently wrong). The simplest function that does this: <Formula>−log p_0</Formula>. That's <Term id="cross-entropy">cross-entropy</Term>. **For one correct label, cross-entropy is the negative log-likelihood of that label** — same number, two names from two framings (CE: truth as a distribution, one-hot here; <Term id="negative-log-likelihood">NLL</Term>: truth as an observation).
+
+Why <Term id="logarithm">log</Term>? Because independent observations multiply their likelihoods, and log turns multiplication into addition. The total loss across a dataset becomes a clean sum: <Formula>L = Σ −log p(y_i | x_i)</Formula>. That's the same identity the [logarithm module](/en/modules/log) is built on.
+
+{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={4} title="Temperature — the confidence dial">
+
+Replace <Formula>softmax(z)</Formula> with <Formula>softmax(z/T)</Formula>. <Term id="temperature">Temperature</Term> <Formula>T &lt; 1</Formula> divides logits by something small, magnifying their differences — the winner pulls away. <Formula>T &gt; 1</Formula> shrinks differences, flattening the distribution. The widget shows it: drag T toward 0.1 and watch one bar reach for the ceiling. _The winner doesn't change._ The wrongness doesn't change. Only the _reported confidence_ changes — and so the cross-entropy loss, which depends on that confidence, changes with it.
+
+</ArcRow>
+
+<ArcRow n={5} title="Confidence ≠ truth — the trap, made explicit">
+
+Set logits to <Formula>[5.0, 1.0, 0.5]</Formula> — the model has decided hard for class 0. Softmax says <Formula>p ≈ [0.978, 0.018, 0.011]</Formula>: 97.8% confidence. But _truth is independent of this calculation_. If the real label is class 1, then <Formula>p_true = 0.018</Formula> and the loss is <Formula>−log 0.018 ≈ 4.0</Formula>. The model is confident _and* wrong. Lowering temperature makes it _more_ confident, and the loss rises faster.
+
+This is why "the model said 97% so it must be right" is a category error. _Looks like a probability_ and _matches reality_ are two unrelated claims. Aligning them is its own field — calibration — and it requires data the model never sees during training.
+
+{/* TODO: Python code block for arc 5 — code-mode integration deferred */}
+
+<Counterexample>
+  Cross-entropy can disagree with accuracy in *both directions*. Try logits{" "}
+  <Formula>[2.0, 1.9, 1.8]</Formula> with true class 0: argmax is *correct*, but{" "}
+  <Formula>p_true ≈ 0.37</Formula>, loss <Formula>≈ 0.99</Formula> — a "right" answer with terrible
+  loss. Now flip to <Formula>[5.0, 1.0, 0.5]</Formula> with true class 1: argmax is *wrong*, but
+  loss <Formula>≈ 4.0</Formula>. *Selecting the model with the lowest training loss is not the same
+  as selecting the model that gets the most answers right.* The metric you optimize is not the
+  metric you care about; the gap is where shipped models hide.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **Softmax doesn't check truth.** It compares scores, exponentiates, normalizes. Cross-entropy
+  reads off the bar that happens to belong to the correct answer. Confidence and rightness are two
+  different things; the model only computes the first.
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="read the bars">
+
+In the widget, set logits to <Formula>[2.0, 1.0, 0.5]</Formula> and lower the temperature from 1.0 to 0.1. Which class wins at each temperature? How does the winning probability change? Now raise T to 5.0 — what happens to the bars? Why does the **winner** never change just because of T?
+
+<Solution>
+  The winner is class 0 (logit 2.0) at every temperature — temperature divides every logit by the
+  same positive number, so the ordering is preserved. Lower T magnifies the differences and the
+  winner's probability climbs (≈ 95% at T=0.1). Higher T flattens everything (≈ 36/33/31% at T=5). T
+  is a volume dial on the same song.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="compute by hand · softmax" noCalculator>
+
+Estimate <Formula>softmax([2, 1, 0])</Formula> at **T = 1**. Use <Formula>e ≈ 2.72</Formula>, <Formula>e² ≈ 7.39</Formula>. Round and check the bars match.
+
+<Solution>
+  <Formula>e² + e + 1 ≈ 7.39 + 2.72 + 1 = 11.11</Formula>. So{" "}
+  <Formula>p ≈ [7.39/11.11, 2.72/11.11, 1/11.11] ≈ [0.665, 0.245, 0.090]</Formula>. The bars confirm
+  it.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="write the loss">
+
+The loss is <Formula>−log p_true</Formula>. Compute it for <Formula>{`p_true ∈ {0.9, 0.5, 0.1, 0.01}`}</Formula> (natural log). What does the gap between <Formula>0.1</Formula> and <Formula>0.01</Formula> say about how cross-entropy treats _confident wrongness*?
+
+<Solution>
+  <Formula>−ln 0.9 ≈ 0.105</Formula> · <Formula>−ln 0.5 ≈ 0.693</Formula> ·{" "}
+  <Formula>−ln 0.1 ≈ 2.303</Formula> · <Formula>−ln 0.01 ≈ 4.605</Formula>. Going 0.5 → 0.9 saves
+  ~0.59. Going 0.1 → 0.01 **adds** 2.30. The loss is asymmetric: the model is punished far more for
+  being confidently wrong than rewarded for being confidently right.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="the evil one · confidence ≠ truth">
+
+A model gives the wrong class a probability of <Formula>0.99</Formula>, leaving <Formula>0.01</Formula> for the truth. What is the loss? Now imagine someone asks: "but it was 99% sure — isn't that close to right?" Write a one-sentence reply that distinguishes _looks like a probability_ from _is actually likely_.
+
+<Solution>
+  Loss is <Formula>−log 0.01 ≈ 4.61</Formula>. The reply: "Softmax produces numbers between 0 and 1
+  that sum to 1 — **that** is what makes them *look* like probabilities. Whether they *match how
+  often the model is right* requires a separate measurement against held-out truth (calibration),
+  which softmax neither performs nor promises."
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  ML courses usually present softmax and cross-entropy back-to-back as the "classification recipe" —
+  exponentiate, normalize, take the log of the right one, done. Lemma keeps them apart. *Softmax
+  compresses scores into something that looks like probability;* cross-entropy *punishes* the
+  probability the model assigned to the right answer. They are two unrelated jobs glued together by
+  custom. Treating them as one obscures the trap shown in arc 5: a model can be *confidently wrong*,
+  and the recipe gives no signal that it is.
+</WhyNotTaught>

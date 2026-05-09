@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { useState } from "react";
-import { useApp, pick } from "../../context/app-context";
+import { useContext, useState } from "react";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 
 const SUB = "₀₁₂₃₄₅₆₇₈₉";
@@ -84,8 +84,9 @@ const RESULT_MAX = 1024;
 // equation b^n = r. Dragging any one updates the others. Each character of
 // the formulas (밑/지수/결과/함수) carries a tiny role-label so every position
 // of log_b(r) = n is visible.
-export function DoublingLadder() {
-  const { language } = useApp();
+export function DoublingLadder({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [base, setBase] = useState(2);
   const [exponent, setExponent] = useState(4);
 

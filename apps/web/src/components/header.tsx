@@ -1,4 +1,4 @@
-import { AppProvider, useApp, pick } from "../context/app-context";
+import { AppProvider, useApp, pick, type Language } from "../context/app-context";
 
 function HeaderInner({ pathname }: { pathname: string }) {
   const { language, setLanguage, mode, setMode } = useApp();
@@ -67,9 +67,9 @@ function toggleClass(on: boolean): string {
   return on ? `${base} bg-ink text-bg` : `${base} bg-transparent text-ink-mute hover:text-ink`;
 }
 
-export default function Header({ pathname }: { pathname: string }) {
+export default function Header({ pathname, language }: { pathname: string; language?: Language }) {
   return (
-    <AppProvider>
+    <AppProvider language={language}>
       <HeaderInner pathname={pathname} />
     </AppProvider>
   );

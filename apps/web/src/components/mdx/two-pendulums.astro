@@ -1,0 +1,7 @@
+---
+import { TwoPendulums as TwoPendulumsReact } from "../widgets/two-pendulums";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<TwoPendulumsReact language={lang} client:load />

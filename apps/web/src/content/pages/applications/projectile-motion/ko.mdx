@@ -1,0 +1,176 @@
+---
+title: 포물선 운동 · Lemma
+description: 공을 던진다. 공기저항은 무시. 가로는 시간을 그대로 가고, 세로는 중력에 진다. 둘이 만든 자취가 포물선.
+breadcrumb:
+  current: 물리 · 포물선 운동
+---
+
+import { Term, Exercise, Solution, Counterexample, WhyNotTaught, Launch } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 중력의 서명">
+
+# 중력은 왜 매번 포물선을 그릴까?
+
+공을 던진다. 공기저항은 무시. 가로 방향 운동은 시간을 그대로 간다 — 영원히 같은 속력. 세로 방향 운동은 <Term id="gravity">중력</Term>에 진다 — 올라갈 때 느려지고, 내려올 때 빨라진다. **서로를 모르는 수직 두 이야기**가 공유하는 자취가 <Term id="parabola">포물선</Term>. 포물선의 특별한 속성이 아니라 _레시피_. 등속이 등가속과 만나면, 그 합동 그림이 이차식이 된다.
+
+<Lede>
+  위젯에서 각도·속력·중력을 끌어보자. 경로는 늘 지면으로 다시 닫힌다. 정점은 늘 가운데. 갈색 **vₓ**
+  화살표는 길이가 일정하고 파란 **v_y** 화살표는 정점에서 0이 되었다가 내려오며 뒤집힌다. 그림 전체.
+</Lede>
+
+</Hook>
+
+<Launch />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="두 운동, 공 하나">
+
+공이 손을 떠나면 작용하는 힘은 <Term id="gravity">중력</Term> 하나 — 정확히 아래로 당긴다. 가로 방향엔 아무 힘도 없다. 그러니 가로로는 던질 때의 <Term id="velocity">속도</Term> 그대로 — 등속, 영원히, 착지할 때까지. 세로로는 중력이 올라갈 때 느리게, 정점에서 잠깐 멈추고, 내려올 때 빨라지게 한다. _가로 운동은 중력의 존재를 모른다. 세로 운동은 가로 속도의 존재를 모른다._ 각각은 1차원 문제, 둘을 _나란히_ 푼 다음 합쳐 2차원 그림을 만든다.
+
+</ArcRow>
+
+<ArcRow n={2} title="운동 방정식">
+
+발사 속도를 성분으로 나누자: <Formula>vₓ = v₀ cos θ</Formula>, <Formula>v_y = v₀ sin θ</Formula>. 가로 성분은 일정. 세로 성분은 일정한 아래 방향 <Term id="acceleration">가속도</Term> <Formula>g</Formula>로 줄어든다: <Formula>v_y(t) = v₀ sin θ − g·t</Formula>. 한 번 적분하면 위치:
+
+```
+x(t) = v₀ cos θ · t
+y(t) = v₀ sin θ · t − ½ g t²
+```
+
+이 한 쌍은 [매개변수 곡선](/ko/modules/parametric-curves) — 공유 시간 매개변수 <Formula>t</Formula>의 두 함수. 이 곡선의 *이미지*는 운동장 위의 모양, *매개변수화*는 시간상의 실제 운동. 같은 이미지는 여러 매개변수화로 칠해질 수 있다 — 곧 본다.
+
+{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={3} title="시간을 지우면 포물선이 보인다">
+
+<Formula>x(t) = v₀ cos θ · t</Formula>를 <Formula>t</Formula>에 대해 풀면
+<Formula>t = x / (v₀ cos θ)</Formula>. 이걸 <Formula>y(t)</Formula>에 넣자:
+
+```
+y(x) = (tan θ) · x  −  g · x² / (2 v₀² cos²θ)
+```
+
+이게 <Formula>x</Formula>에 대한 이차식. <Formula>t</Formula>에 대한 두 독립 선형 과정의 자취는 필연적으로 <Formula>x</Formula>에 대한 이차식이고, 이차식의 그래프는 <Term id="parabola">포물선</Term>. 포물선은 이 운동의 _이미지_, 운동은 _매개변수화_. 이미지는 시간 축을 감춘다 — 형태는 읽을 수 있지만, 공이 얼마나 빨리 그 자리에 도달했는지는 알 수 없다.
+
+{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={4} title="아무 것도 풀지 않고 읽히는 것">
+
+식에서 네 가지가 떨어진다.
+
+- **정점까지의 시간.** 세로 속도 <Formula>v_y(t) = v₀ sin θ − g·t</Formula>가 0이 되는 시점: <Formula>t_정점 = v₀ sin θ / g</Formula>. 이때 공이 최고점.
+- **착지까지의 시간.** 대칭으로 내려오는 길은 올라간 길의 거울: <Formula>t_착지 = 2 · t_정점</Formula>. 위젯의 통계 줄이 보여준다.
+- **사거리.** <Formula>R = v₀ cos θ · t_착지 = v₀² sin(2θ) / g</Formula>. <Formula>2θ = 90°</Formula>, 즉 발사각 <Formula>θ = 45°</Formula>에서 최대. 가장 멀리 던지는 던지기는 위와 앞으로 정확히 반반 나뉜 던지기.
+- **대칭.** 정점은 <Formula>x = R/2</Formula>. 착지 속력은 발사 속력과 같다 (같은 <Formula>vₓ</Formula>, 부호만 뒤집힌 같은 크기의 <Formula>v_y</Formula>). 공기저항이 없으면 공기에게 에너지를 잃지 않는다.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="같은 이미지, 다른 운동">
+
+[매개변수 곡선](/ko/modules/parametric-curves) 모듈이 정밀하게 만든 _이미지 vs 매개변수화_ 구분이 여기서도 그대로 적용된다. <Formula>y(x) = (tan θ) x − g x² / (2 v₀² cos²θ)</Formula>를 보자: 포물선 모양은 <Formula>θ</Formula>와 비율 <Formula>g/v₀²</Formula>에만 의존한다. <Formula>v₀</Formula>와 <Formula>g</Formula>를 적절한 배율로 함께 늘리면 _같은 포물선을 다른 시간으로 지난다_. 적당히 맞춘 속력으로 달에서 던지면 지구 에서 던질 때와 _모양은 같지만_ 더 느리게 — 달의 시계가 같은 모양에 대해 다르게 가니까.
+
+베지에 곡선, 그리고 모듈이 된 매개변수 곡선 스파이크와 _같은_ 교훈: 그림은 한 가지, 그것을 칠하는 움직임은 또 다른 한 가지. 두 매개변수화가 _모든 세부에서 달라도_ *이미지*는 같을 수 있다.
+
+<Counterexample>
+  포물선은 *공기를 무시할 때* 나오는 궤적이다. 40 m/s로 던진 야구공의 레이놀즈 수는 ~10⁵; 항력은
+  작은 보정이 아니다. 145 g 공에 대해 2차 항력 <Formula>F_d = ½ ρ C_d A v²</Formula>를 넣고 같은
+  식을 풀면, **θ = 45°**에서 사거리가 **~163 m** (진공)에서 **~98 m** (공기)로 줄고, *최적 각도*도
+  **45°**에서 **~38°**로 옮겨간다. 깔끔한 포물선은 진공의 물건이다. 실제 야외에서의 운동은 그것과
+  닮았으되, 비대칭이고, 짧다.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **가로는 시간을 그대로 간다. 세로는 중력에 진다.** 등속과 등가속이 만나 만든 두 독립 이야기의
+  자취가 포물선. 모양이 레시피, 움직임이 이야기.
+</Pin>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="정점까지의 시간" noCalculator>
+
+공이 <Formula>v₀ = 20 m/s</Formula>, <Formula>θ = 30°</Formula>, <Formula>g = 10 m/s²</Formula>로 발사된다. <Formula>t_정점</Formula>과 최고 높이를 구하라. <Formula>sin 30° = 1/2</Formula> 사용.
+
+<Solution>
+  <Formula>v_y(0) = v₀ sin 30° = 10 m/s</Formula>. <Formula>v_y(t) = 10 − 10·t = 0</Formula>에서
+  **t_정점 = 1 s**. 최고 높이 <Formula>= v_y(0)·t_정점 − ½ g t_정점² = 10·1 − ½·10·1 = 5 m</Formula>
+  . (<Formula>v_y(0)² / (2g) = 100/20 = 5 m</Formula>과 동일.)
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="사거리 공식 유도">
+
+<Formula>x(t_착지) = v₀ cos θ · t_착지</Formula>와 <Formula>t_착지 = 2 v₀ sin θ / g</Formula>에서
+<Formula>R = v₀² sin(2θ) / g</Formula>를 유도하라. 위젯에서 <Formula>θ = 45°</Formula>일 때 사거리가
+최대인지 확인.
+
+<Solution>
+  <Formula>R = v₀ cos θ · (2 v₀ sin θ / g) = (2 v₀² sin θ cos θ) / g = v₀² sin(2θ) / g</Formula>.
+  배각 공식 <Formula>sin(2θ) = 2 sin θ cos θ</Formula>를 썼다. <Formula>sin(2θ)</Formula>의 최댓값은{" "}
+  <Formula>2θ = 90°</Formula>, 즉 **θ = 45°**에서 1.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="같은 이미지, 다른 시간">
+
+두 던지기가 같은 발사각 <Formula>θ = 45°</Formula>를 가진다. 하나는 <Formula>(v₀, g) = (20, 10)</Formula>, 다른 하나는 <Formula>(v₀, g) = (40, 40)</Formula>. 둘이 _같은 포물선_ <Formula>y(x)</Formula>를 그리지만 두 번째가 시간상 *더 빠르다*는 것을 보여라. 어느 양이 이미지를 결정하고, 어느 양이 운동을 결정하는가?
+
+<Solution>
+  <Formula>y(x) = (tan θ) x − g·x² / (2 v₀² cos²θ)</Formula>는 <Formula>θ</Formula>와{" "}
+  <Formula>g/v₀²</Formula>에만 의존. 두 던지기 모두 이 비가{" "}
+  <Formula>10/400 = 40/1600 = 0.025</Formula> — 같은 포물선. 그런데{" "}
+  <Formula>t_착지 = 2 v₀ sin θ / g</Formula>는 첫째에서 <Formula>√2 · 20/10 ≈ 2.83 s</Formula>,
+  둘째에서 <Formula>√2 · 40/40 ≈ 1.41 s</Formula> — 절반의 비행 시간. **이미지:{" "}
+  <Formula>(θ, g/v₀²)</Formula>**, **운동: 그 외 모든 것 (v₀와 g의 절대값 포함).**
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="착지 속력">
+
+시간 계산을 전혀 하지 않고, 착지 시 공의 *속력*이 발사 속력 <Formula>v₀</Formula>와 같음을 논증하라. (같은 높이, 공기저항 무시.) 착지 순간 속도 벡터가 지면과 이루는 각은?
+
+<Solution>
+  포물선의 대칭성과 등가속 운동의 시간 역전 대칭에서: 착지 시 <Formula>vₓ</Formula>는 그대로 (가로
+  힘 없음), <Formula>v_y</Formula>는 같은 크기에 부호만 반대. 그러므로{" "}
+  <Formula>|v_착지|² = vₓ² + v_y² = v₀²</Formula> — 같은 속력. 방향: 발사가 지면 위{" "}
+  <Formula>+θ</Formula>였다면 착지는 지면 아래 <Formula>−θ</Formula> — 같은 각, 반대편.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  물리 입문서 대부분은 "발사된 물체는 포물선을 그린다"로 연다 — 두 가정 (공기 무시, g 상수)의
+  *결과*가 아니라 *자연의 사실*처럼. 독자는 무엇을 거래해서 "포물선"을 얻었는지 모른 채 그 단어만
+  챙긴다. Lemma는 두 운동 — 수평 등속, 수직 자유낙하 — 을 끝까지 분리해 둔다. 그래서 포물선이
+  *구호*가 아니라 *정리*로 도착한다. 그리고 위 counterexample이 분명히 말한다: 야외에서, 포물선은
+  이미 틀려 있다.
+</WhyNotTaught>
+
+<PageFooter>
+  응용: **포물선 운동**. [매개변수 곡선](/ko/modules/parametric-curves) 모듈을 소비한다 — 포물선은
+  이미지, 운동 방정식은 매개변수화.
+</PageFooter>

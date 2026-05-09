@@ -1,0 +1,27 @@
+---
+// MDX wrapper for <ExerciseInline>. The prose between the opening tag and
+// <Solution>...</Solution> is the prompt; <Solution>...</Solution> is the
+// solution. Tag is a per-locale string (already in the writer's language since
+// the file is per-locale).
+//
+//   <Exercise number={1} tag="read the widget · the uniform max">
+//   On the Shannon Bars widget, click **uniform**...
+//
+//   <Solution>
+//   Uniform: **H = 2 bits** = log₂(4)...
+//   </Solution>
+//   </Exercise>
+import { ExerciseInline } from "../exercise";
+
+interface Props {
+  number: number;
+  tag: string;
+  noCalculator?: boolean;
+}
+const { number, tag, noCalculator } = Astro.props;
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<ExerciseInline number={number} tag={tag} noCalculator={noCalculator} language={lang} client:load>
+  <slot />
+</ExerciseInline>

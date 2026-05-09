@@ -1,0 +1,193 @@
+---
+title: 비트코인 서명 · Lemma
+description: 타원곡선 서명이 비밀키를 한 번도 노출하지 않고 코인의 소유를 증명하는 방법.
+breadcrumb:
+  current: 금융 · 비트코인 서명
+---
+
+import {
+  Term,
+  Exercise,
+  Solution,
+  Counterexample,
+  WhyNotTaught,
+  SignAndVerify,
+} from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 누설 없는 증명">
+
+# 비밀키를 보여주지 않고, 이 코인이 네 것이라는 걸 어떻게 증명할까?
+
+<Term id="bitcoin">비트코인</Term> 주소는 공개돼 있다 — 누구나 볼 수 있다. 그 코인을 쓰게 해주는
+<Term id="private-key">개인키</Term>는 비밀이어야 한다. 그것을 본 자는 네가 가진 모든 걸 영원히 쓸
+수 있으니까. 그런데도 모든 거래는 모르는 사람 수천 명이 검증한다. **네트워크는 네 모든 결제를 승인할
+수 있는 비밀을 *배우지 않고도*, 이번 결제를 네가 정말로 서명했다는 걸 어떻게 확인할 수 있을까?**
+
+<Lede>
+  그 트릭은 곡선 위에 산다. 두 가지 연산: 하나는 한 방향으로 쉽고 반대 방향으로는 불가능하고, 하나는
+  비밀을 가진 자만 만들 수 있지만 누구나 검증할 수 있는 대수 항등식. 아래 위젯은 그 춤 전체를 손으로
+  검산 가능한 작은 수로 돌려본다.
+</Lede>
+
+</Hook>
+
+<SignAndVerify />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="무엇이 참이어야 하는가">
+
+세 가지가 동시에 참이어야 한다. (a) **너만이** 주어진 메시지에 대한 유효 서명을 만들 수 있다, (b) **누구나** 그것을 검증할 수 있다, (c) 검증이 _생산_ 능력의 비밀을 드러내지 _않는다_. 어떤 비밀번호 방식도 셋을 다 만족시키지 못한다 — 비밀번호는 검증되려면 보여져야 하니까. 일방통행 함수가 필요하다: 생산 쪽으로는 쉽고, 복구 쪽으로는 불가능하며, 둘을 잇는 깔끔한 대수 항등식을 갖춘.
+
+</ArcRow>
+
+<ArcRow n={2} title="일방통행 함수 — 곡선 위의 스칼라 곱셈">
+
+유한체 위의 <Term id="elliptic-curve">타원곡선</Term> <Formula>y² = x³ + 7</Formula>을 잡자. 이 곡선의 점들은 하나의 군을 이룬다 — 임의의 두 점에 합이 있고, 합은 베주의 셈을 작동시켰던 바로 그 [현·접선 작도](/ko/modules/bezout)로 계산된다. 생성점 <Formula>G</Formula>를 잡고 덧셈을 반복하면 <Term id="scalar-multiplication">스칼라 곱셈</Term>이 된다: <Formula>kG = G + G + ⋯ + G</Formula> (k번).
+
+<Formula>(k, G)</Formula>에서 <Formula>kG</Formula>를 계산하는 데는 약 <Formula>log₂ k</Formula>번의
+덧셈이면 된다 (배수-덧셈). <Formula>(G, kG)</Formula>에서 <Formula>k</Formula>를 복구하는 건
+<Term id="discrete-log">이산 로그</Term> 문제 — <Term id="secp256k1">secp256k1</Term> 같은 암호용
+곡선에서는 약 <Formula>√n</Formula> 보다 더 빠른 알고리즘이 알려져 있지 않다 (
+<Formula>n ≈ 2²⁵⁶</Formula>). 모든 체계가 서 있는 비대칭성이다.
+
+{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={3} title="키 — 누구나 하지만, 아무도 되돌릴 수 없는 한 수">
+
+임의 정수 <Formula>{`d ∈ {1, …, n−1}`}</Formula>을 골라 비밀로 둔다 — 이것이 <Term id="private-key">개인키</Term>. <Formula>Q = dG</Formula>를 계산해 공개한다 — 이것이 <Term id="public-key">공개키</Term>. 누구나 <Formula>d</Formula>에서 <Formula>Q</Formula>를 밀리초 안에 계산할 수 있고, 아무도 이 우주 안에서 <Formula>Q</Formula>로부터 <Formula>d</Formula>를 복구할 수 없다.
+
+위젯에서 **개인키 d** 슬라이더를 끌면 **G**는 그대로인데 **Q**가 곡선 위를 뛰어다닌다. <Formula>{`{1, …, 8}`}</Formula>의 모든 <Formula>d</Formula>가 부분군의 서로 다른 점에 떨어진다. 퍼즐: 그래프 위의 **Q** 위치만 보고 <Formula>d</Formula>가 무엇이었는지, 여덟 개를 모두 시도하지 않고 알아낼 수 있을까? 토이 곡선에서는 가능하고, secp256k1에서는 불가능하다.
+
+</ArcRow>
+
+<ArcRow n={4} title="서명 — 메시지에 묶고, 키는 숨긴다">
+
+메시지 해시 <Formula>h</Formula>에 대한 <Term id="digital-signature">서명</Term>은 두 수 <Formula>(r, s)</Formula>. 새 임의 <Term id="nonce">nonce</Term> <Formula>k</Formula>를 뽑아 <Formula>R = kG</Formula>를 계산하고, <Formula>r = R.x mod n</Formula>, <Formula>s = (h + r·d) · k⁻¹ mod n</Formula>. <Formula>k⁻¹</Formula>가 <Formula>d</Formula>를 가린다 — <Formula>k</Formula>가 임의이고 비밀이면 <Formula>s</Formula>도 임의처럼 보인다. nonce가 없다면 같은 키의 두 서명은 <Formula>d</Formula>에 대한 일차연립이 되어 누구나 풀 수 있다.
+
+위젯의 서명자 패널은 식을 실시간으로 보여준다. **d**, **h**, **k**를 끌면 서명이 즉시 다시 계산된다. _검증자 · h, (r, s), Q만 앎_ 라고 적힌 줄이 경계 — 서명 디바이스 밖으로 나가는 것과 안에 머무는 것의 경계.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="검증 — 키를 알았을 때만 성립하는 항등식">
+
+검증자는 <Formula>h</Formula>, <Formula>(r, s)</Formula>, <Formula>Q</Formula>만 받는다. 다른 것은 없다. <Formula>u₁ = h · s⁻¹ mod n</Formula>, <Formula>u₂ = r · s⁻¹ mod n</Formula>, <Formula>V = u₁G + u₂Q</Formula>를 계산하고, <Formula>V.x ≡ r (mod n)</Formula>이면 서명을 받아들인다. 대수 한 줄을 따라가 보자:
+
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`V = u₁·G + u₂·Q
+  = (h/s)·G + (r/s)·dG
+  = ((h + r·d)/s)·G                       ← group up by G
+  = ((h + r·d) · k / (h + r·d))·G        ← s = (h + r·d)/k
+  = k·G
+  = R                                      ← so V.x = R.x = r ✓`}</pre>
+
+<Formula>s = (h + r·d)/k</Formula>이라는 줄이 <Formula>(r, s, h, Q)</Formula>만 보는 자에게서
+<Formula>d</Formula>를 가리고, 같은 줄을 <Formula>V = u₁G + u₂Q</Formula>에 끼워 넣으면
+<Formula>V</Formula>가 *정확히* <Formula>R</Formula>이 된다. 검증자는 <Formula>d</Formula>를
+복구하지 않고도 서명자가 도달했던 그 점에 도달한다. 이 우연 — <Formula>d</Formula>를 알아야만 만들
+수 있고, <Formula>d</Formula>를 모르고도 검증할 수 있는 — 가 이 체계의 본질이다.
+
+{/* TODO: Python code block for arc 5 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={6} title="secp256k1 — 같은 알고리즘, 더 큰 수">
+
+비트코인은 <Term id="secp256k1">secp256k1</Term> — 소수 <Formula>p = 2²⁵⁶ − 2³² − 977</Formula> 위의 <Formula>y² = x³ + 7</Formula> — 위에서 같은 군 법칙과 같은 ECDSA 식을 돌린다. 위 위젯은 그 미니어처 버전: <Formula>2²⁵⁶</Formula> 대신 17, <Formula>~2²⁵⁶</Formula> 대신 부분군 차수 9. 알고리즘은 동일. 스케일이 변하는 건 단 하나, _곱셈_ (여전히 <Formula>O(log k)</Formula>) 과 _복구_ (이제 <Formula>~2¹²⁸</Formula>) 사이의 격차. 그 격차가 너의 지갑이 안전한 유일한 이유.
+
+<Counterexample>
+  수학은 단단하지만, 구현이 무너진다. ECDSA는 서명마다 매번 새롭고 균등한 무작위 nonce{" "}
+  <Formula>k</Formula>를 요구한다. 두 메시지에 <Formula>k</Formula>를 재사용하면, 공격자는 중학교
+  대수로 <Formula>d</Formula>를 복구한다: <Formula>d = (s₁·h₂ − s₂·h₁) / (r·(s₂ − s₁))</Formula> —
+  한 줄짜리 지갑 추출기. 소니 플레이스테이션 3 펌웨어 (2010)가 <Formula>k</Formula>를 재사용했고,
+  *마스터 서명 키*가 며칠 만에 떨어져 나왔다. 비트코인 지갑도 RNG가 살짝 어긋난 같은 방식으로 코인을
+  잃었다. 이산로그 격차는 수학으로 깰 수 없지만, nonce는 코드로 깰 수 있다.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **d로 서명하고, d 없이 검증한다.** 서명은 키를 알아야만 만들 수 있고, 누구나 그 주위를 돌아 확인할
+  수 있는 수다. 같은 키가 결제를 승인하면서, 동시에 자신의 노출을 거부한다.
+</Pin>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="손으로 스칼라 곱셈" noCalculator>
+
+<Formula>y² = x³ + 7 (mod 17)</Formula>, <Formula>G = (1, 5)</Formula>에서 현·접선 군 법칙으로
+**3G**를 계산하라. 먼저 2배로 2G, 그 다음 G를 더한다. 답을 위젯과 맞춰보자.
+
+<Solution>
+  **2G:** 두 배. λ = (3·1² + 0)/(2·5) = 3/10. 10⁻¹ mod 17 = 12 (10·12 = 120 = 7·17 + 1), 그래서 λ =
+  3·12 = 36 ≡ 2. xR = 2² − 1 − 1 = 2. yR = 2·(1 − 2) − 5 = −7 ≡ 10. **2G = (2, 10)**.
+  <br />
+  **3G = 2G + G:** λ = (10 − 5)/(2 − 1) = 5. xR = 25 − 2 − 1 = 22 ≡ 5. yR = 5·(2 − 5) − 10 = −25 ≡
+  9. **3G = (5, 9)**. ✓
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="손으로 서명">
+
+**d = 3**, **h = 4**, **k = 2**일 때 ECDSA 서명 <Formula>(r, s)</Formula>를 만들어라. 문제 1의 <Formula>2G = (2, 10)</Formula>을 써도 된다. 위젯의 d, h, k를 이 값으로 두고 확인.
+
+<Solution>
+  R = kG = 2G = (2, 10), 즉 r = 2 mod 9 = **2**. k⁻¹ mod 9 = 5 (2·5 = 10 ≡ 1 mod 9). s = (h +
+  r·d)·k⁻¹ = (4 + 2·3)·5 = 10·5 = 50 mod 9 = **5**. 서명 **(r, s) = (2, 5)**.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="손으로 검증">
+
+**h = 4**, 서명 **(r, s) = (2, 5)**, 공개키 <Formula>Q = 3G = (5, 9)</Formula>를 받았다. 검증자 식을 돌려라: u₁, u₂를 구하고, V = u₁G + u₂Q를 계산해 V.x mod 9 = r 인지 확인.
+
+<Solution>
+  s⁻¹ mod 9 = 2 (5·2 = 10 ≡ 1). u₁ = h·s⁻¹ = 4·2 = 8. u₂ = r·s⁻¹ = 2·2 = 4. 그러므로 V = 8G + 4Q =
+  8G + 4·3G = 8G + 12G = 20G = 20 mod 9 G = **2G = (2, 10)**. V.x mod 9 = 2 = r ✓. V = 2G = R = kG —
+  서명자가 썼던 바로 그 점, d를 한 번도 배우지 않고.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="위조자의 좌절">
+
+위조자는 **d**를 모르지만 어떤 메시지 해시 <Formula>h</Formula>와 타겟 공개키 Q에 대해 서명 <Formula>(r', s')</Formula>을 지어내려 한다. 증명 말고 _구조_ 차원에서 — 거의 모든 시도가 왜 검증을 통과하지 못하는지 설명하고, 위조에 성공하려면 뭐를 알아야 하는지 답하라.
+
+<Solution>
+  검증은 V = u₁G + u₂Q를 계산해 V.x mod n = r'을 확인한다. 임의 추측 (r', s')에서 V는 본질적으로
+  부분군의 임의 점이라 V.x는 n개 값 중 균일분포 — r'과 일치할 확률은 약 1/n. n ≈ 2²⁵⁶이면 절망적.
+  일치를 강제하려면 위조자는 (a) Q의 이산 로그인 *d*를 알거나, (b) u₁, u₂를 정한 *후*에 r'을 V.x에
+  맞춰 고를 수 있어야 한다. 그런데 r'이 u₁, u₂의 입력이라 (b)는 순환. ECDSA의 안전성은 정확히 (a)가
+  불가능하고 (b)가 순환이라는 데 기댄다.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  암호 교과서는 보통 ECDSA를 검증 식 — <Formula>u₁G + u₂Q = R</Formula> — 부터 펼쳐놓고 받아들이라고
+  한다. Lemma는 문을 반대로 연다: 검증자가 <Formula>d</Formula>도 모르면서 *왜* <Formula>R</Formula>
+  에 도달하는가? 그 질문을 따라가면 일방통행 (곱셈은 쉽고 나눗셈은 어렵다)에서 위로 대수가 다시
+  세워진다. 교과서는 비대칭을 감추지만, 비대칭이야말로 핵심이다.
+</WhyNotTaught>
+
+<PageFooter>
+  응용: **비트코인 서명**. [베주](/ko/modules/bezout) 모듈의 현·접선 군 법칙을 소비한다. 자매 응용:
+  [비트코인 피자](/ko/finance/bitcoin-pizza).
+</PageFooter>

@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { useApp, pick } from "../../context/app-context";
+import { useContext, useMemo, useState } from "react";
+import { AppContext, pick, type Language } from "../../context/app-context";
 import { WidgetShell } from "./widget-shell";
 import { pillClass } from "./widget-primitives";
 
@@ -337,8 +337,9 @@ const PRESET_LABELS: Record<Preset, { en: string; ko: string }> = {
   partial: { en: "partial", ko: "부분" },
 };
 
-export function ConicIntersect() {
-  const { language } = useApp();
+export function ConicIntersect({ language: langProp }: { language?: Language } = {}) {
+  const ctx = useContext(AppContext);
+  const language: Language = langProp ?? ctx?.language ?? "en";
   const [preset, setPreset] = useState<Preset>("general");
   const [showComplex, setShowComplex] = useState(false);
   const [showMult, setShowMult] = useState(false);

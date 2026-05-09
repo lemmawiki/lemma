@@ -1,0 +1,7 @@
+---
+import { TfIdfCooker as TfIdfCookerReact } from "../widgets/tf-idf-cooker";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<TfIdfCookerReact language={lang} client:load />

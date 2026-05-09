@@ -1,0 +1,13 @@
+---
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+const label = lang === "ko" ? "왜 교과서는 이렇게 안 가르치나" : "why this isn't taught this way";
+---
+
+<section class="mt-12 border-t border-rule pt-6">
+  <div class="mb-2 font-mono text-[11px] uppercase tracking-[0.1em] text-ink-mute">{label}</div>
+  <p
+    class="m-0 max-w-[58ch] font-serif text-[17px] italic leading-[1.6] text-ink-soft [&_strong]:not-italic [&_strong]:font-semibold [&_strong]:text-ink [&_em]:not-italic [&_em]:text-acc-deep"
+  >
+    <slot />
+  </p>
+</section>

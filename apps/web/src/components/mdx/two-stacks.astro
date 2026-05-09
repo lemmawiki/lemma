@@ -1,0 +1,7 @@
+---
+import { TwoStacks as TwoStacksReact } from "../widgets/two-stacks";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<TwoStacksReact language={lang} client:load />

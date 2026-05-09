@@ -1,0 +1,213 @@
+---
+title: 로그 · Lemma
+description: 거듭제곱의 역함수. log(a·b) = log(a) + log(b) — 곱이 합이 된다. 모듈에 식은 이 하나뿐.
+breadcrumb:
+  parent: 그래프
+  parent_path: /graph
+  current: 모듈 · 로그
+---
+
+import { Term, Exercise, Solution, ToolSpec, DoublingLadder, TwoStacks } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 지수가 몇이냐">
+
+# 2를 몇 번 곱해야 1,024가 될까?
+
+답은 10. 그 10이 <Formula>log₂(1,024)</Formula>다. **로그는 거듭제곱의 역함수 — 결과에서 지수를 꺼낸다.** 자연의 큰 수는 거의 다 지수로 만들어진다. 세포는 두 배가 되고, 이자는 복리로 쌓이고, 별빛은 <Formula>1/r²</Formula>로 흐려지고, 소리는 열두 자릿수에 걸쳐 변한다. 우리가 보는 _결과_ (1,024개의 세포, 100배가 된 자산, 진도 7.2)는 자연이 쓰는 매개변수가 아니다. _지수_ (몇 번 두 배 됐나, 몇 년 굴렸나)가 매개변수다. 로그는 그것을 꺼내주는 함수다. 이미 익숙한 특수 케이스가 있다 — <Formula>log₁₀(1,000,000) = 6</Formula>인 건 0이 6개라서. 일상의 _자릿수가 밑 10에서의 지수_. 자릿수를 다른 밑으로 일반화하면 로그가 된다. 그리고 지수는 밑이 곱해질 때 더해지므로, 로그는 곱셈을 덧셈으로 바꾼다: <Formula>log(a·b) = log(a) + log(b)</Formula>. 이 페이지의 나머지가 이 한 줄에서 따라 나온다.
+
+<Lede>
+  **로그 = 지수가 몇이냐.** 나머지 — <Formula>log(a·b) = log(a) + log(b)</Formula>, 계산자,
+  로그우도, 자릿수 추정 — 는 따름정리.
+</Lede>
+
+</Hook>
+
+<ToolSpec>
+  <Fragment slot="definition">
+    거듭제곱의 역함수. <Formula>log(a·b) = log(a) + log(b)</Formula> — 곱이 합이 된다. 모듈에 식은
+    이 하나뿐.
+  </Fragment>
+  <Fragment slot="applies">
+    어떤 양이 지수로 만들어졌을 때 — 복리, 반감기, 데시벨, 지진 규모, 시퀀스 확률. 자연이 쓰는
+    변수가 *몇 번 곱했는가*이고, 결과에서 그 횟수를 꺼내고 싶을 때.
+  </Fragment>
+  <Fragment slot="breaks">
+    인수가 0 이하면 실수 로그는 정의되지 않는다. 밑이 1이면 모든 지수가 1을 만들어 역함수가
+    무너진다. 학생 실수 1순위는 합에 로그를 씌우는 것:{" "}
+    <Formula>log(a + b) ≠ log(a) + log(b)</Formula>. 항등식 아래엔 *반드시* 곱이 있어야 한다.
+  </Fragment>
+</ToolSpec>
+
+<DoublingLadder />
+<TwoStacks />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="모든 일을 하는 항등식">
+
+로그는 한 줄로 정의된다: <Formula>log(a·b) = log(a) + log(b)</Formula>. 밑은 뭐든 좋다. 규칙은 같다. (분야가 밑을 정한다: <Formula>log</Formula>는 공학·고등학교에서는 <Term id="common-log">log₁₀</Term>, ML·통계에서는 <Term id="natural-log">ln</Term>, 알고리즘에서는 <Formula>log₂</Formula> — 첨자가 없으면 분야로 읽는다.) 다른 모든 성질이 이 한 줄에서 떨어져 나온다. <Formula>log(a/b) = log(a) − log(b)</Formula>: 규칙에서 b를 1/b로 바꾸면 끝. <Formula>log(aⁿ) = n·log(a)</Formula>: 규칙을 <Formula>a · a · … · a</Formula>에 n번 적용. <Formula>log(1) = 0</Formula>: <Formula>log(1·a) = log(1) + log(a)</Formula>에서. 네 번째 규칙은 없다 — 곱셈을 묶는 네 번째 방법이 없기 때문이다. 실용적으로 보면: <Term id="logarithm">로그</Term>는 어떤 수가 *밑을 몇 번 곱해 만든 것인지*를 알려준다. <Formula>log₁₀(1000) = 3</Formula>인 건 1000이 10을 세 번 곱한 수이기 때문. 곱한 횟수를 센다. 그게 전부다.
+
+{/* TODO: Python code block for arc 1 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={2} title="같은 트릭, 다섯 곳">
+
+지수에 사는 양은 여러 군데에 흩어져 있다 — 시간에 따라 자라는 것 (<Term id="compound-interest">복리</Term>, 탄소 연대 측정), 사람 감각의 압축 (데시벨), 거대 스케일의 단위 (지진), 정보를 세는 단위 (비트). 매번 같은 트릭이다: 식을 세우고, 양변에 로그, 지수를 꺼낸다. 손으로 풀어보자.
+
+- **복리.** 100만원을 연 7%로 굴리면 두 배는 몇 년 뒤? <Formula>1.07ᵗ = 2</Formula> → <Formula>t = log(2) / log(1.07) ≈ 0.301 / 0.0294 ≈ 10.24년</Formula>. <Term id="rule-of-72">72의 법칙</Term> (<Formula>72 / 7 ≈ 10.3</Formula>)이 이 식을 작은 r에서 어림한 결과.
+- **탄소-14 연대 측정.** 탄소-14는 생물이 죽으면 반감기 5,730년으로 줄어든다. 25%만 남아 있다면: <Formula>(1/2)^(t/5730) = 0.25 = (1/2)²</Formula> → <Formula>t = 11,460년</Formula>. 33%, 17% 같은 어중간한 비율은 로그 식 한 줄로만 닫힌다.
+- **데시벨.** <Formula>dB = 10·log₁₀(P/P₀)</Formula>. 일반 대화 60 dB, 록 콘서트 110 dB → 음향 강도 차이는 <Formula>10⁵ = 10만 배</Formula>. 귀로는 그렇게 안 들린다. 청각이 강도의 로그를 듣기 때문 — 데시벨은 그 청각 로그를 그대로 따라간 단위.
+- **지진 규모.** <Formula>E = E₀·10^(1.5·M)</Formula>. 2011 도호쿠 (M 9.0) vs 평범한 큰 지진 (M 7.0): <Formula>E₉ / E₇ = 10^(1.5×2) = 10³ = 1,000배</Formula>. 규모 2 차이가 에너지 1,000배. 자연 지진 에너지가 19자릿수에 걸쳐 있어, 리히터의 로그 압축 없이는 비교 자체가 불가능.
+- **비트와 이진 탐색.** 1,024쪽 사전을 매번 절반으로 자르면 <Formula>log₂(1024) = 10</Formula>번 만에 단어에 도달한다. 32비트 정수는 <Formula>2³² ≈ 43억</Formula> 가지를 표현하고, 거꾸로 N개를 식별하려면 <Formula>log₂(N)</Formula> 비트가 필요하다. 카드 한 벌의 셔플은 <Formula>log₂(<Term id="factorial">52!</Term>) ≈ 226 비트</Formula> — 226개의 예/아니오 질문이면 한 셔플이 정확히 특정된다.
+
+다섯 문제, 같은 모양: 자연이 만든 식은 지수꼴, 양변에 로그, 지수가 답으로 떨어진다. § 1의 항등식 — 곱셈을 덧셈으로 — 이 매번 이 일을 한다.
+
+</ArcRow>
+
+<ArcRow n={3} title="네이피어와 계산자 (×→+ 의 화신)">
+
+1614년, 존 네이피어가 첫 로그 표를 출판했다. 일식을 예측하려고 9자리 수를 손으로 곱하다 속이 타들어 가던 천문학자들의 시대였다. 표를 펴서 <Formula>log(a)</Formula>와 <Formula>log(b)</Formula>를 _찾고_, 둘을 _더하고_, 그 합이 로그값인 수를 다시 _찾으면_ — 곱셈 한 번 없이 <Formula>a·b</Formula>가 나왔다. 300년 뒤, 모든 엔지니어가 <Term id="slide-rule">계산자</Term>를 들고 다녔다. 두 개의 로그 눈금이 서로 _미끄러지는_ 나무 자. 한쪽의 **2**와 다른 쪽의 **3**을 맞추면 물리적으로 <Formula>log(2) + log(3)</Formula>이 수행됐고, 만나는 자리에 **6**이 찍혔다. **계산자는 § 1의 항등식을 도구로 깎아 만든 물건이다.** 아폴로는 이걸로 달에 갔다.
+
+</ArcRow>
+
+<ArcRow n={4} title="언더플로우 — 그리고 로그 공간이 모델을 살리는 이유">
+
+<Term id="float32">
+  <Formula>float32</Formula>
+</Term>
+는 약 <Formula>10⁻³⁸</Formula>까지만 표현한다. 확률 <Formula>0.1</Formula>을 마흔 번 곱하면 이미 그
+아래로 — 결과는 조용히 0으로 반올림된다. 예외도, 경고도 없다. 거기 의존하던 모든
+<Term id="gradient">그래디언트</Term>가 함께 죽는다. 수치해석의 흥밋거리가 아니다. 모든 딥러닝
+라이브러리가 손실을 *곱*이 아니라 *합*으로 보고하는 이유다. 해법은 § 1의 항등식을 기계적으로
+적용하는 것: 곱이 만들어지기 직전에 로그를 씌운다. <Formula>log(p₁·p₂·…·pₙ) = Σ log(pᵢ)</Formula>.
+각각의 <Formula>log(pᵢ)</Formula>는 다루기 편한 음수, 그 합은 다루기 편한 더 큰 음수.
+<Term id="underflow">언더플로우</Term>가 닿을 수 없다. <Term id="log-likelihood">로그우도</Term>가
+하는 일이고,
+<Term id="log-softmax">
+  <Formula>log_softmax</Formula>
+</Term>
+가 만들어진 이유다. 로그 공간에 살면 곱은 합이 되고, float는 거짓말을 멈춘다.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="다시 응용으로">
+
+이 모듈은 [비트코인 피자](/ko/finance/bitcoin-pizza)에서 쓰인다. 거기서는 <Formula>10⁹ · 2.89²⁰</Formula>을 손으로 계산하라고 한다. 양변에 <Formula>log₁₀</Formula>을 씌우기 전에는 불가능하지만, 씌우는 순간 <Formula>9 + 20·log₁₀(2.89)</Formula> — 사람이 다룰 수 있는 두 수의 덧셈이 된다. 그 손계산이 가능한 건 § 1의 항등식 덕분이다. 네이피어의 트릭과 같고, <Term id="log-softmax"><Formula>log_softmax</Formula></Term>의 트릭과 같다. 시대도 판돈도 다르지만, 메커니즘은 동일하다.
+
+</ArcRow>
+
+<Pin>
+  **log(a·b) = log(a) + log(b).** 모듈 전체. 나머지 — 자릿수 규칙,{" "}
+  <Term id="slide-rule">계산자</Term>, <Term id="log-likelihood">로그우도</Term>, $10⁹ × 2.89²⁰
+  손계산 — 은 따름정리.
+</Pin>
+
+</Arc>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="그래프 읽기">
+
+위젯에서 **a = 4**로 두자. **a·b**가 정확히 **100**에 떨어지게 하려면 **b**는? 계산하지 말고 로그 축에서 읽어라.
+
+<Solution>
+  **b = 25**. log₁₀(4) ≈ 0.60이고, 합이 2가 되어야 하므로 log(b) = 1.40, 즉 b ≈ 25. 시각적으로 b
+  핸들은 10과 100 사이의 약 2/3 지점에 놓인다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="손으로 계산 · 자릿수 규칙" noCalculator>
+
+계산기 없이, <Formula>log₁₀(2) ≈ 0.301</Formula>만 사용해서 **log₁₀(2,000,000)**을 구하라.
+
+<Solution>
+  log₁₀(2 · 10⁶) = log₁₀(2) + log₁₀(10⁶) = 0.301 + 6 = **6.301**. 문제 전체가 § 1의 항등식 — 곱이
+  합으로 바뀐다. log₁₀(2) ≈ 0.301만 외워 두면, 그 하나로 거의 모든 수의 로그를 두 자리 정밀도로
+  어림할 수 있다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="식 세우기 · 시퀀스 확률">
+
+50토큰 시퀀스를 평가한다. 각 토큰의 확률은 ~**0.05**. 코드가 _계산해야 할_ 식과 _피해야 할_ 식을 각각 써라. <Formula>log(0.05) ≈ −3.00</Formula> 사용.
+
+<Solution>
+  *피해야 할 식*: P = 0.05⁵⁰ ≈ <Formula>10⁻⁶⁵</Formula> — float32에서 0, float64에서도 사실상 0.
+  *계산해야 할 식*: log P = 50·log(0.05) ≈ 50·(−3.00) = **−150**. 같은 수다. 다만 컴퓨터 안에 담을
+  수 있는 건 합 쪽뿐이다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="손으로 계산 · 냅킨 한 장에 스털링" noCalculator>
+
+<Term id="stirling-approximation">스털링</Term>:
+<Formula>log₁₀(n!) ≈ n·log₁₀(n) − n·log₁₀(e)</Formula>, <Formula>log₁₀(e) ≈ 0.434</Formula>.
+**log₁₀(100!)** 추정, 그리고 100!의 *자릿수*는?
+
+<Solution>
+  100·log₁₀(100) − 100·0.434 = 200 − 43.4 = **156.6**. 따라서 100!의 자릿수는 약 **158자리** (실제:
+  158). 158자리 수를 종이 귀퉁이 산수로 추정한 셈이다. *로그는 바로 이런 일을 하라고 있는 것이다.*
+</Solution>
+
+</Exercise>
+
+<Exercise number={5} tag="그래프 읽기 · 같은 로그 거리 = 같은 비율">
+
+위젯에서, log(b) − log(a)의 거리가 log(1)부터 log(10)까지의 거리와 같도록 두 핸들을 두면, 위치와 상관없이 **b/a**는 항상 얼마인가?
+
+<Solution>
+  **b/a = 10**. 같은 로그 거리 ⇒ 같은 *비율*이지, 같은 *차*가 아니다. 지수 곡선이 로그 축에서 직선이
+  되는 이유다 ([비트코인 피자 차트](/ko/finance/bitcoin-pizza) 참조). 일정한 이율은 곧 단위 시간당
+  일정한 로그 거리.
+</Solution>
+
+</Exercise>
+
+<Exercise number={6} tag="식 세우기 · logsumexp">
+
+두 확률 p, q가 있다. 단, <Formula>log p</Formula>와 <Formula>log q</Formula>만 안다 (p, q 자체는 언더플로우). <Formula>log(p + q)</Formula>의 수치적으로 안정한 식을 유도하라. (<Term id="logsumexp">_logsumexp_</Term> 트릭이다.)
+
+<Solution>
+  <Formula>M = max(log p, log q)</Formula>로 두자. 인수분해하면:{" "}
+  <Formula>log(p + q) = M + log(e^(log p − M) + e^(log q − M))</Formula>. 안쪽 지수는 모두 ≤ 0이므로
+  지수값은 ≤ 1 — 오버플로우도 언더플로우도 일어나지 않는다. 모든 ML 라이브러리에 있는 *그* 함수다:{" "}
+  <Formula>torch.logsumexp</Formula>, <Formula>scipy.special.logsumexp</Formula>. § 1의 같은
+  항등식을 거꾸로 쓴 것뿐이다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={7} tag="악마의 문제 · '그냥 곱하면 되잖아'">
+
+주니어가 말한다: "<Term id="log-softmax"><Formula>log_softmax</Formula></Term>는 그냥 성능 최적화일 뿐이고, 수학적으로는 그냥 확률을 곱해도 된다. 걱정되면 float64 쓰면 되잖아." <Term id="float32"><Formula>float32</Formula></Term>와 <Formula>float64</Formula> 둘 다에 대해 통하는 반박을 한 단락으로 써라. 그리고 로그 공간을 가능하게 만드는 단 하나의 방정식을 적어라.
+
+<Solution>
+  둘 다 틀렸다. <Formula>float32</Formula>는 <Formula>~10⁻³⁸</Formula> 아래에서 언더플로우;{" "}
+  <Formula>float64</Formula>는 <Formula>~10⁻³⁰⁸</Formula> 아래에서 언더플로우. 1000토큰 시퀀스에서
+  토큰 확률이 p=0.1이면 곱은 10⁻¹⁰⁰⁰ — *두 형식 모두*에서 0이다. 곱은 기계 연산 안에 아예 존재하지
+  않는다. 로그의 합은 언제나 존재한다. 단 하나의 방정식:{" "}
+  <Formula>log(a·b) = log(a) + log(b)</Formula>.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  모듈: **로그**. 쓰이는 곳: [비트코인 피자](/ko/finance/bitcoin-pizza). 이 모듈 위에 올라설 다음
+  모듈들: 로그우도와 교차 엔트로피, 데시벨, 반감기, 정보·엔트로피.
+</PageFooter>

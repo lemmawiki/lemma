@@ -1,0 +1,7 @@
+---
+import { Launch as LaunchReact } from "../widgets/launch";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<LaunchReact language={lang} client:load />

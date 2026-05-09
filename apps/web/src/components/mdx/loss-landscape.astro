@@ -1,0 +1,7 @@
+---
+import { LossLandscape as LossLandscapeReact } from "../widgets/loss-landscape";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<LossLandscapeReact language={lang} client:load />
