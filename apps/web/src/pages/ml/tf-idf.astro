@@ -1,0 +1,20 @@
+---
+import { codeToHtml } from "shiki";
+import Base from "../../layouts/base.astro";
+import TfIdfIsland from "../../views/tf-idf-island.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "vitesse-light" } as const;
+const code = {
+  arc2: await codeToHtml(pythonCode.tfIdf.arc2, opts),
+  arc3: await codeToHtml(pythonCode.tfIdf.arc3, opts),
+  arc5: await codeToHtml(pythonCode.tfIdf.arc5, opts),
+};
+---
+
+<Base
+  title="TF-IDF · Lemma"
+  description="Why does Google show those results in that order? TF-IDF ranks documents by a score that looks like a sum of probabilities — and the log inside it is the same log as in entropy. Rare words carry many bits, common words carry near zero."
+>
+  <TfIdfIsland code={code} client:load />
+</Base>

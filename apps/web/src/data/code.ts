@@ -454,6 +454,63 @@ verify(3, 2, 7, Q)              # → True
 #                = k·G = R.   So V.x mod N = r.
 # Verifier never sees d. The identity holds iff signer knew d.`,
   },
+  tfIdf: {
+    arc2: `# tf — count, normalized by doc length.
+docs = [
+    "the cat sat on the mat",
+    "the dog ran fast",
+    "cat and dog are friends",
+    "the quick brown fox",
+]
+toks = [d.split() for d in docs]
+
+def tf(term, doc):
+    return doc.count(term) / len(doc)
+
+# 'cat' in each doc — note doc 0 is longer, so its tf is smaller
+# even though both contain 'cat' once.
+[round(tf("cat", d), 3) for d in toks]
+# → [0.167, 0.0, 0.2, 0.0]
+#
+# That length normalization is the whole reason: doc 2 "wins" between
+# the two cat-containing docs because its sentence is shorter.`,
+    arc3: `from math import log2
+
+N = len(toks)
+
+def df(term):
+    return sum(1 for d in toks if term in d)
+
+def idf(term):
+    d = df(term)
+    return log2(N / d) if d else 0.0
+
+[(t, df(t), round(idf(t), 2)) for t in ("the", "cat", "fox")]
+# → [('the', 3, 0.42),    # 3 of 4 docs → barely any signal
+#    ('cat', 2, 1.00),    # half the corpus → 1 bit
+#    ('fox', 1, 2.00)]    # rarest → 2 bits
+#
+# A query word that lives in every doc gives 0 bits — the score
+# learned to ignore stopwords without anyone hard-coding them.`,
+    arc5: `# The score: tf · idf, summed over query terms.
+def score(query, doc):
+    return sum(tf(t, doc) * idf(t) for t in query.split())
+
+ranking = sorted(
+    range(N),
+    key=lambda i: -score("the", toks[i]),  # try also "fox", "cat dog"
+)
+
+# Compare to the raw-count baseline.
+def raw(query, doc):
+    return sum(doc.count(t) for t in query.split())
+
+# Query "the": raw count picks doc 0 (uses 'the' twice, longest doc).
+# TF-IDF picks... barely anything — every score is near zero, because
+# log2(4/3) ≈ 0.42 bits. The trap of "popular doc wins" is closed.
+[round(raw("the", d), 3)   for d in toks]   # → [2, 1, 0, 1]
+[round(score("the", d), 3) for d in toks]   # → [0.139, 0.104, 0, 0.104]`,
+  },
   bezout: {
     arc4: `# The disjoint-circles example, hand-eliminated.
 # C1: x² + y² − 1     = 0

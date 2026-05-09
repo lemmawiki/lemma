@@ -150,6 +150,21 @@ export const applications: ApplicationMeta[] = [
       ko: "모델은 자신이 맞는지 아는 게 아니다. 점수들이 있을 뿐이다. softmax는 그 점수들을 확률처럼 보이는 수로 바꾸고, 교차 엔트로피는 정답에 부여한 확률을 벌점으로 바꾼다. 함정: 나쁜 점수도 아주 자신만만한 확률이 될 수 있다.",
     },
   },
+  {
+    id: "tf-idf",
+    href: "/ml/tf-idf",
+    pillar: "ml",
+    modules: ["log", "entropy", "vectors"],
+    status: "available",
+    title: {
+      en: "TF-IDF",
+      ko: "TF-IDF",
+    },
+    hook: {
+      en: "Why does Google show those results in that order? For thirty years the decision rule barely changed. TF-IDF ranks documents by a score that looks like a sum of probabilities — and the log inside it is the same log as in entropy. Rare words carry many bits; common words carry near zero. Stopwords aren't a list, they're the zero set of a function.",
+      ko: "구글은 왜 검색 결과를 그 순서로 보여줄까? 30년 동안 그 결정 규칙은 거의 안 바뀌었다. TF-IDF는 확률의 합처럼 보이는 점수로 문서 순위를 매긴다 — 그 안의 log는 엔트로피의 그 log와 같다. 희귀한 단어는 많은 비트, 흔한 단어는 0에 가까운 비트. Stopword는 목록이 아니라 어떤 함수의 영점이다.",
+    },
+  },
 ];
 
 export const applicationByHref: Record<string, ApplicationMeta> = Object.fromEntries(

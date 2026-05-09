@@ -72,5 +72,12 @@
   "vector",
   "component",
   "scalar",
-  "displacement"
+  "displacement",
+  "tf-idf",
+  "term-frequency",
+  "inverse-document-frequency",
+  "document-frequency",
+  "cosine-similarity",
+  "bag-of-words",
+  "bm25"
 ]
