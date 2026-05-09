@@ -1,0 +1,36 @@
+{
+  "name": "@lemmawiki/mcp",
+  "version": "0.1.0",
+  "description": "Model Context Protocol server for the Lemma corpus. AI agents can query modules, applications, journeys, and glossary terms as grounded ground truth.",
+  "homepage": "https://lemma.wiki",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lemmawiki/lemma",
+    "directory": "apps/mcp"
+  },
+  "bin": {
+    "lemma-mcp": "./dist/server.js"
+  },
+  "files": [
+    "dist",
+    "corpus",
+    "README.md"
+  ],
+  "type": "module",
+  "scripts": {
+    "build:corpus": "pnpm --filter lemma-web build && cp ../web/dist/lemma-corpus.json ./corpus/lemma-corpus.json",
+    "build:server": "tsc",
+    "build": "pnpm run build:corpus && pnpm run build:server",
+    "dev": "pnpm run build:corpus && tsx src/server.ts",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}
