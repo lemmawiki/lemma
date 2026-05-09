@@ -80,7 +80,7 @@ export function Term({
       {open && (
         <span
           role="presentation"
-          className="absolute left-0 top-[calc(100%+8px)] z-20 block w-80 cursor-default rounded-lg border border-rule bg-bg-card px-3.5 py-3 text-left text-sm font-normal leading-[1.5] text-ink-soft shadow-[0_8px_24px_rgba(20,17,13,0.12)]"
+          className="absolute left-0 top-[calc(100%+8px)] z-20 block w-80 max-w-[calc(100vw-32px)] cursor-default rounded-lg border border-rule bg-bg-card px-3.5 py-3 text-left text-sm font-normal leading-[1.5] text-ink-soft shadow-[0_8px_24px_rgba(20,17,13,0.12)] max-md:left-[-18px]"
           onClick={(e) => e.stopPropagation()}
           onKeyDown={(e) => e.stopPropagation()}
         >

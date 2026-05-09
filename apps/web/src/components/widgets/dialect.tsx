@@ -43,7 +43,7 @@ export function Dialect({ concept, language: langProp }: { concept: string; lang
         type="button"
         onClick={() => setOpen((v) => !v)}
         className={
-          "inline-flex max-w-full items-center gap-1.5 rounded-sm border border-dotted px-1.5 py-px font-mono text-[0.93em] transition-colors " +
+          "inline-flex max-w-full items-center gap-1.5 rounded-sm border border-dotted px-1.5 py-px font-mono text-[0.93em] transition-colors max-md:px-2 max-md:py-0.5 " +
           (open
             ? "border-acc-deep bg-acc-soft text-ink"
             : "border-rule text-ink-mute hover:border-acc hover:bg-rule-soft hover:text-ink")

@@ -70,7 +70,7 @@ export function Compute({ id, language: langProp }: { id: string; language?: Lan
         type="button"
         onClick={() => setOpen((v) => !v)}
         className={
-          "inline-flex max-w-full items-center gap-1.5 rounded-sm border border-dotted px-1.5 py-px font-mono text-[0.95em] transition-colors " +
+          "inline-flex max-w-full items-center gap-1.5 rounded-sm border border-dotted px-1.5 py-px font-mono text-[0.95em] transition-colors max-md:px-2 max-md:py-0.5 " +
           (open
             ? "border-acc-deep bg-acc-soft text-ink"
             : isDirty

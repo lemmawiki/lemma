@@ -25,7 +25,7 @@ export function HeaderInner({ pathname }: { pathname: string }) {
           <div className="font-serif text-lg font-semibold tracking-[-0.01em] text-ink group-hover/brand:text-acc">
             Lemma
           </div>
-          <div className="font-mono text-[11px] tracking-[0.04em] text-ink-mute">
+          <div className="font-mono text-[11px] tracking-[0.04em] text-ink-mute max-md:hidden">
             {pick(language, "math, backwards", "수학, 거꾸로")}
           </div>
         </div>
