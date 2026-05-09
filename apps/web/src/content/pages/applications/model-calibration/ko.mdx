@@ -46,9 +46,9 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={2} title="신뢰도 다이어그램">
 
-캘리브레이션을 _눈으로_ 보는 표준 방법: 예측을 신뢰도 구간별로 묶는다 — 가령 폭 <Formula>0.1</Formula>의 구간 열 개. 각 구간마다 두 수를 찍는다. x축에는 _평균 예측 확률_, y축에는 _실제로 맞춘 비율_. 완벽한 캘리브레이션은 대각선 <Formula>y = x</Formula>. 위 위젯이 정확히 이 그림이고, 미스캘리 정도를 조절할 수 있는 합성 모델로 만들어졌다.
+캘리브레이션을 _눈으로_ 보는 표준 방법은 <Term id="reliability-diagram">신뢰도 다이어그램</Term>이다. 예측을 신뢰도 구간별로 묶는다 — 가령 폭 <Formula>0.1</Formula>의 구간 열 개. 각 구간마다 두 수를 찍는다. x축에는 _평균 예측 확률_, y축에는 _실제로 맞춘 비율_. 완벽한 캘리브레이션은 대각선 <Formula>y = x</Formula>. 위 위젯이 정확히 이 그림이고, 미스캘리 정도를 조절할 수 있는 합성 모델로 만들어졌다.
 
-막대가 대각선 _아래_로 처지면 — 모델은 <Formula>0.9</Formula>라지만 실제로는 <Formula>0.78</Formula>만 맞다 — <Term id="reliability-diagram">과신</Term>의 서명이다. 막대가 _위_로 솟으면 모델이 너무 겸손한 것: <Formula>0.6</Formula>이라고 말하지만 실제로는 <Formula>0.8</Formula>이 맞는다. 각 구간의 수직 간격을 그 구간의 예측 개수로 가중평균하면 단일 수가 나온다 — _기대 캘리브레이션 오차_, ECE.
+막대가 대각선 _아래_로 처지면 — 모델은 <Formula>0.9</Formula>라지만 실제로는 <Formula>0.78</Formula>만 맞다 — _과신_의 서명이다. 막대가 _위_로 솟으면 모델이 너무 겸손한 것: <Formula>0.6</Formula>이라고 말하지만 실제로는 <Formula>0.8</Formula>이 맞는다. 각 구간의 수직 간격을 그 구간의 예측 개수로 가중평균하면 단일 수가 나온다 — _기대 캘리브레이션 오차_, ECE.
 
 {/* TODO: Python code block for arc 2 — code-mode integration deferred */}
 

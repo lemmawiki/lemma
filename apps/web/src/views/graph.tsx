@@ -16,6 +16,9 @@ const MODULE_COLOR: Record<string, string> = {
   derivatives: "#3a8c4a",
   log: "#1e6da6",
   bezout: "#9a7a1a",
+  linearization: "#7a4ea0",
+  vectors: "#2c8a8c",
+  entropy: "#a83b80",
 };
 const ORPHAN_COLOR = "#9ca3a4";
 const PILLAR_ORDER: Pillar[] = ["graphics", "physics", "ml", "finance"];

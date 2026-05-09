@@ -147,19 +147,21 @@ function Arc({ code }: { code: CodeMap }) {
           {pick(
             language,
             <>
-              The standard way to <em>see</em> calibration: bin predictions by their stated
-              probability — say ten bins of width <span className={MONO}>0.1</span>. For each bin,
-              plot two numbers. On the x-axis, the bin's <em>mean predicted probability</em>. On the
-              y-axis, the <em>fraction that turned out correct</em>. Perfect calibration is the
-              diagonal <span className={MONO}>y = x</span>. The widget above is exactly this plot,
-              for a synthetic model with a tunable miscalibration.
+              The standard way to <em>see</em> calibration is a{" "}
+              <Term id="reliability-diagram">reliability diagram</Term>. Bin predictions by their
+              stated probability — say ten bins of width <span className={MONO}>0.1</span>. For each
+              bin, plot two numbers. On the x-axis, the bin's <em>mean predicted probability</em>.
+              On the y-axis, the <em>fraction that turned out correct</em>. Perfect calibration is
+              the diagonal <span className={MONO}>y = x</span>. The widget above is exactly this
+              plot, for a synthetic model with a tunable miscalibration.
             </>,
             <>
-              캘리브레이션을 <em>눈으로</em> 보는 표준 방법: 예측을 신뢰도 구간별로 묶는다 — 가령 폭{" "}
-              <span className={MONO}>0.1</span>의 구간 열 개. 각 구간마다 두 수를 찍는다. x축에는{" "}
-              <em>평균 예측 확률</em>, y축에는 <em>실제로 맞춘 비율</em>. 완벽한 캘리브레이션은
-              대각선 <span className={MONO}>y = x</span>. 위 위젯이 정확히 이 그림이고, 미스캘리
-              정도를 조절할 수 있는 합성 모델로 만들어졌다.
+              캘리브레이션을 <em>눈으로</em> 보는 표준 방법은{" "}
+              <Term id="reliability-diagram">신뢰도 다이어그램</Term>이다. 예측을 신뢰도 구간별로
+              묶는다 — 가령 폭 <span className={MONO}>0.1</span>의 구간 열 개. 각 구간마다 두 수를
+              찍는다. x축에는 <em>평균 예측 확률</em>, y축에는 <em>실제로 맞춘 비율</em>. 완벽한
+              캘리브레이션은 대각선 <span className={MONO}>y = x</span>. 위 위젯이 정확히 이 그림
+              이고, 미스캘리 정도를 조절할 수 있는 합성 모델로 만들어졌다.
             </>,
           )}
         </p>

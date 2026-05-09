@@ -56,7 +56,11 @@ export function TfIdfCooker({ language: langProp }: { language?: Language } = {}
   const [query, setQuery] = useState<string>("cat");
   const [method, setMethod] = useState<Method>("tfidf");
 
-  const queryTerms = useMemo(() => tokenize(query), [query]);
+  // Dedupe so each query term shows up once in the IDF table and once per
+  // document in the contribution breakdown — repeating the same term in the
+  // query (e.g. "cat cat") is a no-op for ranking and would otherwise force
+  // index-based React keys for the duplicates.
+  const queryTerms = useMemo(() => Array.from(new Set(tokenize(query))), [query]);
 
   // For every term in the query, the (df, idf) pair across the corpus.
   const idfTable = useMemo(
@@ -164,7 +168,7 @@ export function TfIdfCooker({ language: langProp }: { language?: Language } = {}
             <span className="text-right text-ink-mute">idf (bits)</span>
             {idfTable.map((r, i) => (
               <RowFrag
-                key={`${r.term}-${i}`}
+                key={r.term}
                 term={r.term}
                 dfVal={r.dfVal}
                 idfVal={r.idfVal}
@@ -212,7 +216,7 @@ export function TfIdfCooker({ language: langProp }: { language?: Language } = {}
                     const w = r.total > 0 ? (p.value / r.total) * 100 : 0;
                     return (
                       <div
-                        key={`${p.term}-${i}`}
+                        key={p.term}
                         style={{
                           width: `${w}%`,
                           background: TERM_COLORS[i % TERM_COLORS.length],
@@ -231,7 +235,7 @@ export function TfIdfCooker({ language: langProp }: { language?: Language } = {}
                   {fmt(r.total)}
                 </span>
                 {r.parts.map((p, i) => (
-                  <span key={`${p.term}-${i}`} className="text-ink-soft">
+                  <span key={p.term} className="text-ink-soft">
                     <span
                       aria-hidden
                       style={{

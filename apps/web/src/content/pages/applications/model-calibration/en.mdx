@@ -46,9 +46,9 @@ When a model emits the number <Formula>0.7</Formula> for a class, what should th
 
 <ArcRow n={2} title="The reliability diagram">
 
-The standard way to _see_ calibration: bin predictions by their stated probability — say ten bins of width <Formula>0.1</Formula>. For each bin, plot two numbers. On the x-axis, the bin's _mean predicted probability_. On the y-axis, the _fraction that turned out correct_. Perfect calibration is the diagonal <Formula>y = x</Formula>. The widget above is exactly this plot, for a synthetic model with a tunable miscalibration.
+The standard way to _see_ calibration is a <Term id="reliability-diagram">reliability diagram</Term>. Bin predictions by their stated probability — say ten bins of width <Formula>0.1</Formula>. For each bin, plot two numbers. On the x-axis, the bin's _mean predicted probability_. On the y-axis, the _fraction that turned out correct_. Perfect calibration is the diagonal <Formula>y = x</Formula>. The widget above is exactly this plot, for a synthetic model with a tunable miscalibration.
 
-Bars sagging _below_ the diagonal — model says <Formula>0.9</Formula>, gets <Formula>0.78</Formula> right — are the signature of <Term id="reliability-diagram">overconfidence</Term>. Bars rising _above_ mean the model is too humble: it says <Formula>0.6</Formula> but is actually right <Formula>0.8</Formula> of the time. The vertical gap at each bin, weighted by how many predictions land there, sums to a single number — the _expected calibration error_, ECE.
+Bars sagging _below_ the diagonal — model says <Formula>0.9</Formula>, gets <Formula>0.78</Formula> right — are the signature of _overconfidence_. Bars rising _above_ mean the model is too humble: it says <Formula>0.6</Formula> but is actually right <Formula>0.8</Formula> of the time. The vertical gap at each bin, weighted by how many predictions land there, sums to a single number — the _expected calibration error_, ECE.
 
 {/* TODO: Python code block for arc 2 — code-mode integration deferred */}
 
