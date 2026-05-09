@@ -1,0 +1,7 @@
+---
+import { ImageCompressionCooker as ImageCompressionCookerReact } from "../widgets/image-compression-cooker";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<ImageCompressionCookerReact language={lang} client:load />

@@ -82,5 +82,8 @@
   "bm25",
   "calibration",
   "reliability-diagram",
-  "temperature-scaling"
+  "temperature-scaling",
+  "histogram",
+  "lossless",
+  "lossy"
 ]

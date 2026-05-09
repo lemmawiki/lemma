@@ -37,6 +37,7 @@ export { default as SecantToTangent } from "./secant-to-tangent.astro";
 export { default as SignAndVerify } from "./sign-and-verify.astro";
 export { default as TangentApproximation } from "./tangent-approximation.astro";
 export { default as TfIdfCooker } from "./tf-idf-cooker.astro";
+export { default as ImageCompressionCooker } from "./image-compression-cooker.astro";
 export { default as TwoPendulums } from "./two-pendulums.astro";
 export { default as TwoStacks } from "./two-stacks.astro";
 export { default as VectorRoles } from "./vector-roles.astro";

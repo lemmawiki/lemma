@@ -91,6 +91,21 @@ export const applications: ApplicationMeta[] = [
     },
   },
   {
+    id: "image-compression",
+    href: "/graphics/image-compression",
+    pillar: "graphics",
+    modules: ["entropy"],
+    status: "available",
+    title: {
+      en: "Why Images Compress",
+      ko: "이미지는 왜 압축될까",
+    },
+    hook: {
+      en: "Two same-size images: one shrinks, one doesn't. The histogram tells half the story; the spatial structure tells the rest. The entropy module names the floor — this page shows what that floor isn't bounding.",
+      ko: "같은 크기의 이미지 두 장 — 하나는 줄고 하나는 안 줄어든다. 히스토그램이 절반을 말하고, 공간 구조가 나머지를 말한다. 엔트로피 모듈이 바닥을 명명하고, 이 페이지는 그 바닥이 묶지 못하는 것을 보여준다.",
+    },
+  },
+  {
     id: "bezier-curves",
     href: "/graphics/bezier-curves",
     pillar: "graphics",

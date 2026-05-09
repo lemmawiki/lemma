@@ -1,0 +1,184 @@
+---
+title: Why Images Compress · Lemma
+description: Two same-size images — one shrinks, one doesn't. Histograms tell part of the story; spatial structure tells the rest. Where the entropy module meets a real compressor.
+breadcrumb:
+  current: graphics · why images compress
+---
+
+import {
+  CodeBlock,
+  Term,
+  Exercise,
+  Solution,
+  Counterexample,
+  WhyNotTaught,
+  ImageCompressionCooker,
+} from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · same pixels, different file sizes">
+
+# Why do some images compress and others don't?
+
+Two photos, same dimensions, same number of pixels — same _data_ in the trivial sense. Save them as PNG: one is 18 KB, the other is 312 KB. What makes the second one resist compression? The answer is one quantity from the [entropy module](/en/modules/entropy), applied twice — once to the histogram, once to the structure the histogram throws away.
+
+<Lede>**A file's size is bounded by its information, not its pixel count.**</Lede>
+
+</Hook>
+
+<ImageCompressionCooker />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="Same data, different information">
+
+A 16×16 grayscale image is 256 pixels — 256 bytes if you store one byte per pixel. That's the _data_. But how many _bits of information_ does the image actually contain? That's a different question, and the answer can be much less than 8 bits/pixel. If every pixel is the same shade, you need almost no bits to describe the picture: "all of them, value 7." If every pixel is independent random noise, you need close to 8 bits each, because there's no pattern to exploit. Real photos sit between, and the gap between _data_ and _information_ is exactly what a compressor harvests.
+
+</ArcRow>
+
+<ArcRow n={2} title="The histogram bound">
+
+The first place to look is the [pixel value distribution](/en/modules/entropy) — the [histogram](#) (we'll wrap it shortly). Count how many pixels are at each level, divide by total to get probabilities, plug into <Formula>H = -Σ p log₂ p</Formula>. The number you get is the average <Term id="bit">bits</Term> per pixel needed if you encoded each pixel _independently_, ignoring its neighbors.
+
+For our 16-level patch where each level appears exactly 16 times, every level has probability <Formula>1/16</Formula>, so <Formula>H = log₂ 16 = 4</Formula> bits/pixel. That's the histogram bound — the [Shannon limit](/en/modules/entropy) for symbol-by-symbol encoding. Halving 8 bits/pixel to 4 already explains why a 16-shade image compresses to half the size of a 256-shade one.
+
+<CodeBlock slug="imageCompression" arc="arc2" />
+
+</ArcRow>
+
+<ArcRow n={3} title="What the histogram doesn't see">
+
+Toggle between **gradient**, **blocks**, and **scrambled** in the widget. The pixels are exactly the same multiset — same 16 copies of each level. Histogram entropy: <Formula>4.0</Formula> bits/pixel for all three. _Identical._
+
+But the pictures don't look the same, and they don't compress the same. The gradient is smooth: every adjacent pair is either equal or differs by 1. The scrambled patch has neighbors that fight each other — adjacent levels are essentially independent. Same histogram, very different _spatial structure_, and that structure is where most of the real compression happens.
+
+<CodeBlock slug="imageCompression" arc="arc3" />
+
+</ArcRow>
+
+<ArcRow n={4} title="Neighbor differences — entropy of a different alphabet">
+
+The trick: instead of encoding each pixel as a value 0..15, encode each pixel as the _difference_ from its left or top neighbor. The first pixel still costs full bits, but every subsequent one is usually a small number — often zero. Now run <Formula>H = -Σ p log₂ p</Formula> on the distribution of differences. For the gradient: most differences are 0 or 1, entropy is well under 1 bit/pixel. For scrambled: differences are uniform across the full range, entropy is back near 4. The widget shows both numbers side by side; the ratio is the speedup a structure-aware compressor delivers over a histogram-only one.
+
+This is the page in one sentence: <Term id="histogram">histograms</Term> see _what_ pixels appear, neighbor differences see _how they sit next to each other_. Real <Term id="lossless">lossless</Term> compressors (PNG, gzip on raw pixel arrays) operate on the second view.
+
+</ArcRow>
+
+<ArcRow n={5} title="Lossless vs lossy — two ways out of the histogram bound">
+
+Histogram entropy is a hard floor for <Term id="lossless">lossless</Term> compression: no scheme can encode the source in fewer bits per symbol than its entropy, on average. But there are two escape hatches. **One — change the alphabet.** Encode neighbor differences instead of raw pixels; encode pairs instead of singletons; encode 8×8 blocks via a transform (DCT for JPEG, wavelets for JPEG-2000). The new alphabet has lower entropy because real images are not symbol-independent. PNG and FLAC live here.
+
+**Two — give up exactness.** <Term id="lossy">Lossy</Term> compression decides _what to throw away_ based on what humans don't notice — fine color shifts, high-frequency texture, sub-millisecond audio. The decompressed file is not the original; it's a perceptual approximation. JPEG, MP3, H.264 live here. They aren't bound by entropy at all — only by how much quality you'll trade for size.
+
+<CodeBlock slug="imageCompression" arc="arc4" />
+
+<Counterexample>
+  Histogram entropy is a *lower* bound for symbol-independent encoding, not an *upper* bound on
+  what a real codec achieves. PNG of the gradient patch is *much* smaller than 4 bits/pixel ×
+  256 pixels = 128 bytes — because PNG also uses LZ77, which finds the literal repeated runs that
+  neighbor-difference entropy doesn't quite capture. The histogram says 4 bits, neighbor diff
+  says ~0.4, PNG-with-LZ77 effectively says ~0.1. *Each step down corresponds to a richer model
+  of what the picture actually is.* The same image is more or less compressible depending on the
+  question you ask about it.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **A file's size is bounded by its information, not its pixel count.** Histograms see what
+  values appear; neighbor differences see structure; transform codecs see frequency content. Each
+  view exposes a smaller information budget than the last — and that's exactly the budget the
+  encoder has to spend.
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="compute by hand · histogram entropy" noCalculator>
+
+A 4-color image has 100 pixels: 50 red, 25 green, 15 blue, 10 yellow. Compute the histogram entropy in bits per pixel (natural log: <Formula>log₂ x = ln x / ln 2</Formula>; for this one just use the rough values <Formula>log₂(2) = 1</Formula>, <Formula>log₂(4) ≈ 2</Formula>, <Formula>log₂(6.67) ≈ 2.74</Formula>, <Formula>log₂(10) ≈ 3.32</Formula>).
+
+<Solution>
+  <Formula>p = (0.5, 0.25, 0.15, 0.1)</Formula>. Each term <Formula>−p log₂ p</Formula>:{" "}
+  <Formula>0.5 · 1 = 0.5</Formula>, <Formula>0.25 · 2 = 0.5</Formula>,{" "}
+  <Formula>0.15 · 2.74 ≈ 0.41</Formula>, <Formula>0.1 · 3.32 ≈ 0.33</Formula>. Sum ≈{" "}
+  <Formula>1.74</Formula> bits/pixel. The "lossless floor" for symbol-independent encoding of
+  this image is ~1.74 × 100 = 174 bits ≈ 22 bytes. (Two bits per pixel — 200 bits — would be
+  enough to label four colors naively; 1.74 is the savings entropy gives you over that.)
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="why scrambled is harder">
+
+You have two 100×100 images. Both contain the exact same 10,000 pixel values: 5,000 black and 5,000 white. Image A is a clean checkerboard pattern; image B is the same pixels randomly scattered. Their histogram entropies are identical (<Formula>H = 1</Formula> bit/pixel, since p(black) = p(white) = 0.5). Which compresses smaller as a PNG, and why? Predict the rough ratio.
+
+<Solution>
+  Image A — the checkerboard — compresses to a tiny file (a few hundred bytes), because PNG's
+  filter detects "every pixel equals NOT its neighbor" and that compresses to almost nothing
+  through DEFLATE. Image B compresses to close to 1,250 bytes (10,000 pixels ÷ 8 bits per byte) —
+  roughly the histogram bound, because each pixel is independent of its neighbors and there's no
+  pattern to exploit. Same histogram, ~10× difference in file size. *The histogram is a feature
+  of the multiset; structure is a feature of the layout. Compressors care about both.*
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="the evil one · histogram is blind">
+
+In the widget, switch between **gradient** and **scrambled**. Both report{" "}
+<Formula>H_histogram = 4.00</Formula> bits/pixel. So a naive engineer concludes:{" "}
+"Both images need 256 × 4 = 1024 bits = 128 bytes of payload, plus PNG overhead." Run the actual
+PNG sizes (the code in arc 4 measures it). Why does the scrambled file end up roughly twice as
+large — _despite_ the histogram saying they should be the same?
+
+<Solution>
+  Histogram entropy is the *symbol-independent* lower bound. PNG doesn't encode pixels
+  independently — it predicts each pixel from its neighbors (filter step) and then runs LZ77 +
+  Huffman on the residuals (DEFLATE step). On the gradient, the residuals are mostly 0 or 1, and
+  LZ77 finds long runs of identical residuals; effective bits/pixel collapses far below 4.
+  On scrambled, residuals are uniform across [0, 15], LZ77 finds nothing repeating, and PNG
+  ends up close to the histogram bound. *The histogram entropy is the right floor for
+  the wrong question — it answers "if I encode pixels independently," and PNG doesn't.* The
+  number to trust is the entropy of whatever alphabet the encoder actually uses.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="lossy is a different game">
+
+A JPEG of a photograph is often _smaller_ than the histogram bound of the same photograph would
+allow for a lossless encoding. How is that possible? In one sentence, distinguish what entropy
+bounds and what it doesn't.
+
+<Solution>
+  Entropy bounds *lossless* encoding — recover-the-bits-exactly compression. JPEG is *lossy*: it
+  *throws information away* in the high-frequency / fine-color regions where humans don't
+  notice. The decompressed file isn't the original; it's a perceptual approximation, and there
+  is no information-theoretic floor on how small "looks close enough" can be — only a quality
+  floor set by the encoder. Entropy is the budget if you must return *every bit*; lossy
+  compression negotiates a different contract.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  Information theory courses define entropy on i.i.d. sources and stop there — pixels, audio
+  samples, and language tokens get treated as independent draws. Real signals never are. The gap
+  between *symbol entropy* and *contextual entropy* (what real codecs exploit) is the whole
+  reason a 4 MB photograph fits in 400 KB without visible loss; it's also why "compression" is
+  a ladder, not a single number. Lemma keeps the histogram and the neighbor-difference views in
+  the same widget so the gap is visible from the start: same histogram, same H, three different
+  pictures, three different file sizes. The entropy module names the bound; this page shows what
+  the bound *isn't* bounding.
+</WhyNotTaught>
