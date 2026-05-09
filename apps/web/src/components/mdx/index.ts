@@ -19,6 +19,7 @@ export { default as WhyNotTaught } from "./why-not-taught.astro";
 export { default as Compute } from "./compute.astro";
 export { default as CodeBlock } from "./code-block.astro";
 export { default as JourneyDays } from "./journey-days.astro";
+export { default as Dialect } from "./dialect.astro";
 
 // Widgets
 export { default as ShannonBars } from "./shannon-bars.astro";

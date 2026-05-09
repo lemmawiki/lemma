@@ -6,7 +6,7 @@ breadcrumb:
 ---
 
 import {
-  CodeBlock, Term, Exercise, Solution, LossLandscape } from "@/components/mdx";
+  CodeBlock, Term, Exercise, Solution, Dialect, LossLandscape } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -54,7 +54,7 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={3} title="얼마나? — 학습률">
 
-방향은 정해졌다. 크기는 아직 아니다. 기울기에 양수 <Formula>η</Formula> (<Term id="learning-rate">학습률</Term>) 를 곱해 빼준다:
+방향은 정해졌다. 크기는 아직 아니다. 기울기에 양수 <Formula>η</Formula> (<Term id="learning-rate">학습률</Term> · <Dialect concept="learning-rate" />) 를 곱해 빼준다:
 
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`w  ←  w  −  η · L'(w)`}</pre>
 

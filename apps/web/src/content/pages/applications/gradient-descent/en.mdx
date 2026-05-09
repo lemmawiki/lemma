@@ -6,7 +6,7 @@ breadcrumb:
 ---
 
 import {
-  CodeBlock, Term, Exercise, Solution, LossLandscape } from "@/components/mdx";
+  CodeBlock, Term, Exercise, Solution, Dialect, LossLandscape } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -55,7 +55,7 @@ In the widget, the green arrow at the current point shows that direction. As <Fo
 
 <ArcRow n={3} title="How far? — the learning rate">
 
-The direction is settled. The size still isn't. We multiply the gradient by a positive number <Formula>η</Formula> (the <Term id="learning-rate">learning rate</Term>) and subtract:
+The direction is settled. The size still isn't. We multiply the gradient by a positive number <Formula>η</Formula> (the <Term id="learning-rate">learning rate</Term> · <Dialect concept="learning-rate" />) and subtract:
 
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`w  ←  w  −  η · L'(w)`}</pre>
 

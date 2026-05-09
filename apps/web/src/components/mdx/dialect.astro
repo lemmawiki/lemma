@@ -1,0 +1,11 @@
+---
+import { Dialect as DialectReact } from "../widgets/dialect";
+
+interface Props {
+  concept: string;
+}
+const { concept } = Astro.props;
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<DialectReact concept={concept} language={lang} client:load />
