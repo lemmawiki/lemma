@@ -17,6 +17,7 @@ export { default as ToolSpec } from "./tool-spec.astro";
 export { default as Counterexample } from "./counterexample.astro";
 export { default as WhyNotTaught } from "./why-not-taught.astro";
 export { default as Compute } from "./compute.astro";
+export { default as JourneyDays } from "./journey-days.astro";
 
 // Widgets
 export { default as ShannonBars } from "./shannon-bars.astro";

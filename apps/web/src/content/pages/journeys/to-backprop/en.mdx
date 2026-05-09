@@ -1,0 +1,33 @@
+---
+title: To Backprop in 14 days · Lemma
+description: Confidently wrong, then less wrong, then almost right. Why does a model train? It walks downhill.
+breadcrumb:
+  parent: home
+  parent_path: /en
+  current: journey · to backprop
+---
+
+import { JourneyDays } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+
+<Hook kicker="journey · 14 days · ml / dl">
+
+# To Backprop in 14 days
+
+Confidently wrong, then less wrong, then almost right. Why does a model train? It walks downhill. The hill is a function. The walking is calculus.
+
+<Lede>
+  Backpropagation is not a single trick. It is **four modules — log, derivatives, linearization, vectors — quietly cooperating** under one application. This path lets each one earn its place before the application uses it.
+</Lede>
+
+</Hook>
+
+<JourneyDays id="to-backprop" />
+
+<PageFooter>
+  Path through: <strong>ml / dl</strong> pillar.
+  Modules consumed: <code>log</code>, <code>derivatives</code>, <code>linearization</code>, <code>vectors</code>.
+  Applications passed: <code>confident-wrong</code>, <code>gradient-descent</code>.
+</PageFooter>

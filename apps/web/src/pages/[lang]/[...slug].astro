@@ -39,6 +39,8 @@ export async function getStaticPaths() {
         // (e.g. /finance/bitcoin-pizza). Fall back to applications/<slug>.
         const app = Object.values(applicationByHref).find((a) => a.id === slug);
         routePath = app ? app.href.replace(/^\//, "") : `applications/${slug}`;
+      } else if (kind === "journeys") {
+        routePath = `journey/${slug}`;
       } else if (kind === "hubs") {
         // Hubs (home, graph) — slug is the path. "home" → "" (the root).
         routePath = slug === "home" ? "" : slug;

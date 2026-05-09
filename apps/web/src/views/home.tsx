@@ -4,6 +4,7 @@ import { Link } from "../lib/router";
 import { applications, PILLAR_LABEL } from "../data/applications";
 import { modules } from "../data/modules";
 import { spikes } from "../data/spikes";
+import { journeys } from "../data/journeys";
 import { glossary } from "../data/glossary";
 import { HeaderInner } from "../components/header";
 
@@ -98,6 +99,54 @@ function ModulesList() {
               </h2>
               <p className="m-0 mb-3.5 font-serif text-[17px] leading-[1.55] text-ink-soft">
                 {m.hook[language]}
+              </p>
+              <span className="font-mono text-xs lowercase tracking-[0.06em] text-acc">
+                {pick(language, "open →", "열기 →")}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function JourneysList() {
+  const { language } = useApp();
+  if (journeys.length === 0) return null;
+  return (
+    <section className="mt-14">
+      <div className={KICKER}>
+        {pick(
+          language,
+          `journeys · curated paths · ${journeys.length}`,
+          `여정 · 큐레이션 경로 · ${journeys.length}`,
+        )}
+      </div>
+      <ul className="m-0 grid list-none gap-3.5 p-0">
+        {journeys.map((j) => (
+          <li
+            key={j.id}
+            className="group rounded-[10px] border border-rule bg-bg-card transition-[border,transform] duration-[0.18s] hover:border-acc"
+          >
+            <Link
+              to={`/${language}/journey/${j.id}`}
+              className="block px-6 py-[22px] text-inherit no-underline"
+            >
+              <div className="mb-2.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
+                <span className="font-semibold text-acc">{pick(language, "journey", "여정")}</span>
+                <span className="mx-1.5 text-rule">·</span>
+                <span>
+                  {j.duration} {pick(language, "days", "일")}
+                </span>
+                <span className="mx-1.5 text-rule">·</span>
+                <span>→ {j.destination[language]}</span>
+              </div>
+              <h2 className="m-0 mb-2.5 font-serif text-[26px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
+                {j.title[language]}
+              </h2>
+              <p className="m-0 mb-3.5 font-serif text-[17px] leading-[1.55] text-ink-soft">
+                {j.hook[language]}
               </p>
               <span className="font-mono text-xs lowercase tracking-[0.06em] text-acc">
                 {pick(language, "open →", "열기 →")}
@@ -270,6 +319,7 @@ export function Home() {
       <Counters />
       <ApplicationsList />
       <ModulesList />
+      <JourneysList />
       <SpikesList />
       <Status />
       <HomeFooter />

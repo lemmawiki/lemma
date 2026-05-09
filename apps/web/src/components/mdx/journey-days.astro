@@ -1,0 +1,11 @@
+---
+import { JourneyDays as JourneyDaysReact } from "../widgets/journey-days";
+
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<JourneyDaysReact id={id} language={lang} client:load />
