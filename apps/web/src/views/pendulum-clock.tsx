@@ -182,8 +182,9 @@ function Arc({ code }: { code: CodeMap }) {
           {pick(
             language,
             <>
-              Look at <span className={MONO}>sin θ</span> near zero. Its tangent line at the origin
-              is just <span className={MONO}>y = θ</span>. So{" "}
+              Look at <span className={MONO}>sin θ</span> near zero. Its{" "}
+              <Term id="tangent">tangent line</Term> at the origin is just{" "}
+              <span className={MONO}>y = θ</span>. So{" "}
               <span className={FORMULA_INLINE}>sin θ ≈ θ</span> for small{" "}
               <span className={MONO}>θ</span> (in radians). At <span className={MONO}>θ = 5°</span>{" "}
               (≈ 0.087 rad) the error is about 0.1%. At <span className={MONO}>30°</span> it's about
@@ -194,9 +195,10 @@ function Arc({ code }: { code: CodeMap }) {
               <Term id="linearization">linearization</Term> in general.
             </>,
             <>
-              <span className={MONO}>sin θ</span>를 0 근처에서 보자. 원점에서의 접선은{" "}
-              <span className={MONO}>y = θ</span>. 그래서 작은 <span className={MONO}>θ</span>{" "}
-              (라디안)에 대해 <span className={FORMULA_INLINE}>sin θ ≈ θ</span>.{" "}
+              <span className={MONO}>sin θ</span>를 0 근처에서 보자. 원점에서의{" "}
+              <Term id="tangent">접선</Term>은 <span className={MONO}>y = θ</span>. 그래서 작은{" "}
+              <span className={MONO}>θ</span> (라디안)에 대해{" "}
+              <span className={FORMULA_INLINE}>sin θ ≈ θ</span>.{" "}
               <span className={MONO}>θ = 5°</span> (≈ 0.087 rad)에서 오차는 약 0.1%.{" "}
               <span className={MONO}>30°</span>에서는 약 4.5%. <span className={MONO}>60°</span>
               에서는 거의 18% — 근사가 빠르게 깨진다. 이게{" "}
@@ -369,34 +371,32 @@ function Arc({ code }: { code: CodeMap }) {
           )}
         </p>
         {mode === "code" && <Code html={code.arc6} />}
-        <Counterexample>
-          {{
-            en: (
-              <>
-                The amplitude is not the only axis the model sweeps under the rug.{" "}
-                <span className="font-mono text-[0.93em]">T = 2π√(L/g)</span> assumes{" "}
-                <span className="font-mono text-[0.93em]">g</span> is fixed — but{" "}
-                <span className="font-mono text-[0.93em]">g</span> drops by ~0.031% per 100 m of
-                altitude. Carry a perfectly tuned grandfather clock from London to Denver (≈1,600
-                m): the period lengthens by ~0.025%, and the clock falls behind by{" "}
-                <b>~21 seconds per day</b>. Linearizing <span className="font-mono">sin θ</span> is
-                one of several lies the clock runs on; the small-angle move is just the most visible
-                one.
-              </>
-            ),
-            ko: (
-              <>
-                진폭만이 모델이 카펫 밑으로 쓸어 넣은 축은 아니다.{" "}
-                <span className="font-mono text-[0.93em]">T = 2π√(L/g)</span>는{" "}
-                <span className="font-mono text-[0.93em]">g</span>가 고정이라고 가정한다 — 하지만{" "}
-                <span className="font-mono text-[0.93em]">g</span>는 고도 100m당 약 0.031% 줄어든다.
-                완벽히 맞춘 괘종시계를 런던에서 덴버 (≈1,600m)로 옮기면 주기가 약 0.025% 길어지고,
-                시계는 <b>하루에 약 21초</b> 늦는다. <span className="font-mono">sin θ</span>의
-                선형화는 시계가 의존하는 여러 거짓말 중 하나일 뿐 — 가장 눈에 띄는 한 줄에 불과하다.
-              </>
-            ),
-          }}
-        </Counterexample>
+        <Counterexample
+          en={
+            <>
+              The amplitude is not the only axis the model sweeps under the rug.{" "}
+              <span className="font-mono text-[0.93em]">T = 2π√(L/g)</span> assumes{" "}
+              <span className="font-mono text-[0.93em]">g</span> is fixed — but{" "}
+              <span className="font-mono text-[0.93em]">g</span> drops by ~0.031% per 100 m of
+              altitude. Carry a perfectly tuned grandfather clock from London to Denver (≈1,600 m):
+              the period lengthens by ~0.025%, and the clock falls behind by{" "}
+              <b>~21 seconds per day</b>. Linearizing <span className="font-mono">sin θ</span> is
+              one of several lies the clock runs on; the small-angle move is just the most visible
+              one.
+            </>
+          }
+          ko={
+            <>
+              진폭만이 모델이 카펫 밑으로 쓸어 넣은 축은 아니다.{" "}
+              <span className="font-mono text-[0.93em]">T = 2π√(L/g)</span>는{" "}
+              <span className="font-mono text-[0.93em]">g</span>가 고정이라고 가정한다 — 하지만{" "}
+              <span className="font-mono text-[0.93em]">g</span>는 고도 100m당 약 0.031% 줄어든다.
+              완벽히 맞춘 괘종시계를 런던에서 덴버 (≈1,600m)로 옮기면 주기가 약 0.025% 길어지고,
+              시계는 <b>하루에 약 21초</b> 늦는다. <span className="font-mono">sin θ</span>의
+              선형화는 시계가 의존하는 여러 거짓말 중 하나일 뿐 — 가장 눈에 띄는 한 줄에 불과하다.
+            </>
+          }
+        />
       </ArcRow>
     </section>
   );
@@ -719,29 +719,27 @@ export function PendulumClock({ code }: { code: CodeMap }) {
       <Arc code={code} />
       <Pin />
       <Exercises />
-      <WhyNotTaught>
-        {{
-          en: (
-            <>
-              Physics textbooks usually present the linearized pendulum as <em>the</em> pendulum
-              equation, with the nonlinear original demoted to a footnote. The reader walks away
-              thinking the clock <em>is</em> a simple-harmonic oscillator. Lemma keeps the nonlinear
-              equation in arc 2, names the linearization in arc 3 as a <em>move</em> rather than a
-              discovery, and spends arc 6 owning the lie. Engineering doesn't tell fewer truths than
-              the textbook — it tells one more: the truth about <em>where the model holds</em>.
-            </>
-          ),
-          ko: (
-            <>
-              물리 교과서는 보통 선형화된 진자식을 <em>그</em> 진자 방정식으로 내놓고, 비선형 원본은
-              각주 한 줄로 밀어둔다. 독자는 시계가 *그냥* 단순조화진동자라고 믿고 떠난다. Lemma는
-              §2에 비선형 식을 그대로 두고, §3에서 선형화를 *발견*이 아니라 *한 수*로 부르며, §6에서
-              그 거짓말을 정직하게 들여다본다. 공학은 교과서보다 진실을 적게 말하지 않는다 —{" "}
-              <em>모델이 어디서 통하는가</em>라는 한 가지 진실을 *더* 말한다.
-            </>
-          ),
-        }}
-      </WhyNotTaught>
+      <WhyNotTaught
+        en={
+          <>
+            Physics textbooks usually present the linearized pendulum as <em>the</em> pendulum
+            equation, with the nonlinear original demoted to a footnote. The reader walks away
+            thinking the clock <em>is</em> a simple-harmonic oscillator. Lemma keeps the nonlinear
+            equation in arc 2, names the linearization in arc 3 as a <em>move</em> rather than a
+            discovery, and spends arc 6 owning the lie. Engineering doesn't tell fewer truths than
+            the textbook — it tells one more: the truth about <em>where the model holds</em>.
+          </>
+        }
+        ko={
+          <>
+            물리 교과서는 보통 선형화된 진자식을 <em>그</em> 진자 방정식으로 내놓고, 비선형 원본은
+            각주 한 줄로 밀어둔다. 독자는 시계가 *그냥* 단순조화진동자라고 믿고 떠난다. Lemma는 §2에
+            비선형 식을 그대로 두고, §3에서 선형화를 *발견*이 아니라 *한 수*로 부르며, §6에서 그
+            거짓말을 정직하게 들여다본다. 공학은 교과서보다 진실을 적게 말하지 않는다 —{" "}
+            <em>모델이 어디서 통하는가</em>라는 한 가지 진실을 *더* 말한다.
+          </>
+        }
+      />
       <GlossaryList />
       <PageFooter />
     </TermsProvider>
