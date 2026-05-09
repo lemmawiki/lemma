@@ -124,7 +124,7 @@ export const applications: ApplicationMeta[] = [
     id: "gradient-descent",
     href: "/ml/gradient-descent",
     pillar: "ml",
-    modules: ["derivatives"],
+    modules: ["derivatives", "vectors"],
     status: "available",
     title: {
       en: "Gradient Descent",

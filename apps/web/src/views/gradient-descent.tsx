@@ -376,9 +376,17 @@ function Arc({ code }: { code: CodeMap }) {
             language,
             <>
               <li>
-                <b>One parameter → vector.</b> <span className={MONO}>w</span> becomes a parameter
-                vector <span className={MONO}>θ</span>; the gradient becomes a vector of partial
-                derivatives. Vector subtraction in place of the scalar update.
+                <b>One parameter → vector.</b> <span className={MONO}>w</span> becomes a parameter{" "}
+                <Term id="vector">vector</Term> <span className={MONO}>θ</span>; the gradient
+                becomes a vector of partial derivatives. Vector subtraction in place of the scalar
+                update — the same two operations the{" "}
+                <Link
+                  to="/modules/vectors"
+                  className="border-b border-dotted text-acc no-underline hover:border-acc"
+                >
+                  vectors module
+                </Link>{" "}
+                walks through (add, scale).
               </li>
               <li>
                 <b>One example → mini-batch.</b> Sum (or average) the loss over a small random
@@ -400,9 +408,16 @@ function Arc({ code }: { code: CodeMap }) {
             </>,
             <>
               <li>
-                <b>매개변수 하나 → 벡터.</b> <span className={MONO}>w</span>가 매개변수 벡터{" "}
-                <span className={MONO}>θ</span>로, 기울기는 편미분의 벡터로. 스칼라 갱신 대신 벡터
-                뺄셈.
+                <b>매개변수 하나 → 벡터.</b> <span className={MONO}>w</span>가 매개변수{" "}
+                <Term id="vector">벡터</Term> <span className={MONO}>θ</span>로, 기울기는 편미분의
+                벡터로. 스칼라 갱신 대신 벡터 뺄셈 —{" "}
+                <Link
+                  to="/modules/vectors"
+                  className="border-b border-dotted text-acc no-underline hover:border-acc"
+                >
+                  벡터 모듈
+                </Link>
+                이 깔아둔 두 연산 (덧셈, 스칼라배) 그대로.
               </li>
               <li>
                 <b>예제 하나 → 미니배치.</b> 매 스텝마다 작은 무작위 샘플에 대해 손실을 합 (또는
