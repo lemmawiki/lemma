@@ -1,0 +1,18 @@
+---
+import { codeToHtml } from "shiki";
+import Base from "../../layouts/base.astro";
+import CurveIntersectionsIsland from "../../views/curve-intersections-island.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "vitesse-light" } as const;
+const code = {
+  arc4: await codeToHtml(pythonCode.curveIntersections.arc4, opts),
+};
+---
+
+<Base
+  title="Curve Intersections · Lemma"
+  description="Two conics on a screen meet 4, 2, 1, or 0 times depending on the configuration. Bezout's theorem says the count is always 4 — the picture only shows the real-affine subset. Where the missing intersections live, and what a graphics engine does about it."
+>
+  <CurveIntersectionsIsland code={code} client:load />
+</Base>

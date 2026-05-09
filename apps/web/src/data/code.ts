@@ -111,6 +111,46 @@ def secant_slope(f, a, h):
 # Each application's equation of motion is one or two derivatives applied
 # to the position function. The derivative is the shared tool.`,
   },
+  curveIntersections: {
+    arc4: `# Engine pipeline: solve, classify, render. Bezout count = 4 always
+# for two conics; the picture only shows the real-affine subset.
+import numpy as np
+
+def conic_resultant(c1, c2):
+    """y-resultant of two conics → quartic in x. (Same as bezout module.)"""
+    a1, b1, cc1, d1, e1, k1 = c1
+    a2, b2, cc2, d2, e2, k2 = c2
+    P = np.polynomial.Polynomial
+    A1, A2 = cc1, cc2
+    B1, B2 = P([e1, b1]), P([e2, b2])
+    C1, C2 = P([k1, d1, a1]), P([k2, d2, a2])
+    return (A1*C2 - A2*C1)**2 - (A1*B2 - A2*B1)*(B1*C2 - B2*C1)
+
+def classify(roots, eps=1e-6):
+    """Group complex roots into 'real-affine' (visible) and 'complex' (off-plane)."""
+    visible, off_plane = [], []
+    for r in roots:
+        if abs(r.imag) < eps:
+            visible.append(r.real)
+        else:
+            off_plane.append(r)
+    return visible, off_plane
+
+# Two ellipses, perpendicular major axes — the "general" preset.
+c1 = (1/4, 0, 1,    0, 0, -1)
+c2 = (1,   0, 1/4,  0, 0, -1)
+roots = conic_resultant(c1, c2).roots()
+visible, hidden = classify(roots)
+len(visible), len(hidden)        # → (4, 0)   four visible crossings
+
+# Two disjoint ellipses — the "disjoint" preset.
+c2_far = (9, 0, 1, 0, -10, 24)
+roots2 = conic_resultant(c1, c2_far).roots()
+v2, h2 = classify(roots2)
+len(v2), len(h2)                 # → (0, 4)   nothing on screen, all complex
+# Bezout 4 = 0 visible + 4 hidden. The "disjoint" pair never lost the count;
+# the renderer just had no place to draw the imaginary parts.`,
+  },
   pendulumClock: {
     arc4: `import math
 

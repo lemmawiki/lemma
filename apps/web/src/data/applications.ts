@@ -76,6 +76,21 @@ export const applications: ApplicationMeta[] = [
     },
   },
   {
+    id: "curve-intersections",
+    href: "/graphics/curve-intersections",
+    pillar: "graphics",
+    modules: ["bezout"],
+    status: "available",
+    title: {
+      en: "Curve Intersections",
+      ko: "곡선의 교차",
+    },
+    hook: {
+      en: "Drag two conics. Sometimes you see four crossings. Sometimes two. Sometimes none. Bezout says the count is still four. Where did the missing intersections go — and what does a graphics engine do about it?",
+      ko: "두 이차곡선을 움직인다. 어떤 때는 교점 네 개가 보이고, 어떤 때는 두 개, 어떤 때는 하나도 안 보인다. 베주 정리는 여전히 네 개라고 말한다. 사라진 교점들은 어디로 갔고, 그래픽 엔진은 그것을 어떻게 다룰까?",
+    },
+  },
+  {
     id: "bezier-curves",
     href: "/graphics/bezier-curves",
     pillar: "graphics",
