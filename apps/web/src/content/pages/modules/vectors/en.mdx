@@ -7,7 +7,8 @@ breadcrumb:
   current: module · vectors
 ---
 
-import { Term, Exercise, Solution, VectorRoles } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, VectorRoles } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -59,7 +60,7 @@ When the role is "displacement," the tuple is a _recipe for motion_: from wherev
 
 Subtracting two points gives a vector: <Formula>v = B − A</Formula> is the displacement from A to B. Adding a vector to a point gives another point: <Formula>A + v = B</Formula>. Two points and one vector live in the same picture, but only the vector is dimension-of-direction.
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="vectors" arc="arc3" />
 
 </ArcRow>
 
@@ -69,7 +70,7 @@ A 2D vector decomposes into x- and y-<Term id="component">components</Term>: <Fo
 
 The decompose-compute-recompose pattern is so universal you stop noticing it. The projectile-motion page splits a launch velocity into <Formula>(v₀ cos θ, v₀ sin θ)</Formula> and runs each component as a 1D motion. The gradient-descent update writes <Formula>w − η·∇L</Formula> as a vector subtraction, but every real implementation does it component-wise on the underlying array. Components are how vector arithmetic becomes scalar arithmetic in software.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="vectors" arc="arc4" />
 
 </ArcRow>
 

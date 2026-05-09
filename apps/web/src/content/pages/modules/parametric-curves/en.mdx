@@ -58,7 +58,7 @@ Drawing the parabola <Formula>y = x²</Formula> on a board, you'd say _this is a
 
 A <Term id="parametrized-curve">parametrized curve</Term> is a function <Formula>γ : [0, 1] → ℝ²</Formula>. The three γ above are three _different_ functions. They happen to share an <Term id="image-of-curve">image</Term> — the set <Formula>{"{γ(t) : t ∈ [0, 1]}"}</Formula>, which is the parabola <Formula>y = x²</Formula> on <Formula>x ∈ [−1, 1]</Formula> — but the image is a _set of points_, stripped of order, speed, and visit count. The function γ is none of those things. Two parametrized curves are equal when <Formula>γ₁(t) = γ₂(t)</Formula> for every t — the same equality you'd use for any other function. By _that_ test, the three γ above are three different curves that happen to leave the same shadow. But functional equality is only the strictest of three layers; the next step locates where the line should actually be drawn.
 
-{/* TODO: Python code block for arc 1 — code-mode integration deferred */}
+
 
 </ArcRow>
 
@@ -66,7 +66,7 @@ A <Term id="parametrized-curve">parametrized curve</Term> is a function <Formula
 
 Step 1's strict test separates γ₁ from γ₂ even though they paint the same picture in the same direction at different paces. That feels too strict — geometrically they ought to be the same. Differential geometry agrees: it identifies γ with <Formula>γ ∘ φ</Formula> whenever <Term id="reparametrization">φ</Term> is a monotone bijection <Formula>[0, 1] → [0, 1]</Formula>. With <Formula>φ(u) = ((2u−1)³ + 1) / 2</Formula> (monotone since <Formula>dφ/du = 3(2u−1)² ≥ 0</Formula>), one checks <Formula>γ₁ ∘ φ = γ₂</Formula> exactly: γ₁ and γ₂ are the same curve at different paces. γ₃ has no such partner — it visits each interior image point twice, and no monotone φ can take a once-visit schedule to a twice-visit one. So between strict equality (too tight) and image equality (too loose) sits <Term id="reparametrization">reparametrization</Term> equivalence — and that is what most working mathematicians mean by "the same curve."
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+
 
 </ArcRow>
 

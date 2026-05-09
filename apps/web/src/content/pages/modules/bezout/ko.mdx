@@ -7,7 +7,8 @@ breadcrumb:
   current: 모듈 · 베주 정리
 ---
 
-import { Term, Exercise, Solution, ToolSpec, ConicIntersect } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, ToolSpec, ConicIntersect } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -80,7 +81,7 @@ import Formula from "@/components/page/formula.astro";
 
 위 위젯의 **분리** 프리셋은 실수 교점 0을 보여준다 — *복소 보기*를 켜면 옆 패널에 네 개의 빈 동그라미가 뜬다: 베주가 약속한 네 교점이 복소 x-평면 위에 찍힌 것이다. 실패 (c) 보정 완료.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="bezout" arc="arc4" />
 
 </ArcRow>
 
@@ -99,7 +100,7 @@ import Formula from "@/components/page/formula.astro";
 
 한 변수를 소거한다. 두 다항식 <Formula>f(x, y), g(x, y)</Formula>를 <Formula>y</Formula>에 대한 다항식 (계수는 <Formula>x</Formula>의 식)으로 보면, 둘이 공통 근을 갖는 것은 <Formula>y</Formula>에 대한 <Term id="resultant">종결식</Term>이 0이 되는 것과 동치. <Formula>f</Formula>의 <Formula>y</Formula>-차수가 <Formula>d</Formula>, <Formula>g</Formula>의 <Formula>y</Formula>-차수가 <Formula>e</Formula>이면 종결식은 <Formula>x</Formula>에 대한 차수 <Formula>d · e</Formula> 다항식 — 그 <Formula>d · e</Formula>개의 (중복도 포함) 복소근이 곧 <Formula>d · e</Formula>개의 교점의 <Formula>x</Formula>좌표. 두 원뿔곡선: <Formula>x</Formula>에 대한 4차 다항식. 네 근. 네 교점. 위 위젯이 정확히 이 4차 다항식을 푸는 것이다.
 
-{/* TODO: Python code block for arc 6 — code-mode integration deferred */}
+<CodeBlock slug="bezout" arc="arc6" />
 
 </ArcRow>
 

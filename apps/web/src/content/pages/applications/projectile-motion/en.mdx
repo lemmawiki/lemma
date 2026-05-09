@@ -5,7 +5,8 @@ breadcrumb:
   current: physics · projectile motion
 ---
 
-import { Term, Exercise, Solution, Counterexample, WhyNotTaught, Launch } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, Counterexample, WhyNotTaught, Launch } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -50,7 +51,7 @@ y(t) = v₀ sin θ · t − ½ g t²
 
 That pair is a [parametric curve](/en/modules/parametric-curves): two functions of a shared time parameter <Formula>t</Formula>. The _image_ of this curve is the shape on the field; the _parametrization_ is the actual motion in time. Same image can be painted by many parametrizations — we'll see one shortly.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="projectileMotion" arc="arc2" />
 
 </ArcRow>
 
@@ -64,7 +65,7 @@ y(x) = (tan θ) · x  −  g · x² / (2 v₀² cos²θ)
 
 That is a quadratic in <Formula>x</Formula>. The trace of two independent linear processes (in <Formula>t</Formula>) is necessarily quadratic (in <Formula>x</Formula>) — and the graph of a quadratic is a <Term id="parabola">parabola</Term>. The parabola is the _image_ of the motion. The motion is the _parametrization_. The image hides the time axis; you can read shape off it, but you cannot tell how fast the ball got there.
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="projectileMotion" arc="arc3" />
 
 </ArcRow>
 
@@ -77,7 +78,7 @@ Four facts fall out of the formula.
 - **Range.** <Formula>R = v₀ cos θ · t_land = v₀² sin(2θ) / g</Formula>. Maximum at <Formula>2θ = 90°</Formula>, i.e. launch angle <Formula>θ = 45°</Formula>. The longest throw is the one split evenly between up and forward.
 - **Symmetry.** The peak sits at <Formula>x = R/2</Formula>. The speed at impact equals the speed at launch (same <Formula>vₓ</Formula>, equal-magnitude opposite-sign <Formula>v_y</Formula>). Without drag, the ball loses no energy to the air.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="projectileMotion" arc="arc4" />
 
 </ArcRow>
 

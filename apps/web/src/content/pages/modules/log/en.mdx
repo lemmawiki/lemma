@@ -7,7 +7,8 @@ breadcrumb:
   current: module · the logarithm
 ---
 
-import { Term, Exercise, Solution, ToolSpec, DoublingLadder, TwoStacks } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, ToolSpec, DoublingLadder, TwoStacks } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -57,7 +58,7 @@ The answer is 10. That 10 is <Formula>log₂(1,024)</Formula>. **Log is the inve
 
 Log is defined by one rule: <Formula>log(a·b) = log(a) + log(b)</Formula>. Pick any base. The rule is the same. (Context picks the base by convention: <Formula>log</Formula> means <Term id="common-log">log₁₀</Term> in engineering, <Term id="natural-log">ln</Term> in ML and statistics, <Formula>log₂</Formula> in algorithms — read by domain when the subscript is omitted.) Every other property falls out of that line. <Formula>log(a/b) = log(a) − log(b)</Formula>: take the rule, replace b with 1/b, done. <Formula>log(aⁿ) = n·log(a)</Formula>: apply the rule n times to <Formula>a · a · … · a</Formula>. <Formula>log(1) = 0</Formula>: from <Formula>log(1·a) = log(1) + log(a)</Formula>. There is no fourth rule because there is no fourth way to combine multiplications. Practically: the <Term id="logarithm">log</Term> of a number tells you _how many factors of the base it is built from_. <Formula>log₁₀(1000) = 3</Formula> because 1000 is three tens, multiplied. Counting factors. That's it.
 
-{/* TODO: Python code block for arc 1 — code-mode integration deferred */}
+<CodeBlock slug="logarithm" arc="arc1" />
 
 </ArcRow>
 
@@ -85,7 +86,7 @@ John Napier published the first log tables in 1614 because astronomers were dyin
 
 A <Term id="float32"><Formula>float32</Formula></Term> can hold numbers down to about <Formula>10⁻³⁸</Formula>. Multiply forty probabilities of <Formula>0.1</Formula> and you've crossed it — the result rounds to zero, silently. No exception. No warning. Every <Term id="gradient">gradient</Term> that depended on it dies with it. This isn't a numerical-analysis curiosity; it's why every deep-learning library reports loss as a _sum_, not a product. The fix is the identity from § 1, applied mechanically: take logs the moment a product would otherwise form. <Formula>log(p₁·p₂·…·pₙ) = Σ log(pᵢ)</Formula>. Each <Formula>log(pᵢ)</Formula> is a comfortable negative number; their sum is a comfortable larger negative number. No <Term id="underflow">underflow</Term> can reach you. This is what <Term id="log-likelihood">log-likelihood</Term> is doing, and what <Term id="log-softmax"><Formula>log_softmax</Formula></Term> was built to do. Live in log-space; sums replace products; floats stop lying.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="logarithm" arc="arc4" />
 
 </ArcRow>
 

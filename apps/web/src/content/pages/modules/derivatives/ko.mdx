@@ -7,7 +7,8 @@ breadcrumb:
   current: 모듈 · 미분
 ---
 
-import { Term, Exercise, Solution, ToolSpec, SecantToTangent } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, ToolSpec, SecantToTangent } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -61,7 +62,7 @@ import Formula from "@/components/page/formula.astro";
 <Formula>(0, 1)</Formula>과 <Formula>(4, 9)</Formula>를 잇는 직선이 <Term id="secant">할선</Term>,
 그 기울기가 평균. *극한 없이 계산할 수 있다.*
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="derivatives" arc="arc2" />
 
 </ArcRow>
 
@@ -80,7 +81,7 @@ import Formula from "@/components/page/formula.astro";
 <Term id="derivative">미분</Term>: <Formula>f'(2) = 4</Formula>. 기하적으로는
 <Formula>(2, 4)</Formula>를 지나는 <Term id="tangent">접선</Term>의 기울기.
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="derivatives" arc="arc3" />
 
 </ArcRow>
 
@@ -109,7 +110,7 @@ import Formula from "@/components/page/formula.astro";
 
 [/graph](/ko/graph)가 이제 이걸 반영한다: 두 physics 응용이 모두 <Formula>parametric-curves</Formula>와 <Formula>derivatives</Formula>를 소비한다. 모듈이 _모듈이 해야 하는_ 일을 하기 시작했다.
 
-{/* TODO: Python code block for arc 5 — code-mode integration deferred */}
+<CodeBlock slug="derivatives" arc="arc5" />
 
 </ArcRow>
 

@@ -6,6 +6,7 @@ breadcrumb:
 ---
 
 import {
+  CodeBlock,
   Term,
   Exercise,
   Solution,
@@ -49,7 +50,7 @@ Imagine asking a computer for "a smooth curve passing through these five points.
 
 Between two points <Formula>P₀</Formula> and <Formula>P₁</Formula>, the linear interpolation <Term id="lerp">lerp</Term> is <Formula>lerp(P₀, P₁, t) = (1−t)·P₀ + t·P₁</Formula>. At <Formula>t = 0</Formula> you sit on <Formula>P₀</Formula>, at <Formula>t = 1</Formula> on <Formula>P₁</Formula>, and in between you trace the straight line. This is so simple it looks like nothing. But it is the _only_ tool Bezier curves need.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="bezierCurves" arc="arc2" />
 
 </ArcRow>
 
@@ -59,7 +60,7 @@ With four <Term id="control-point">control points</Term> <Formula>P₀, P₁, P�
 
 In the widget, each layer is drawn in its own color: the dashed gray polygon connects the original controls, orange the level-1 lerps, brown the level-2 lerps, and the final green dot is <Formula>B(t)</Formula>. Sweep <Formula>t</Formula> across the slider — the construction collapses, the green dot moves, and its trace _is_ the curve. The curve is not drawn by a separate formula; it is the locus of recursion.
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="bezierCurves" arc="arc3" />
 
 </ArcRow>
 
@@ -72,7 +73,7 @@ Four facts fall out without proof, just from staring at the construction.
 - **Convex hull.** Every layer of lerps is a convex combination of the previous layer; the final point is a convex combination of the controls. So the curve lives inside the polygon's convex hull and never escapes — useful for collision bounds and clipping.
 - **The control polygon is not the curve.** It bounds the curve, points along it, can be moved to drag the curve — but the curve sits _inside_ the polygon, smoothed away from its corners.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="bezierCurves" arc="arc4" />
 
 </ArcRow>
 

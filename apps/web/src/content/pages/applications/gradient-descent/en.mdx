@@ -5,7 +5,8 @@ breadcrumb:
   current: ml / dl · gradient descent
 ---
 
-import { Term, Exercise, Solution, LossLandscape } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, LossLandscape } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -48,7 +49,7 @@ The [derivatives module](/en/modules/derivatives) gives the answer in one line: 
 
 In the widget, the green arrow at the current point shows that direction. As <Formula>w</Formula> approaches the minimum, the arrow shrinks; right at <Formula>w\_</Formula> it has zero length — there's no signal left, because the gradient is exactly zero at the minimum.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="gradientDescent" arc="arc2" />
 
 </ArcRow>
 
@@ -71,7 +72,7 @@ The whole method is just step → step → step until either the gradient is sma
 
 Five lines of code. That's gradient descent. The widget runs exactly this loop when you press _auto_. Press it with <Formula>η = 0.12</Formula> and watch <Formula>w</Formula> converge to <Formula>3</Formula>. Press it with <Formula>η = 0.27</Formula> and watch the iterates leave the screen.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="gradientDescent" arc="arc4" />
 
 </ArcRow>
 
@@ -112,7 +113,7 @@ Real ML doesn't have one parameter; it has millions or billions. It doesn't have
 
 The bridge to [Confidently Wrong](/en/ml/confident-wrong): the squared loss here is the warm-up. The cross-entropy loss there has the same "compute gradient, take a step" geometry — just with <Formula>−log p_true</Formula> instead of <Formula>(ŷ − y)²</Formula>. Same descent algorithm, different landscape.
 
-{/* TODO: Python code block for arc 6 — code-mode integration deferred */}
+<CodeBlock slug="gradientDescent" arc="arc6" />
 
 </ArcRow>
 

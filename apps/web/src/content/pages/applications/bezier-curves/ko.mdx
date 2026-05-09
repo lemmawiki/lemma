@@ -6,6 +6,7 @@ breadcrumb:
 ---
 
 import {
+  CodeBlock,
   Term,
   Exercise,
   Solution,
@@ -49,7 +50,7 @@ import Formula from "@/components/page/formula.astro";
 
 두 점 <Formula>P₀</Formula>와 <Formula>P₁</Formula> 사이의 선형 보간 <Term id="lerp">lerp</Term>는 <Formula>lerp(P₀, P₁, t) = (1−t)·P₀ + t·P₁</Formula>. <Formula>t = 0</Formula>이면 <Formula>P₀</Formula>, <Formula>t = 1</Formula>이면 <Formula>P₁</Formula>, 그 사이는 직선. 너무 단순해서 아무것도 아닌 듯 보인다. 그런데 베지에 곡선이 필요로 하는 도구는 *이것뿐*이다.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="bezierCurves" arc="arc2" />
 
 </ArcRow>
 
@@ -65,7 +66,7 @@ lerp해 하나. 그 마지막 점이 매개변수 <Formula>t</Formula>에서의 
 
 위젯에서 각 층은 색깔이 다르다. 점선 회색이 원래 제어 다각형, 주황이 레벨-1 lerp, 갈색이 레벨-2 lerp, 마지막 초록 점이 <Formula>B(t)</Formula>. <Formula>t</Formula> 슬라이더를 끌어보면 작도가 무너지면서 초록 점이 움직이고, 그 자취가 _그대로_ 곡선이 된다. 곡선은 별도의 공식으로 그려지는 게 아니다 — 재귀의 자취 자체.
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="bezierCurves" arc="arc3" />
 
 </ArcRow>
 
@@ -78,7 +79,7 @@ lerp해 하나. 그 마지막 점이 매개변수 <Formula>t</Formula>에서의 
 - **볼록껍질.** 매 층의 lerp는 이전 층의 볼록조합 — 마지막 점은 제어점들의 볼록조합. 그래서 곡선은 다각형의 볼록껍질 안에서 살고 _밖으로 나가지 않는다_. 충돌 판정과 클리핑에 유용.
 - **제어 다각형은 곡선이 아니다.** 곡선을 가두고, 가리키고, 끌어 움직일 수 있는 물체이지만, 곡선은 다각형 *안쪽*에 — 모서리에서 부드럽게 멀어진 채로 — 앉아 있다.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="bezierCurves" arc="arc4" />
 
 </ArcRow>
 

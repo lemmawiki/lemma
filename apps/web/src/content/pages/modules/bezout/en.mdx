@@ -7,7 +7,8 @@ breadcrumb:
   current: module · Bezout's theorem
 ---
 
-import { Term, Exercise, Solution, ToolSpec, ConicIntersect } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, ToolSpec, ConicIntersect } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -81,7 +82,7 @@ The disjoint circles <Formula>x² + y² = 1</Formula> and <Formula>(x − 3)² +
 
 In the widget, the **disjoint** preset shows zero real intersections — turn on _show complex_, and four open dots appear in the side panel: the four Bezout-promised intersections, projected onto the complex x-plane. Failure (c) fixed.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="bezout" arc="arc4" />
 
 </ArcRow>
 
@@ -101,7 +102,7 @@ Three fixes in: <Term id="projective-plane">projective plane</Term>, complex coo
 
 Eliminate one variable. Two polynomials <Formula>f(x, y), g(x, y)</Formula>, viewed as polynomials in <Formula>y</Formula> with coefficients depending on <Formula>x</Formula>, share a root iff their <Term id="resultant">resultant</Term> in <Formula>y</Formula> vanishes. If <Formula>f</Formula> has <Formula>y</Formula>-degree <Formula>d</Formula> and <Formula>g</Formula> has <Formula>y</Formula>-degree <Formula>e</Formula>, the resultant is a polynomial in <Formula>x</Formula> of degree <Formula>d · e</Formula> — and its <Formula>d · e</Formula> complex roots (with multiplicity) are the <Formula>x</Formula>-coordinates of the <Formula>d · e</Formula> intersections. Two conics: a quartic in <Formula>x</Formula>. Four roots. Four intersections. The widget above is exactly this quartic, solved.
 
-{/* TODO: Python code block for arc 6 — code-mode integration deferred */}
+<CodeBlock slug="bezout" arc="arc6" />
 
 </ArcRow>
 

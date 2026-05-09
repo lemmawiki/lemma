@@ -66,6 +66,20 @@ const altKo = new URL(altPath("ko"), Astro.site ?? "https://lemma.wiki").href;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
+    <!-- Read saved mode from localStorage and stamp it on <html> before paint,
+         so MDX panels marked with data-mode-only/data-mode-panel render at the
+         correct visibility on first frame (no flash, no JS-tree dependency). -->
+    <script is:inline>
+      (function () {
+        try {
+          var m = localStorage.getItem("lemma:mode");
+          document.documentElement.dataset.mode = m === "code" ? "code" : "general";
+        } catch (e) {
+          document.documentElement.dataset.mode = "general";
+        }
+      })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

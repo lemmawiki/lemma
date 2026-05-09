@@ -5,7 +5,8 @@ breadcrumb:
   current: ML / DL · 경사하강법
 ---
 
-import { Term, Exercise, Solution, LossLandscape } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, LossLandscape } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -47,7 +48,7 @@ import Formula from "@/components/page/formula.astro";
 
 위젯에서 현재 점의 초록 화살표가 그 방향. <Formula>w</Formula>가 최솟값에 가까워지면 화살표가 줄고, 정확히 <Formula>w\_</Formula>에서 길이가 0 — 최솟값에서 기울기가 정확히 0이라 남는 신호가 없다.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="gradientDescent" arc="arc2" />
 
 </ArcRow>
 
@@ -73,7 +74,7 @@ import Formula from "@/components/page/formula.astro";
 
 코드 다섯 줄. 그게 경사하강법이다. 위젯의 *자동*이 정확히 이 루프를 돌린다. <Formula>η = 0.12</Formula>로 누르면 <Formula>w</Formula>가 <Formula>3</Formula>으로 수렴. <Formula>η = 0.27</Formula>로 누르면 갱신값이 화면 밖으로 날아간다.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="gradientDescent" arc="arc4" />
 
 </ArcRow>
 
@@ -117,7 +118,7 @@ import Formula from "@/components/page/formula.astro";
 
 [자신 있게 틀리기](/ko/ml/confident-wrong)로 가는 다리: 여기 제곱 손실은 워밍업. 거기 교차 엔트로피 손실도 같은 "기울기 계산 → 한 스텝" 기하를 가진다 — 단지 <Formula>(ŷ − y)²</Formula> 대신 <Formula>−log p_true</Formula>일 뿐. 같은 하강 알고리즘, 다른 풍경.
 
-{/* TODO: Python code block for arc 6 — code-mode integration deferred */}
+<CodeBlock slug="gradientDescent" arc="arc6" />
 
 </ArcRow>
 

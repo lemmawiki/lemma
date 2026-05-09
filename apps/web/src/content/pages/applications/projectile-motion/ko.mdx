@@ -5,7 +5,8 @@ breadcrumb:
   current: 물리 · 포물선 운동
 ---
 
-import { Term, Exercise, Solution, Counterexample, WhyNotTaught, Launch } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, Counterexample, WhyNotTaught, Launch } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -49,7 +50,7 @@ y(t) = v₀ sin θ · t − ½ g t²
 
 이 한 쌍은 [매개변수 곡선](/ko/modules/parametric-curves) — 공유 시간 매개변수 <Formula>t</Formula>의 두 함수. 이 곡선의 *이미지*는 운동장 위의 모양, *매개변수화*는 시간상의 실제 운동. 같은 이미지는 여러 매개변수화로 칠해질 수 있다 — 곧 본다.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="projectileMotion" arc="arc2" />
 
 </ArcRow>
 
@@ -64,7 +65,7 @@ y(x) = (tan θ) · x  −  g · x² / (2 v₀² cos²θ)
 
 이게 <Formula>x</Formula>에 대한 이차식. <Formula>t</Formula>에 대한 두 독립 선형 과정의 자취는 필연적으로 <Formula>x</Formula>에 대한 이차식이고, 이차식의 그래프는 <Term id="parabola">포물선</Term>. 포물선은 이 운동의 _이미지_, 운동은 _매개변수화_. 이미지는 시간 축을 감춘다 — 형태는 읽을 수 있지만, 공이 얼마나 빨리 그 자리에 도달했는지는 알 수 없다.
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="projectileMotion" arc="arc3" />
 
 </ArcRow>
 
@@ -77,7 +78,7 @@ y(x) = (tan θ) · x  −  g · x² / (2 v₀² cos²θ)
 - **사거리.** <Formula>R = v₀ cos θ · t_착지 = v₀² sin(2θ) / g</Formula>. <Formula>2θ = 90°</Formula>, 즉 발사각 <Formula>θ = 45°</Formula>에서 최대. 가장 멀리 던지는 던지기는 위와 앞으로 정확히 반반 나뉜 던지기.
 - **대칭.** 정점은 <Formula>x = R/2</Formula>. 착지 속력은 발사 속력과 같다 (같은 <Formula>vₓ</Formula>, 부호만 뒤집힌 같은 크기의 <Formula>v_y</Formula>). 공기저항이 없으면 공기에게 에너지를 잃지 않는다.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="projectileMotion" arc="arc4" />
 
 </ArcRow>
 

@@ -5,7 +5,8 @@ breadcrumb:
   current: 그래픽 · 곡선의 교차
 ---
 
-import { Term, Exercise, Solution, ConicIntersect } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, ConicIntersect } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -63,7 +64,7 @@ import Formula from "@/components/page/formula.astro";
 
 파이프라인은 짧다. (1) 두 이차곡선 식에서 <Term id="resultant">한 변수를 소거</Term>해 다른 변수의 단일 다항식을 얻는다 — 둘 다 차수 2면 4차식. (2) 그 근을 수치적으로 찾는다 (Durand–Kerner 등). (3) 대응하는 y 좌표를 선형 역대입으로 복구. (4) 각 교점을 실-아핀, 복소, 무한 중 하나로 라벨링. 위 위젯은 슬라이더를 움직일 때마다 1–4를 매번 수행한다.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="curveIntersections" arc="arc4" />
 
 </ArcRow>
 

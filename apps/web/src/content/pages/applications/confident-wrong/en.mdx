@@ -6,6 +6,7 @@ breadcrumb:
 ---
 
 import {
+  CodeBlock,
   Term,
   Exercise,
   Solution,
@@ -50,7 +51,7 @@ Softmax is two steps. First, raise everything to <Formula>e</Formula>: <Formula>
 
 The exp step is not arbitrary. It guarantees positivity (any real exponent of <Formula>e</Formula> is positive) and it makes softmax depend only on _differences_ of logits — adding the same constant to every logit changes nothing. The downstream effect is profound: softmax doesn't know the absolute scale of your scores. It only sees who's ahead, by how much.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="confidentWrong" arc="arc2" />
 
 </ArcRow>
 
@@ -60,7 +61,7 @@ Now there's a probability vector. Suppose the truth is class 0. The number we ca
 
 Why <Term id="logarithm">log</Term>? Because independent observations multiply their likelihoods, and log turns multiplication into addition. The total loss across a dataset becomes a clean sum: <Formula>L = Σ −log p(y_i | x_i)</Formula>. That's the same identity the [logarithm module](/en/modules/log) is built on.
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="confidentWrong" arc="arc3" />
 
 </ArcRow>
 
@@ -76,7 +77,7 @@ Set logits to <Formula>[5.0, 1.0, 0.5]</Formula> — the model has decided hard 
 
 This is why "the model said 97% so it must be right" is a category error. _Looks like a probability_ and _matches reality_ are two unrelated claims. Aligning them is its own field — calibration — and it requires data the model never sees during training.
 
-{/* TODO: Python code block for arc 5 — code-mode integration deferred */}
+<CodeBlock slug="confidentWrong" arc="arc5" />
 
 <Counterexample>
   Cross-entropy can disagree with accuracy in *both directions*. Try logits{" "}

@@ -6,6 +6,7 @@ breadcrumb:
 ---
 
 import {
+  CodeBlock,
   Term,
   Exercise,
   Solution,
@@ -50,7 +51,7 @@ that equal <Formula>t</Formula>. Without dividing by length, a long doc would wi
 just by repeating every word more often. Length normalization is "level the playing field" — same
 evidence per word, regardless of how many words there are.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="tfIdf" arc="arc2" />
 
 </ArcRow>
 
@@ -74,7 +75,7 @@ the extremes:
 
 In the 4-doc widget above: <Formula>"the"</Formula> shows up in 3 of 4 docs, so its IDF is <Formula>log₂(4/3) ≈ 0.42</Formula> bits — almost nothing. <Formula>"fox"</Formula> shows up in 1 of 4, so its IDF is <Formula>log₂(4/1) = 2</Formula> bits. _The same word "fox" is worth 5× more_ to a query than "the", and nobody hard-coded that.
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="tfIdf" arc="arc3" />
 
 </ArcRow>
 
@@ -102,7 +103,7 @@ Independent events have probabilities that [multiply](/en/modules/log); their lo
 
 **But the imitation is not the thing.** <Formula>tf</Formula> is a count, not a probability. Multiplying it by <Formula>idf</Formula> is _not_ literally taking the log of a joint probability. TF-IDF is a useful ranking score that _borrows_ the "logs of independent probabilities add" shape — not a real likelihood. Treat it as a heuristic motivated by information theory; that is exactly the right amount of trust to give it.
 
-{/* TODO: Python code block for arc 5 — code-mode integration deferred */}
+<CodeBlock slug="tfIdf" arc="arc5" />
 
 </ArcRow>
 

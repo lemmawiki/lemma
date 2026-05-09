@@ -6,6 +6,7 @@ breadcrumb:
 ---
 
 import {
+  CodeBlock,
   Term,
   Exercise,
   Solution,
@@ -50,7 +51,7 @@ The standard way to _see_ calibration is a <Term id="reliability-diagram">reliab
 
 Bars sagging _below_ the diagonal — model says <Formula>0.9</Formula>, gets <Formula>0.78</Formula> right — are the signature of _overconfidence_. Bars rising _above_ mean the model is too humble: it says <Formula>0.6</Formula> but is actually right <Formula>0.8</Formula> of the time. The vertical gap at each bin, weighted by how many predictions land there, sums to a single number — the _expected calibration error_, ECE.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="modelCalibration" arc="arc2" />
 
 </ArcRow>
 
@@ -60,7 +61,7 @@ An empirical pattern reported across image classifiers, language models, and tab
 
 In the widget, drag <Formula>T</Formula> to <Formula>0.55</Formula> (the "overconfident" preset). The bars in the right tail sag dramatically — the <Formula>0.9</Formula> bin lands near <Formula>0.78</Formula>. ECE jumps. Drag to <Formula>1.55</Formula> and the curve flips above the diagonal: _underconfident_, the bin labeled <Formula>0.6</Formula> lands near <Formula>0.7</Formula>.
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="modelCalibration" arc="arc3" />
 
 </ArcRow>
 
@@ -70,7 +71,7 @@ Click any bar in the widget. The brown line that appears is the <Term id="tangen
 
 Why does this matter? Because it tells you what kind of fix is needed. Slope <Formula>≈ 1</Formula> means "the curve is parallel to the diagonal here, just shifted" — a constant additive correction works. Slope <Formula>≠ 1</Formula> means the gap _changes_ with confidence — and the right correction must _rotate_ the curve toward the diagonal, not just shift it. That rotation is exactly what one parameter — temperature — buys you, globally.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="modelCalibration" arc="arc4" />
 
 </ArcRow>
 
@@ -80,7 +81,7 @@ The recipe: take the trained model. Don't retrain. Don't change architecture. Ta
 
 Why this works: dividing the logits by <Formula>T &gt; 1</Formula> flattens the softmax — every output probability moves toward the uniform <Formula>1/K</Formula>. Across many examples, that pulls down the right-tail bars (the overconfident region) more than it pulls up the middle, exactly undoing the squash that produced the sigmoid bend. It's a remarkably cheap fix for a remarkably common failure mode — and the first thing to try whenever a reliability diagram bows below the diagonal.
 
-{/* TODO: Python code block for arc 5 — code-mode integration deferred */}
+<CodeBlock slug="modelCalibration" arc="arc5" />
 
 <Counterexample>
   Temperature scaling assumes the miscalibration is the *same shape* everywhere in input space — one

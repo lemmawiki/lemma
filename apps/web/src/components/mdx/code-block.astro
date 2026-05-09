@@ -1,0 +1,27 @@
+---
+// MDX-side code block. The Python source lives in data/code.ts (single source);
+// this component looks it up by (slug, arc), highlights with Shiki at build,
+// and tags the output `data-mode-only="code"` so global CSS hides it in
+// general mode without any React tree on the page.
+//
+// Usage in MDX:
+//   <CodeBlock slug="modelCalibration" arc="arc2" />
+//
+// If the (slug, arc) pair has no entry in data/code.ts, nothing renders —
+// pages can sprinkle <CodeBlock> at every arc and only the ones with prose-
+// completing Python show up.
+import { codeToHtml } from "shiki";
+import { pythonCode } from "../../data/code";
+
+interface Props {
+  slug: keyof typeof pythonCode;
+  arc: string;
+}
+const { slug, arc } = Astro.props;
+
+const bucket = pythonCode[slug] as Record<string, string> | undefined;
+const src = bucket?.[arc];
+const html = src ? await codeToHtml(src, { lang: "python", theme: "vitesse-light" }) : null;
+---
+
+{html && <div data-mode-only="code" class="shiki-wrap" set:html={html} />}

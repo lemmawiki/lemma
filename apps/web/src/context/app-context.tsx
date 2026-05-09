@@ -87,13 +87,18 @@ export function AppProvider({
     };
     const onMode = (e: Event) => {
       const detail = (e as CustomEvent<Mode>).detail;
-      if (detail === "general" || detail === "code") setModeState(detail);
+      if (detail === "general" || detail === "code") {
+        if (typeof document !== "undefined") document.documentElement.dataset.mode = detail;
+        setModeState(detail);
+      }
     };
     const onStorage = (e: StorageEvent) => {
       if (!urlMode && e.key === LANG_KEY && (e.newValue === "en" || e.newValue === "ko"))
         setLang(e.newValue);
-      if (e.key === MODE_KEY && (e.newValue === "code" || e.newValue === "general"))
+      if (e.key === MODE_KEY && (e.newValue === "code" || e.newValue === "general")) {
+        if (typeof document !== "undefined") document.documentElement.dataset.mode = e.newValue;
         setModeState(e.newValue);
+      }
     };
     window.addEventListener(LANG_EVENT, onLang);
     window.addEventListener(MODE_EVENT, onMode);
@@ -122,6 +127,10 @@ export function AppProvider({
   );
   const setMode = useCallback((m: Mode) => {
     localStorage.setItem(MODE_KEY, m);
+    // Sync the SSG-rendered <html data-mode> so MDX panels marked with
+    // data-mode-only / data-mode-panel hide/show via pure CSS — no React
+    // tree on those routes is required.
+    if (typeof document !== "undefined") document.documentElement.dataset.mode = m;
     setModeState(m);
     window.dispatchEvent(new CustomEvent(MODE_EVENT, { detail: m }));
   }, []);

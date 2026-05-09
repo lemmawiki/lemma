@@ -6,6 +6,7 @@ breadcrumb:
 ---
 
 import {
+  CodeBlock,
   Term,
   Exercise,
   Solution,
@@ -81,7 +82,7 @@ import Formula from "@/components/page/formula.astro";
 
 그게 <Term id="simple-harmonic-motion">단순조화운동</Term>: 가속도가 변위의 음의 값에 비례. 일반해는 <Formula>θ(t) = θ₀ cos(ω·t + φ)</Formula>, <Formula>ω = √(g/L)</Formula>. 초기 조건 ("각 <Formula>θ₀</Formula>에서 정지 상태로 놓음")을 넣으면 위상 <Formula>φ</Formula>이 0이 되어 <Formula>θ(t) = θ₀ cos(√(g/L) · t)</Formula>가 남는다.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="pendulumClock" arc="arc4" />
 
 </ArcRow>
 
@@ -112,7 +113,7 @@ T(θ₀) = T₀ · (1  +  θ₀²/16  +  …)
 
 실제 진자시계가 작동한 건 탈진기가 추를 _작은_ 호 안에 가둬뒀기 때문이다. 17세기 시계공들은 남은 진폭 오차를 보정하려고 매다는 부위에 사이클로이드 "뺨"을 붙였고, 현대 설계는 호를 충분히 작게 유지해 선형 근사가 _거의_ 참인 영역에 머무르게 한다. 기술 전체가 그 거짓말이 통하는 영역을 중심으로 만들어졌다. 공식 자체보다 이게 더 핀에 박을 가치가 있는 교훈.
 
-{/* TODO: Python code block for arc 6 — code-mode integration deferred */}
+<CodeBlock slug="pendulumClock" arc="arc6" />
 
 <Counterexample>
   진폭만이 모델이 카펫 밑으로 쓸어 넣은 축은 아니다. <Formula>T = 2π√(L/g)</Formula>는{" "}

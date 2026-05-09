@@ -7,7 +7,8 @@ breadcrumb:
   current: module · the derivative
 ---
 
-import { Term, Exercise, Solution, ToolSpec, SecantToTangent } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, ToolSpec, SecantToTangent } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -58,7 +59,7 @@ A moving point leaves a trail. **The derivative is not the trail.** It is the ar
 
 You drove from <Formula>x = 1 km</Formula> at <Formula>t = 0 s</Formula> to <Formula>x = 9 km</Formula> at <Formula>t = 4 s</Formula>. Your _average_ speed is <Formula>(9 − 1) / (4 − 0) = 2 km/s</Formula>. That number describes the trip as a whole — but it does not tell you what you were doing at <Formula>t = 2 s</Formula>. The line through <Formula>(0, 1)</Formula> and <Formula>(4, 9)</Formula> on the position graph is a <Term id="secant">secant</Term>, and its slope is the average. _You can compute it without any limit._
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="derivatives" arc="arc2" />
 
 </ArcRow>
 
@@ -73,7 +74,7 @@ You drove from <Formula>x = 1 km</Formula> at <Formula>t = 0 s</Formula> to <For
 
 As <Formula>h → 0</Formula>, the expression converges to <Formula>4</Formula>. Not "approaches" in some hand-wavy sense — the value _is_ <Formula>4 + h</Formula>, and <Formula>h</Formula> can be made as small as you want. The number that survives in the limit, **4**, is the <Term id="derivative">derivative</Term> of <Formula>t²</Formula> at <Formula>t = 2</Formula>: <Formula>f'(2) = 4</Formula>. Geometrically, the slope of the <Term id="tangent">tangent line</Term> through <Formula>(2, 4)</Formula>.
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="derivatives" arc="arc3" />
 
 </ArcRow>
 
@@ -102,7 +103,7 @@ Two pages already ran on derivatives without naming them. Now they have a place 
 
 The graph at [/graph](/en/graph) now reflects this: both physics applications consume both <Formula>parametric-curves</Formula> and <Formula>derivatives</Formula>. The module is doing the job a module is supposed to do.
 
-{/* TODO: Python code block for arc 5 — code-mode integration deferred */}
+<CodeBlock slug="derivatives" arc="arc5" />
 
 </ArcRow>
 

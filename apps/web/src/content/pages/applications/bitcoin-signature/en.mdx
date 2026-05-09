@@ -6,6 +6,7 @@ breadcrumb:
 ---
 
 import {
+  CodeBlock,
   Term,
   Exercise,
   Solution,
@@ -52,7 +53,7 @@ Take an <Term id="elliptic-curve">elliptic curve</Term> <Formula>y² = x³ + 7</
 
 Computing <Formula>kG</Formula> from <Formula>(k, G)</Formula> takes about <Formula>log₂ k</Formula> additions (double-and-add). Recovering <Formula>k</Formula> from <Formula>(G, kG)</Formula> is the <Term id="discrete-log">discrete logarithm</Term> problem; for cryptographic curves like <Term id="secp256k1">secp256k1</Term>, no algorithm is known that beats roughly <Formula>√n</Formula> work, where <Formula>n ≈ 2²⁵⁶</Formula>. That is the asymmetry the entire scheme stands on.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="bitcoinSignature" arc="arc2" />
 
 </ArcRow>
 
@@ -70,7 +71,7 @@ The <Term id="digital-signature">signature</Term> on a message hash <Formula>h</
 
 In the widget, the signer panel shows the equations live. Drag **d**, **h**, or **k** and the signature recomputes. Note the line labelled _verifier · only knows h, (r, s), Q_: the boundary between what leaves the signing device and what stays in it.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="bitcoinSignature" arc="arc4" />
 
 </ArcRow>
 
@@ -87,7 +88,7 @@ The verifier is given <Formula>h</Formula>, <Formula>(r, s)</Formula>, and <Form
 
 The line <Formula>s = (h + r·d)/k</Formula> hides <Formula>d</Formula> from anyone who only sees <Formula>(r, s, h, Q)</Formula>; the same line, plugged into <Formula>V = u₁G + u₂Q</Formula>, makes <Formula>V</Formula> _exactly_ equal <Formula>R</Formula>. The verifier never recovers <Formula>d</Formula> and yet arrives at the same point the signer used. That coincidence — produced only by knowing <Formula>d</Formula>, checked without — is the _signature_ of the entire scheme, in both senses of the word.
 
-{/* TODO: Python code block for arc 5 — code-mode integration deferred */}
+<CodeBlock slug="bitcoinSignature" arc="arc5" />
 
 </ArcRow>
 

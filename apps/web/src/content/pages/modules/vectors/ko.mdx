@@ -7,7 +7,8 @@ breadcrumb:
   current: 모듈 · 벡터
 ---
 
-import { Term, Exercise, Solution, VectorRoles } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, VectorRoles } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -58,7 +59,7 @@ import Formula from "@/components/page/formula.astro";
 
 두 점을 빼면 벡터가 된다: <Formula>v = B − A</Formula>는 A에서 B로의 변위. 점에 벡터를 더하면 다른 점이 된다: <Formula>A + v = B</Formula>. 두 점과 한 벡터는 같은 그림 안에 살지만, 벡터만 *방향-차원*을 가진다.
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="vectors" arc="arc3" />
 
 </ArcRow>
 
@@ -68,7 +69,7 @@ import Formula from "@/components/page/formula.astro";
 
 _분해-계산-재조립_ 패턴은 너무 보편적이라 의식하지 않게 된다. 포물선-운동 페이지는 발사 속도를 <Formula>(v₀ cos θ, v₀ sin θ)</Formula>로 쪼개 각 성분을 1D 운동으로 돌린다. 경사하강법 갱신은 <Formula>w − η·∇L</Formula>을 벡터 뺄셈으로 적지만, 모든 실제 구현은 그 아래 배열에 대해 *성분별*로 한다. 성분은 _벡터 산술이 소프트웨어 안에서 스칼라 산술이 되는 방식_.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="vectors" arc="arc4" />
 
 </ArcRow>
 

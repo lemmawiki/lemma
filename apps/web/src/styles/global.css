@@ -36,6 +36,19 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Mode-aware visibility. The toggle in <Header> writes `data-mode` to <html>
+   (and an inline <head> script seeds it from localStorage before paint).
+   Markup tagged with `data-mode-only="<mode>"` is shown only in that mode;
+   `data-mode-panel="<mode>"` is the same idea but signals an intentional
+   side-by-side pair of panels rendered together at SSG time. Both end up as
+   pure CSS visibility — no React tree required on the page. */
+html[data-mode="general"] [data-mode-panel="code"],
+html[data-mode="general"] [data-mode-only="code"],
+html[data-mode="code"] [data-mode-panel="general"],
+html[data-mode="code"] [data-mode-only="general"] {
+  display: none;
+}
+
 /* Pre-rendered Shiki code blocks. The vitesse-light theme provides the token
    colors; we override the white background with the same warm tint we use for
    formula-inline pills so code blocks flow with the prose. */

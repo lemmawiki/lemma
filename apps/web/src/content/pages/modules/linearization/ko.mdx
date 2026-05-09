@@ -7,7 +7,8 @@ breadcrumb:
   current: 모듈 · 선형화
 ---
 
-import { Term, Exercise, Solution, TangentApproximation } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, TangentApproximation } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -49,7 +50,7 @@ import Formula from "@/components/page/formula.astro";
 
 그것이 <Formula>a</Formula>에서 <Formula>f</Formula>의 선형화. 함수와 두 가지 면에서 일치한다 — 기준에서 값이 같고 (<Formula>L_a(a) = f(a)</Formula>), 기준에서 기울기도 같다 (<Formula>L_a'(a) = f'(a)</Formula>). 둘 다 만족시키는 직선은 *유일*하다. 위젯의 점선 갈색 직선이 그것; <Formula>f(x) = sin x</Formula>, <Formula>a = 0</Formula>일 때 직선은 <Formula>L_0(x) = 0 + 1 · (x − 0) = x</Formula>.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="linearization" arc="arc2" />
 
 </ArcRow>
 
@@ -59,7 +60,7 @@ import Formula from "@/components/page/formula.astro";
 
 구체적으로 <Formula>sin</Formula>의 <Formula>0</Formula>에서: 선두 오차항은 <Formula>−x³/6</Formula>이라 <Formula>오차 / (x − a)²</Formula> 비율이 <Formula>x</Formula>에 따라 천천히 표류 — 여기선 _삼차_ 항이 지배. 다른 함수들 (<Formula>e^x</Formula>, <Formula>√(1 + x)</Formula>, <Formula>1/(1 − x)</Formula>) 은 기준에서 2차 도함수가 0이 아니라 <Formula>오차 / (x − a)²</Formula>가 일정. 어느 쪽이든 경험칙은 같다 — *"작은" 편차에서는 선형 근사가 괜찮고, "큰" 편차에서는 *빠르게* 틀린다.*
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="linearization" arc="arc3" />
 
 </ArcRow>
 
@@ -71,7 +72,7 @@ import Formula from "@/components/page/formula.astro";
 - **[경사하강법](/ko/ml/gradient-descent)**으로 손실 최소화. 1차 테일러 근사가 <Formula>L(w − η · ∇L) ≈ L(w) − η · ‖∇L‖²</Formula>이라고 말한다. <Formula>η</Formula>가 충분히 작아 선형화를 믿을 수 있으면 손실이 감소. 너무 크면 선형화가 거짓말 — 그 페이지의 위젯에서 <Formula>η = 0.27</Formula>일 때 보이는 폭발.
 - **[진자시계](/ko/physics/pendulum-clock)**가 의지하는 것은 단 하나의 선형화: <Formula>sin θ ≈ θ</Formula>. 비선형 ODE <Formula>θ̈ = −(g/L) sin θ</Formula>가 <Formula>θ̈ = −(g/L) θ</Formula>로 바뀌면서 닫힌 사인꼴 해와 일정 주기의 시계가 나온다. 기술 전체가 그 거짓말이 통하는 _작은 각 영역_ 안에 산다.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="linearization" arc="arc4" />
 
 </ArcRow>
 

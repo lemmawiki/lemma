@@ -6,6 +6,7 @@ breadcrumb:
 ---
 
 import {
+  CodeBlock,
   Term,
   Exercise,
   Solution,
@@ -59,7 +60,7 @@ import Formula from "@/components/page/formula.astro";
 곡선에서는 약 <Formula>√n</Formula> 보다 더 빠른 알고리즘이 알려져 있지 않다 (
 <Formula>n ≈ 2²⁵⁶</Formula>). 모든 체계가 서 있는 비대칭성이다.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="bitcoinSignature" arc="arc2" />
 
 </ArcRow>
 
@@ -77,7 +78,7 @@ import Formula from "@/components/page/formula.astro";
 
 위젯의 서명자 패널은 식을 실시간으로 보여준다. **d**, **h**, **k**를 끌면 서명이 즉시 다시 계산된다. _검증자 · h, (r, s), Q만 앎_ 라고 적힌 줄이 경계 — 서명 디바이스 밖으로 나가는 것과 안에 머무는 것의 경계.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="bitcoinSignature" arc="arc4" />
 
 </ArcRow>
 
@@ -98,7 +99,7 @@ import Formula from "@/components/page/formula.astro";
 복구하지 않고도 서명자가 도달했던 그 점에 도달한다. 이 우연 — <Formula>d</Formula>를 알아야만 만들
 수 있고, <Formula>d</Formula>를 모르고도 검증할 수 있는 — 가 이 체계의 본질이다.
 
-{/* TODO: Python code block for arc 5 — code-mode integration deferred */}
+<CodeBlock slug="bitcoinSignature" arc="arc5" />
 
 </ArcRow>
 

@@ -5,7 +5,8 @@ breadcrumb:
   current: graphics · curve intersections
 ---
 
-import { Term, Exercise, Solution, ConicIntersect } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, ConicIntersect } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -64,7 +65,7 @@ Practically: solve the y-resultant (a quartic in x), find its 4 complex roots wi
 
 The pipeline is short. (1) <Term id="resultant">Eliminate one variable</Term> from the two conic equations to get a single polynomial in the other — a quartic when both inputs are degree 2. (2) Find its roots numerically (Durand–Kerner or similar). (3) Recover the corresponding y-coordinates by linear back-substitution. (4) Tag each intersection as real-affine, complex, or at infinity. The widget above performs steps 1–4 every time you move a slider.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="curveIntersections" arc="arc4" />
 
 </ArcRow>
 

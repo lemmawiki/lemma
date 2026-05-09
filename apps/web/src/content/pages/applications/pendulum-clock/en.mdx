@@ -6,6 +6,7 @@ breadcrumb:
 ---
 
 import {
+  CodeBlock,
   Term,
   Exercise,
   Solution,
@@ -76,7 +77,7 @@ Substitute. The pendulum equation becomes:
 
 That is <Term id="simple-harmonic-motion">simple harmonic motion</Term>: the acceleration is proportional to the negative of the displacement. The general solution is <Formula>θ(t) = θ₀ cos(ω·t + φ)</Formula> for <Formula>ω = √(g/L)</Formula>. Plug in initial conditions ("released from rest at angle <Formula>θ₀</Formula>") and the phase <Formula>φ</Formula> goes to zero, leaving <Formula>θ(t) = θ₀ cos(√(g/L) · t)</Formula>.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="pendulumClock" arc="arc4" />
 
 </ArcRow>
 
@@ -104,7 +105,7 @@ At <Formula>θ₀ = 10°</Formula> (≈ 0.175 rad) the correction is about 0.2% 
 
 Real pendulum clocks worked because their escapements force the bob to swing in _small_ arcs — 17th-century clockmakers added cycloidal "cheeks" to the suspension to compensate for what amplitude error remained, and modern designs keep the arc small enough for the linear approximation to stay nearly true. The entire technology is built around the regime in which the lie holds. That, more than the formula itself, is the lesson worth pinning.
 
-{/* TODO: Python code block for arc 6 — code-mode integration deferred */}
+<CodeBlock slug="pendulumClock" arc="arc6" />
 
 <Counterexample>
   The amplitude is not the only axis the model sweeps under the rug. <Formula>T = 2π√(L/g)</Formula>{" "}

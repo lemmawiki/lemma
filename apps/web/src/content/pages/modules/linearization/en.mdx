@@ -7,7 +7,8 @@ breadcrumb:
   current: module · linearization
 ---
 
-import { Term, Exercise, Solution, TangentApproximation } from "@/components/mdx";
+import {
+  CodeBlock, Term, Exercise, Solution, TangentApproximation } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -50,7 +51,7 @@ At any smooth point <Formula>a</Formula>, the function <Formula>f</Formula> has 
 
 That is the linearization of <Formula>f</Formula> at <Formula>a</Formula>. It matches the function in two ways: <Formula>L_a(a) = f(a)</Formula> (same value at the anchor) and <Formula>L_a'(a) = f'(a)</Formula> (same slope at the anchor). No other line can claim both. The widget draws this line with the dashed brown stroke; for <Formula>f(x) = sin x</Formula> at <Formula>a = 0</Formula>, the line is <Formula>L_0(x) = 0 + 1 · (x − 0) = x</Formula>.
 
-{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+<CodeBlock slug="linearization" arc="arc2" />
 
 </ArcRow>
 
@@ -60,7 +61,7 @@ For any smooth function, the error <Formula>f(x) − L_a(x)</Formula> behaves li
 
 Concretely for <Formula>sin</Formula> at <Formula>0</Formula>: the leading error term is <Formula>−x³/6</Formula>, so <Formula>error / (x − a)²</Formula> drifts slowly with <Formula>x</Formula> rather than staying constant — the cubic term dominates here. Other functions (<Formula>e^x</Formula>, <Formula>√(1 + x)</Formula>, <Formula>1/(1 − x)</Formula>) have a constant <Formula>error / (x − a)²</Formula> ratio because their second derivative at the anchor is nonzero. Either way, the rule of thumb is the same: _"small" deviations make linear approximation fine; "large" deviations make it wrong, fast._
 
-{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+<CodeBlock slug="linearization" arc="arc3" />
 
 </ArcRow>
 
@@ -72,7 +73,7 @@ Once you have a tool that turns nonlinear into linear in a small region, three w
 - **[Gradient descent](/en/ml/gradient-descent)** for minimizing a loss. The first-order Taylor approximation says <Formula>L(w − η · ∇L) ≈ L(w) − η · ‖∇L‖²</Formula>. If <Formula>η</Formula> is small enough that the linearization is trustworthy, the loss decreases. Too big and the linearization lies — the explosion you see at <Formula>η = 0.27</Formula> in that page's widget.
 - **[The pendulum clock](/en/physics/pendulum-clock)** runs on a single linearization: <Formula>sin θ ≈ θ</Formula>. The nonlinear ODE <Formula>θ̈ = −(g/L) sin θ</Formula> becomes <Formula>θ̈ = −(g/L) θ</Formula>, with a closed-form sinusoidal solution and a constant-period clock. The whole technology lives inside the small-angle regime where the lie holds.
 
-{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+<CodeBlock slug="linearization" arc="arc4" />
 
 </ArcRow>
 
