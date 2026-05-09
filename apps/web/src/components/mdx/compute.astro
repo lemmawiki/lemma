@@ -1,0 +1,11 @@
+---
+import { Compute as ComputeReact } from "../widgets/compute";
+
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<ComputeReact id={id} language={lang} client:load />

@@ -11,6 +11,7 @@ import {
   Solution,
   Counterexample,
   WhyNotTaught,
+  Compute,
   PizzaSlider,
   ThreeDoors,
 } from "@/components/mdx";
@@ -44,7 +45,7 @@ Sixteen years later, those 10,000 BTC are worth about **$1 billion**. The most e
 
 <ArcRow n={1} title="How much? — projecting the pizza forward">
 
-If <Term id="bitcoin">Bitcoin</Term> keeps its historical pace, what's 10,000 BTC worth in 2046? Stack <Formula>×2.89</Formula> twenty more times on $1B. <Term id="compound-interest">Compound</Term> growth is repeated multiplication; repeated multiplication, compressed into one symbol, is <Term id="exponent">exponentiation</Term>. <Formula>F = P · (1 + r)^t</Formula>.
+If <Term id="bitcoin">Bitcoin</Term> keeps its historical pace, what's 10,000 BTC worth in 2046? Stack <Formula>×2.89</Formula> twenty more times on $1B. <Term id="compound-interest">Compound</Term> growth is repeated multiplication; repeated multiplication, compressed into one symbol, is <Term id="exponent">exponentiation</Term>: <Compute id="bitcoin-pizza-future-value" />. Click it. Drag _r_ to 0.10 (SPY's pace) and watch the future collapse — the same equation, a different story.
 
 </ArcRow>
 

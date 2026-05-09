@@ -16,6 +16,7 @@ export { default as Solution } from "./solution.astro";
 export { default as ToolSpec } from "./tool-spec.astro";
 export { default as Counterexample } from "./counterexample.astro";
 export { default as WhyNotTaught } from "./why-not-taught.astro";
+export { default as Compute } from "./compute.astro";
 
 // Widgets
 export { default as ShannonBars } from "./shannon-bars.astro";
