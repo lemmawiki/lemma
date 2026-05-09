@@ -336,45 +336,42 @@ function Arc({ code }: { code: CodeMap }) {
           )}
         </p>
         {mode === "code" && <Code html={code.arc5} />}
-        <Counterexample>
-          {{
-            en: (
-              <>
-                Cross-entropy can disagree with accuracy in <em>both directions</em>. Try logits{" "}
-                <span className="font-mono text-[0.93em]">[2.0, 1.9, 1.8]</span> with true class 0:
-                argmax is <em>correct</em>, but{" "}
-                <span className="font-mono text-[0.93em]">p_true ≈ 0.37</span>, loss{" "}
-                <span className="font-mono">≈ 0.99</span> — a "right" answer with terrible loss. Now
-                flip to <span className="font-mono text-[0.93em]">[5.0, 1.0, 0.5]</span> with true
-                class 1: argmax is <em>wrong</em>, but loss <span className="font-mono">≈ 4.0</span>
-                .{" "}
-                <em>
-                  Selecting the model with the lowest training loss is not the same as selecting the
-                  model that gets the most answers right.
-                </em>{" "}
-                The metric you optimize is not the metric you care about; the gap is where shipped
-                models hide.
-              </>
-            ),
-            ko: (
-              <>
-                교차 엔트로피는 정확도와 <em>양방향</em>으로 어긋날 수 있다. 로짓{" "}
-                <span className="font-mono text-[0.93em]">[2.0, 1.9, 1.8]</span>, 정답 클래스 0:
-                argmax는 <em>맞다</em>. 하지만{" "}
-                <span className="font-mono text-[0.93em]">p_정답 ≈ 0.37</span>, 손실{" "}
-                <span className="font-mono">≈ 0.99</span> — '맞은' 답에 끔찍한 손실. 이제{" "}
-                <span className="font-mono text-[0.93em]">[5.0, 1.0, 0.5]</span>, 정답 클래스 1로
-                바꿔보자: argmax는 <em>틀렸지만</em> 손실은 <span className="font-mono">≈ 4.0</span>
-                이다.{" "}
-                <em>
-                  훈련 손실이 가장 낮은 모델을 고르는 것은 정답을 가장 많이 맞히는 모델을 고르는
-                  것과 같지 않다.
-                </em>{" "}
-                최적화하는 지표와 신경 쓰는 지표는 다르다. 그 격차에서 출시된 모델들이 숨는다.
-              </>
-            ),
-          }}
-        </Counterexample>
+        <Counterexample
+          en={
+            <>
+              Cross-entropy can disagree with accuracy in <em>both directions</em>. Try logits{" "}
+              <span className="font-mono text-[0.93em]">[2.0, 1.9, 1.8]</span> with true class 0:
+              argmax is <em>correct</em>, but{" "}
+              <span className="font-mono text-[0.93em]">p_true ≈ 0.37</span>, loss{" "}
+              <span className="font-mono">≈ 0.99</span> — a "right" answer with terrible loss. Now
+              flip to <span className="font-mono text-[0.93em]">[5.0, 1.0, 0.5]</span> with true
+              class 1: argmax is <em>wrong</em>, but loss <span className="font-mono">≈ 4.0</span>.{" "}
+              <em>
+                Selecting the model with the lowest training loss is not the same as selecting the
+                model that gets the most answers right.
+              </em>{" "}
+              The metric you optimize is not the metric you care about; the gap is where shipped
+              models hide.
+            </>
+          }
+          ko={
+            <>
+              교차 엔트로피는 정확도와 <em>양방향</em>으로 어긋날 수 있다. 로짓{" "}
+              <span className="font-mono text-[0.93em]">[2.0, 1.9, 1.8]</span>, 정답 클래스 0:
+              argmax는 <em>맞다</em>. 하지만{" "}
+              <span className="font-mono text-[0.93em]">p_정답 ≈ 0.37</span>, 손실{" "}
+              <span className="font-mono">≈ 0.99</span> — '맞은' 답에 끔찍한 손실. 이제{" "}
+              <span className="font-mono text-[0.93em]">[5.0, 1.0, 0.5]</span>, 정답 클래스 1로
+              바꿔보자: argmax는 <em>틀렸지만</em> 손실은 <span className="font-mono">≈ 4.0</span>
+              이다.{" "}
+              <em>
+                훈련 손실이 가장 낮은 모델을 고르는 것은 정답을 가장 많이 맞히는 모델을 고르는 것과
+                같지 않다.
+              </em>{" "}
+              최적화하는 지표와 신경 쓰는 지표는 다르다. 그 격차에서 출시된 모델들이 숨는다.
+            </>
+          }
+        />
       </ArcRow>
     </section>
   );
@@ -643,32 +640,29 @@ export function ConfidentWrong({ code }: { code: CodeMap }) {
       <Arc code={code} />
       <Pin />
       <Exercises />
-      <WhyNotTaught>
-        {{
-          en: (
-            <>
-              ML courses usually present softmax and cross-entropy back-to-back as the
-              "classification recipe" — exponentiate, normalize, take the log of the right one,
-              done. Lemma keeps them apart.{" "}
-              <em>Softmax compresses scores into something that looks like probability;</em>{" "}
-              cross-entropy <em>punishes</em> the probability the model assigned to the right
-              answer. They are two unrelated jobs glued together by custom. Treating them as one
-              obscures the trap shown in arc 5: a model can be <em>confidently wrong</em>, and the
-              recipe gives no signal that it is.
-            </>
-          ),
-          ko: (
-            <>
-              ML 강의는 보통 softmax와 교차 엔트로피를 "분류 레시피"라며 한 호흡에 가르친다 — 지수
-              취하고, 정규화하고, 정답 자리의 로그를 빼면 끝. Lemma는 둘을 분리해 둔다.{" "}
-              <em>softmax는 점수를 확률처럼 보이는 무언가로 압축</em>하고, 교차 엔트로피는 모델이
-              정답에 부여한 확률을 <em>벌점으로 바꾼다</em>. 관습으로 한데 묶였을 뿐, 별개의 두
-              일이다. 이걸 하나로 다루면 §5의 함정 — 모델이 <em>자신 있게 틀리는</em> 상황 — 이
-              가려진다. 레시피는 그 신호를 주지 않는다.
-            </>
-          ),
-        }}
-      </WhyNotTaught>
+      <WhyNotTaught
+        en={
+          <>
+            ML courses usually present softmax and cross-entropy back-to-back as the "classification
+            recipe" — exponentiate, normalize, take the log of the right one, done. Lemma keeps them
+            apart. <em>Softmax compresses scores into something that looks like probability;</em>{" "}
+            cross-entropy <em>punishes</em> the probability the model assigned to the right answer.
+            They are two unrelated jobs glued together by custom. Treating them as one obscures the
+            trap shown in arc 5: a model can be <em>confidently wrong</em>, and the recipe gives no
+            signal that it is.
+          </>
+        }
+        ko={
+          <>
+            ML 강의는 보통 softmax와 교차 엔트로피를 "분류 레시피"라며 한 호흡에 가르친다 — 지수
+            취하고, 정규화하고, 정답 자리의 로그를 빼면 끝. Lemma는 둘을 분리해 둔다.{" "}
+            <em>softmax는 점수를 확률처럼 보이는 무언가로 압축</em>하고, 교차 엔트로피는 모델이
+            정답에 부여한 확률을 <em>벌점으로 바꾼다</em>. 관습으로 한데 묶였을 뿐, 별개의 두
+            일이다. 이걸 하나로 다루면 §5의 함정 — 모델이 <em>자신 있게 틀리는</em> 상황 — 이
+            가려진다. 레시피는 그 신호를 주지 않는다.
+          </>
+        }
+      />
       <GlossaryList />
     </TermsProvider>
   );
