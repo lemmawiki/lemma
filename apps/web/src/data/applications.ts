@@ -151,6 +151,21 @@ export const applications: ApplicationMeta[] = [
     },
   },
   {
+    id: "model-calibration",
+    href: "/ml/model-calibration",
+    pillar: "ml",
+    modules: ["linearization", "log"],
+    status: "available",
+    title: {
+      en: "Model Calibration",
+      ko: "모델 캘리브레이션",
+    },
+    hook: {
+      en: "A model says '70% confident.' Does that mean, across many such predictions, seven in ten are right? The number on the screen and the long-run frequency are two different quantities. The reliability diagram makes the gap visible; one scalar — temperature — rotates the curve back to the diagonal.",
+      ko: "모델이 '70% 확신'이라고 말한다. 그런 예측을 많이 모았을 때 정말 열에 일곱이 맞는다는 뜻일까? 화면 위의 수와 장기적 빈도는 다른 두 양이다. 신뢰도 다이어그램이 그 격차를 보여주고, 단 하나의 스칼라 — 온도 — 가 곡선을 대각선 쪽으로 회전시킨다.",
+    },
+  },
+  {
     id: "tf-idf",
     href: "/ml/tf-idf",
     pillar: "ml",

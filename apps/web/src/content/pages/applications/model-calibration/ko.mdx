@@ -1,0 +1,171 @@
+---
+title: 모델 캘리브레이션 · Lemma
+description: 모델이 "70% 확신"이라고 말한다. 그런 예측 열에 일곱이 정말 맞을까? 신뢰도 다이어그램, ECE, 그리고 곡선을 대각선 쪽으로 회전시키는 단 하나의 스칼라 — 온도 스케일링.
+breadcrumb:
+  current: ML / DL · 모델 캘리브레이션
+---
+
+import {
+  Term,
+  Exercise,
+  Solution,
+  Counterexample,
+  WhyNotTaught,
+  ReliabilityDiagram,
+} from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 신뢰도 대 빈도">
+
+# 70%를 믿어도 될까?
+
+모델이 "70% 확신"이라고 말한다. 그 말은 그런 예측을 많이 모았을 때 _열에 일곱_이 맞는다는 뜻일까? 가끔은 맞다. 자주는 아니다. 화면 위의 수와 장기적 빈도는 _다른 두 양_이고, 그 둘을 맞추는 일을 <Term id="calibration">캘리브레이션</Term>이라 부른다. 현대의 신경망은 첫 시도에서 거의 실패한다. 처방은 단 하나의 스칼라 — [자신 있게 틀리기](/ko/ml/confident-wrong)에서 등장한 그 <Term id="temperature">온도</Term> 다이얼 — 이고, 보유된 정답에 맞춰 조정한다.
+
+<Lede>**신뢰도는 수다. 진실은 빈도다. 캘리브레이션은 그 사이의 격차다.**</Lede>
+
+</Hook>
+
+<ReliabilityDiagram />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="확률이 약속하는 것">
+
+모델이 어떤 클래스에 대해 <Formula>0.7</Formula>이라는 수를 내뱉을 때, 그 수의 _의미_는 뭐여야 할까? 정직한 계약은 장기 빈도다: 모델이 "70%"라고 라벨한 많은 예제들 중 실제 정답이 약 <Formula>70%</Formula> 비율로 들어온다는 것. 이 계약은 <Term id="softmax">softmax</Term>가 강제하지 않는다. <Term id="cross-entropy">교차 엔트로피</Term>도, 훈련 자체도 강제하지 않는다. 훈련은 본 데이터에서 손실이 낮은 것에만 보상을 준다. 확률과 빈도의 정렬은 모델이 부수적으로 얻거나 — 못 얻는 — _별개의_ 성질이다.
+
+[자신 있게 틀리기](/ko/ml/confident-wrong)는 softmax가 왜 확률처럼 _보이는_ 것을 만드는지 보여주었다. 이 페이지의 질문은 그다음이다: _보이는 대로의 의미를 갖고 있는가?_
+
+</ArcRow>
+
+<ArcRow n={2} title="신뢰도 다이어그램">
+
+캘리브레이션을 _눈으로_ 보는 표준 방법: 예측을 신뢰도 구간별로 묶는다 — 가령 폭 <Formula>0.1</Formula>의 구간 열 개. 각 구간마다 두 수를 찍는다. x축에는 _평균 예측 확률_, y축에는 _실제로 맞춘 비율_. 완벽한 캘리브레이션은 대각선 <Formula>y = x</Formula>. 위 위젯이 정확히 이 그림이고, 미스캘리 정도를 조절할 수 있는 합성 모델로 만들어졌다.
+
+막대가 대각선 _아래_로 처지면 — 모델은 <Formula>0.9</Formula>라지만 실제로는 <Formula>0.78</Formula>만 맞다 — <Term id="reliability-diagram">과신</Term>의 서명이다. 막대가 _위_로 솟으면 모델이 너무 겸손한 것: <Formula>0.6</Formula>이라고 말하지만 실제로는 <Formula>0.8</Formula>이 맞는다. 각 구간의 수직 간격을 그 구간의 예측 개수로 가중평균하면 단일 수가 나온다 — _기대 캘리브레이션 오차_, ECE.
+
+{/* TODO: Python code block for arc 2 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={3} title="실제 모델은 — 예측 가능하게 — 과신한다">
+
+이미지 분류기, 언어 모델, 표 형식 신경망 모두에서 관측된 경험적 패턴: 막대가 대각선 _아래_에 있고, 그 격차는 높은 신뢰도 쪽에서 가장 크다. "아주 확신한다"는 모델은 그 수가 인정하는 것보다 자주 틀리고, "잘 모르겠다"는 모델은 대체로 정직하다. 대각선 위에 그려진 모양은 0.5 쪽으로 살짝 _눌린_ 시그모이드다. 이건 우연이 아니다 — 진짜 사후확률이 모델이 말하는 확률을 <Formula>σ(logit(p)/T)</Formula> (<Formula>T &lt; 1</Formula>) 에 통과시킨 결과라면 정확히 이 모양이 된다.
+
+위젯에서 <Formula>T</Formula>를 <Formula>0.55</Formula> ("과신" 프리셋) 로 끌어보자. 오른쪽 꼬리 쪽 막대들이 극적으로 처진다 — <Formula>0.9</Formula> 구간이 <Formula>0.78</Formula> 근처로 떨어진다. ECE가 치솟는다. <Formula>1.55</Formula>로 끌면 곡선이 대각선 위로 뒤집힌다: _과소확신_, <Formula>0.6</Formula>이라 라벨된 구간이 <Formula>0.7</Formula> 근처에 떨어진다.
+
+{/* TODO: Python code block for arc 3 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={4} title="한 구간에서 선형화 — 국소적 처방">
+
+위젯의 막대를 클릭해보자. 등장하는 갈색 선은 그 구간 중심에서 캘리브레이션 곡선의 <Term id="tangent">접선</Term> — [선형화 모듈](/ko/modules/linearization)의 그 트릭, 여기서 재사용. 국소적으로, 곡선은 기울기 <Formula>m</Formula>과 절편 <Formula>c</Formula>의 직선처럼 생겼다: <Formula>actual(p) ≈ m·p + c</Formula>. 두 수. 이 동네에서 막대와 대각선의 차이는 <Formula>(m − 1)·p + c</Formula> — 한 접선의 기울기와 절편에서 읽을 수 있는 양이다.
+
+이게 왜 중요한가? 어떤 종류의 처방이 필요한지를 말해주기 때문이다. 기울기 <Formula>≈ 1</Formula>이면 "여기서 곡선은 대각선과 평행하고 그저 평행 이동" — 상수 보정으로 충분하다. 기울기 <Formula>≠ 1</Formula>이면 격차가 신뢰도에 따라 _달라진다_ — 올바른 보정은 곡선을 단지 옮기는 게 아니라 대각선 쪽으로 _회전_시켜야 한다. 그 회전이야말로 단 하나의 매개변수 — 온도 — 가 전역적으로 사주는 일이다.
+
+{/* TODO: Python code block for arc 4 — code-mode integration deferred */}
+
+</ArcRow>
+
+<ArcRow n={5} title="온도 스케일링 — 사후, 단 하나의 스칼라">
+
+레시피: 훈련된 모델을 그대로 쓴다. 재훈련 없음. 아키텍처 변경 없음. 보유 검증 셋의 원시 <Term id="logit">로짓</Term>을 가져와, 단 하나의 스칼라 <Formula>T &gt; 0</Formula>를 더해 <Formula>softmax(z / T)</Formula>를 계산한다. <Formula>T</Formula>는 검증 셋에서 로그 손실을 최소화하도록 맞춘다 — 1차원 최적화, 1초면 끝. 그게 <Term id="temperature-scaling">온도 스케일링</Term>이다. argmax는 보존된다 (모든 로짓을 같은 상수로 나누니까), 정확도는 그대로다. 신뢰도만 다시 스케일된다.
+
+왜 작동하는가: 로짓을 <Formula>T &gt; 1</Formula>로 나누면 softmax가 평평해진다 — 모든 출력 확률이 균등 분포 <Formula>1/K</Formula> 쪽으로 움직인다. 많은 예제들 위에서, 이는 오른쪽 꼬리 (과신 영역) 의 막대를 가운데보다 더 많이 끌어내려 시그모이드 굽힘을 정확히 되돌린다. 매우 흔한 실패 모드에 대한 매우 싼 처방이고, 신뢰도 다이어그램이 대각선 아래로 휠 때 가장 먼저 시도해야 할 것.
+
+{/* TODO: Python code block for arc 5 — code-mode integration deferred */}
+
+<Counterexample>
+  온도 스케일링은 미스캘리브레이션이 입력 공간 전반에 걸쳐 *같은 모양*이라고 가정한다 — 하나의 전역
+  회전으로 고칠 수 있다는 것. 실제 모델은 슬라이스마다 *다르게* 미스캘리브레이션된다: 쉬운 예제는
+  자신만만하게 맞고, 어려운 예제는 자신만만하게 틀리고, 분포 밖 입력은 터무니없이 자신만만하다. 단일{" "}
+  <Formula>T</Formula>는 격차를 평균낼 뿐이라, 양쪽 영역 모두를 안 한 것만 못하게 만들 수 있다.
+  정직한 신호: 검증 셋에서 ECE는 떨어지지만, 보유된 신뢰도 다이어그램의 오른쪽 꼬리는 여전히 휘어
+  있다. 처방은 더 큰 T가 아니다; "이 입력이 내가 본 것 근처인가?"를 묻는 모델 — 선택적 예측, 컨포멀
+  집합, 밀도 추정기 — 이고, 이건 softmax 바깥에 사는 별개의 기계다.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **신뢰도는 수다. 진실은 빈도다. 캘리브레이션은 그 사이의 격차다.** 신뢰도 다이어그램이 그 격차를
+  눈에 보이게 하고, 한 구간의 접선이 국소적 처방을 말해주며, 단 하나의 스칼라 — 온도 — 가 곡선
+  전체를 대각선 쪽으로 회전시킨다.
+</Pin>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="구간 읽기">
+
+위젯에서 <Formula>T = 0.55</Formula> (과신) 으로 두자. <Formula>0.85</Formula> 중심 구간을 클릭. 막대 높이를 읽어라. 모델이 "85% 확신"이라고 라벨한 100개의 예측 중 실제로 맞은 건 대략 몇 개? 같은 일을 <Formula>0.55</Formula> 구간에 대해서도 해보자. 모델은 어떤 종류의 입력에 대해 여전히 정직한가?
+
+<Solution>
+  <Formula>0.85</Formula>에서: <Formula>actual ≈ 0.74</Formula> — 100개 중 약 74개. 11점 격차가 높은
+  확률 꼬리에서 과신의 가시적 서명이다. <Formula>0.55</Formula>에서:{" "}
+  <Formula>actual ≈ 0.53</Formula> — 거의 대각선 위. 모델은 중간 (이미 불확실한 영역) 에서
+  캘리브레이트되고, 꼬리 (모델이 확신한다고 생각하는 영역) 에서 미스캘리브레이트된다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="대각선 아래 · 그 뜻" noCalculator>
+
+친구가 신뢰도 다이어그램을 보고, 오른쪽 절반의 모든 막대가 대각선 _아래_에 있는 것을 가리키며 "좋다 — 모델이 겸손하다"고 말한다. _겸손한_과 _과신하는_을 구분하는 한 문장 답을 써라. "대각선 아래"는 어느 쪽 해석에 해당하나?
+
+<Solution>
+  <Formula>p = 0.9</Formula>에서 대각선 아래라는 건 막대 높이가 0.9 *미만*이라는 뜻 — 모델은 0.9라고{" "}
+  *말*하지만 실제로는 0.9 미만 비율로 맞다는 것. 그건 모델이 줄 수 있는 것보다 더 주장하고 있다는
+  것: **과신**, 겸손이 아니다. "겸손"은 0.6이라 말하면서 실제로 0.8 비율로 맞는 모델 — 대각선 *위*의
+  막대다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="국소 선형 적합">
+
+과신 상태 (<Formula>T = 0.55</Formula>) 에서 <Formula>0.85</Formula> 구간을 클릭. 위젯이 국소 기울기를 보고한다. 그 기울기가 <Formula>m = 0.6</Formula>, 막대 높이가 <Formula>0.74</Formula> (<Formula>p = 0.85</Formula>) 라 하자. 국소 선형 근사를 <Formula>actual(p) ≈ m·p + c</Formula> 형태로 써라 — <Formula>c</Formula>를 계산하면 된다. 그것을 이용해 <Formula>p = 0.95</Formula>에서의 캘리브레이션 오차를 예측하라.
+
+<Solution>
+  <Formula>0.74 = 0.6·0.85 + c → c = 0.74 − 0.51 = 0.23</Formula>. 그래서{" "}
+  <Formula>actual(p) ≈ 0.6·p + 0.23</Formula>. <Formula>p = 0.95</Formula>에서:{" "}
+  <Formula>actual ≈ 0.6·0.95 + 0.23 = 0.80</Formula>. 캘리브레이션 오차는{" "}
+  <Formula>0.95 − 0.80 = 0.15</Formula> — <Formula>0.85</Formula>에서보다 크다. 이 동네에서 기울기
+  &lt; 1이라는 사실이 정확히 격차가 신뢰도와 함께 *커진다*는 뜻이기 때문.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="왜 교차 엔트로피 → 과신">
+
+[자신 있게 틀리기](/ko/ml/confident-wrong) 페이지에서: 교차 엔트로피는 <Formula>−log p_정답</Formula>. 이 손실을 최소화하도록 훈련된 모델이 왜 훈련 셋에서 _과신_할 인센티브를 가지는지, 그 인센티브가 왜 보유 데이터의 좋은 캘리브레이션으로 이어지지 않는지를 — 수식 없이 — 말로 스케치하라.
+
+<Solution>
+  <Formula>−log p</Formula>는 <Formula>p</Formula>가 1에 가까울수록 가파르게 떨어진다. 그래서 모델이
+  어떤 훈련 예제에서 대체로 맞기 시작하면, 손실을 더 낮추는 가장 싼 방법은{" "}
+  <Formula>p_정답</Formula>을 0.9 → 0.99 → 0.999로 밀어붙이는 것. 훈련 신호는 *이미 맞히는 예제에서
+  더 강한 자신감*을 보상한다. 보유 데이터에서는 그 자신감을 잡아줄 게 없다 — 모델은 익숙한 입력에서
+  큰 소리로 말하는 법을 배웠고, 그 큰 목소리가 본 적 없는 입력에서도 따라간다. 결과: 막대는 모델이
+  가장 큰 소리로 말하는 곳에서 정확히 대각선 아래로 처진다.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  ML 강의는 softmax, 교차 엔트로피, 정확도를 가르친다. *캘리브레이션*은 거의 가르치지 않는다. 일부는
+  문화 — 리더보드는 정확도를 추적한다 — 이고, 일부는 역사: 고전 학습 이론은 결정 경계 (argmax가
+  정한다) 에 신경 썼지, 모델이 그 과정에서 내놓는 확률에는 관심이 적었다. 하지만 "70% 확신"이라고
+  말하는 모든 출시된 모델은 암묵적으로 캘리브레이션 주장을 하고 있다. Lemma는 softmax 옆에 그
+  다이어그램을 두어, 독자가 *확률처럼 보인다*와 *빈도와 일치한다* 사이의 격차를 — 보유된 정답에 대한
+  별개의 측정으로, 어떤 양의 교차 엔트로피 훈련도 대체할 수 없는 것으로 — 볼 수 있게 한다.
+</WhyNotTaught>

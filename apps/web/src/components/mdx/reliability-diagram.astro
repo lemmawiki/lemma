@@ -1,0 +1,7 @@
+---
+import { ReliabilityDiagram as ReliabilityDiagramReact } from "../widgets/reliability-diagram";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<ReliabilityDiagramReact language={lang} client:load />

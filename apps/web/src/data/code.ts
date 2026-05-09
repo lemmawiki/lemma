@@ -511,6 +511,78 @@ def raw(query, doc):
 [round(raw("the", d), 3)   for d in toks]   # → [2, 1, 0, 1]
 [round(score("the", d), 3) for d in toks]   # → [0.139, 0.104, 0, 0.104]`,
   },
+  modelCalibration: {
+    arc2: `import numpy as np
+
+# Bin predictions; for each bin compute mean predicted prob and observed
+# accuracy. The vertical gaps are the calibration error, by bin.
+def reliability(probs, labels, n_bins=10):
+    edges = np.linspace(0, 1, n_bins + 1)
+    out = []
+    for lo, hi in zip(edges[:-1], edges[1:]):
+        mask = (probs >= lo) & (probs < hi if hi < 1 else probs <= hi)
+        if mask.sum() == 0:
+            out.append((float((lo + hi) / 2), None, 0))
+            continue
+        mean_p   = float(probs[mask].mean())
+        accuracy = float(labels[mask].mean())   # labels ∈ {0, 1}
+        out.append((mean_p, accuracy, int(mask.sum())))
+    return out
+
+# Toy: 1000 examples drawn from a known truth(p), with labels sampled
+# Bernoulli(truth(p)). The model SAYS p; reality returns truth(p).
+rng = np.random.default_rng(0)
+probs = rng.uniform(0, 1, size=1000)
+truth = lambda p, T=0.55: 1 / (1 + np.exp(-np.log(p / (1 - p)) / T))
+labels = rng.binomial(1, truth(probs))
+reliability(probs, labels, n_bins=10)
+# → [(0.05, 0.18, ...), ..., (0.95, 0.78, ...)]
+# At "95% confident", reality returns ~78% — the model is overconfident.`,
+    arc3: `# Expected calibration error (ECE): weighted average of bin gaps.
+def ece(probs, labels, n_bins=10):
+    bins = reliability(probs, labels, n_bins)
+    n = sum(c for _, _, c in bins)
+    return sum(c * abs(p - a) for p, a, c in bins if a is not None) / n
+
+ece(probs, labels, 10)        # ≈ 0.13   (13% calibration gap on average)
+# 0 means perfect — every bar lies on the diagonal. ~0.05 is "lab-grade
+# calibrated"; modern deep nets often start at 0.10–0.30 out of the box.`,
+    arc4: `# Local linearization at one bin: y ≈ accuracy(c) + slope·(p - c).
+# If slope ≈ 1, the curve is parallel to truth — a constant shift, easy to
+# fix. If slope ≠ 1, the gap CHANGES with confidence, which is exactly
+# what one scalar (temperature) can rotate away.
+def local_slope(p_centers, accuracies, i):
+    # central difference; falls back to one-sided at the edges.
+    if i == 0:
+        return (accuracies[1] - accuracies[0]) / (p_centers[1] - p_centers[0])
+    if i == len(p_centers) - 1:
+        return (accuracies[-1] - accuracies[-2]) / (p_centers[-1] - p_centers[-2])
+    return (accuracies[i+1] - accuracies[i-1]) / (p_centers[i+1] - p_centers[i-1])
+
+# At the bin centered at 0.85, the slope tells you the "local fix":
+# slope == 1 means subtract a constant; slope < 1 means stretch toward 0.5.`,
+    arc5: `# Temperature scaling: divide every logit by T before softmax.
+# argmax is preserved (accuracy unchanged); only confidence is rescaled.
+def softmax(z, T=1.0):
+    s = z / T
+    s = s - s.max(axis=-1, keepdims=True)
+    e = np.exp(s)
+    return e / e.sum(axis=-1, keepdims=True)
+
+# Fit T on a held-out validation set by minimizing log-loss in T.
+from scipy.optimize import minimize_scalar
+
+def fit_temperature(logits, y):
+    def nll(T):
+        p = softmax(logits, T=T)
+        # negative log-likelihood of the true class
+        return -np.log(p[np.arange(len(y)), y] + 1e-12).mean()
+    res = minimize_scalar(nll, bounds=(0.05, 10.0), method="bounded")
+    return float(res.x)
+
+# T > 1 → softer; T < 1 → sharper. Modern LLMs ship with T ≈ 1.5–3 to
+# tame overconfidence in the high-probability tail.`,
+  },
   bezout: {
     arc4: `# The disjoint-circles example, hand-eliminated.
 # C1: x² + y² − 1     = 0

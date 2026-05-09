@@ -1,0 +1,21 @@
+---
+import { codeToHtml } from "shiki";
+import Base from "../../layouts/base.astro";
+import ModelCalibrationIsland from "../../views/model-calibration-island.tsx";
+import { pythonCode } from "../../data/code";
+
+const opts = { lang: "python", theme: "vitesse-light" } as const;
+const code = {
+  arc2: await codeToHtml(pythonCode.modelCalibration.arc2, opts),
+  arc3: await codeToHtml(pythonCode.modelCalibration.arc3, opts),
+  arc4: await codeToHtml(pythonCode.modelCalibration.arc4, opts),
+  arc5: await codeToHtml(pythonCode.modelCalibration.arc5, opts),
+};
+---
+
+<Base
+  title="Model Calibration · Lemma"
+  description="A model says '70% confident.' Does that mean it's right seven times out of ten? Reliability diagrams, ECE, and the one-scalar fix — temperature scaling — that rotates the curve back to the diagonal."
+>
+  <ModelCalibrationIsland code={code} client:load />
+</Base>

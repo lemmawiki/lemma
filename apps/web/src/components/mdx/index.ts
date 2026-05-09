@@ -24,6 +24,7 @@ export { default as ShannonBars } from "./shannon-bars.astro";
 export { default as PizzaSlider } from "./pizza-slider.astro";
 export { default as ThreeDoors } from "./three-doors.astro";
 export { default as ConicIntersect } from "./conic-intersect.astro";
+export { default as ReliabilityDiagram } from "./reliability-diagram.astro";
 export { default as ControlPoints } from "./control-points.astro";
 export { default as DoublingLadder } from "./doubling-ladder.astro";
 export { default as Launch } from "./launch.astro";

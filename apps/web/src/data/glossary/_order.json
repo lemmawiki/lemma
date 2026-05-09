@@ -79,5 +79,8 @@
   "document-frequency",
   "cosine-similarity",
   "bag-of-words",
-  "bm25"
+  "bm25",
+  "calibration",
+  "reliability-diagram",
+  "temperature-scaling"
 ]
