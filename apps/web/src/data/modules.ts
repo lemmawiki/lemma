@@ -59,6 +59,16 @@ export const modules: ModuleMeta[] = [
       ko: "두 차수 d, e 곡선은 정확히 d·e 점에서 만난다 — 평면이 세 번 보정된 뒤. 현·접선 작도는 타원곡선 산술을, 그 다음은 비트코인 서명을 받친다.",
     },
   },
+  {
+    id: "entropy",
+    href: "/modules/entropy",
+    status: "available",
+    title: { en: "Entropy", ko: "엔트로피" },
+    hook: {
+      en: "20 questions to find any one of N items needs log₂ N when items are equally likely. Entropy is the generalization — the expected number of yes/no questions when they aren't. The bound everything from Wordle to Huffman to password strength bumps against.",
+      ko: "20 questions으로 N개 중 하나를 찾는 데 항목이 모두 같은 확률이면 log₂ N번. 엔트로피는 그 일반화 — 확률이 같지 않을 때의 기대 질문 수. Wordle부터 Huffman 압축, 비밀번호 강도까지 모두 부딪히는 한계.",
+    },
+  },
 ];
 
 export const moduleByHref: Record<string, ModuleMeta> = Object.fromEntries(

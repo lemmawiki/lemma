@@ -1,0 +1,11 @@
+---
+import Base from "../../layouts/base.astro";
+import EntropyIsland from "../../views/entropy-island.tsx";
+---
+
+<Base
+  title="Entropy · Lemma"
+  description="The expected number of yes/no questions to identify an outcome. log₂ N when uniform, less when not."
+>
+  <EntropyIsland client:load />
+</Base>
