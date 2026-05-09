@@ -7,6 +7,10 @@ import tailwindcss from "@tailwindcss/vite";
 // https://astro.build/config
 export default defineConfig({
   site: "https://lemma.wiki",
+  // Inline all stylesheets into the HTML head. 50% of the SEED work — a built
+  // page's CSS no longer requires a separate fetch. The other 50% (script
+  // inlining) is handled by scripts/build-seeds.mjs after the build.
+  build: { inlineStylesheets: "always" },
   i18n: {
     defaultLocale: "en",
     locales: ["en", "ko"],

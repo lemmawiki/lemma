@@ -12,7 +12,8 @@
     "validate:pages": "node scripts/validate-pages.mjs",
     "validate:links": "node scripts/validate-links.mjs",
     "audit:backlinks": "node scripts/audit-backlinks.mjs",
-    "build:brand": "node scripts/build-brand.mjs"
+    "build:brand": "node scripts/build-brand.mjs",
+    "build:seeds": "node scripts/build-seeds.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
