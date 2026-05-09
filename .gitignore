@@ -11,7 +11,6 @@ dist/
 # editors / OS
 .DS_Store
 .idea/
-.vscode/
 *.swp
 
 # env / secrets
