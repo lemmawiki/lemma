@@ -64,7 +64,7 @@ export const applications: ApplicationMeta[] = [
     id: "terminal-velocity",
     href: "/physics/terminal-velocity",
     pillar: "physics",
-    modules: ["derivatives", "vectors"],
+    modules: ["derivatives", "integration", "vectors"],
     status: "available",
     title: {
       en: "Why Falling Stops Speeding Up",

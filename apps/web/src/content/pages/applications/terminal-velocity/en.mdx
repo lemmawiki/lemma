@@ -98,6 +98,8 @@ Why exponential? Take the derivative of the error <Formula>ε(t) = v_t − v(t)<
 
 <CodeBlock slug="terminalVelocity" arc="arc5" />
 
+Terminal velocity tells you *how fast* the object eventually falls. The next obvious question is *how far has it fallen by time t?* — and that's an [integration](/en/modules/integration) question. Once <Formula>v(t)</Formula> is known, distance is *accumulated velocity*: <Formula>{"y(t) = ∫_0^t v(s) ds"}</Formula>. The area under the velocity curve, from 0 to <Formula>t</Formula>, is the distance fallen by then. Plug in <Formula>v(s) = v_t · (1 − e^(−k s))</Formula> and the integral is closed-form: <Formula>{"y(t) = v_t · t − (v_t/k)(1 − e^(−kt))"}</Formula>. Two regimes are readable from this: for small <Formula>t</Formula>, the curve sits below the line <Formula>v_t · t</Formula> (you haven't been falling at terminal speed for the whole interval); for large <Formula>t</Formula>, the gap stops growing and <Formula>y(t)</Formula> is essentially <Formula>v_t · t − v_t/k</Formula> — terminal speed times time, minus a constant offset that records "the time you spent accelerating up to terminal."
+
 <Counterexample>
   Real raindrops obey <em>quadratic</em> drag, not linear. <Formula>F_drag = ½ ρ C_d A v²</Formula>:
   the force grows with the *square* of speed, not its first power. The terminal-velocity logic
@@ -179,6 +181,26 @@ A student watches a raindrop fall at terminal velocity and concludes: "since the
   individual forces. *Equilibrium means cancellation, not disappearance.* The same misreading
   pops up everywhere: a hovering helicopter still has gravity acting on it; a sitting book still
   has gravity acting on it; in both cases another force exactly opposes it.
+</Solution>
+
+</Exercise>
+
+<Exercise number={5} tag="distance is area under v(t)">
+
+Two intervals of equal length, both <Formula>1 s</Formula>: one early in the fall (<Formula>t = 0</Formula> to <Formula>1</Formula>) and one late (<Formula>t = 10</Formula> to <Formula>11</Formula>, by which point <Formula>v(t)</Formula> is essentially <Formula>v_t</Formula>). Use <Formula>k = 0.4</Formula>, <Formula>v_t = 24.5 m/s</Formula>. Compute the distance fallen during each interval. Why does the late interval cover more ground despite being the same time?
+
+<Solution>
+  Distance during <Formula>[t_1, t_2]</Formula> is{" "}
+  <Formula>{"∫_{t_1}^{t_2} v(s) ds"}</Formula> — the area under <Formula>v(t)</Formula> over that
+  window. Early interval (<Formula>0</Formula> to <Formula>1</Formula>):{" "}
+  <Formula>v</Formula> ramps from <Formula>0</Formula> to <Formula>v_t (1 − e^(−0.4))</Formula>{" "}
+  ≈ <Formula>8.1 m/s</Formula>; the area is roughly the triangle/curve under that ramp,{" "}
+  <Formula>{"≈ ∫_0^1 v_t(1−e^(−0.4s)) ds ≈ 4 m"}</Formula>. Late interval (<Formula>10</Formula> to{" "}
+  <Formula>11</Formula>): <Formula>v ≈ v_t = 24.5 m/s</Formula> throughout, so the area is just{" "}
+  <Formula>v_t · 1 s ≈ 24.5 m</Formula>. *Same time, six times more distance.* The fall accelerates
+  early then plateaus; integration turns "speed at this moment" into "ground covered so far," and
+  the early interval's smaller area is exactly the offset <Formula>v_t/k</Formula> in the closed
+  form for <Formula>y(t)</Formula>.
 </Solution>
 
 </Exercise>
