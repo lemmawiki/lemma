@@ -106,9 +106,24 @@ import Formula from "@/components/page/formula.astro";
 
 </ArcRow>
 
-<ArcRow n={5} title="다시 응용으로">
+<ArcRow n={5} title="이게 어디에 나타나나 — 같은 항등식, 두 필러">
 
-이 모듈은 [비트코인 피자](/ko/finance/bitcoin-pizza)에서 쓰인다. 거기서는 <Formula>10⁹ · 2.89²⁰</Formula>을 손으로 계산하라고 한다. 양변에 <Formula>log₁₀</Formula>을 씌우기 전에는 불가능하지만, 씌우는 순간 <Formula>9 + 20·log₁₀(2.89)</Formula> — 사람이 다룰 수 있는 두 수의 덧셈이 된다. 그 손계산이 가능한 건 § 1의 항등식 덕분이다. 네이피어의 트릭과 같고, <Term id="log-softmax"><Formula>log_softmax</Formula></Term>의 트릭과 같다. 시대도 판돈도 다르지만, 메커니즘은 동일하다.
+**로그는 곱셈이 덧셈의 질문에 답하게 만드는 도구다.** 무언가가 곱으로 쌓이는 모든 분야 — 그런 분야가 많다 — 가 결국 "몇 번?", "얼마나 큰?", "얼마나 확신?"을 *덧셈* 형태로 묻게 된다. 로그가 그 다리.
+
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`finance : 이율은 곱으로 합쳐진다 — 로그가 그것을 더하기로 만든다
+          (목표까지 햇수, CAGR, 연속 복리).
+ml      : 독립적인 가능도는 곱으로 합쳐진다 — 로그가 그것을 더하기로
+          만들고, *음의* 로그가 그것을 손실로 만든다.`}</pre>
+
+다섯 살아있는 소비자, 모두 § 1의 한 항등식에 기댄다 —
+
+- [**비트코인 피자**](/ko/finance/bitcoin-pizza)는 복리 성장의 역연산 — <Formula>F = P(1+r)^t</Formula>는 로그를 씌우지 않으면 `t`에 대해 풀 수 없다. <Formula>t = log(F/P) / log(1+r)</Formula>. CAGR은 같은 항등식을 `r`에 대해 푼 것. *세 미지수, 한 식, 세 가지 로그-모양 답.*
+- [**현재가치**](/ko/finance/present-value)는 이산 복리 <Formula>(1 + r/n)^(n·t)</Formula>에서 연속 형식 <Formula>e^(rt)</Formula>로의 다리를 놓는다 — 이산 식의 로그를 씌우면 극한에서 <Formula>r·t</Formula>로 무너진다. *연속 복리는 별개의 연산이 아니라, 이산 연산을 로그를 통해 본 것.*
+- [**자신 있게 틀리기**](/ko/ml/confident-wrong)는 손실 <Formula>−log p_정답</Formula>를 만든다. 여러 훈련 예제의 가능도는 *곱한다* — 로그가 그 곱을 합으로 만들고, 음의 부호가 "더 자신만만한 오답일수록 더 큰 손실"로 만든다.
+- [**TF-IDF**](/ko/ml/tf-idf)는 희귀성을 *비트*로 잰다 — <Formula>idf(t) = log(N / df(t))</Formula>. 로그가 "세 배 더 드물다"를 "1 비트 더 놀라운"으로 바꿔준다. 다른 비트-단위 양 (비밀번호 강도, 영문자 엔트로피) 과 직접 비교 가능.
+- [**모델 캘리브레이션**](/ko/ml/model-calibration)은 보유 검증 셋의 로그 손실을 최소화해 온도 `T`를 맞춘다. 로짓 함수 <Formula>log(p/(1−p))</Formula>는 캘리브레이션 곡선을 처음부터 선형화하는 기저 변환. *한 작업 흐름 안에 로그가 두 가지로 등장.*
+
+다섯 문제, 두 필러, 한 항등식 — × → + 의 치환. § 3 네이피어의 계산자가 오늘 `log_softmax`와 캘리브레이션 옵티마이저 안에서 같은 기계로 돌고 있다.
 
 </ArcRow>
 
@@ -213,6 +228,9 @@ import Formula from "@/components/page/formula.astro";
 </Exercises>
 
 <PageFooter>
-  모듈: **로그**. 쓰이는 곳: [비트코인 피자](/ko/finance/bitcoin-pizza). 이 모듈 위에 올라설 다음
-  모듈들: 로그우도와 교차 엔트로피, 데시벨, 반감기, 정보·엔트로피.
+  모듈: **로그**. 벡터 다음으로 가장 많이 공유되는 모듈 — 두 필러의 다섯 응용에서 소비된다 — 금융
+  ([비트코인 피자](/ko/finance/bitcoin-pizza), [현재가치](/ko/finance/present-value)) 와 ML
+  ([자신 있게 틀리기](/ko/ml/confident-wrong), [TF-IDF](/ko/ml/tf-idf),
+  [모델 캘리브레이션](/ko/ml/model-calibration)). [엔트로피 모듈](/ko/modules/entropy)이 직접 그 위에
+  서 있다 — 비트, 놀람도, 섀넌 한계 모두 확률의 로그. *한 항등식 (× → +), 다섯 자리, 두 필러.*
 </PageFooter>

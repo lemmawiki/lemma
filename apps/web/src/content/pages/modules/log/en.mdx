@@ -94,9 +94,24 @@ A <Term id="float32"><Formula>float32</Formula></Term> can hold numbers down to 
 
 </ArcRow>
 
-<ArcRow n={5} title="Back to the application">
+<ArcRow n={5} title="Where this shows up — same identity, two pillars">
 
-This module is _consumed_ by [the Bitcoin Pizza](/en/finance/bitcoin-pizza). There you're asked to compute <Formula>10⁹ · 2.89²⁰</Formula> by hand. You can't, until you take <Formula>log₁₀</Formula> of both sides — and then you're adding <Formula>9 + 20·log₁₀(2.89)</Formula>, two numbers a human can manage. That hand-computation is only possible because of the identity in § 1. Same trick as Napier's, same trick as <Term id="log-softmax"><Formula>log_softmax</Formula></Term>. Different decade, different stakes, identical mechanism.
+**Log is what makes multiplication answer addition's questions.** Every field that compounds things multiplicatively — and many do — eventually needs to ask "how many?" or "how big?" or "how confident?" in a form that adds. Log is the bridge.
+
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`finance : rates compose multiplicatively;
+          log makes them add (years to target, CAGR, continuous compounding).
+ml      : independent likelihoods multiply;
+          log makes them add — and *negative* log makes them a loss.`}</pre>
+
+Five live consumers, all leaning on the single identity from arc 1:
+
+- [**Bitcoin pizza**](/en/finance/bitcoin-pizza) inverts compound growth: <Formula>F = P(1+r)^t</Formula> can't be solved for `t` without taking logs. <Formula>t = log(F/P) / log(1+r)</Formula>. CAGR is the same identity solved for `r` instead. *Three unknowns, one equation, three log-shaped answers.*
+- [**Present value**](/en/finance/present-value) bridges from discrete compounding <Formula>(1 + r/n)^(n·t)</Formula> to the continuous form <Formula>e^(rt)</Formula>: take the log of the discrete expression, watch it reduce to <Formula>r·t</Formula> in the limit. *Continuous compounding isn't a separate operation — it's the discrete one looked at through log.*
+- [**Confidently wrong**](/en/ml/confident-wrong) builds the loss <Formula>−log p_true</Formula>. Multiple training examples have likelihoods that *multiply*; logs turn that product into a sum, and the negative sign makes "more confident, more wrong" climb instead of vanish.
+- [**TF-IDF**](/en/ml/tf-idf) measures rarity in *bits*: <Formula>idf(t) = log(N / df(t))</Formula>. The logarithm is what makes 'three times rarer' into 'one bit more surprising' — directly comparable to other bit-measured quantities like password strength and English-letter entropy.
+- [**Model calibration**](/en/ml/model-calibration) fits temperature `T` by minimizing log-loss on held-out validation; the logit function <Formula>log(p/(1−p))</Formula> is the basis change that linearizes the calibration curve in the first place. *Two different log uses inside one workflow.*
+
+Five problems across two pillars, one identity: the swap from × into +. Napier's slide rule from arc 3 is the same machine running today inside `log_softmax` and the calibration optimizer.
 
 </ArcRow>
 
@@ -201,6 +216,11 @@ A junior says: "<Term id="log-softmax"><Formula>log_softmax</Formula></Term> is 
 </Exercises>
 
 <PageFooter>
-  module: **The Logarithm**. Consumed by [Bitcoin Pizza](/en/finance/bitcoin-pizza). Future modules
-  build on this one: log-likelihood + cross-entropy, decibels, half-life, information / entropy.
+  module: **The Logarithm**. The most-shared module after vectors — consumed across two pillars by
+  five applications: finance ([bitcoin pizza](/en/finance/bitcoin-pizza),
+  [present value](/en/finance/present-value)) and ML
+  ([confidently wrong](/en/ml/confident-wrong), [TF-IDF](/en/ml/tf-idf),
+  [model calibration](/en/ml/model-calibration)). The [entropy module](/en/modules/entropy)
+  builds directly on top — its bits, surprise, and Shannon bound are all logs of probabilities.
+  *One identity (× → +), five places, two fields.*
 </PageFooter>
