@@ -1,0 +1,188 @@
+---
+title: What Is Future Money Worth Today? · Lemma
+description: A future dollar is not a present dollar. Discounting and integration price every cash-flow stream — from rent to bonds to perpetuities — through one identity.
+breadcrumb:
+  current: finance · what is future money worth today?
+---
+
+import {
+  CodeBlock,
+  Term,
+  Exercise,
+  Solution,
+  Counterexample,
+  WhyNotTaught,
+  PresentValueLab,
+} from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · time is money, literally">
+
+# How do you put a price on a stream of money over time?
+
+Someone offers you `$100` a year for ten years. Someone else offers `$1,000` right now. **Which is worth more?** The naïve answer ("they're both `$1,000`!") is wrong, because of one observation: `$100` a year from now is *less* than `$100` today — you could have invested today's dollar and held more by next year. Reversing that move — *discounting* — turns a future amount into its present-day equivalent. Then you add up all the discounted amounts. *Integration adds money across time. Discounting makes future money smaller before adding it.*
+
+<Lede>**Future money has to be discounted before it can be added.**</Lede>
+
+</Hook>
+
+<PresentValueLab />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="A future dollar is not a present dollar">
+
+If today's dollar can be invested at rate `r` and grow to <Formula>1 + r</Formula> in one year (or to <Formula>e^r</Formula> with continuous compounding from the [logarithm module](/en/modules/log)), then `$1` *next year* is equivalent to <Formula>1/(1 + r)</Formula> *today*. That's the simplest possible <Term id="present-value">present value</Term> calculation. Two payments make the same logic compound: `$1` *two years* from now is <Formula>1/(1 + r)²</Formula> today; `$1` *t years* from now is <Formula>1/(1 + r)^t</Formula> today.
+
+The factor <Formula>1/(1 + r)^t</Formula> — or its continuous cousin <Formula>e^(−rt)</Formula> — is the <Term id="discount-factor">discount factor</Term>. It shrinks with `t` (more time, more discount) and shrinks faster as `r` grows (higher interest, more aggressive discount). The whole module is one product and one sum: *future cash × discount factor, summed across all the future moments money arrives.*
+
+</ArcRow>
+
+<ArcRow n={2} title="A discrete stream — coupons, salaries, rent">
+
+Real <Term id="cash-flow">cash flows</Term> arrive in discrete pieces. A bond pays `$100` every year for `N` years. A salary pays every two weeks. Rent every month. For each piece, compute its present value separately, then add them all up:
+
+<Formula>{"PV = Σ_{i=1}^N  C_i / (1 + r)^(t_i)"}</Formula>
+
+For a constant `C` paid annually for `N` years at rate `r`, the geometric sum has a closed form: <Formula>{"PV = C · (1 − (1+r)^(−N)) / r"}</Formula> — but the *concept* is just "discount each one, add them all up." A spreadsheet does this naturally; the formula is for paper.
+
+The widget shows a `$1/year` stream. At `r = 5%`, the first ten years contribute about `$7.72` of PV; the next ten add about `$4.74` more (much less); past 30 years, additional payments contribute almost nothing. *Distant money discounts away* — a fact that matters when valuing very long streams (mortgages, pensions, perpetuities, eternity).
+
+<CodeBlock slug="presentValue" arc="arc2" />
+
+</ArcRow>
+
+<ArcRow n={3} title="Continuous compounding — the exponential takes over">
+
+When payments arrive faster — monthly, daily, every second — the discrete sum becomes a continuous integral, and the discount factor <Formula>1/(1+r)^t</Formula> smooths into <Formula>e^(−rt)</Formula>. Why an exponential? Take the log of <Formula>(1 + r/n)^(n·t)</Formula> as compounding frequency `n` grows: <Formula>n·t · log(1 + r/n) → r·t</Formula>, so <Formula>(1 + r/n)^(n·t) → e^(r·t)</Formula>. *The [logarithm module's](/en/modules/log) identity surfaces here directly* — continuous growth and continuous discount are inverses of one another, and both live in the exponential.
+
+The continuous discount factor <Formula>e^(−rt)</Formula> matches the discrete factor at large `n`, but it's *easier* to integrate than to sum, because of the closed form for exponential antiderivatives ([from the integration module](/en/modules/integration)). For pricing real instruments — bonds, dividends, mortgages — both versions are used; the choice depends on whether your payments arrive in lumps or smoothly.
+
+<CodeBlock slug="presentValue" arc="arc3" />
+
+</ArcRow>
+
+<ArcRow n={4} title="A continuous cash flow — the integral takes over">
+
+A *cash flow rate* <Formula>c(t)</Formula> says: in a tiny time slice <Formula>dt</Formula> at time <Formula>t</Formula>, you receive <Formula>c(t) · dt</Formula> dollars. The undiscounted total over `[0, T]` is the [integral](/en/modules/integration) <Formula>{"∫_0^T c(t) dt"}</Formula>. To get *present* value, discount each tiny slice as it arrives, then add (integrate) — the future money has to be made smaller *before* it can be summed:
+
+<Formula>{"PV = ∫_0^T c(t) · e^(−rt) dt"}</Formula>
+
+For the simplest case — constant cash flow rate `c` over `[0, T]`, constant rate `r` — the integral is closed-form: <Formula>{"PV = (c/r) · (1 − e^(−rT))"}</Formula>. The widget shades this area on its plot; drag <Formula>r</Formula> and <Formula>T</Formula> and watch the answer move. Two limits matter. <Formula>r → 0</Formula>: no discount, <Formula>PV → c · T</Formula> (just the undiscounted total). <Formula>T → ∞</Formula>: a *perpetuity*, <Formula>PV → c / r</Formula> — the famous formula every finance textbook starts with.
+
+<CodeBlock slug="presentValue" arc="arc4" />
+
+</ArcRow>
+
+<ArcRow n={5} title="The 5/r rule — distant money barely matters">
+
+The closed form <Formula>{"(c/r)(1 − e^(−rT))"}</Formula> hides one of finance's most useful rules of thumb. The factor <Formula>1 − e^(−rT)</Formula> reaches `99%` of its perpetuity limit at <Formula>r·T = ln(100) ≈ 4.6</Formula>, or roughly <Formula>T ≈ 5/r</Formula>. So at `r = 10%`, the perpetuity limit is essentially reached after `50 years`; at `r = 5%`, it takes `100 years`; at `r = 2%`, it takes `250 years`. *Once you are past `5/r`, extending the horizon barely adds anything.*
+
+This is why infinite-life valuations (perpetuities, real estate, sovereign debt) and very-long-life valuations (insurance reserves, climate damage, multi-generation projects) are *not that different at typical discount rates*. The future just isn't worth that much in present-value terms. The whole intergenerational-economics debate is about whether `r` itself should differ across generations — because the answer to "what does a benefit `200 years` from now cost us today?" is almost entirely a choice of `r`, not a choice of `c`.
+
+<Counterexample>
+  Same total cash, very different present value. Consider three streams, each totaling{" "}
+  <Formula>$120,000</Formula>: (a) <Formula>$1,000</Formula> every month for 10 years; (b)
+  <Formula>$120,000</Formula> all at once at year 10; (c) <Formula>$120,000</Formula> all at once
+  today. At <Formula>r = 5%</Formula>: PV of (c) is <Formula>$120,000</Formula>, PV of (a) is{" "}
+  <Formula>$94,281</Formula>, PV of (b) is <Formula>$72,786</Formula>. *Same nominal total, three
+  different prices.* Timing matters as much as magnitude — and the discount rate amplifies the
+  difference. Lottery winners "winning <Formula>$10M</Formula>" are usually quoted the
+  *undiscounted* sum across 20-30 years; the lump-sum option is always smaller, and that's not
+  the lottery cheating — it's the present-value calculation honest.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **Integration adds money across time. Discounting makes future money smaller before adding it.**
+  Future cash <Formula>c(t)</Formula> times the discount factor <Formula>e^(−rt)</Formula>,
+  integrated from now to the horizon, is what every cash-flow stream is worth today. From bond
+  prices to mortgage amortization to perpetuities — same identity, different `c(t)`.
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="$100 in one year" noCalculator>
+
+The discount rate is <Formula>r = 5%</Formula>. What is the present value of <Formula>$100</Formula> received exactly one year from now? Use the discrete formula <Formula>PV = C / (1 + r)^t</Formula>.
+
+<Solution>
+  <Formula>PV = 100 / 1.05 ≈ $95.24</Formula>. The other <Formula>~$4.76</Formula> is what
+  today's <Formula>$95.24</Formula> would have grown into by next year if invested at 5%. *Two
+  ways of getting to the same future amount; today's PV is the smaller of the two by exactly
+  one year of interest.*
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="why bigger r = smaller distant value">
+
+A future <Formula>$100</Formula> arrives in 10 years. Compute the present value at <Formula>r = 2%</Formula>, <Formula>r = 5%</Formula>, and <Formula>r = 10%</Formula>. Why does the same future amount become so much smaller as `r` grows?
+
+<Solution>
+  Discrete formula <Formula>{"PV = 100 / (1+r)^10"}</Formula>:{" "}
+  <Formula>r = 2%</Formula> → <Formula>$82.03</Formula>; <Formula>r = 5%</Formula> →{" "}
+  <Formula>$61.39</Formula>; <Formula>r = 10%</Formula> → <Formula>$38.55</Formula>. *Higher r
+  means today's dollar grows faster, so a fixed future dollar is matched by a smaller present
+  dollar.* The same identity, run forward, says: at higher `r`, today's `$38.55` invested at 10%
+  grows to `$100` in 10 years — exactly because <Formula>{"38.55 · 1.1^10 ≈ 100"}</Formula>.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="constant cash flow as area" noCalculator>
+
+A friend will pay you <Formula>$1,000</Formula> per year, continuously, for 10 years. The discount rate is <Formula>r = 5%</Formula>. Without computing the integral exactly, sketch the discounted cash-flow curve <Formula>1000 · e^(−0.05·t)</Formula> over `[0, 10]` and use the *area* under that curve as your PV. (The widget at <Formula>c = $1/yr</Formula> says the area is `$7.87`; scale up.)
+
+<Solution>
+  The widget at <Formula>r = 5%, T = 10</Formula> shows <Formula>PV ≈ $7.87</Formula> for{" "}
+  <Formula>c = $1/yr</Formula>. Scaling up by <Formula>1,000×</Formula>:{" "}
+  <Formula>PV ≈ $7,870</Formula>. The undiscounted total is <Formula>$10,000</Formula>; the
+  discount eats the other <Formula>$2,130</Formula>. The discounted curve is roughly a triangular
+  region — flat at <Formula>1000</Formula> at <Formula>t=0</Formula>, falling toward{" "}
+  <Formula>1000 · e^(−0.5) ≈ 607</Formula> at <Formula>t = 10</Formula>. The closed form{" "}
+  <Formula>{"(c/r)(1 − e^(−rT)) = (1000/0.05)(1 − e^(−0.5)) ≈ 20000 · 0.3935 ≈ $7,869"}</Formula>{" "}
+  matches.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="the evil one · same total, same value?">
+
+Two offers, same nominal total of <Formula>$10,000</Formula>: (a) <Formula>$1,000</Formula> per year for 10 years; (b) <Formula>$10,000</Formula> all at once at year 10. At <Formula>r = 5%</Formula>, which has the higher present value? *Predict before computing.* Then compute both and explain.
+
+<Solution>
+  Use the discrete annual formula. (a) <Formula>{"PV_a = Σ_{i=1}^{10} 1000/(1.05)^i ≈ $7,722"}</Formula>.
+  (b) <Formula>{"PV_b = 10000/(1.05)^{10} ≈ $6,139"}</Formula>. (a) wins by almost{" "}
+  <Formula>$1,600</Formula>. *Earlier money is more valuable than later money, even when the
+  totals are equal,* because the early payments compound for fewer years and discount less. This
+  is also why 'pay-as-you-go' contracts beat 'lump sum at the end' contracts on the receiver's
+  side, and why issuers structure debt with sinking funds (early payments) — both sides are
+  watching the same arithmetic.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  Finance courses introduce present value as a list of memorizable formulas — annuities,
+  perpetuities, bond prices, mortgage payments — usually before the student has integrated
+  anything. Calculus courses introduce integration as area under curves, usually before the
+  student has discounted anything. *They are the same arithmetic.* Lemma puts the integral{" "}
+  <Formula>{"∫_0^T c(t) e^(−rt) dt"}</Formula> next to the discrete sum so the reader can see
+  what the textbook formulas are: special cases of one identity. The annuity formula is *constant
+  c, finite T, discrete*; the perpetuity formula is *constant c, T → ∞, continuous*; bond pricing
+  is *step-function c at coupon dates, finite T*. None of these need their own theorem — they
+  need the same identity with a different `c(t)`.
+</WhyNotTaught>

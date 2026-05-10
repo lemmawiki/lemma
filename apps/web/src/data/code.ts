@@ -511,6 +511,50 @@ def raw(query, doc):
 [round(raw("the", d), 3)   for d in toks]   # → [2, 1, 0, 1]
 [round(score("the", d), 3) for d in toks]   # → [0.139, 0.104, 0, 0.104]`,
   },
+  presentValue: {
+    arc2: `import math
+
+# Discrete: pay $C every year for N years, discount at rate r per year.
+# PV = sum_{i=1..N} C / (1 + r)^i
+def pv_discrete(C, r, N):
+    return sum(C / (1 + r)**i for i in range(1, N + 1))
+
+# At r = 5%, $1/year for 10 years is worth less than $10 today.
+[pv_discrete(1, 0.05, N) for N in (1, 5, 10, 20)]
+# → [0.95, 4.33, 7.72, 12.46]
+# Past 20 years, additional payments contribute almost nothing — distant
+# money discounts away, no matter the cash flow's nominal size.`,
+    arc3: `# Continuous version: discount factor is e^(-r*t), which is what
+# 'continuous compounding' gives in the limit of (1 + r/n)^(n*t) as n → ∞.
+# Why exponential? log of (1 + r/n)^(n*t) = n*t * log(1 + r/n) → r*t,
+# so (1 + r/n)^(n*t) → e^(r*t). The log module's identity surfaces here
+# directly: continuous discount = inverse of continuous growth.
+
+def discount_continuous(t, r):
+    return math.exp(-r * t)
+
+[(t, round(discount_continuous(t, 0.05), 4)) for t in (0, 1, 5, 10, 30)]
+# → [(0, 1.0), (1, 0.9512), (5, 0.7788), (10, 0.6065), (30, 0.2231)]
+# 30 years out at 5% — a future dollar is worth ~22 cents today.`,
+    arc4: `# Continuous cash flow at rate c (dollars/year) over [0, T]:
+# PV = ∫_0^T c · e^(-r*t) dt = (c/r) * (1 - e^(-r*T))
+# For r → 0, the limit is c*T (no discount). For T → ∞, the limit is
+# c/r — the perpetuity formula. Both are readable from the closed form.
+def pv_continuous(c, r, T):
+    if abs(r) < 1e-9:
+        return c * T
+    return (c / r) * (1 - math.exp(-r * T))
+
+# Compare a $1/year stream's PV under different (r, T):
+[(r, T, round(pv_continuous(1, r, T), 2))
+ for r in (0.02, 0.05, 0.10) for T in (10, 30, 100)]
+# → [(0.02, 10, 9.06),  (0.02, 30, 22.55),  (0.02, 100, 43.23),
+#    (0.05, 10, 7.87),  (0.05, 30, 15.54),  (0.05, 100, 19.87),
+#    (0.10, 10, 6.32),  (0.10, 30, 9.50),   (0.10, 100, 9.99)]
+# At 10% the perpetuity limit is c/r = 10. At 100 years we're already
+# at $9.99 — basically the limit. *5/r is roughly when extending
+# matters less than the next decimal place.*`,
+  },
   integration: {
     arc2: `# Riemann sum — turn 'area under the curve' into a finite computation.
 # Chop [a, b] into N strips, evaluate f once per strip, multiply by Δx,

@@ -31,6 +31,21 @@ export const PILLAR_LABEL: Record<Pillar, Record<Locale, string>> = {
 
 export const applications: ApplicationMeta[] = [
   {
+    id: "present-value",
+    href: "/finance/present-value",
+    pillar: "finance",
+    modules: ["log", "integration"],
+    status: "available",
+    title: {
+      en: "What Is Future Money Worth Today?",
+      ko: "미래의 돈은 오늘 얼마일까?",
+    },
+    hook: {
+      en: "A future dollar is not a present dollar. Discounting and integration price every cash-flow stream — from rent to bonds to perpetuities — through one identity: future cash times the discount factor, summed across time.",
+      ko: "미래의 1달러는 오늘의 1달러가 아니다. 할인과 적분이 모든 현금흐름 — 월세부터 채권, 영구채까지 — 을 한 항등식으로 가격 책정한다. 미래 현금 곱하기 할인계수, 시간에 걸쳐 합산.",
+    },
+  },
+  {
     id: "bitcoin-pizza",
     href: "/finance/bitcoin-pizza",
     pillar: "finance",

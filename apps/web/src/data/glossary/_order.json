@@ -98,5 +98,8 @@
   "definite-integral",
   "riemann-sum",
   "antiderivative",
-  "fundamental-theorem-of-calculus"
+  "fundamental-theorem-of-calculus",
+  "present-value",
+  "discount-factor",
+  "cash-flow"
 ]

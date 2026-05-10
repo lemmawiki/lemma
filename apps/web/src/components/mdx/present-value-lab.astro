@@ -1,0 +1,7 @@
+---
+import { PresentValueLab as PresentValueLabReact } from "../widgets/present-value-lab";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<PresentValueLabReact language={lang} client:load />
