@@ -1,0 +1,11 @@
+---
+import { Proof as ProofReact } from "../widgets/proof";
+
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<ProofReact id={id} language={lang} client:load />

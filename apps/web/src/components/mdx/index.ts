@@ -23,6 +23,7 @@ export { default as Dialect } from "./dialect.astro";
 export { default as ListenButton } from "./listen-button.astro";
 export { default as History } from "./history.astro";
 export { default as Check } from "./check.astro";
+export { default as Proof } from "./proof.astro";
 
 // Widgets
 export { default as ShannonBars } from "./shannon-bars.astro";

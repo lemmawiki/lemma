@@ -8,7 +8,7 @@ breadcrumb:
 ---
 
 import {
-  CodeBlock, Term, Exercise, Solution, VectorRoles } from "@/components/mdx";
+  CodeBlock, Term, Exercise, Solution, Proof, VectorRoles } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -84,6 +84,8 @@ Vector arithmetic has only two operations: add two vectors, scale one by a numbe
 - **Decomposition into bases.** Any vector in a 2D plane is <Formula>v_x · x̂ + v_y · ŷ</Formula>. Choose a different basis and the components change without changing the vector — exactly the situation arc 6 of the projectile-motion page hints at when it discusses the independence of horizontal and vertical motion.
 
 The promise: any quantity that admits component-wise addition and scalar scaling can use this entire toolkit. Numbers, points, colors, sounds, function spaces, neural-network parameters — all of them count. The tuple's silence on role is what lets the toolkit travel.
+
+<Proof id="smul-add" />
 
 </ArcRow>
 

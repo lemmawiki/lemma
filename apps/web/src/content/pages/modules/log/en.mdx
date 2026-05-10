@@ -8,7 +8,7 @@ breadcrumb:
 ---
 
 import {
-  CodeBlock, Term, Exercise, Solution, ToolSpec, History, DoublingLadder, TwoStacks } from "@/components/mdx";
+  CodeBlock, Term, Exercise, Solution, ToolSpec, History, Proof, DoublingLadder, TwoStacks } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -61,6 +61,8 @@ The answer is 10. That 10 is <Formula>log₂(1,024)</Formula>. **Log is the inve
 Log is defined by one rule: <Formula>log(a·b) = log(a) + log(b)</Formula>. Pick any base. The rule is the same. (Context picks the base by convention: <Formula>log</Formula> means <Term id="common-log">log₁₀</Term> in engineering, <Term id="natural-log">ln</Term> in ML and statistics, <Formula>log₂</Formula> in algorithms — read by domain when the subscript is omitted.) Every other property falls out of that line. <Formula>log(a/b) = log(a) − log(b)</Formula>: take the rule, replace b with 1/b, done. <Formula>log(aⁿ) = n·log(a)</Formula>: apply the rule n times to <Formula>a · a · … · a</Formula>. <Formula>log(1) = 0</Formula>: from <Formula>log(1·a) = log(1) + log(a)</Formula>. There is no fourth rule because there is no fourth way to combine multiplications. Practically: the <Term id="logarithm">log</Term> of a number tells you _how many factors of the base it is built from_. <Formula>log₁₀(1000) = 3</Formula> because 1000 is three tens, multiplied. Counting factors. That's it.
 
 <CodeBlock slug="logarithm" arc="arc1" />
+
+<Proof id="log-mul" />
 
 </ArcRow>
 

@@ -8,7 +8,7 @@ breadcrumb:
 ---
 
 import {
-  CodeBlock, Term, Exercise, Solution, ToolSpec, SecantToTangent } from "@/components/mdx";
+  CodeBlock, Term, Exercise, Solution, ToolSpec, Proof, SecantToTangent } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -83,6 +83,8 @@ As <Formula>h → 0</Formula>, the expression converges to <Formula>4</Formula>.
 The recipe — pick two points, compute the secant slope, shrink the interval, take the limit — gives the same kind of number whatever you plug in. If <Formula>f</Formula> is a position-vs-time function, the derivative is <Term id="velocity">velocity</Term>. If <Formula>f</Formula> is a graph of revenue vs price, the derivative is "marginal revenue." If <Formula>f</Formula> is a curve drawn on paper, the derivative is the tangent's slope at each point. _Same operation; different physical or geometric interpretation depending on what was on the axes._
 
 The standard pattern: derivative of <Formula>x^n</Formula> is <Formula>n·x^(n−1)</Formula>. The widget shows it for <Formula>n = 2</Formula>: drag the anchor and read off <Formula>2a</Formula>. The same machinery, applied to <Formula>sin x</Formula>, gives <Formula>cos x</Formula>; applied to <Formula>e^x</Formula>, gives <Formula>e^x</Formula> back; applied to a constant, gives 0. The names of these — "differentiation rules" — are bookkeeping. The single underlying operation is the limit of secant slopes.
+
+<Proof id="deriv-pow" />
 
 </ArcRow>
 

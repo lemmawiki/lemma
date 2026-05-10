@@ -8,7 +8,7 @@ breadcrumb:
 ---
 
 import {
-  CodeBlock, Term, Exercise, Solution, ToolSpec, History, DoublingLadder, TwoStacks } from "@/components/mdx";
+  CodeBlock, Term, Exercise, Solution, ToolSpec, History, Proof, DoublingLadder, TwoStacks } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -59,6 +59,8 @@ import Formula from "@/components/page/formula.astro";
 로그는 한 줄로 정의된다: <Formula>log(a·b) = log(a) + log(b)</Formula>. 밑은 뭐든 좋다. 규칙은 같다. (분야가 밑을 정한다: <Formula>log</Formula>는 공학·고등학교에서는 <Term id="common-log">log₁₀</Term>, ML·통계에서는 <Term id="natural-log">ln</Term>, 알고리즘에서는 <Formula>log₂</Formula> — 첨자가 없으면 분야로 읽는다.) 다른 모든 성질이 이 한 줄에서 떨어져 나온다. <Formula>log(a/b) = log(a) − log(b)</Formula>: 규칙에서 b를 1/b로 바꾸면 끝. <Formula>log(aⁿ) = n·log(a)</Formula>: 규칙을 <Formula>a · a · … · a</Formula>에 n번 적용. <Formula>log(1) = 0</Formula>: <Formula>log(1·a) = log(1) + log(a)</Formula>에서. 네 번째 규칙은 없다 — 곱셈을 묶는 네 번째 방법이 없기 때문이다. 실용적으로 보면: <Term id="logarithm">로그</Term>는 어떤 수가 *밑을 몇 번 곱해 만든 것인지*를 알려준다. <Formula>log₁₀(1000) = 3</Formula>인 건 1000이 10을 세 번 곱한 수이기 때문. 곱한 횟수를 센다. 그게 전부다.
 
 <CodeBlock slug="logarithm" arc="arc1" />
+
+<Proof id="log-mul" />
 
 </ArcRow>
 
