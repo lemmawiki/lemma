@@ -64,13 +64,18 @@ import Formula from "@/components/page/formula.astro";
 
 </ArcRow>
 
-<ArcRow n={4} title="이걸로 만들 수 있는 것">
+<ArcRow n={4} title="이게 어디에 나타나나 — 한 도구, 두 필러">
 
-작은 영역에서 비선형을 선형으로 바꾸는 도구가 손에 들어오면, 세 가지 널리 쓰이는 알고리즘이 떨어진다:
+**선형화는 첫 번째 정직한 거짓말이다 — 굽은 것을 그 근처에서 진실을 말해주는 직선으로 바꾸는 일.** 거짓말은 필러마다 다른 이름으로 나타나지만, 수학은 같다.
 
-- **뉴턴 방법**으로 <Formula>f(x) = 0</Formula> 풀기. 현재 추측에서 선형화하고, *그 직선*이 0을 지나는 곳을 다음 추측으로 사용. 매 스텝이 한 번의 선형화. 수렴은 이차 — 한 스텝의 오차가 다음 스텝의 오차의 *제곱*이 된다.
-- **[경사하강법](/ko/ml/gradient-descent)**으로 손실 최소화. 1차 테일러 근사가 <Formula>L(w − η · ∇L) ≈ L(w) − η · ‖∇L‖²</Formula>이라고 말한다. <Formula>η</Formula>가 충분히 작아 선형화를 믿을 수 있으면 손실이 감소. 너무 크면 선형화가 거짓말 — 그 페이지의 위젯에서 <Formula>η = 0.27</Formula>일 때 보이는 폭발.
-- **[진자시계](/ko/physics/pendulum-clock)**가 의지하는 것은 단 하나의 선형화: <Formula>sin θ ≈ θ</Formula>. 비선형 ODE <Formula>θ̈ = −(g/L) sin θ</Formula>가 <Formula>θ̈ = −(g/L) θ</Formula>로 바뀌면서 닫힌 사인꼴 해와 일정 주기의 시계가 나온다. 기술 전체가 그 거짓말이 통하는 _작은 각 영역_ 안에 산다.
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`physics : sin θ ≈ θ — 0 근처
+ml      : 캘리브레이션 곡선 ≈ 한 구간에서의 접선`}</pre>
+
+[**진자시계**](/ko/physics/pendulum-clock)가 의지하는 것은 단 하나의 선형화 — 작은 각도에서 <Formula>sin θ ≈ θ</Formula>. 비선형 ODE <Formula>θ̈ = −(g/L) sin θ</Formula>가 <Formula>θ̈ = −(g/L) θ</Formula>로 바뀌면서 닫힌 사인꼴 해와 *일정 주기* 진동이 나온다. 17세기 시계 기술 전체가 그 거짓말이 통하는 작은 각 영역 안에 살고, 페이지의 위젯이 그 영역을 가시화한다.
+
+[**모델 캘리브레이션**](/ko/ml/model-calibration)은 모델이 만드는 곡선에 같은 트릭을 한다. 신뢰도 다이어그램의 막대를 클릭하면 위젯이 그 구간 중심에서 캘리브레이션 곡선의 *접선*을 그린다 — 국소적으로 <Formula>actual(p) ≈ m·p + c</Formula>. 두 수 — 기울기와 절편 — 이 그 구간 *근처에서* 신뢰도와 빈도의 격차를 묘사한다. 기울기 ≈ 1이면 곡선이 그곳에서 대각선과 평행 (상수 이동), 기울기 ≠ 1이면 격차가 신뢰도에 따라 *변한다* — 전역 회전 (온도 스케일링) 으로 고칠 수 있다는 의미. 같은 접선 도구, 전혀 다른 사용.
+
+같은 기계가 [뉴턴 방법](https://en.wikipedia.org/wiki/Newton's_method) (선형화하고, 직선의 영점 찾고, 반복) 과 [경사하강법](/ko/ml/gradient-descent) (1차 테일러 근사가 <Formula>L(w − η·∇L) ≈ L(w) − η·‖∇L‖²</Formula>; <Formula>η</Formula>가 충분히 작아 선형화를 믿을 수 있으면 손실 감소, 천장을 넘으면 선형화가 거짓말 — 그 페이지 위젯의 <Formula>η = 0.27</Formula> 폭발이 그 경계) 도 돌린다. 뉴턴, 경사하강법, 진자, 캘리브레이션 모두 같은 한 스텝을 돌린다 — *접선이 정직한 동안* 곡선을 그 접선으로 바꾼다.
 
 <CodeBlock slug="linearization" arc="arc4" />
 
@@ -162,7 +167,8 @@ import Formula from "@/components/page/formula.astro";
 </Exercises>
 
 <PageFooter>
-  모듈: **선형화**. 소비처 (이미 또는 이름으로): [진자시계](/ko/physics/pendulum-clock),
-  [경사하강법](/ko/ml/gradient-descent), 그리고 "1차 근사"나 "작은 편차 영역"을 끌어다 쓸 미래의
-  모든 페이지.
+  모듈: **선형화**. 두 필러에서 소비됨: 물리 ([진자시계](/ko/physics/pendulum-clock) — `sin θ ≈ θ`)
+  와 ML ([모델 캘리브레이션](/ko/ml/model-calibration) — 한 구간에서 캘리브레이션 곡선 ≈ 접선).
+  알고리즘적으로는 [경사하강법](/ko/ml/gradient-descent)과 뉴턴 방법의 내부에도 있다. *한 도구의 두
+  얼굴: 접선이 정직한 동안 곡선을 그 접선으로 바꿔라.*
 </PageFooter>

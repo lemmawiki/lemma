@@ -65,13 +65,18 @@ Concretely for <Formula>sin</Formula> at <Formula>0</Formula>: the leading error
 
 </ArcRow>
 
-<ArcRow n={4} title="What this lets you build">
+<ArcRow n={4} title="Where this shows up — one tool, two pillars">
 
-Once you have a tool that turns nonlinear into linear in a small region, three widely-used algorithms fall out:
+**Linearization is the first honest lie: replace a curved thing by the line that tells the truth nearby.** The lie shows up under different names in different pillars; the math is the same.
 
-- **Newton's method** for solving <Formula>f(x) = 0</Formula>. Linearize at the current guess, find where _that line_ crosses zero, use that as the next guess. Each step is one linearization. Convergence is quadratic — a step's error becomes the next step's error squared.
-- **[Gradient descent](/en/ml/gradient-descent)** for minimizing a loss. The first-order Taylor approximation says <Formula>L(w − η · ∇L) ≈ L(w) − η · ‖∇L‖²</Formula>. If <Formula>η</Formula> is small enough that the linearization is trustworthy, the loss decreases. Too big and the linearization lies — the explosion you see at <Formula>η = 0.27</Formula> in that page's widget.
-- **[The pendulum clock](/en/physics/pendulum-clock)** runs on a single linearization: <Formula>sin θ ≈ θ</Formula>. The nonlinear ODE <Formula>θ̈ = −(g/L) sin θ</Formula> becomes <Formula>θ̈ = −(g/L) θ</Formula>, with a closed-form sinusoidal solution and a constant-period clock. The whole technology lives inside the small-angle regime where the lie holds.
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`physics : sin θ ≈ θ near zero
+ml      : calibration curve ≈ tangent near one bin`}</pre>
+
+[**The pendulum clock**](/en/physics/pendulum-clock) runs on a single linearization: <Formula>sin θ ≈ θ</Formula> for small angles. The nonlinear ODE <Formula>θ̈ = −(g/L) sin θ</Formula> becomes <Formula>θ̈ = −(g/L) θ</Formula> — a linear oscillator with a closed-form sinusoidal solution and a *constant-period* swing. The whole 17th-century clock technology lives inside the small-angle regime where the lie holds, and the page's widget makes that regime visible.
+
+[**Model calibration**](/en/ml/model-calibration) does the same trick on a curve a model produces. Click any bin in the reliability diagram and the widget draws the *tangent* to the calibration curve at that bin's center: locally, <Formula>actual(p) ≈ m·p + c</Formula>. Two numbers — slope and intercept — describe the gap between confidence and frequency *near that bin*. Slope ≈ 1 means the curve is parallel to the diagonal there (a constant shift); slope ≠ 1 means the gap *changes* with confidence, which a global rotation (temperature scaling) can fix. Same tangent-line tool, completely different use.
+
+The same machine also drives [Newton's method](https://en.wikipedia.org/wiki/Newton's_method) (linearize, find the line's zero, repeat) and [gradient descent](/en/ml/gradient-descent) (the first-order Taylor approximation says <Formula>L(w − η·∇L) ≈ L(w) − η·‖∇L‖²</Formula>; if <Formula>η</Formula> is small enough that the linearization is trustworthy, the loss decreases — past the ceiling and the linearization lies, which is exactly the explosion at <Formula>η = 0.27</Formula> in that page's widget). Newton, gradient descent, the pendulum, and calibration all run the same step: replace the curve with its tangent for as long as the tangent is honest.
 
 <CodeBlock slug="linearization" arc="arc4" />
 
@@ -163,7 +168,10 @@ The first-order Taylor approximation of the loss <Formula>L(w + d) ≈ L(w) + �
 </Exercises>
 
 <PageFooter>
-  module: **Linearization**. Consumed (now or by name) by [The Pendulum
-  Clock](/en/physics/pendulum-clock), [Gradient Descent](/en/ml/gradient-descent), and any future
-  page that reaches for "first-order approximation" or "small-deviation regime."
+  module: **Linearization**. Consumed across two pillars: physics
+  ([the pendulum clock](/en/physics/pendulum-clock) — `sin θ ≈ θ`) and ML
+  ([model calibration](/en/ml/model-calibration) — calibration curve ≈ tangent at one bin).
+  Algorithmically also under the hood of [gradient descent](/en/ml/gradient-descent) and Newton's
+  method. *Two faces of one tool: replace the curve with its tangent for as long as the tangent is
+  honest.*
 </PageFooter>
