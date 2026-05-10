@@ -1,0 +1,182 @@
+---
+title: 포트폴리오 위험 · Lemma
+description: 위험한 자산 둘을 섞으면 각자보다 덜 위험할 수 있다. 그 수학은 한 줄짜리 교차항이고, 그 항은 벡터의 합 길이가 부분의 합보다 큰 (또는 작은) 이유와 같은 항이다.
+breadcrumb:
+  current: 금융 · 포트폴리오 위험
+---
+
+import {
+  CodeBlock,
+  Term,
+  Exercise,
+  Solution,
+  Counterexample,
+  WhyNotTaught,
+  PortfolioMixer,
+} from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 두 위험, 더 안전한 한 조합">
+
+# 위험한 자산 두 개를 섞으면 왜 더 안전해질 수 있을까?
+
+같은 평균 수익률, 같은 변동성을 가진 주식 둘. 하나만 들면 — 위험. 다른 하나만 들면 — 같은 정도로 위험. 절반씩 섞으면 — 어쩐 일인지 그 조합이 두 개 각자보다 _덜_ 위험할 수 있다. 가끔은 *훨씬* 덜. 메커니즘은 운도 수수료 구조도 아니다. 이차식의 한 교차항이고, 그 이차식은 [벡터](/ko/modules/vectors) 모듈이 합의 제곱 길이를 위해 쓰는 그 식과 같다.
+
+<Lede>**위험은 더해지지 않는다 — 상관계수를 통해 결합된다.**</Lede>
+
+</Hook>
+
+<PortfolioMixer />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="위험 = 분산 — 'risky'가 실제로 측정하는 것">
+
+금융에서 _위험_은 _최악에 얼마나 잃을 수 있는가_가 아니라 _결과가 평균 주변에서 얼마나 흔들리는가_의 줄임말이다. 표준 도구는 <Term id="variance">분산</Term>: <Formula>Var(r) = E[(r − μ)²]</Formula> — 평균-편차 제곱의 기대값. 그 제곱근인 표준편차 <Formula>σ</Formula>는 수익률과 같은 단위를 가지며, 대부분의 사람들이 "변동성"이라 부르는 그 양이다. σ를 두 배로 만드는 건 그런 의미에서 "두 배 위험"; 절반으로 줄이는 건 "절반의 위험". 불완전한 대용품이긴 하다 (가끔 폭락하는 차트와 매일 흔들리는 차트가 같은 σ에서도 같은 성격은 아니다). 하지만 이차식 수학이 사는 좌표가 그것이다. 현대 포트폴리오 이론, CAPM, 샤프 지수 — 모두 분산 위에 서 있다.
+
+</ArcRow>
+
+<ArcRow n={2} title="두 자산, 네 수">
+
+자산 A, B를 고른다. 각각 평균 수익률과 분산을 가진다: <Formula>μ_A, σ_A², μ_B, σ_B²</Formula>. A에 비중 <Formula>w</Formula>, B에 비중 <Formula>1−w</Formula>로 섞는다. 조합의 평균은 쉬운 부분 — 가중 평균:
+
+<Formula>μ_p = w μ_A + (1−w) μ_B</Formula>
+
+평균만 본다면, 같은 μ를 가진 자산을 섞는 건 의미 없다 — 같은 μ가 나온다. 그러나 조합의 _분산_에는 두 항이 아니라 *세* 항이 있다:
+
+<Formula>σ_p² = w² σ_A² + (1−w)² σ_B² + 2 w (1−w) Cov(A, B)</Formula>
+
+앞 두 항은 짐작 가능 — 각 자산의 분산을 비중 제곱으로 곱한 것. 세 번째 — <Term id="covariance">공분산</Term> — 이 놀라움. 그게 *교차항*이고, 섞기가 무언가를 얻거나 잃는 자리다. A와 B가 같이 움직이면 (양의 공분산), 섞기는 위험을 *쌓는다*. 반대로 움직이면 (음의 공분산), 섞기가 위험을 *상쇄한다*.
+
+<CodeBlock slug="portfolioRisk" arc="arc2" />
+
+</ArcRow>
+
+<ArcRow n={3} title="상관계수 — 정규화된 공분산">
+
+공분산은 단위가 어색하다 (A 단위 × B 단위). 그래서 사람들은 단위 없는 버전을 쓴다: <Term id="correlation">상관계수</Term> <Formula>ρ = Cov(A, B) / (σ_A σ_B)</Formula> ∈ <Formula>[−1, 1]</Formula>. 이제 분산 공식은:
+
+<Formula>σ_p² = w² σ_A² + (1−w)² σ_B² + 2 w (1−w) ρ σ_A σ_B</Formula>
+
+세 영역. **<Formula>ρ = +1</Formula>** — 완벽한 한 몸 — 이면 <Formula>σ_p</Formula>는 <Formula>σ_A</Formula>와 <Formula>σ_B</Formula>의 가중 평균. 섞어도 얻는 게 없다. **<Formula>ρ = 0</Formula>** — 독립 — 이면 교차항이 사라지고, <Formula>σ_p²</Formula>는 분산의 가중 평균 *아래*로 떨어진다. **<Formula>ρ = −1</Formula>** — 완벽한 반대 — 면 교차항이 _음수_, 크다. <Formula>σ_A = σ_B</Formula>일 때 <Formula>w = 1/2</Formula>에서 분산이 정확히 0이 된다. 위험이 줄어드는 게 아니라 _사라진다_. 위 위젯이 이 세 영역을 한 줄짜리 다이얼로 보여준다.
+
+<CodeBlock slug="portfolioRisk" arc="arc3" />
+
+</ArcRow>
+
+<ArcRow n={4} title="이건 벡터의 |a + b|²와 같은 대수">
+
+포트폴리오 분산 공식은 금융이 발명한 게 아니다 — 벡터 합의 제곱 길이 공식을 금융 단어로 입힌 것이다. 수익률을 무작위 벡터로 보자. 각 자산이 2D 벡터의 한 성분, 포트폴리오는 가중 결합. [벡터 모듈](/ko/modules/vectors)의 제곱 길이 항등식:
+
+<Formula>|a + b|² = |a|² + |b|² + 2 a · b</Formula>
+
+<Formula>|a|²</Formula>를 <Formula>w² σ_A²</Formula>로, <Formula>|b|²</Formula>를 <Formula>(1−w)² σ_B²</Formula>로, 내적 <Formula>a · b</Formula>를 <Formula>w (1−w) Cov(A, B)</Formula>로 바꾸면 — 포트폴리오 분산이 복원된다. _공분산은 무작위 변수에 대한 내적일 뿐_. 그 사이 각도의 코사인이 _상관계수_. "두 자산이 직각" = 무상관; "두 자산이 같은 방향" = 양의 상관; "두 자산이 반대 방향" = 음의 상관, 이 짝이 _상쇄_된다.
+
+[벡터 모듈](/ko/modules/vectors)이 물리·그래픽·ML·_그리고_ 금융에서 소비되는 이유가 이것 — 같은 두 연산 (더하기, 늘이기)이 베지에 제어점을 움직이고 포트폴리오를 만든다. 응용들이 정리를 공유하는 게 아니다 — *대수*를 공유한다.
+
+</ArcRow>
+
+<ArcRow n={5} title="분산 최소 비중">
+
+<Formula>d/dw [σ_p²] = 0</Formula>. 한 줄짜리 미분 문제. 답:
+
+<Formula>w* = (σ_B² − ρ σ_A σ_B) / (σ_A² + σ_B² − 2 ρ σ_A σ_B)</Formula>
+
+<Formula>σ_A = σ_B</Formula>일 때, 모든 <Formula>ρ</Formula>에 대해 <Formula>w* = 1/2</Formula>로 무너진다. 변동성이 같은 두 자산의 가장 안전한 조합은 항상 반반. <Formula>σ_A ≠ σ_B</Formula>일 때 식이 기운다 — 변동성이 낮은 자산이 더 큰 비중을 받지만, 그 기울기는 <Formula>ρ</Formula>에도 의존. 위젯은 <Formula>w*</Formula>를 분산 곡선의 초록 점으로 표시. <Formula>ρ</Formula>를 끌어보면 그 주변에서 곡선이 평평해지거나 날카로워진다. 풀-사이즈 _현대 포트폴리오 이론_ 일반화 — N개 자산, N×N 공분산 행렬, 제약 아래 이차식 최소화 — 는 이 같은 계산을 벡터-행렬 형태로 쓴 것일 뿐. 한 짝, 세 항, 한 교차항. 나머지는 장부.
+
+<CodeBlock slug="portfolioRisk" arc="arc4" />
+
+<Counterexample>
+  ρ = 0이 독립을 의미하는 건 아니다 — *선형* 무상관일 뿐. A와 B가 *비선형* 관계 (예: B = A²) 로
+  단단히 묶여 있어도 대칭 범위에서는 ρ ≈ 0이 나올 수 있다. 포트폴리오 분산 공식은 ρ를 직접 쓰니
+  이 경우 위험을 *과소평가*한다. 2008년 이전의 quant 전략들이 과거 ρ만으로 짝을 줄세우다 비싸게
+  배운 교훈. 분산은 *이차 모멘트*다. 나머지는 더 높은 모멘트와 copula에 산다. 여기 수학은 가정 아래
+  정확하다 — 위험은 가정에서 숨는다.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **위험은 더해지지 않는다 — 상관계수를 통해 결합된다.** 포트폴리오 분산은{" "}
+  <Formula>w² σ_A² + (1−w)² σ_B² + 2 w (1−w) ρ σ_A σ_B</Formula> — 세 항, 한 교차항. 교차항이
+  섞기로 얻는 것이고, 음수일 수도 있다. *그게* 위험한 두 가지가 함께면 더 안전할 수 있는 이유.
+</Pin>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="손으로 계산 · 50/50 평균" noCalculator>
+
+자산 A의 평균 수익률 <Formula>μ_A = 8%</Formula>, B는 <Formula>μ_B = 12%</Formula>. 50/50 조합을 든다. 포트폴리오 평균 수익률은? 이제 25% A, 75% B로 기울이면 무엇이 변하는가?
+
+<Solution>
+  50/50: <Formula>μ_p = 0.5(8) + 0.5(12) = 10%</Formula>. 25/75:{" "}
+  <Formula>μ_p = 0.25(8) + 0.75(12) = 11%</Formula>. 평균은 쉬운 부분 — 선형 결합이라, 비중을 기울이면
+  평균도 선형으로 기운다. *흥미로운 질문은 같은 기울임에서 분산이 어떻게 움직이느냐다 — 다음 연습들이
+  찌르는 곳.*
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="ρ = 1 · 왜 섞기가 도움 안 되는가" noCalculator>
+
+A, B 둘 다 <Formula>σ = 1</Formula>, <Formula>ρ = 1</Formula> (완벽한 한 몸). <Formula>w = 0.5</Formula>에서 <Formula>σ_p</Formula>를 계산. <Formula>w = 0</Formula> (전부 B), <Formula>w = 1</Formula> (전부 A) 와 비교.
+
+<Solution>
+  <Formula>σ_p² = (0.5)² + (0.5)² + 2(0.5)(0.5)(1)(1)(1) = 0.25 + 0.25 + 0.5 = 1.0</Formula>. 따라서{" "}
+  <Formula>σ_p = 1</Formula>. 단일 보유와 같다. 완벽한 상관에서 섞기는 *같은 위험의 두 사본을 평균
+  내는 것*뿐 — 통계적 이득 없음, 그저 이득이 있는 *척*이다. ρ = 1에서 위젯은 평평한 선을 보여준다 —
+  분산이 w에 무관. 완벽히 상관된 자산들로 분산투자하는 건 아무것도 하지 않는 일을 두 번 하는 것.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="ρ = −1 · 마법 같은 상쇄">
+
+같은 σ = 1 각각, 이번엔 <Formula>ρ = −1</Formula>. <Formula>σ_p = 0</Formula>이 정확히 되는 <Formula>w</Formula>가 존재함을 보이고, 그 값을 찾아라. 실제 포트폴리오가 이걸 못 이루는 이유는?
+
+<Solution>
+  <Formula>σ_p² = w² + (1-w)² − 2w(1-w) = (w − (1-w))² = (2w − 1)²</Formula>. <Formula>w = 1/2</Formula>
+  에서 0. 완벽히 반대 상관, 같은 변동성의 두 자산을 50/50으로 섞으면 *문자 그대로 분산이 0* — 한 쪽의
+  이득이 항상 다른 쪽의 손실을 정확히 상쇄. 실제 포트폴리오가 못 이루는 이유: *(i)* 지속적으로 ρ = −1
+  인 짝은 드물다 (대부분 짝은 <Formula>ρ ≈ 0–0.3</Formula>), *(ii)* 그런 짝이 존재하고 널리 알려졌다면
+  차익거래가 둘의 결합 가격을 무위험 수익률로 밀어내 기회를 없앤다, *(iii)* ρ는 과거 데이터에서
+  추정되며 미래는 다를 수 있다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="사악한 것 · 수익률만 최대화">
+
+자산 A: <Formula>μ_A = 12%</Formula>, <Formula>σ_A = 0.20</Formula>. 자산 B: <Formula>μ_B = 8%</Formula>, <Formula>σ_B = 0.10</Formula>, <Formula>ρ = 0.0</Formula>. "상식적" 투자자는: A의 기대 수익이 더 높고 같은 기간이니 — A에 올인. *섞은* 조합이 *위험 조정 수익*에서 (μ - 무위험 위) 단위 σ당 더 좋을 수 있음을 보여라. w = 0.5에서 σ_p를 계산하고 σ_A와 비교.
+
+<Solution>
+  올-A: μ = 12%, σ = 0.20. 조합 w = 0.5: μ = 0.5(12) + 0.5(8) = 10%;{" "}
+  <Formula>σ_p² = 0.25(0.04) + 0.25(0.01) + 0 = 0.0125</Formula>; <Formula>σ_p ≈ 0.112</Formula>.
+  올-A: 12% / 0.20 → 비율 60. 조합: 10% / 0.112 → 비율 89. *조합의 기대 수익이 더 낮음에도, 단위
+  위험당 수익은 더 높다.* 어느 쪽이 더 좋은지는 무엇을 최적화하느냐에 달림 — 샤프 비율 (변동성 단위당
+  수익) 은 조합을 고르고, 절대 수익은 A를 고른다. 핵심: "최고 평균"이 "최고 포트폴리오"는 아니다.
+  교차항이 σ에 살고, 그것을 무시하면 알파를 테이블에 두고 떠나는 셈.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  금융 강의는 포트폴리오 분산을 *새* 항등식처럼 도입한다. 공분산 행렬이 출처 없이 도착한다.
+  선형대수 강의는 내적과 제곱 길이를 도입하면서 내적이 *포트폴리오를 부분의 합 이상으로 만드는 그
+  연산*임을 언급하지 않는다. *둘은 같은 수학 조각이다.* Lemma는{" "}
+  <Formula>|a + b|² = |a|² + |b|² + 2 a · b</Formula>를{" "}
+  <Formula>σ_p² = w² σ_A² + (1−w)² σ_B² + 2 w (1−w) Cov(A, B)</Formula> 옆에 둬서 같음을 보이게
+  만든다. 현대 포트폴리오 이론, 샤프 비율, efficient frontier — 모두 이 항등식 위에 차원과 제약을
+  쌓아 올린 것. 새 수학이 필요한 게 아니라, 장부를 다룰 인내심이 필요할 뿐.
+</WhyNotTaught>

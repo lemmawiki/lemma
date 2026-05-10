@@ -511,6 +511,65 @@ def raw(query, doc):
 [round(raw("the", d), 3)   for d in toks]   # → [2, 1, 0, 1]
 [round(score("the", d), 3) for d in toks]   # → [0.139, 0.104, 0, 0.104]`,
   },
+  portfolioRisk: {
+    arc2: `import numpy as np
+
+# Two assets: same mean return 5%, same standard deviation σ = 1.
+# We'll compute portfolio mean and variance for any (weight, correlation).
+mu_A, mu_B = 0.05, 0.05
+sig_A, sig_B = 1.0, 1.0
+
+def portfolio(w, rho):
+    """w: fraction in A; (1-w) in B. rho: correlation of returns."""
+    mu  = w * mu_A + (1 - w) * mu_B
+    var = (w**2 * sig_A**2
+         + (1 - w)**2 * sig_B**2
+         + 2 * w * (1 - w) * rho * sig_A * sig_B)
+    return mu, var
+
+# Same expected return regardless of weight (because mu_A == mu_B).
+# Variance is what moves.
+[(rho, *portfolio(w=0.5, rho=rho)) for rho in (1.0, 0.0, -1.0)]
+# → [(1.0,  0.05, 1.00),    perfect lockstep — no diversification benefit
+#    (0.0,  0.05, 0.50),    independent — variance halves at 50/50
+#    (-1.0, 0.05, 0.00)]    perfect anti — risk literally vanishes`,
+    arc3: `# Minimum-variance weight, closed form.
+# Take d/dw of σ²_p(w) and set to zero:
+#   w* = (σ_B² − ρ σ_A σ_B) / (σ_A² + σ_B² − 2 ρ σ_A σ_B)
+def min_var_weight(rho, sig_A=1.0, sig_B=1.0):
+    num = sig_B**2 - rho * sig_A * sig_B
+    den = sig_A**2 + sig_B**2 - 2 * rho * sig_A * sig_B
+    return num / den if abs(den) > 1e-12 else 0.5
+
+[(rho, min_var_weight(rho)) for rho in (-1, -0.5, 0, 0.5, 0.99)]
+# → [(-1,    0.50),    A and B equally weighted — perfect cancellation
+#    (-0.5, 0.50),    still 50/50 because σ_A = σ_B
+#    (0,    0.50),
+#    (0.5,  0.50),
+#    (0.99, 0.50)]
+# With σ_A = σ_B the answer is always 0.5; differing σ's would tilt w*.`,
+    arc4: `# Sanity check via Monte Carlo: simulate joint returns at given ρ,
+# form the 50/50 portfolio, measure realized variance, compare to formula.
+import numpy as np
+
+def simulate(rho, n=200_000, seed=0):
+    rng = np.random.default_rng(seed)
+    z1 = rng.standard_normal(n)
+    z2 = rng.standard_normal(n)
+    a = mu_A + sig_A * z1
+    b = mu_B + sig_B * (rho * z1 + np.sqrt(1 - rho**2) * z2)
+    p = 0.5 * a + 0.5 * b
+    return p.mean(), p.var()
+
+formula = portfolio(w=0.5, rho=-0.5)
+sim     = simulate(rho=-0.5)
+formula, sim
+# → ((0.05, 0.25), (0.0501, 0.2503))
+# Closed form and simulation agree to three decimals.
+# The whole MPT machinery from Markowitz onward sits on top of this single
+# scalar identity; the rest is generalizing to N assets and adding
+# constraints (no shorts, sector caps, etc.).`,
+  },
   imageCompression: {
     arc2: `import numpy as np
 from collections import Counter

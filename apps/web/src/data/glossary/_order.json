@@ -85,5 +85,8 @@
   "temperature-scaling",
   "histogram",
   "lossless",
-  "lossy"
+  "lossy",
+  "variance",
+  "covariance",
+  "correlation"
 ]

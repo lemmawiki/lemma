@@ -121,6 +121,21 @@ export const applications: ApplicationMeta[] = [
     },
   },
   {
+    id: "portfolio-risk",
+    href: "/finance/portfolio-risk",
+    pillar: "finance",
+    modules: ["vectors"],
+    status: "available",
+    title: {
+      en: "Portfolio Risk",
+      ko: "포트폴리오 위험",
+    },
+    hook: {
+      en: "Two risky assets, mixed, can be less risky than either alone. The mathematics is one cross-term in a quadratic — and it's the same identity that makes a vector sum's length more (or less) than the sum of its parts. Variance, covariance, correlation; the dot product of returns.",
+      ko: "위험한 자산 두 개를 섞으면 각자보다 덜 위험할 수 있다. 그 수학은 이차식의 한 교차항이고, 벡터 합의 길이가 부분의 합보다 크거나 작은 이유와 같은 항등식이다. 분산, 공분산, 상관계수 — 수익률의 내적.",
+    },
+  },
+  {
     id: "bitcoin-signature",
     href: "/finance/bitcoin-signature",
     pillar: "finance",

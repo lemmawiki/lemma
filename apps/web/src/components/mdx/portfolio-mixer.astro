@@ -1,0 +1,7 @@
+---
+import { PortfolioMixer as PortfolioMixerReact } from "../widgets/portfolio-mixer";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<PortfolioMixerReact language={lang} client:load />
