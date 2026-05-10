@@ -511,6 +511,90 @@ def raw(query, doc):
 [round(raw("the", d), 3)   for d in toks]   # → [2, 1, 0, 1]
 [round(score("the", d), 3) for d in toks]   # → [0.139, 0.104, 0, 0.104]`,
   },
+  dampedOscillator: {
+    arc2: `import numpy as np
+
+# Equation: ẍ + 2γ·ẋ + ω₀²·x = F·cos(ω·t)
+# Three free-decay regimes (F = 0), determined by γ vs ω₀.
+omega0 = 1.0
+
+def simulate(gamma, omega_drive=0.0, F=0.0, T=30, dt=0.05, x0=1, v0=0):
+    """RK4 integration of the damped driven oscillator."""
+    n = int(T / dt) + 1
+    t = np.zeros(n); x = np.zeros(n); v = np.zeros(n)
+    x[0], v[0] = x0, v0
+    accel = lambda x_, v_, t_: (-2*gamma*v_ - omega0**2*x_
+                                 + F*np.cos(omega_drive*t_))
+    for i in range(1, n):
+        t[i] = i * dt
+        k1x, k1v = v[i-1], accel(x[i-1], v[i-1], t[i-1])
+        k2x = v[i-1] + dt/2 * k1v
+        k2v = accel(x[i-1] + dt/2 * k1x, v[i-1] + dt/2 * k1v, t[i-1] + dt/2)
+        k3x = v[i-1] + dt/2 * k2v
+        k3v = accel(x[i-1] + dt/2 * k2x, v[i-1] + dt/2 * k2v, t[i-1] + dt/2)
+        k4x = v[i-1] + dt * k3v
+        k4v = accel(x[i-1] + dt * k3x, v[i-1] + dt * k3v, t[i])
+        x[i] = x[i-1] + dt/6 * (k1x + 2*k2x + 2*k3x + k4x)
+        v[i] = v[i-1] + dt/6 * (k1v + 2*k2v + 2*k3v + k4v)
+    return t, x
+
+# Three free-decay regimes from displaced start (x=1, v=0):
+[(name, simulate(gamma=g)[1][-1]) for name, g in
+ (("undamped", 0.0), ("under-damped", 0.1),
+  ("critical", 1.0), ("over-damped", 2.0))]
+# undamped:    final x oscillates near ±1   (no decay)
+# under:       final x near 0 after many cycles, but visibly oscillates
+# critical:    final x essentially 0, no oscillation (fastest return)
+# over:        final x slightly above 0, slow exponential return`,
+    arc4: `# Steady-state amplitude as a function of driving frequency:
+# A(ω) = F / sqrt((ω₀² − ω²)² + (2γω)²)
+# — a closed-form 'frequency response' that emerges by plugging
+# x(t) = A·cos(ωt − φ) into the forced equation and collecting cos / sin.
+def amplitude(omega, gamma, omega0=1.0, F=1.0):
+    a = omega0**2 - omega**2
+    b = 2 * gamma * omega
+    return F / np.sqrt(a*a + b*b)
+
+# Peak location (where the response is largest):
+# d/dω [A] = 0  →  ω_peak = sqrt(ω₀² − 2γ²)   (for γ < ω₀/√2)
+# For very small γ, ω_peak ≈ ω₀ — the natural frequency.
+def peak_omega(gamma, omega0=1.0):
+    if gamma >= omega0 / np.sqrt(2):
+        return 0.0  # no peak — overdamped frequency response
+    return np.sqrt(omega0**2 - 2*gamma**2)
+
+[(g, peak_omega(g), amplitude(peak_omega(g) or 0.001, g))
+ for g in (0.05, 0.1, 0.3, 0.7, 1.0)]
+# γ=0.05  → peak at 0.997, A ≈ 10        sharp resonance
+# γ=0.1   → peak at 0.990, A ≈ 5.0
+# γ=0.3   → peak at 0.906, A ≈ 1.7
+# γ=0.7   → peak at ~0,    A ≈ 1.4       no real resonance peak
+# Lighter damping → sharper peak. The Q-factor 1/(2γ/ω₀) measures this
+# 'sharpness' directly; a high-Q oscillator (laser cavity, atomic clock)
+# is the same equation with γ pushed near zero.`,
+    arc5: `# Resonance with energy bookkeeping: average the power F·v over a few
+# cycles and watch energy build up coherently when ω = ω₀.
+def energy_input(gamma, omega_drive, F=1.0, T=50, dt=0.01):
+    omega0 = 1.0
+    t = np.arange(0, T, dt)
+    A = amplitude(omega_drive, gamma)
+    a = omega0**2 - omega_drive**2
+    b = 2 * gamma * omega_drive
+    phi = np.arctan2(b, a)
+    v = -A * omega_drive * np.sin(omega_drive * t - phi)
+    forcing = F * np.cos(omega_drive * t)
+    return float(np.mean(forcing * v))
+
+[(omega_drive, energy_input(0.1, omega_drive))
+ for omega_drive in (0.5, 0.9, 1.0, 1.1, 1.5)]
+# ω=0.5 → avg power ≈ 0.05
+# ω=0.9 → avg power ≈ 0.45
+# ω=1.0 → avg power ≈ 2.5     ← resonance: 50× more energy in / cycle
+# ω=1.1 → avg power ≈ 0.45
+# ω=1.5 → avg power ≈ 0.05
+# 'Pushing on the beat' is literally an integral identity — F·v averages
+# to a positive number only when forcing is in phase with velocity.`,
+  },
   presentValue: {
     arc2: `import math
 

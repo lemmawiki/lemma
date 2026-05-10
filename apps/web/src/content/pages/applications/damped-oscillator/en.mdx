@@ -1,0 +1,197 @@
+---
+title: Why Things Stop Swinging — and Why a Push on the Beat Makes Them Bigger · Lemma
+description: One equation runs every oscillator that bleeds energy and listens to the right beat. Damping decides how it stops; resonance decides when an outside push wins.
+breadcrumb:
+  current: physics · damped oscillator
+---
+
+import {
+  CodeBlock,
+  Term,
+  Exercise,
+  Solution,
+  Counterexample,
+  WhyNotTaught,
+  DampedOscillator,
+} from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · stop, or grow">
+
+# Why does a swing stop on its own — and why does pushing on the beat make it grow?
+
+A pendulum left alone slows down and stops. The same pendulum, pushed at *exactly the right rhythm*, swings higher and higher until it loops the bar. Same hardware. Two opposite outcomes. The single equation that governs both — and every cousin of them, from car suspensions to laser cavities to bridges that fell down — has three terms: an inertia, a restoring force, and a *velocity-dependent* drag. When the drag wins, motion dies; when an external push lands at the natural beat, the drag can't keep up, and amplitude climbs.
+
+<Lede>**Damping decides *how* it stops. Resonance decides *when* a push wins.**</Lede>
+
+</Hook>
+
+<DampedOscillator />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="The equation that runs every oscillator">
+
+A mass on a spring obeys Newton's law: <Formula>m · ẍ = F_net</Formula>. The net force has three pieces. The spring pulls back proportional to displacement: <Formula>−k · x</Formula>. <Term id="damping">Damping</Term> opposes velocity proportional to speed: <Formula>−c · ẋ</Formula>. An external push (a hand on the swing, a periodic forcing) adds <Formula>F(t)</Formula>. Put them together and divide by mass:
+
+<Formula>{"ẍ + 2γ · ẋ + ω₀² · x = F(t)/m"}</Formula>
+
+where <Formula>γ = c / (2m)</Formula> and <Formula>{"ω₀ = √(k/m)"}</Formula>. The same equation describes a small-angle pendulum (<Formula>{"ω₀ = √(g/L)"}</Formula>), an LC electrical circuit (<Formula>{"ω₀ = 1/√(LC)"}</Formula>), a building swaying in wind, a guitar string, an atom's electron cloud responding to light. Different physics, identical mathematics — one of the most-reused equations in all of physics.
+
+</ArcRow>
+
+<ArcRow n={2} title="Free decay — three ways to stop">
+
+Set <Formula>F(t) = 0</Formula> (no external push), displace the mass, and let go. The [derivatives](/en/modules/derivatives) on the left side compete with the restoring term on the right, and the answer depends on how big <Formula>γ</Formula> is compared to <Formula>ω₀</Formula>:
+
+- **Underdamped** (<Formula>γ &lt; ω₀</Formula>): the mass *oscillates* while shrinking — exponential envelope <Formula>e^(−γt)</Formula> times a sinusoid. The widget at *weak damping* shows this — the trace ripples downward to zero.
+- **Critical damping** (<Formula>γ = ω₀</Formula>): the *fastest* return to rest with no oscillation. Car shock absorbers and door closers are tuned exactly here — anything less swings, anything more crawls.
+- **Overdamped** (<Formula>γ &gt; ω₀</Formula>): the mass crawls back to rest *more slowly* than critical. Useful when you want no oscillation guaranteed, even at the cost of speed (precision instruments, certain control systems).
+
+The widget's free-decay traces (forcing toggle off) make these three regimes immediate: same equation, three different shapes of "stop." Mathematically, they're all governed by the *characteristic equation* <Formula>r² + 2γr + ω₀² = 0</Formula> — the discriminant <Formula>γ² − ω₀²</Formula> is positive, zero, or negative, and *that's* what you're looking at.
+
+<CodeBlock slug="dampedOscillator" arc="arc2" />
+
+</ArcRow>
+
+<ArcRow n={3} title="Why the equation works at all — small-angle linearization">
+
+The small-angle pendulum lives on a *lie* — the [linearization](/en/modules/linearization) trick from the [pendulum-clock](/en/physics/pendulum-clock) page. The true equation has <Formula>sin θ</Formula>, which is nonlinear; replacing <Formula>sin θ ≈ θ</Formula> for small swings turns it into the linear oscillator above. Real damped oscillators that work in everyday engineering live almost entirely in this regime: car suspensions deflect a few centimeters, building columns flex by parts per thousand, microphone diaphragms move microns. *They obey the linear equation because they live where the lie holds.*
+
+When the lie breaks — wide-angle pendulums, soft non-Hookean springs, large electrical signals near a transistor's saturation, a building swaying past its elastic limit — the linear formulas become wrong, sometimes spectacularly. The 1940 Tacoma Narrows bridge collapse is famous for *exactly this*: small oscillations stayed predictable, but as amplitude grew, aerodynamic forcing crossed nonlinear thresholds the linear analysis didn't see. The equation in arc 1 is exact only inside the regime; outside, you're solving a different problem.
+
+</ArcRow>
+
+<ArcRow n={4} title="Forced — amplitude as a function of driving frequency">
+
+Now turn the forcing on: <Formula>{"F(t) = F · cos(ω · t)"}</Formula>. After the transient (the free-decay piece) dies away, the mass settles into a *steady state* at the driving frequency: <Formula>x(t) = A(ω) · cos(ωt − φ)</Formula>. The amplitude <Formula>A(ω)</Formula> has a closed form — plug the steady-state ansatz into the equation and solve algebraically:
+
+<Formula>{"A(ω) = F / √((ω₀² − ω²)² + (2γω)²)"}</Formula>
+
+Two limits read off directly. For very slow forcing (<Formula>ω → 0</Formula>), <Formula>{"A → F/ω₀²"}</Formula> — the static deflection: the spring just balances the slowly-applied force. For very fast forcing (<Formula>ω → ∞</Formula>), <Formula>A → 0</Formula> — the mass can't keep up at all, inertia wins. Between them, the curve has a *peak* — and *that's* the resonance.
+
+The widget's lower panel shows <Formula>A(ω)</Formula> for the current <Formula>γ</Formula>. Drag damping down to 0.05 — the peak shoots up, narrow and tall. Drag damping up to 1.0 — the peak vanishes; the curve is now monotonic. *Lighter damping → sharper, taller peak.* The amplitude is set by how much energy the forcing pumps in versus how much damping bleeds away — the equilibrium is the steady-state amplitude.
+
+<CodeBlock slug="dampedOscillator" arc="arc4" />
+
+</ArcRow>
+
+<ArcRow n={5} title="Resonance — pushing on the beat">
+
+Why does the peak sit at <Formula>ω ≈ ω₀</Formula>? <Term id="resonance">Resonance</Term> is what happens when each push lands while the oscillator is already moving in the same direction — energy goes in *coherently*, every cycle. Off-resonance, pushes alternate between adding and subtracting energy, and the net input averages out. The math underneath: average power input is <Formula>{"⟨F · ẋ⟩"}</Formula> — an [integral](/en/modules/integration) over a cycle — and that average is largest exactly when the forcing and the velocity stay in phase, which happens when <Formula>ω</Formula> hits <Formula>ω₀</Formula>.
+
+The same identity governs an opera singer breaking glass (vocal cord drives the glass at its natural frequency), the Tacoma Narrows bridge collapse (wind-driven aeroelastic flutter at one of the deck's natural frequencies), MRI nuclei flipping (RF pulse at the Larmor frequency), and the radio dial picking out one station from a sky full (LC circuit tuned to one ω₀). *Resonance is not a special force — it is energy injected on the beat the system already keeps.*
+
+The Q-factor <Formula>Q = ω₀ / (2γ)</Formula> measures how *narrow* the resonance peak is. High Q (atomic clocks: Q ≈ 10¹⁰; pendulum: Q ≈ 100) means the system rings cleanly at exactly one frequency. Low Q means a broad, easily-driven response. Choosing Q is one of the first decisions any oscillator designer makes — the rest is consequence.
+
+<CodeBlock slug="dampedOscillator" arc="arc5" />
+
+<Counterexample>
+  Resonance is *not always disaster*. The phrase "soldiers must break step on a bridge" is a
+  half-truth at best — synchronized footfall *can* drive a low-Q bridge near its natural frequency,
+  but most bridges are designed with damping high enough to make this irrelevant. Resonance is also
+  *what makes radios work*, *how MRI images you*, *why your microwave heats water* (electromagnetic
+  waves at one of water's rotational resonances), and *the entire principle of laser cavities*.
+  Dangerous resonance and useful resonance are the same equation; the engineering question is
+  which side of the equation you live on. A high-Q oscillator is a tool when you want it and a
+  bomb when you don't.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **Damping decides *how* it stops. Resonance decides *when* a push wins.** One equation —{" "}
+  <Formula>{"ẍ + 2γ·ẋ + ω₀²·x = F(t)"}</Formula> — runs every oscillator that bleeds energy and
+  listens to the right beat. Three free-decay regimes (under / critical / over) and one steady-
+  state amplitude curve <Formula>{"A(ω) = F / √((ω₀² − ω²)² + (2γω)²)"}</Formula>. Everything else
+  is engineering: which γ, which ω₀, which Q.
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="undamped period by inspection">
+
+In the widget, set damping <Formula>γ = 0</Formula> (the *undamped* preset). The trace becomes a perfect cosine. Read its period off the time axis. Confirm with the formula <Formula>T = 2π / ω₀</Formula> using <Formula>ω₀ = 1</Formula>.
+
+<Solution>
+  The trace crosses zero at <Formula>t ≈ π/2 ≈ 1.57</Formula>, peaks negative at{" "}
+  <Formula>t = π ≈ 3.14</Formula>, and returns to <Formula>x = 1</Formula> at{" "}
+  <Formula>t = 2π ≈ 6.28</Formula> — that's one full period. Formula:{" "}
+  <Formula>T = 2π/ω₀ = 2π/1 ≈ 6.28</Formula>. Match. *The undamped oscillator is the calibration:
+  every more complicated case is a deviation from this clean cosine.*
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="critical damping fastest, never oscillates" noCalculator>
+
+The widget's three damping presets are weak (γ = 0.1), critical (γ = 1.0), overdamped (γ = 2.0). For each, predict whether the trace oscillates and roughly how long it takes to settle near zero. Confirm in the widget.
+
+<Solution>
+  *Weak (0.1)*: oscillates, takes about <Formula>t ≈ 5/γ = 50</Formula> seconds to settle to ~1%
+  of the initial amplitude — except the simulation only runs to 30s, so the widget shows it still
+  rippling at the end. *Critical (1.0)*: no oscillation, settles in about{" "}
+  <Formula>t ≈ 5</Formula> seconds (fast). *Over (2.0)*: no oscillation, settles slower than
+  critical (about <Formula>t ≈ 12</Formula> seconds). *Critical damping is the fastest no-
+  oscillation return* — that's why it's the engineering target for shock absorbers and door
+  closers. The widget makes this immediate: scroll across damping values and the *settling time*
+  is minimized exactly at γ = 1.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="resonance — sharper at lower γ">
+
+Compute <Formula>A(ω₀)</Formula> for <Formula>γ = 0.1</Formula> and <Formula>γ = 0.3</Formula> using the formula <Formula>{"A(ω₀) = F / (2γω₀)"}</Formula> (with <Formula>F = 1, ω₀ = 1</Formula>). Why does *halving* damping more than *double* the peak amplitude?
+
+<Solution>
+  <Formula>γ = 0.1: A(1) = 1 / (2 · 0.1 · 1) = 5</Formula>.{" "}
+  <Formula>γ = 0.3: A(1) = 1 / (2 · 0.3 · 1) ≈ 1.67</Formula>. The peak amplitude scales as{" "}
+  <Formula>1/γ</Formula>, so halving damping doubles the peak — that *is* doubling, not 'more
+  than.' (The 'sharpening' of the peak is a separate effect: a narrower peak means a more selective
+  oscillator.) The widget's lower panel shows both curves at once if you toggle γ between presets:
+  the peak moves up and gets narrower, and the off-resonance values drop close to the static-
+  deflection limit <Formula>1/ω₀² = 1</Formula>.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="the evil one · is resonance always dangerous?">
+
+A friend says: "Resonance is dangerous — that's why bridges collapse and singers break glass." Refute in one sentence by listing three places where resonance is *useful*.
+
+<Solution>
+  Resonance is a tool, not a hazard. *(i)* Radio reception: an LC tank circuit at the station's
+  ω₀ extracts one channel from a sky full of EM waves. *(ii)* MRI: RF pulses at the Larmor
+  frequency flip nuclear spins coherently — without resonance, no medical imaging. *(iii)*
+  Lasers: the cavity is engineered so a precise frequency builds up on each round trip, and a
+  microscope's optical-clock laser reaches Q ≈ 10¹⁵. *Dangerous and useful resonance are the same
+  equation.* The bridge designer wants γ high or ω₀ far from any expected forcing; the radio
+  designer wants γ low and ω₀ tunable. Same physics, opposite choices.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  Introductory physics teaches the undamped harmonic oscillator (Hooke's law + Newton II) as a
+  decorative example, and *then* skips to wave equations, optics, or quantum. The damped driven
+  case — with three regimes, a closed-form amplitude response, and an honest definition of
+  resonance — is left for a sophomore-year mechanics or electrical-engineering course, where it
+  drowns in Laplace transforms. Lemma collapses it: one equation with three terms, three regimes
+  by sign of a discriminant, one amplitude formula, and a widget that shows all of it directly.
+  The Q-factor and resonance frequency follow as one calculation; bridges, radios, lasers, and
+  car suspensions show up as different choices on the same axes. The equation is older than
+  electrical engineering and used everywhere in it; teaching it as 'special and advanced' is a
+  curriculum artifact.
+</WhyNotTaught>

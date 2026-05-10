@@ -61,6 +61,21 @@ export const applications: ApplicationMeta[] = [
     },
   },
   {
+    id: "damped-oscillator",
+    href: "/physics/damped-oscillator",
+    pillar: "physics",
+    modules: ["derivatives", "linearization", "integration"],
+    status: "available",
+    title: {
+      en: "Why Things Stop Swinging",
+      ko: "흔들리던 것은 왜 멈출까",
+    },
+    hook: {
+      en: "A pendulum left alone slows and stops; the same pendulum pushed on the beat swings higher and higher. One equation — ẍ + 2γ·ẋ + ω₀²·x = F(t) — runs both. Damping decides how it stops; resonance decides when an outside push wins.",
+      ko: "내버려 둔 진자는 느려지다 멈춘다. 같은 진자를 박자에 맞춰 밀면 점점 더 크게 흔들린다. 한 식 ẍ + 2γ·ẋ + ω₀²·x = F(t) 이 둘 다를 돌린다. 감쇠가 어떻게 멈출지를 정하고, 공명이 외부 밀기가 언제 이길지를 정한다.",
+    },
+  },
+  {
     id: "pendulum-clock",
     href: "/physics/pendulum-clock",
     pillar: "physics",

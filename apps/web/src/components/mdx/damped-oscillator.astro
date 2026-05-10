@@ -1,0 +1,7 @@
+---
+import { DampedOscillator as DampedOscillatorReact } from "../widgets/damped-oscillator";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<DampedOscillatorReact language={lang} client:load />
