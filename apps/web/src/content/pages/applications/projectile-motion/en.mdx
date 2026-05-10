@@ -14,7 +14,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · gravity's signature">
 
@@ -42,16 +41,16 @@ Once the ball leaves your hand, the only force on it is <Term id="gravity">gravi
 
 <ArcRow n={2} title="Equations of motion">
 
-Split the launch velocity into components: <Formula>vₓ = v₀ cos θ</Formula>, <Formula>v_y = v₀ sin θ</Formula>. The horizontal component is constant; the vertical component decreases at a rate of <Formula>g</Formula> (the constant downward <Term id="acceleration">acceleration</Term>): <Formula>v_y(t) = v₀ sin θ − g·t</Formula>. Integrate once and you get position:
+Split the launch velocity into components: $vₓ = v₀ \cos θ$, $v_y = v₀ \sin θ$. The horizontal component is constant; the vertical component decreases at a rate of $g$ (the constant downward <Term id="acceleration">acceleration</Term>): $v_y(t) = v₀ \sin θ − g·t$. Integrate once and you get position:
 
 ```
 x(t) = v₀ cos θ · t
 y(t) = v₀ sin θ · t − ½ g t²
 ```
 
-That pair is a [parametric curve](/en/modules/parametric-curves): two functions of a shared time parameter <Formula>t</Formula>. The _image_ of this curve is the shape on the field; the _parametrization_ is the actual motion in time. Same image can be painted by many parametrizations — we'll see one shortly.
+That pair is a [parametric curve](/en/modules/parametric-curves): two functions of a shared time parameter $t$. The _image_ of this curve is the shape on the field; the _parametrization_ is the actual motion in time. Same image can be painted by many parametrizations — we'll see one shortly.
 
-The phrase "integrate once and you get position" is doing real work here. Gravity gives acceleration. [Integrate](/en/modules/integration) acceleration to get velocity; integrate velocity to get position. *The parabola is not magic — it is accumulated change twice.* The constants of integration are fixed by initial conditions: at <Formula>t = 0</Formula> the velocity is the launch velocity (no fall yet) and the position is the launch point (no displacement yet). Two integrations, two constants, one closed-form trajectory.
+The phrase "integrate once and you get position" is doing real work here. Gravity gives acceleration. [Integrate](/en/modules/integration) acceleration to get velocity; integrate velocity to get position. *The parabola is not magic — it is accumulated change twice.* The constants of integration are fixed by initial conditions: at $t = 0$ the velocity is the launch velocity (no fall yet) and the position is the launch point (no displacement yet). Two integrations, two constants, one closed-form trajectory.
 
 <CodeBlock slug="projectileMotion" arc="arc2" />
 
@@ -59,13 +58,13 @@ The phrase "integrate once and you get position" is doing real work here. Gravit
 
 <ArcRow n={3} title="Eliminate time, see the parabola">
 
-Solve <Formula>x(t) = v₀ cos θ · t</Formula> for <Formula>t</Formula>: <Formula>t = x / (v₀ cos θ)</Formula>. Plug into <Formula>y(t)</Formula>:
+Solve $x(t) = v₀ \cos θ · t$ for $t$: $t = x / (v₀ \cos θ)$. Plug into $y(t)$:
 
 ```
 y(x) = (tan θ) · x  −  g · x² / (2 v₀² cos²θ)
 ```
 
-That is a quadratic in <Formula>x</Formula>. The trace of two independent linear processes (in <Formula>t</Formula>) is necessarily quadratic (in <Formula>x</Formula>) — and the graph of a quadratic is a <Term id="parabola">parabola</Term>. The parabola is the _image_ of the motion. The motion is the _parametrization_. The image hides the time axis; you can read shape off it, but you cannot tell how fast the ball got there.
+That is a quadratic in $x$. The trace of two independent linear processes (in $t$) is necessarily quadratic (in $x$) — and the graph of a quadratic is a <Term id="parabola">parabola</Term>. The parabola is the _image_ of the motion. The motion is the _parametrization_. The image hides the time axis; you can read shape off it, but you cannot tell how fast the ball got there.
 
 <CodeBlock slug="projectileMotion" arc="arc3" />
 
@@ -75,10 +74,10 @@ That is a quadratic in <Formula>x</Formula>. The trace of two independent linear
 
 Four facts fall out of the formula.
 
-- **Time to peak.** Vertical velocity <Formula>v_y(t) = v₀ sin θ − g·t</Formula> hits zero at <Formula>t_peak = v₀ sin θ / g</Formula>. That is when the ball is highest.
-- **Time to land.** By symmetry, the down-trip mirrors the up-trip: <Formula>t_land = 2 · t_peak</Formula>. The widget's stat row shows it.
-- **Range.** <Formula>R = v₀ cos θ · t_land = v₀² sin(2θ) / g</Formula>. Maximum at <Formula>2θ = 90°</Formula>, i.e. launch angle <Formula>θ = 45°</Formula>. The longest throw is the one split evenly between up and forward.
-- **Symmetry.** The peak sits at <Formula>x = R/2</Formula>. The speed at impact equals the speed at launch (same <Formula>vₓ</Formula>, equal-magnitude opposite-sign <Formula>v_y</Formula>). Without drag, the ball loses no energy to the air.
+- **Time to peak.** Vertical velocity $v_y(t) = v₀ \sin θ − g·t$ hits zero at $t_peak = v₀ \sin θ / g$. That is when the ball is highest.
+- **Time to land.** By symmetry, the down-trip mirrors the up-trip: $t_land = 2 · t_peak$. The widget's stat row shows it.
+- **Range.** $R = v₀ \cos θ · t_land = v₀² \sin(2θ) / g$. Maximum at $2θ = 90°$, i.e. launch angle $θ = 45°$. The longest throw is the one split evenly between up and forward.
+- **Symmetry.** The peak sits at $x = R/2$. The speed at impact equals the speed at launch (same $vₓ$, equal-magnitude opposite-sign $v_y$). Without drag, the ball loses no energy to the air.
 
 <CodeBlock slug="projectileMotion" arc="arc4" />
 
@@ -86,14 +85,14 @@ Four facts fall out of the formula.
 
 <ArcRow n={5} title="Same image, different motions">
 
-The image-vs-parametrization distinction the [parametric-curves](/en/modules/parametric-curves) module makes precise applies right here. Look at <Formula>y(x) = (tan θ) x − g x² / (2 v₀² cos²θ)</Formula>: the shape of the parabola depends only on <Formula>θ</Formula> and the ratio <Formula>g/v₀²</Formula>. Double both <Formula>v₀</Formula> and <Formula>g</Formula> together by appropriate factors and you get the _same parabola, traversed in a different time_. A throw on the Moon with the right matching speed paints exactly the same shape as a throw on Earth — but slower, because the Moon's clock for the same shape ticks differently.
+The image-vs-parametrization distinction the [parametric-curves](/en/modules/parametric-curves) module makes precise applies right here. Look at $y(x) = (\tan θ) x − g x² / (2 v₀² \cos²θ)$: the shape of the parabola depends only on $θ$ and the ratio $g/v₀²$. Double both $v₀$ and $g$ together by appropriate factors and you get the _same parabola, traversed in a different time_. A throw on the Moon with the right matching speed paints exactly the same shape as a throw on Earth — but slower, because the Moon's clock for the same shape ticks differently.
 
 That is the same lesson as Bezier curves and as the parametric-curves spike that became a module: the picture is one thing, the motion that paints it is another. Two parametrizations can disagree on every detail except the _image_ they produce.
 
 <Counterexample>
   The parabola is the trajectory you get *when you ignore air*. A baseball thrown at 40 m/s has
   Reynolds number ~10⁵; drag is not a small correction. Compute the same equations with quadratic
-  drag <Formula>F_d = ½ ρ C_d A v²</Formula> for a 145 g ball, and the range at **θ = 45°** drops
+  drag $F_d = \tfrac{1}{2} ρ C_d A v²$ for a 145 g ball, and the range at **θ = 45°** drops
   from **~163 m** (vacuum) to **~98 m** (air) — *and* the optimal angle shifts from **45°** to
   **~38°**. The clean parabola is a vacuum object; real outdoor motion is one of those, asymmetric,
   foreshortened.
@@ -113,54 +112,54 @@ That is the same lesson as Bezier curves and as the parametric-curves spike that
 
 <Exercise number={1} tag="time to the peak" noCalculator>
 
-A ball is launched at <Formula>v₀ = 20 m/s</Formula>, <Formula>θ = 30°</Formula>, with <Formula>g = 10 m/s²</Formula>. Find <Formula>t_peak</Formula> and the maximum height. Use <Formula>sin 30° = 1/2</Formula>.
+A ball is launched at $v₀ = 20 m/s$, $θ = 30°$, with $g = 10 m/s²$. Find $t_peak$ and the maximum height. Use $\sin 30° = 1/2$.
 
 <Solution>
-  <Formula>v_y(0) = v₀ sin 30° = 10 m/s</Formula>. Setting <Formula>v_y(t) = 10 − 10·t = 0</Formula>{" "}
+  $v_y(0) = v₀ \sin 30° = 10 m/s$. Setting $v_y(t) = 10 − 10·t = 0${" "}
   gives **t_peak = 1 s**. Max height{" "}
-  <Formula>= v_y(0)·t_peak − ½ g t_peak² = 10·1 − ½·10·1 = 5 m</Formula>. (Same as{" "}
-  <Formula>v_y(0)² / (2g) = 100/20 = 5 m</Formula>.)
+  $= v_y(0)·t_peak − \tfrac{1}{2} g t_peak² = 10·1 − \tfrac{1}{2}·10·1 = 5 m$. (Same as{" "}
+  $v_y(0)² / (2g) = 100/20 = 5 m$.)
 </Solution>
 
 </Exercise>
 
 <Exercise number={2} tag="derive the range formula">
 
-Starting from <Formula>x(t_land) = v₀ cos θ · t_land</Formula> and <Formula>t_land = 2 v₀ sin θ / g</Formula>, derive <Formula>R = v₀² sin(2θ) / g</Formula>. Confirm in the widget that the range is largest at <Formula>θ = 45°</Formula>.
+Starting from $x(t_land) = v₀ \cos θ · t_land$ and $t_land = 2 v₀ \sin θ / g$, derive $R = v₀² \sin(2θ) / g$. Confirm in the widget that the range is largest at $θ = 45°$.
 
 <Solution>
-  <Formula>R = v₀ cos θ · (2 v₀ sin θ / g) = (2 v₀² sin θ cos θ) / g = v₀² sin(2θ) / g</Formula>{" "}
-  using the double-angle identity <Formula>sin(2θ) = 2 sin θ cos θ</Formula>. Maximum of{" "}
-  <Formula>sin(2θ)</Formula> is 1 at <Formula>2θ = 90°</Formula>, i.e. **θ = 45°**.
+  $R = v₀ \cos θ · (2 v₀ \sin θ / g) = (2 v₀² \sin θ \cos θ) / g = v₀² \sin(2θ) / g${" "}
+  using the double-angle identity $\sin(2θ) = 2 \sin θ \cos θ$. Maximum of{" "}
+  $\sin(2θ)$ is 1 at $2θ = 90°$, i.e. **θ = 45°**.
 </Solution>
 
 </Exercise>
 
 <Exercise number={3} tag="same image, different time">
 
-Two throws have the same launch angle <Formula>θ = 45°</Formula>: one with <Formula>(v₀, g) = (20, 10)</Formula>, the other with <Formula>(v₀, g) = (40, 40)</Formula>. Show that they paint the _same parabola_ <Formula>y(x)</Formula>, but the second is _faster_ in time. Which quantity controls the image, and which controls the motion?
+Two throws have the same launch angle $θ = 45°$: one with $(v₀, g) = (20, 10)$, the other with $(v₀, g) = (40, 40)$. Show that they paint the _same parabola_ $y(x)$, but the second is _faster_ in time. Which quantity controls the image, and which controls the motion?
 
 <Solution>
-  <Formula>y(x) = (tan θ) x − g·x² / (2 v₀² cos²θ)</Formula> depends only on <Formula>θ</Formula>{" "}
-  and <Formula>g/v₀²</Formula>. For both throws this ratio equals{" "}
-  <Formula>10/400 = 40/1600 = 0.025</Formula>, so same parabola. But{" "}
-  <Formula>t_land = 2 v₀ sin θ / g</Formula> evaluates to <Formula>√2 · 20/10 ≈ 2.83 s</Formula> for
-  the first and <Formula>√2 · 40/40 ≈ 1.41 s</Formula> for the second — half the flight time.
-  **Image: <Formula>(θ, g/v₀²)</Formula>**; **motion: anything else, including absolute v₀ and g.**
+  $y(x) = (\tan θ) x − g·x² / (2 v₀² \cos²θ)$ depends only on $θ${" "}
+  and $g/v₀²$. For both throws this ratio equals{" "}
+  $10/400 = 40/1600 = 0.025$, so same parabola. But{" "}
+  $t_land = 2 v₀ \sin θ / g$ evaluates to $\sqrt{2} · 20/10 ≈ 2.83 s$ for
+  the first and $\sqrt{2} · 40/40 ≈ 1.41 s$ for the second — half the flight time.
+  **Image: $(θ, g/v₀²)$**; **motion: anything else, including absolute v₀ and g.**
 </Solution>
 
 </Exercise>
 
 <Exercise number={4} tag="speed at impact">
 
-Without doing any time calculation, argue that the ball's _speed_ at impact equals its launch speed <Formula>v₀</Formula>. (Same height, no drag.) What about the angle the velocity vector makes with the ground at impact?
+Without doing any time calculation, argue that the ball's _speed_ at impact equals its launch speed $v₀$. (Same height, no drag.) What about the angle the velocity vector makes with the ground at impact?
 
 <Solution>
   By symmetry of the parabola and the time-reversal symmetry of constant acceleration: at landing,{" "}
-  <Formula>vₓ</Formula> is unchanged (no horizontal force), and <Formula>v_y</Formula> has equal
+  $vₓ$ is unchanged (no horizontal force), and $v_y$ has equal
   magnitude but opposite sign of its launch value. So{" "}
-  <Formula>|v_impact|² = vₓ² + v_y² = v₀²</Formula> — same speed. Direction: launch was at{" "}
-  <Formula>+θ</Formula> above the ground, impact is at <Formula>−θ</Formula> below — equal angle,
+  $|v_impact|² = vₓ² + v_y² = v₀²$ — same speed. Direction: launch was at{" "}
+  $+θ$ above the ground, impact is at $−θ$ below — equal angle,
   opposite side.
 </Solution>
 

@@ -15,17 +15,16 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · 20 questions, with a twist">
 
 # How many yes/no questions to find one item in 1,024?
 
-Halve the list each time and the answer is **10** — <Term id="logarithm">log₂(1,024)</Term>. The dictionary search from the log module, in new clothes. **But the items are not all equally likely.** If "the" is a thousand times more frequent than "antidisestablishmentarianism", asking about the rare one first is wasted breath. The right number of questions, on average, is no longer <Formula>log₂ N</Formula>. It is _entropy_.
+Halve the list each time and the answer is **10** — <Term id="logarithm">log₂(1,024)</Term>. The dictionary search from the log module, in new clothes. **But the items are not all equally likely.** If "the" is a thousand times more frequent than "antidisestablishmentarianism", asking about the rare one first is wasted breath. The right number of questions, on average, is no longer $\log₂ N$. It is _entropy_.
 
 <Lede>
   **Entropy = the average number of yes/no questions needed.** When everything is equally likely, it
-  collapses to <Formula>log₂ N</Formula>. When one outcome dominates, it falls toward 0. Wordle,
+  collapses to $\log₂ N$. When one outcome dominates, it falls toward 0. Wordle,
   Huffman compression, password strength, decision trees — all are bumping against the same number.
 </Lede>
 
@@ -35,22 +34,22 @@ Halve the list each time and the answer is **10** — <Term id="logarithm">log�
 
 <ToolSpec>
   <Fragment slot="definition">
-    <Formula>H(X) = −Σ pᵢ log₂ pᵢ</Formula>. The expected number of yes/no questions, on average, to
-    identify which outcome of <Formula>X</Formula> occurred. Reduces to <Formula>log₂ N</Formula>{" "}
+    $H(X) = −Σ pᵢ \log₂ pᵢ$. The expected number of yes/no questions, on average, to
+    identify which outcome of $X$ occurred. Reduces to $\log₂ N${" "}
     when the N outcomes are equally likely (maximum); collapses to 0 when one outcome has
     probability 1 (minimum).
   </Fragment>
   <Fragment slot="applies">
     Uncertainty has structure: Wordle (information gain per guess), Huffman / arithmetic compression
     (the Shannon bound), password strength (NIST entropy), decision-tree splits (information-gain
-    criterion), language-model perplexity (<Formula>2^H</Formula>), KL divergence and mutual
+    criterion), language-model perplexity ($2^H$), KL divergence and mutual
     information.
   </Fragment>
   <Fragment slot="breaks">
-    You don't actually know <Formula>p</Formula> — entropy is defined on a distribution, and
+    You don't actually know $p$ — entropy is defined on a distribution, and
     estimating one from a sample is its own problem. Continuous distributions need *differential
     entropy* (different sign behavior, not non-negative). Entropy uses only the marginal{" "}
-    <Formula>p</Formula>; identical marginals can hide very different joint structure (mutual
+    $p$; identical marginals can hide very different joint structure (mutual
     information, not entropy, captures that).
   </Fragment>
 </ToolSpec>
@@ -61,31 +60,31 @@ Halve the list each time and the answer is **10** — <Term id="logarithm">log�
 
 <ArcRow n={1} title="log₂ N — the equally-likely floor">
 
-Start where the log module ended. With <Formula>N</Formula> equally-likely outcomes, halving the candidate set each question takes <Formula>log₂ N</Formula> questions. A standard deck: <Formula>log₂ 52 ≈ 5.7</Formula> bits — six questions identify any card. Two coin flips: <Formula>log₂ 4 = 2</Formula> bits. A 64-bit random integer: _64 bits_, by definition. The unit "<Term id="bit">bit</Term>" is the answer to one yes/no question with two equally likely outcomes — and <Formula>log₂ N</Formula> is how many such questions to specify one of N.
+Start where the log module ended. With $N$ equally-likely outcomes, halving the candidate set each question takes $\log₂ N$ questions. A standard deck: $\log₂ 52 ≈ 5.7$ bits — six questions identify any card. Two coin flips: $\log₂ 4 = 2$ bits. A 64-bit random integer: _64 bits_, by definition. The unit "<Term id="bit">bit</Term>" is the answer to one yes/no question with two equally likely outcomes — and $\log₂ N$ is how many such questions to specify one of N.
 
 </ArcRow>
 
 <ArcRow n={2} title="Surprise, weighted">
 
-When outcomes have unequal probabilities, "halve the list" stops being optimal. A question that splits a list into 90% / 10% gives you only _some information_: the 90% answer barely narrowed anything. The right accounting is per-outcome: <Term id="surprise">surprise</Term> of an event with probability <Formula>p</Formula> is <Formula>−log₂ p</Formula> — the bits revealed by learning that outcome. Common events carry low surprise; rare events carry high. The expected surprise is _entropy_:
+When outcomes have unequal probabilities, "halve the list" stops being optimal. A question that splits a list into 90% / 10% gives you only _some information_: the 90% answer barely narrowed anything. The right accounting is per-outcome: <Term id="surprise">surprise</Term> of an event with probability $p$ is $−\log₂ p$ — the bits revealed by learning that outcome. Common events carry low surprise; rare events carry high. The expected surprise is _entropy_:
 
 <pre class="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`H(X) = −Σ p_i log₂ p_i  =  Σ p_i · (−log₂ p_i)
                             ↑
                  probability × surprise, summed`}</pre>
 
-Two anchors. **Uniform p = 1/N for every i**: <Formula>H = log₂ N</Formula> — the equally-likely floor from arc 1, now recovered as the _maximum_. **Spike p = 1 on one outcome, 0 elsewhere**: <Formula>H = 0</Formula> — no questions, no information, no uncertainty. Every distribution sits between those two and the widget above lets you slide along that line.
+Two anchors. **Uniform p = 1/N for every i**: $H = \log₂ N$ — the equally-likely floor from arc 1, now recovered as the _maximum_. **Spike p = 1 on one outcome, 0 elsewhere**: $H = 0$ — no questions, no information, no uncertainty. Every distribution sits between those two and the widget above lets you slide along that line.
 
 </ArcRow>
 
 <ArcRow n={3} title="Why the average matters — Shannon's bound">
 
-In 1948 Shannon proved that no code can compress a stream of symbols below <Formula>H(X)</Formula> bits per symbol on average — the <Term id="shannon-bound">Shannon bound</Term>. English text has per-character entropy around 1.0–1.5 bits (down from the naive log₂ 26 ≈ 4.7) because letters are not independent and are not equally likely; that gap is exactly the room compression has to work in. zip and gzip live there. The bound is tight in two senses: _no_ code can beat it, and _some_ codes (Huffman within 1 bit, arithmetic arbitrarily close) hit it. Entropy is not a measurement people invented — it is the floor everyone independently reinvented hitting.
+In 1948 Shannon proved that no code can compress a stream of symbols below $H(X)$ bits per symbol on average — the <Term id="shannon-bound">Shannon bound</Term>. English text has per-character entropy around 1.0–1.5 bits (down from the naive log₂ 26 ≈ 4.7) because letters are not independent and are not equally likely; that gap is exactly the room compression has to work in. zip and gzip live there. The bound is tight in two senses: _no_ code can beat it, and _some_ codes (Huffman within 1 bit, arithmetic arbitrarily close) hit it. Entropy is not a measurement people invented — it is the floor everyone independently reinvented hitting.
 
 </ArcRow>
 
 <ArcRow n={4} title="Information gain — Wordle's optimal first guess">
 
-Wordle: pick a 5-letter guess; the game returns one of <Formula>3⁵</Formula> feedback patterns (each tile gray/yellow/green); each pattern partitions the remaining candidate words. A guess gives you <Formula>IG = H(words) − E[H(words | feedback)]</Formula> bits of <Term id="information-gain">information gain</Term> on average. Maximizing IG is what every Wordle solver, ever, does — though most do it by intuition. The numerical winner over the official ~2,300-word answer list is _SALET_ (an old word for a helmet) at ≈ 5.88 bits, beating CRANE (5.79) and ADIEU (5.49). The "obvious" answer (vowels) loses to "split letters across feedback patterns evenly", which is exactly maximum-entropy behavior on the feedback distribution.
+Wordle: pick a 5-letter guess; the game returns one of $3⁵$ feedback patterns (each tile gray/yellow/green); each pattern partitions the remaining candidate words. A guess gives you $IG = H(words) − E[H(words | feedback)]$ bits of <Term id="information-gain">information gain</Term> on average. Maximizing IG is what every Wordle solver, ever, does — though most do it by intuition. The numerical winner over the official ~2,300-word answer list is _SALET_ (an old word for a helmet) at ≈ 5.88 bits, beating CRANE (5.79) and ADIEU (5.49). The "obvious" answer (vowels) loses to "split letters across feedback patterns evenly", which is exactly maximum-entropy behavior on the feedback distribution.
 
 Same machinery underlies decision-tree splits in machine learning ("which feature partitions labels into the most uncertainty-reducing groups?"), 20 Questions strategy ("ask the question with the highest expected information gain"), and the binary-search-vs-fingerprint-lookup contrast in algorithms.
 
@@ -100,7 +99,7 @@ rare color               → high surprise
 predictable distribution → low entropy
 uniform distribution     → high entropy`}</pre>
 
-[TF-IDF](/en/ml/tf-idf) is the rare-word version: a search query weighted by <Formula>−log P(word)</Formula>, exactly the surprise of seeing that word in a random document. Stop-words have near-zero surprise, so they get near-zero weight without anyone hard-coding the list.
+[TF-IDF](/en/ml/tf-idf) is the rare-word version: a search query weighted by $−\log P(word)$, exactly the surprise of seeing that word in a random document. Stop-words have near-zero surprise, so they get near-zero weight without anyone hard-coding the list.
 
 [Why images compress](/en/graphics/image-compression) is the rare-color version on a [histogram](/en/graphics/image-compression) of pixel values — and then _again_ on a histogram of _neighbor differences_, where smooth pictures look extremely predictable (low entropy → small file) and scrambled ones look uniform (high entropy → big file). Same H, two pillars: the number isn't a feature of language or of pixels — it's a feature of _distributions_, and any field that names a distribution is implicitly bumping into this module.
 
@@ -108,12 +107,12 @@ uniform distribution     → high entropy`}</pre>
 
 <ArcRow n={6} title="Where this module flows next">
 
-The same definition reappears under new names. <Term id="cross-entropy">Cross-entropy</Term> (the loss at the heart of [classification](/en/ml/confident-wrong)) is _your_ entropy plus a penalty when your model's predicted distribution differs from the truth. KL divergence, mutual information, perplexity in language models — all consume this module. Password strength is just <Formula>log₂</Formula> of the keyspace under the assumption of a uniform attacker, which is the special case of arc 1. Every time someone says "this carries more information" or "that's redundant", they are gesturing at a number this module makes precise.
+The same definition reappears under new names. <Term id="cross-entropy">Cross-entropy</Term> (the loss at the heart of [classification](/en/ml/confident-wrong)) is _your_ entropy plus a penalty when your model's predicted distribution differs from the truth. KL divergence, mutual information, perplexity in language models — all consume this module. Password strength is just $\log₂$ of the keyspace under the assumption of a uniform attacker, which is the special case of arc 1. Every time someone says "this carries more information" or "that's redundant", they are gesturing at a number this module makes precise.
 
 </ArcRow>
 
 <Pin>
-  **H = −Σ p log₂ p.** Probability times surprise, summed. Equals <Formula>log₂ N</Formula> when
+  **H = −Σ p log₂ p.** Probability times surprise, summed. Equals $\log₂ N$ when
   uniform, falls to 0 when one outcome wins outright. Everything else — the Shannon bound, Wordle's
   first guess, password strength, cross-entropy loss — is a corollary.
 </Pin>
@@ -149,7 +148,7 @@ Compute H for uniform distributions over **N = 2, 4, 8, 16**. State the pattern.
 
 <Exercise number={3} tag="write the equation · 1/2, 1/4, 1/8, 1/8">
 
-Compute H for <Formula>p = (1/2, 1/4, 1/8, 1/8)</Formula>. Compare to the uniform-4 case.
+Compute H for $p = (1/2, 1/4, 1/8, 1/8)$. Compare to the uniform-4 case.
 
 <Solution>
   H = (1/2)·1 + (1/4)·2 + (1/8)·3 + (1/8)·3 = 1/2 + 1/2 + 3/8 + 3/8 = **1.75 bits**. Uniform-4 is
@@ -188,11 +187,11 @@ A junior says: "uniform distribution has minimum entropy because it's the most b
 
 <Exercise number={6} tag="passwords · NIST entropy">
 
-Two passwords. (a) 8 random characters from {`{a–z, A–Z, 0–9}`} = 62 symbols. (b) 6 random English words from a dictionary of 7,776 (the Diceware list). Which has higher entropy? Use <Formula>log₂ 62 ≈ 5.95</Formula>, <Formula>log₂ 7776 ≈ 12.92</Formula>.
+Two passwords. (a) 8 random characters from {`{a–z, A–Z, 0–9}`} = 62 symbols. (b) 6 random English words from a dictionary of 7,776 (the Diceware list). Which has higher entropy? Use $\log₂ 62 ≈ 5.95$, $\log₂ 7776 ≈ 12.92$.
 
 <Solution>
   (a) 8 × 5.95 ≈ **47.6 bits**. (b) 6 × 12.92 ≈ **77.5 bits**. The passphrase wins by a factor of{" "}
-  <Formula>2³⁰</Formula> in attacker work, and is famously easier to remember. xkcd 936's "correct
+  $2³⁰$ in attacker work, and is famously easier to remember. xkcd 936's "correct
   horse battery staple" rests on this calculation.
 </Solution>
 

@@ -21,7 +21,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · same pixels, different file sizes">
 
@@ -45,9 +44,9 @@ A 16×16 grayscale image is 256 pixels — 256 bytes if you store one byte per p
 
 <ArcRow n={2} title="The histogram bound">
 
-The first place to look is the [pixel value distribution](/en/modules/entropy) — the [histogram](#) (we'll wrap it shortly). Count how many pixels are at each level, divide by total to get probabilities, plug into <Formula>H = -Σ p log₂ p</Formula>. The number you get is the average <Term id="bit">bits</Term> per pixel needed if you encoded each pixel _independently_, ignoring its neighbors.
+The first place to look is the [pixel value distribution](/en/modules/entropy) — the [histogram](#) (we'll wrap it shortly). Count how many pixels are at each level, divide by total to get probabilities, plug into $H = -Σ p \log₂ p$. The number you get is the average <Term id="bit">bits</Term> per pixel needed if you encoded each pixel _independently_, ignoring its neighbors.
 
-For our 16-level patch where each level appears exactly 16 times, every level has probability <Formula>1/16</Formula>, so <Formula>H = log₂ 16 = 4</Formula> bits/pixel. That's the histogram bound — the [Shannon limit](/en/modules/entropy) for symbol-by-symbol encoding. Halving 8 bits/pixel to 4 already explains why a 16-shade image compresses to half the size of a 256-shade one.
+For our 16-level patch where each level appears exactly 16 times, every level has probability $1/16$, so $H = \log₂ 16 = 4$ bits/pixel. That's the histogram bound — the [Shannon limit](/en/modules/entropy) for symbol-by-symbol encoding. Halving 8 bits/pixel to 4 already explains why a 16-shade image compresses to half the size of a 256-shade one.
 
 <CodeBlock slug="imageCompression" arc="arc2" />
 
@@ -55,7 +54,7 @@ For our 16-level patch where each level appears exactly 16 times, every level ha
 
 <ArcRow n={3} title="What the histogram doesn't see">
 
-Toggle between **gradient**, **blocks**, and **scrambled** in the widget. The pixels are exactly the same multiset — same 16 copies of each level. Histogram entropy: <Formula>4.0</Formula> bits/pixel for all three. _Identical._
+Toggle between **gradient**, **blocks**, and **scrambled** in the widget. The pixels are exactly the same multiset — same 16 copies of each level. Histogram entropy: $4.0$ bits/pixel for all three. _Identical._
 
 But the pictures don't look the same, and they don't compress the same. The gradient is smooth: every adjacent pair is either equal or differs by 1. The scrambled patch has neighbors that fight each other — adjacent levels are essentially independent. Same histogram, very different _spatial structure_, and that structure is where most of the real compression happens.
 
@@ -65,7 +64,7 @@ But the pictures don't look the same, and they don't compress the same. The grad
 
 <ArcRow n={4} title="Neighbor differences — entropy of a different alphabet">
 
-The trick: instead of encoding each pixel as a value 0..15, encode each pixel as the _difference_ from its left or top neighbor. The first pixel still costs full bits, but every subsequent one is usually a small number — often zero. Now run <Formula>H = -Σ p log₂ p</Formula> on the distribution of differences. For the gradient: most differences are 0 or 1, entropy is well under 1 bit/pixel. For scrambled: differences are uniform across the full range, entropy is back near 4. The widget shows both numbers side by side; the ratio is the speedup a structure-aware compressor delivers over a histogram-only one.
+The trick: instead of encoding each pixel as a value 0..15, encode each pixel as the _difference_ from its left or top neighbor. The first pixel still costs full bits, but every subsequent one is usually a small number — often zero. Now run $H = -Σ p \log₂ p$ on the distribution of differences. For the gradient: most differences are 0 or 1, entropy is well under 1 bit/pixel. For scrambled: differences are uniform across the full range, entropy is back near 4. The widget shows both numbers side by side; the ratio is the speedup a structure-aware compressor delivers over a histogram-only one.
 
 This is the page in one sentence: <Term id="histogram">histograms</Term> see _what_ pixels appear, neighbor differences see _how they sit next to each other_. Real <Term id="lossless">lossless</Term> compressors (PNG, gzip on raw pixel arrays) operate on the second view.
 
@@ -104,13 +103,13 @@ Histogram entropy is a hard floor for <Term id="lossless">lossless</Term> compre
 
 <Exercise number={1} tag="compute by hand · histogram entropy" noCalculator>
 
-A 4-color image has 100 pixels: 50 red, 25 green, 15 blue, 10 yellow. Compute the histogram entropy in bits per pixel (natural log: <Formula>log₂ x = ln x / ln 2</Formula>; for this one just use the rough values <Formula>log₂(2) = 1</Formula>, <Formula>log₂(4) ≈ 2</Formula>, <Formula>log₂(6.67) ≈ 2.74</Formula>, <Formula>log₂(10) ≈ 3.32</Formula>).
+A 4-color image has 100 pixels: 50 red, 25 green, 15 blue, 10 yellow. Compute the histogram entropy in bits per pixel (natural log: $\log₂ x = \ln x / \ln 2$; for this one just use the rough values $\log₂(2) = 1$, $\log₂(4) ≈ 2$, $\log₂(6.67) ≈ 2.74$, $\log₂(10) ≈ 3.32$).
 
 <Solution>
-  <Formula>p = (0.5, 0.25, 0.15, 0.1)</Formula>. Each term <Formula>−p log₂ p</Formula>:{" "}
-  <Formula>0.5 · 1 = 0.5</Formula>, <Formula>0.25 · 2 = 0.5</Formula>,{" "}
-  <Formula>0.15 · 2.74 ≈ 0.41</Formula>, <Formula>0.1 · 3.32 ≈ 0.33</Formula>. Sum ≈{" "}
-  <Formula>1.74</Formula> bits/pixel. The "lossless floor" for symbol-independent encoding of
+  $p = (0.5, 0.25, 0.15, 0.1)$. Each term $−p \log₂ p$:{" "}
+  $0.5 · 1 = 0.5$, $0.25 · 2 = 0.5$,{" "}
+  $0.15 · 2.74 ≈ 0.41$, $0.1 · 3.32 ≈ 0.33$. Sum ≈{" "}
+  $1.74$ bits/pixel. The "lossless floor" for symbol-independent encoding of
   this image is ~1.74 × 100 = 174 bits ≈ 22 bytes. (Two bits per pixel — 200 bits — would be
   enough to label four colors naively; 1.74 is the savings entropy gives you over that.)
 </Solution>
@@ -119,7 +118,7 @@ A 4-color image has 100 pixels: 50 red, 25 green, 15 blue, 10 yellow. Compute th
 
 <Exercise number={2} tag="why scrambled is harder">
 
-You have two 100×100 images. Both contain the exact same 10,000 pixel values: 5,000 black and 5,000 white. Image A is a clean checkerboard pattern; image B is the same pixels randomly scattered. Their histogram entropies are identical (<Formula>H = 1</Formula> bit/pixel, since p(black) = p(white) = 0.5). Which compresses smaller as a PNG, and why? Predict the rough ratio.
+You have two 100×100 images. Both contain the exact same 10,000 pixel values: 5,000 black and 5,000 white. Image A is a clean checkerboard pattern; image B is the same pixels randomly scattered. Their histogram entropies are identical ($H = 1$ bit/pixel, since p(black) = p(white) = 0.5). Which compresses smaller as a PNG, and why? Predict the rough ratio.
 
 <Solution>
   Image A — the checkerboard — compresses to a tiny file (a few hundred bytes), because PNG's
@@ -135,7 +134,7 @@ You have two 100×100 images. Both contain the exact same 10,000 pixel values: 5
 <Exercise number={3} tag="the evil one · histogram is blind">
 
 In the widget, switch between **gradient** and **scrambled**. Both report{" "}
-<Formula>H_histogram = 4.00</Formula> bits/pixel. So a naive engineer concludes:{" "}
+$H_histogram = 4.00$ bits/pixel. So a naive engineer concludes:{" "}
 "Both images need 256 × 4 = 1024 bits = 128 bytes of payload, plus PNG overhead." Run the actual
 PNG sizes (the code in arc 4 measures it). Why does the scrambled file end up roughly twice as
 large — _despite_ the histogram saying they should be the same?

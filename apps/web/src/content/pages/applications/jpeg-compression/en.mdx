@@ -21,7 +21,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · loss you can't see">
 
@@ -45,7 +44,7 @@ JPEG starts by chopping the image into independent 8×8 pixel tiles. Why blocks?
 
 <ArcRow n={2} title="See the block in a different basis">
 
-A 64-entry pixel block is a [vector](/en/modules/vectors) in 64-dimensional space. The standard <Term id="basis">basis</Term> is "one direction per pixel position": coordinate <Formula>(0, 0)</Formula> means "the pixel at the top-left." It's the obvious basis but it's not the only one. *Any* set of 64 linearly independent directions is also a basis; the same block has different coordinates in each.
+A 64-entry pixel block is a [vector](/en/modules/vectors) in 64-dimensional space. The standard <Term id="basis">basis</Term> is "one direction per pixel position": coordinate $(0, 0)$ means "the pixel at the top-left." It's the obvious basis but it's not the only one. *Any* set of 64 linearly independent directions is also a basis; the same block has different coordinates in each.
 
 Crucially: switching basis is *lossless*. The information in the block doesn't change; only the labels do. If the new basis is *orthonormal*, switching is just a matrix multiplication, and switching back is multiplying by the transpose. So the question is: *is there a basis that's better than pixels for what JPEG wants to do?*
 
@@ -53,9 +52,9 @@ Crucially: switching basis is *lossless*. The information in the block doesn't c
 
 <ArcRow n={3} title="DCT — a basis where natural images are sparse">
 
-JPEG's chosen basis is the <Term id="dct">discrete cosine transform</Term> (DCT). Each of its 64 directions is a 2D cosine pattern at a particular spatial frequency. The <Formula>(0, 0)</Formula> direction is constant — it carries the block's *average brightness*, called the *DC* term. The <Formula>(7, 7)</Formula> direction is a fast-varying checkerboard — it carries the highest frequency the block can represent. In between, smooth patterns sit in the low-frequency corner; sharp edges and noise sit in the high-frequency corner.
+JPEG's chosen basis is the <Term id="dct">discrete cosine transform</Term> (DCT). Each of its 64 directions is a 2D cosine pattern at a particular spatial frequency. The $(0, 0)$ direction is constant — it carries the block's *average brightness*, called the *DC* term. The $(7, 7)$ direction is a fast-varying checkerboard — it carries the highest frequency the block can represent. In between, smooth patterns sit in the low-frequency corner; sharp edges and noise sit in the high-frequency corner.
 
-The empirical claim that makes JPEG work: *natural images are sparse in the DCT basis*. Most of the energy in any given 8×8 block of a typical photograph concentrates in maybe 5–10 of the 64 DCT coefficients, almost always the low-frequency ones. The widget makes this readable. Toggle to **gradient**: nearly all energy at <Formula>(0, 0)</Formula> and a couple of immediate neighbors. Toggle to **flat**: literally one coefficient (the DC term) carries everything. Toggle to **checkerboard**: an artificial extreme — energy concentrates at a single high-frequency cell, but the *sparsity* is still there.
+The empirical claim that makes JPEG work: *natural images are sparse in the DCT basis*. Most of the energy in any given 8×8 block of a typical photograph concentrates in maybe 5–10 of the 64 DCT coefficients, almost always the low-frequency ones. The widget makes this readable. Toggle to **gradient**: nearly all energy at $(0, 0)$ and a couple of immediate neighbors. Toggle to **flat**: literally one coefficient (the DC term) carries everything. Toggle to **checkerboard**: an artificial extreme — energy concentrates at a single high-frequency cell, but the *sparsity* is still there.
 
 <CodeBlock slug="jpegCompression" arc="arc3" />
 
@@ -65,7 +64,7 @@ The empirical claim that makes JPEG work: *natural images are sparse in the DCT 
 
 The compression happens here. After the DCT, each coefficient is divided by an integer from a *quantization table* and rounded to the nearest whole number. The quantization table is hand-tuned (and standardized) to divide *more aggressively* in high-frequency cells than in low-frequency ones, because the human visual system is *less sensitive* to high-frequency error. Small high-frequency coefficients round straight to zero; the kept coefficients lose precision but survive.
 
-The widget uses a simplified version: keep the top <Formula>K</Formula> coefficients by magnitude, zero the rest. Real JPEG quantization is per-coefficient with a fixed table per quality setting, but the qualitative effect is identical. Drop the slider to <Formula>K = 4</Formula> on the **texture** preset and you'll see the reconstruction is still recognizable — most of what you saw was carried by those four numbers. Drop to <Formula>K = 1</Formula> and you get a flat block at the average brightness; the reconstruction has *zero* error on the **flat** preset because flat *was* one number's worth of information.
+The widget uses a simplified version: keep the top $K$ coefficients by magnitude, zero the rest. Real JPEG quantization is per-coefficient with a fixed table per quality setting, but the qualitative effect is identical. Drop the slider to $K = 4$ on the **texture** preset and you'll see the reconstruction is still recognizable — most of what you saw was carried by those four numbers. Drop to $K = 1$ and you get a flat block at the average brightness; the reconstruction has *zero* error on the **flat** preset because flat *was* one number's worth of information.
 
 This is also where lossy <Term id="quantization">quantization</Term> earns its name and its danger: rounding is a one-way operation. The original coefficient cannot be recovered from the rounded value. The transform is invertible; the rounding is not.
 
@@ -118,10 +117,10 @@ So the file size has three multiplicative savings: **fewer non-zero coefficients
 
 <Exercise number={1} tag="flat block · one coefficient" noCalculator>
 
-In the widget, pick the **flat** preset and slide <Formula>K</Formula> down to 1. The reconstruction is still exactly the original. Why does keeping just *one* coefficient suffice? Which coefficient is it, and what does it carry?
+In the widget, pick the **flat** preset and slide $K$ down to 1. The reconstruction is still exactly the original. Why does keeping just *one* coefficient suffice? Which coefficient is it, and what does it carry?
 
 <Solution>
-  A flat 8×8 block (every pixel value the same) has all its information in the <Formula>(0, 0)</Formula>{" "}
+  A flat 8×8 block (every pixel value the same) has all its information in the $(0, 0)${" "}
   DCT coefficient — the *DC term*, which encodes the average brightness. Every other coefficient
   is exactly zero, because the cosine basis vectors at higher frequencies *integrate to zero*
   against a constant. So the block sits *entirely* on one basis direction; one coefficient is
@@ -136,7 +135,7 @@ In the widget, pick **checkerboard** and look at the DCT panel. Most of the ener
 
 <Solution>
   An 8×8 block alternating dark/light at every pixel has its energy concentrated near{" "}
-  <Formula>(u, v) = (4, 4)</Formula> — the highest spatial frequency the basis can represent in
+  $(u, v) = (4, 4)$ — the highest spatial frequency the basis can represent in
   both directions, which is exactly what alternates every cell. *Real photographs of fine texture
   (grass, hair, fabric) populate the high-frequency corner the same way.* JPEG's quantization
   table divides those cells the most aggressively, so a low-quality JPEG of a textured patch loses
@@ -147,7 +146,7 @@ In the widget, pick **checkerboard** and look at the DCT panel. Most of the ener
 
 <Exercise number={3} tag="texture · which coefficients go first">
 
-In the widget, pick **texture** and slide <Formula>K</Formula> from 64 down to 1. The reconstruction degrades as <Formula>K</Formula> falls. *Which* coefficients are dropped first, and why does that match what JPEG actually does?
+In the widget, pick **texture** and slide $K$ from 64 down to 1. The reconstruction degrades as $K$ falls. *Which* coefficients are dropped first, and why does that match what JPEG actually does?
 
 <Solution>
   Coefficients are dropped in order of *increasing magnitude*. For a natural texture, that order

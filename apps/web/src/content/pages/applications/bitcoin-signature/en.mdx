@@ -21,7 +21,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · proof without disclosure">
 
@@ -49,9 +48,9 @@ Three properties at once: (a) **only you** can produce a valid signature for a g
 
 <ArcRow n={2} title="The one-way function — scalar multiplication on a curve">
 
-Take an <Term id="elliptic-curve">elliptic curve</Term> <Formula>y² = x³ + 7</Formula> over a finite field. The points of this curve form a group: any two points have a sum, computed by the very [chord-and-tangent construction](/en/modules/bezout) that makes Bezout's count work. Pick a generator <Formula>G</Formula>; repeated addition gives <Term id="scalar-multiplication">scalar multiplication</Term>: <Formula>kG = G + G + ⋯ + G</Formula> (k times).
+Take an <Term id="elliptic-curve">elliptic curve</Term> $y² = x³ + 7$ over a finite field. The points of this curve form a group: any two points have a sum, computed by the very [chord-and-tangent construction](/en/modules/bezout) that makes Bezout's count work. Pick a generator $G$; repeated addition gives <Term id="scalar-multiplication">scalar multiplication</Term>: $kG = G + G + ⋯ + G$ (k times).
 
-Computing <Formula>kG</Formula> from <Formula>(k, G)</Formula> takes about <Formula>log₂ k</Formula> additions (double-and-add). Recovering <Formula>k</Formula> from <Formula>(G, kG)</Formula> is the <Term id="discrete-log">discrete logarithm</Term> problem; for cryptographic curves like <Term id="secp256k1">secp256k1</Term>, no algorithm is known that beats roughly <Formula>√n</Formula> work, where <Formula>n ≈ 2²⁵⁶</Formula>. That is the asymmetry the entire scheme stands on.
+Computing $kG$ from $(k, G)$ takes about $\log₂ k$ additions (double-and-add). Recovering $k$ from $(G, kG)$ is the <Term id="discrete-log">discrete logarithm</Term> problem; for cryptographic curves like <Term id="secp256k1">secp256k1</Term>, no algorithm is known that beats roughly $\sqrt{n}$ work, where $n ≈ 2²⁵⁶$. That is the asymmetry the entire scheme stands on.
 
 <CodeBlock slug="bitcoinSignature" arc="arc2" />
 
@@ -59,15 +58,15 @@ Computing <Formula>kG</Formula> from <Formula>(k, G)</Formula> takes about <Form
 
 <ArcRow n={3} title="Keys — the move that anyone can do, no one can undo">
 
-Pick a random integer <Formula>{`d ∈ {1, …, n−1}`}</Formula> and keep it secret — that is your <Term id="private-key">private key</Term>. Compute <Formula>Q = dG</Formula> and publish it — that is your <Term id="public-key">public key</Term>. Anyone can compute <Formula>Q</Formula> from <Formula>d</Formula> in milliseconds. Nobody can recover <Formula>d</Formula> from <Formula>Q</Formula> in this universe.
+Pick a random integer $d ∈ {1, …, n−1}$ and keep it secret — that is your <Term id="private-key">private key</Term>. Compute $Q = dG$ and publish it — that is your <Term id="public-key">public key</Term>. Anyone can compute $Q$ from $d$ in milliseconds. Nobody can recover $d$ from $Q$ in this universe.
 
-In the widget, drag the **private key d** slider and watch **Q** hop around the curve while **G** stays fixed. Every <Formula>d</Formula> in <Formula>{`{1, …, 8}`}</Formula> lands on a different point of the subgroup. The puzzle: given the position of **Q** on the plot, can you tell which <Formula>d</Formula> produced it without trying all eight? On the toy curve you can; on secp256k1 you cannot.
+In the widget, drag the **private key d** slider and watch **Q** hop around the curve while **G** stays fixed. Every $d$ in ${1, …, 8}$ lands on a different point of the subgroup. The puzzle: given the position of **Q** on the plot, can you tell which $d$ produced it without trying all eight? On the toy curve you can; on secp256k1 you cannot.
 
 </ArcRow>
 
 <ArcRow n={4} title="Sign — commit to the message, hide the key">
 
-The <Term id="digital-signature">signature</Term> on a message hash <Formula>h</Formula> is two numbers <Formula>(r, s)</Formula>. Pick a fresh random <Term id="nonce">nonce</Term> <Formula>k</Formula>, compute <Formula>R = kG</Formula>, take <Formula>r = R.x mod n</Formula>, and set <Formula>s = (h + r·d) · k⁻¹ mod n</Formula>. The <Formula>k⁻¹</Formula> hides <Formula>d</Formula>: with <Formula>k</Formula> random and secret, <Formula>s</Formula> looks random too. Without the nonce, two signatures from the same key would be a linear system in <Formula>d</Formula> — anyone could solve it.
+The <Term id="digital-signature">signature</Term> on a message hash $h$ is two numbers $(r, s)$. Pick a fresh random <Term id="nonce">nonce</Term> $k$, compute $R = kG$, take $r = R.x \mod n$, and set $s = (h + r·d) · k⁻¹ \mod n$. The $k⁻¹$ hides $d$: with $k$ random and secret, $s$ looks random too. Without the nonce, two signatures from the same key would be a linear system in $d$ — anyone could solve it.
 
 In the widget, the signer panel shows the equations live. Drag **d**, **h**, or **k** and the signature recomputes. Note the line labelled _verifier · only knows h, (r, s), Q_: the boundary between what leaves the signing device and what stays in it.
 
@@ -77,7 +76,7 @@ In the widget, the signer panel shows the equations live. Drag **d**, **h**, or 
 
 <ArcRow n={5} title="Verify — the identity that holds iff you knew the key">
 
-The verifier is given <Formula>h</Formula>, <Formula>(r, s)</Formula>, and <Formula>Q</Formula> — nothing else. Compute <Formula>u₁ = h · s⁻¹ mod n</Formula>, <Formula>u₂ = r · s⁻¹ mod n</Formula>, then <Formula>V = u₁G + u₂Q</Formula>. Accept the signature iff <Formula>V.x ≡ r (mod n)</Formula>. Watch the algebra:
+The verifier is given $h$, $(r, s)$, and $Q$ — nothing else. Compute $u₁ = h · s⁻¹ \mod n$, $u₂ = r · s⁻¹ \mod n$, then $V = u₁G + u₂Q$. Accept the signature iff $V.x ≡ r (\mod n)$. Watch the algebra:
 
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`V = u₁·G + u₂·Q
   = (h/s)·G + (r/s)·dG
@@ -86,7 +85,7 @@ The verifier is given <Formula>h</Formula>, <Formula>(r, s)</Formula>, and <Form
   = k·G
   = R                                      ← so V.x = R.x = r ✓`}</pre>
 
-The line <Formula>s = (h + r·d)/k</Formula> hides <Formula>d</Formula> from anyone who only sees <Formula>(r, s, h, Q)</Formula>; the same line, plugged into <Formula>V = u₁G + u₂Q</Formula>, makes <Formula>V</Formula> _exactly_ equal <Formula>R</Formula>. The verifier never recovers <Formula>d</Formula> and yet arrives at the same point the signer used. That coincidence — produced only by knowing <Formula>d</Formula>, checked without — is the _signature_ of the entire scheme, in both senses of the word.
+The line $s = (h + r·d)/k$ hides $d$ from anyone who only sees $(r, s, h, Q)$; the same line, plugged into $V = u₁G + u₂Q$, makes $V$ _exactly_ equal $R$. The verifier never recovers $d$ and yet arrives at the same point the signer used. That coincidence — produced only by knowing $d$, checked without — is the _signature_ of the entire scheme, in both senses of the word.
 
 <CodeBlock slug="bitcoinSignature" arc="arc5" />
 
@@ -94,14 +93,14 @@ The line <Formula>s = (h + r·d)/k</Formula> hides <Formula>d</Formula> from any
 
 <ArcRow n={6} title="secp256k1 — the same algorithm, bigger numbers">
 
-Bitcoin runs the same group law and the same ECDSA equations on <Term id="secp256k1">secp256k1</Term>: <Formula>y² = x³ + 7</Formula> over the prime <Formula>p = 2²⁵⁶ − 2³² − 977</Formula>. The widget above is a microscopic version: 17 instead of <Formula>2²⁵⁶</Formula>, subgroup order 9 instead of <Formula>~2²⁵⁶</Formula>. The algorithm is identical. The only thing that scales is the gap between _multiplying_ (still <Formula>O(log k)</Formula>) and _recovering_ (now <Formula>~2¹²⁸</Formula>). That gap is the only reason your wallet is safe.
+Bitcoin runs the same group law and the same ECDSA equations on <Term id="secp256k1">secp256k1</Term>: $y² = x³ + 7$ over the prime $p = 2²⁵⁶ − 2³² − 977$. The widget above is a microscopic version: 17 instead of $2²⁵⁶$, subgroup order 9 instead of $~2²⁵⁶$. The algorithm is identical. The only thing that scales is the gap between _multiplying_ (still $O(\log k)$) and _recovering_ (now $~2¹²⁸$). That gap is the only reason your wallet is safe.
 
 <Counterexample>
   The math is sound; the implementation is where it dies. ECDSA requires a fresh, uniformly random
-  nonce <Formula>k</Formula> for every signature. Reuse <Formula>k</Formula> across two different
-  messages and an attacker recovers <Formula>d</Formula> with eighth-grade algebra:{" "}
-  <Formula>d = (s₁·h₂ − s₂·h₁) / (r·(s₂ − s₁))</Formula> — a one-line wallet drainer. Sony's
-  PlayStation 3 firmware (2010) reused <Formula>k</Formula>; their *master signing key* fell out in
+  nonce $k$ for every signature. Reuse $k$ across two different
+  messages and an attacker recovers $d$ with eighth-grade algebra:{" "}
+  $d = (s₁·h₂ − s₂·h₁) / (r·(s₂ − s₁))$ — a one-line wallet drainer. Sony's
+  PlayStation 3 firmware (2010) reused $k$; their *master signing key* fell out in
   days. Bitcoin wallets have lost coins to non-uniform RNG drift the same way. The discrete-log gap
   is unbreakable by mathematics; the nonce is breakable by code.
 </Counterexample>
@@ -119,7 +118,7 @@ Bitcoin runs the same group law and the same ECDSA equations on <Term id="secp25
 
 <Exercise number={1} tag="scalar multiplication by hand" noCalculator>
 
-On <Formula>y² = x³ + 7 (mod 17)</Formula> with <Formula>G = (1, 5)</Formula>, compute **3G** using the chord-and-tangent group law: first 2G by doubling, then add G. Verify your answer against the widget.
+On $y² = x³ + 7 (\mod 17)$ with $G = (1, 5)$, compute **3G** using the chord-and-tangent group law: first 2G by doubling, then add G. Verify your answer against the widget.
 
 <Solution>
   **2G:** doubling, λ = (3·1² + 0)/(2·5) = 3/10. 10⁻¹ mod 17 = 12 (since 10·12 = 120 = 7·17 + 1), so
@@ -133,7 +132,7 @@ On <Formula>y² = x³ + 7 (mod 17)</Formula> with <Formula>G = (1, 5)</Formula>,
 
 <Exercise number={2} tag="sign by hand">
 
-With **d = 3**, **h = 4**, **k = 2**, produce the ECDSA signature <Formula>(r, s)</Formula>. You may use <Formula>2G = (2, 10)</Formula> from exercise 1. Confirm in the widget by setting d, h, k to these values.
+With **d = 3**, **h = 4**, **k = 2**, produce the ECDSA signature $(r, s)$. You may use $2G = (2, 10)$ from exercise 1. Confirm in the widget by setting d, h, k to these values.
 
 <Solution>
   R = kG = 2G = (2, 10), so r = 2 mod 9 = **2**. k⁻¹ mod 9 = 5 (because 2·5 = 10 ≡ 1 mod 9). s = (h
@@ -144,7 +143,7 @@ With **d = 3**, **h = 4**, **k = 2**, produce the ECDSA signature <Formula>(r, s
 
 <Exercise number={3} tag="verify by hand">
 
-You receive **h = 4**, signature **(r, s) = (2, 5)**, and public key <Formula>Q = 3G = (5, 9)</Formula>. Run the verifier equations: compute u₁, u₂, then V = u₁G + u₂Q, and check V.x mod 9 = r.
+You receive **h = 4**, signature **(r, s) = (2, 5)**, and public key $Q = 3G = (5, 9)$. Run the verifier equations: compute u₁, u₂, then V = u₁G + u₂Q, and check V.x mod 9 = r.
 
 <Solution>
   s⁻¹ mod 9 = 2 (5·2 = 10 ≡ 1). u₁ = h·s⁻¹ = 4·2 = 8. u₂ = r·s⁻¹ = 2·2 = 4. So V = 8G + 4Q = 8G +
@@ -156,7 +155,7 @@ You receive **h = 4**, signature **(r, s) = (2, 5)**, and public key <Formula>Q 
 
 <Exercise number={4} tag="the forger's frustration">
 
-A forger doesn't know **d**, but tries to invent a signature <Formula>(r', s')</Formula> for some message hash <Formula>h</Formula> and a target public key Q. Explain — without proof, just the structure — why almost any guess fails the verify check. What would the forger have to know to succeed?
+A forger doesn't know **d**, but tries to invent a signature $(r', s')$ for some message hash $h$ and a target public key Q. Explain — without proof, just the structure — why almost any guess fails the verify check. What would the forger have to know to succeed?
 
 <Solution>
   Verify computes V = u₁G + u₂Q, a point on the curve. The check is V.x mod n = r'. For a random
@@ -173,9 +172,9 @@ A forger doesn't know **d**, but tries to invent a signature <Formula>(r', s')</
 
 <WhyNotTaught>
   Cryptography textbooks usually open ECDSA with the verification equation —{" "}
-  <Formula>u₁G + u₂Q = R</Formula> — already on the page, asking the reader to accept it. Lemma
-  walks the door the other way: *why* would the verifier ever arrive at <Formula>R</Formula> without
-  knowing <Formula>d</Formula>? The answer rebuilds the algebra from the one-way street (multiply
+  $u₁G + u₂Q = R$ — already on the page, asking the reader to accept it. Lemma
+  walks the door the other way: *why* would the verifier ever arrive at $R$ without
+  knowing $d$? The answer rebuilds the algebra from the one-way street (multiply
   easy, divide hard) up. The textbook hides the asymmetry; the asymmetry is the point.
 </WhyNotTaught>
 

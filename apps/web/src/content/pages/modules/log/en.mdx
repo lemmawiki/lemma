@@ -16,16 +16,15 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · what's the exponent">
 
 # How many times do you multiply 2 to get 1,024?
 
-The answer is 10. That 10 is <Formula>log₂(1,024)</Formula>. **Log is the inverse of exponentiation — it pulls the exponent out of the result.** Most big numbers in nature are built from exponents: cells double, interest compounds, starlight dims as <Formula>1/r²</Formula>, sound spans twelve orders of magnitude. The result you see (1,024 cells, a 100× gain, magnitude-7.2) is rarely the natural parameter. The _exponent_ (how many doublings, how many years) is. Log is the function that recovers it. You already use a special case — <Formula>log₁₀(1,000,000) = 6</Formula> because the number has six zeros. The everyday _digit count is the exponent for base 10_. Generalize the digit count to any base and you have the log. And because exponents add when their bases multiply, log turns multiplication into addition: <Formula>log(a·b) = log(a) + log(b)</Formula>. That one line drives the rest of this page.
+The answer is 10. That 10 is $\log₂(1,024)$. **Log is the inverse of exponentiation — it pulls the exponent out of the result.** Most big numbers in nature are built from exponents: cells double, interest compounds, starlight dims as $1/r²$, sound spans twelve orders of magnitude. The result you see (1,024 cells, a 100× gain, magnitude-7.2) is rarely the natural parameter. The _exponent_ (how many doublings, how many years) is. Log is the function that recovers it. You already use a special case — $\log₁₀(1,000,000) = 6$ because the number has six zeros. The everyday _digit count is the exponent for base 10_. Generalize the digit count to any base and you have the log. And because exponents add when their bases multiply, log turns multiplication into addition: $\log(a·b) = \log(a) + \log(b)$. That one line drives the rest of this page.
 
 <Lede>
-  **log = what's the exponent.** Everything else — <Formula>log(a·b) = log(a) + log(b)</Formula>,
+  **log = what's the exponent.** Everything else — $\log(a·b) = \log(a) + \log(b)$,
   slide rules, log-likelihood, digit-count estimates — is consequence.
 </Lede>
 
@@ -35,7 +34,7 @@ The answer is 10. That 10 is <Formula>log₂(1,024)</Formula>. **Log is the inve
 
 <ToolSpec>
   <Fragment slot="definition">
-    The inverse of exponentiation. <Formula>log(a·b) = log(a) + log(b)</Formula> — products become
+    The inverse of exponentiation. $\log(a·b) = \log(a) + \log(b)$ — products become
     sums. The whole module is that one identity.
   </Fragment>
   <Fragment slot="applies">
@@ -46,7 +45,7 @@ The answer is 10. That 10 is <Formula>log₂(1,024)</Formula>. **Log is the inve
   <Fragment slot="breaks">
     Argument is zero or negative — real log is undefined. Base 1 — every exponent gives 1 and the
     inverse collapses. The most common student error is logging across an addition:{" "}
-    <Formula>log(a + b) ≠ log(a) + log(b)</Formula>. The identity needs a product underneath, every
+    $\log(a + b) ≠ \log(a) + \log(b)$. The identity needs a product underneath, every
     time.
   </Fragment>
 </ToolSpec>
@@ -58,7 +57,7 @@ The answer is 10. That 10 is <Formula>log₂(1,024)</Formula>. **Log is the inve
 
 <ArcRow n={1} title="The identity that does all the work">
 
-Log is defined by one rule: <Formula>log(a·b) = log(a) + log(b)</Formula>. Pick any base. The rule is the same. (Context picks the base by convention: <Formula>log</Formula> means <Term id="common-log">log₁₀</Term> in engineering, <Term id="natural-log">ln</Term> in ML and statistics, <Formula>log₂</Formula> in algorithms — read by domain when the subscript is omitted.) Every other property falls out of that line. <Formula>log(a/b) = log(a) − log(b)</Formula>: take the rule, replace b with 1/b, done. <Formula>log(aⁿ) = n·log(a)</Formula>: apply the rule n times to <Formula>a · a · … · a</Formula>. <Formula>log(1) = 0</Formula>: from <Formula>log(1·a) = log(1) + log(a)</Formula>. There is no fourth rule because there is no fourth way to combine multiplications. Practically: the <Term id="logarithm">log</Term> of a number tells you _how many factors of the base it is built from_. <Formula>log₁₀(1000) = 3</Formula> because 1000 is three tens, multiplied. Counting factors. That's it.
+Log is defined by one rule: $\log(a·b) = \log(a) + \log(b)$. Pick any base. The rule is the same. (Context picks the base by convention: $\log$ means <Term id="common-log">log₁₀</Term> in engineering, <Term id="natural-log">ln</Term> in ML and statistics, $\log₂$ in algorithms — read by domain when the subscript is omitted.) Every other property falls out of that line. $\log(a/b) = \log(a) − \log(b)$: take the rule, replace b with 1/b, done. $\log(aⁿ) = n·\log(a)$: apply the rule n times to $a · a · … · a$. $\log(1) = 0$: from $\log(1·a) = \log(1) + \log(a)$. There is no fourth rule because there is no fourth way to combine multiplications. Practically: the <Term id="logarithm">log</Term> of a number tells you _how many factors of the base it is built from_. $\log₁₀(1000) = 3$ because 1000 is three tens, multiplied. Counting factors. That's it.
 
 <CodeBlock slug="logarithm" arc="arc1" />
 
@@ -70,11 +69,11 @@ Log is defined by one rule: <Formula>log(a·b) = log(a) + log(b)</Formula>. Pick
 
 Exponential quantities scatter across many places — time-growth (<Term id="compound-interest">compound interest</Term>, carbon dating), perceptual compression (decibels), scale-of-nature units (earthquake magnitude), counting information (bits). Same trick each time: set up the equation, take logs, pull the exponent. By hand.
 
-- **Compound interest.** A million won at 7%/year — when does it double? <Formula>1.07ᵗ = 2</Formula> → <Formula>t = log(2) / log(1.07) ≈ 0.301 / 0.0294 ≈ 10.24 years</Formula>. The <Term id="rule-of-72">Rule of 72</Term> (<Formula>72 / 7 ≈ 10.3</Formula>) is this formula sloppily memorized.
-- **Carbon-14 dating.** Carbon-14 halves every 5,730 years after death. If 25% remains: <Formula>(1/2)^(t/5730) = 0.25 = (1/2)²</Formula> → <Formula>t = 11,460 years</Formula>. For odd ratios (33%, 17%) only the log expression closes in a single line.
-- **Decibels.** <Formula>dB = 10·log₁₀(P/P₀)</Formula>. Conversation 60 dB, rock concert 110 dB → acoustic power differs by <Formula>10⁵ = 100,000×</Formula>. Your ears don't perceive a hundred-thousand-fold gap; hearing is logarithmic in power, and decibels track that compression directly.
-- **Earthquake magnitude.** <Formula>E = E₀·10^(1.5·M)</Formula>. Tōhoku 2011 (M 9.0) vs an ordinary large quake (M 7.0): <Formula>E₉ / E₇ = 10^(1.5×2) = 10³ = 1,000×</Formula>. Two units of magnitude, three orders of energy. Natural earthquake energies span 19 orders of magnitude — comparison is hopeless without the compression Richter applies.
-- **Bits and binary search.** A 1,024-page dictionary, halving each step → <Formula>log₂(1024) = 10</Formula> steps to find any word. A 32-bit int holds <Formula>2³² ≈ 4.3 billion</Formula> values; identifying N items needs <Formula>log₂(N)</Formula> bits. A deck of cards has <Formula>log₂(<Term id="factorial">52!</Term>) ≈ 226 bits</Formula> of shuffle entropy — 226 yes/no questions to specify a single shuffle exactly.
+- **Compound interest.** A million won at 7%/year — when does it double? $1.07ᵗ = 2$ → $t = \log(2) / \log(1.07) ≈ 0.301 / 0.0294 ≈ 10.24 years$. The <Term id="rule-of-72">Rule of 72</Term> ($72 / 7 ≈ 10.3$) is this formula sloppily memorized.
+- **Carbon-14 dating.** Carbon-14 halves every 5,730 years after death. If 25% remains: $(1/2)^(t/5730) = 0.25 = (1/2)²$ → $t = 11,460 years$. For odd ratios (33%, 17%) only the log expression closes in a single line.
+- **Decibels.** $dB = 10·\log₁₀(P/P₀)$. Conversation 60 dB, rock concert 110 dB → acoustic power differs by $10⁵ = 100,000×$. Your ears don't perceive a hundred-thousand-fold gap; hearing is logarithmic in power, and decibels track that compression directly.
+- **Earthquake magnitude.** $E = E₀·10^(1.5·M)$. Tōhoku 2011 (M 9.0) vs an ordinary large quake (M 7.0): $E₉ / E₇ = 10^(1.5×2) = 10³ = 1,000×$. Two units of magnitude, three orders of energy. Natural earthquake energies span 19 orders of magnitude — comparison is hopeless without the compression Richter applies.
+- **Bits and binary search.** A 1,024-page dictionary, halving each step → $\log₂(1024) = 10$ steps to find any word. A 32-bit int holds $2³² ≈ 4.3 billion$ values; identifying N items needs $\log₂(N)$ bits. A deck of cards has $\log₂(<Term id="factorial">52!</Term>) ≈ 226 bits$ of shuffle entropy — 226 yes/no questions to specify a single shuffle exactly.
 
 Five problems, one shape: nature's equation is exponential, take logs both sides, the exponent falls out. The identity from § 1 — multiplication into addition — is doing this work every single time.
 
@@ -82,13 +81,13 @@ Five problems, one shape: nature's equation is exponential, take logs both sides
 
 <ArcRow n={3} title="Napier and the slide rule (×→+ embodied)">
 
-John Napier published the first log tables in 1614 because astronomers were dying inside, multiplying nine-digit numbers by hand to predict eclipses. His tables let them _look up_ <Formula>log(a)</Formula> and <Formula>log(b)</Formula>, _add_ the two, and _look up_ what number had that log — the answer to <Formula>a·b</Formula> with no multiplication anywhere. Three centuries later, every engineer carried a <Term id="slide-rule">slide rule</Term>: a wooden ruler with two log-spaced scales that _slid past each other_. Aligning **2** on one against **3** on the other physically performed <Formula>log(2) + log(3)</Formula> and showed **6** at the meeting point. **The slide rule is the identity from § 1, made into furniture.** Apollo got to the moon on these.
+John Napier published the first log tables in 1614 because astronomers were dying inside, multiplying nine-digit numbers by hand to predict eclipses. His tables let them _look up_ $\log(a)$ and $\log(b)$, _add_ the two, and _look up_ what number had that log — the answer to $a·b$ with no multiplication anywhere. Three centuries later, every engineer carried a <Term id="slide-rule">slide rule</Term>: a wooden ruler with two log-spaced scales that _slid past each other_. Aligning **2** on one against **3** on the other physically performed $\log(2) + \log(3)$ and showed **6** at the meeting point. **The slide rule is the identity from § 1, made into furniture.** Apollo got to the moon on these.
 
 </ArcRow>
 
 <ArcRow n={4} title="Underflow — and why log-space saves your model">
 
-A <Term id="float32"><Formula>float32</Formula></Term> can hold numbers down to about <Formula>10⁻³⁸</Formula>. Multiply forty probabilities of <Formula>0.1</Formula> and you've crossed it — the result rounds to zero, silently. No exception. No warning. Every <Term id="gradient">gradient</Term> that depended on it dies with it. This isn't a numerical-analysis curiosity; it's why every deep-learning library reports loss as a _sum_, not a product. The fix is the identity from § 1, applied mechanically: take logs the moment a product would otherwise form. <Formula>log(p₁·p₂·…·pₙ) = Σ log(pᵢ)</Formula>. Each <Formula>log(pᵢ)</Formula> is a comfortable negative number; their sum is a comfortable larger negative number. No <Term id="underflow">underflow</Term> can reach you. This is what <Term id="log-likelihood">log-likelihood</Term> is doing, and what <Term id="log-softmax"><Formula>log_softmax</Formula></Term> was built to do. Live in log-space; sums replace products; floats stop lying.
+A <Term id="float32">$float32$</Term> can hold numbers down to about $10⁻³⁸$. Multiply forty probabilities of $0.1$ and you've crossed it — the result rounds to zero, silently. No exception. No warning. Every <Term id="gradient">gradient</Term> that depended on it dies with it. This isn't a numerical-analysis curiosity; it's why every deep-learning library reports loss as a _sum_, not a product. The fix is the identity from § 1, applied mechanically: take logs the moment a product would otherwise form. $\log(p₁·p₂·…·pₙ) = Σ \log(pᵢ)$. Each $\log(pᵢ)$ is a comfortable negative number; their sum is a comfortable larger negative number. No <Term id="underflow">underflow</Term> can reach you. This is what <Term id="log-likelihood">log-likelihood</Term> is doing, and what <Term id="log-softmax">$\log_softmax$</Term> was built to do. Live in log-space; sums replace products; floats stop lying.
 
 <CodeBlock slug="logarithm" arc="arc4" />
 
@@ -105,11 +104,11 @@ ml      : independent likelihoods multiply;
 
 Five live consumers, all leaning on the single identity from arc 1:
 
-- [**Bitcoin pizza**](/en/finance/bitcoin-pizza) inverts compound growth: <Formula>F = P(1+r)^t</Formula> can't be solved for `t` without taking logs. <Formula>t = log(F/P) / log(1+r)</Formula>. CAGR is the same identity solved for `r` instead. *Three unknowns, one equation, three log-shaped answers.*
-- [**Present value**](/en/finance/present-value) bridges from discrete compounding <Formula>(1 + r/n)^(n·t)</Formula> to the continuous form <Formula>e^(rt)</Formula>: take the log of the discrete expression, watch it reduce to <Formula>r·t</Formula> in the limit. *Continuous compounding isn't a separate operation — it's the discrete one looked at through log.*
-- [**Confidently wrong**](/en/ml/confident-wrong) builds the loss <Formula>−log p_true</Formula>. Multiple training examples have likelihoods that *multiply*; logs turn that product into a sum, and the negative sign makes "more confident, more wrong" climb instead of vanish.
-- [**TF-IDF**](/en/ml/tf-idf) measures rarity in *bits*: <Formula>idf(t) = log(N / df(t))</Formula>. The logarithm is what makes 'three times rarer' into 'one bit more surprising' — directly comparable to other bit-measured quantities like password strength and English-letter entropy.
-- [**Model calibration**](/en/ml/model-calibration) fits temperature `T` by minimizing log-loss on held-out validation; the logit function <Formula>log(p/(1−p))</Formula> is the basis change that linearizes the calibration curve in the first place. *Two different log uses inside one workflow.*
+- [**Bitcoin pizza**](/en/finance/bitcoin-pizza) inverts compound growth: $F = P(1+r)^t$ can't be solved for `t` without taking logs. $t = \log(F/P) / \log(1+r)$. CAGR is the same identity solved for `r` instead. *Three unknowns, one equation, three log-shaped answers.*
+- [**Present value**](/en/finance/present-value) bridges from discrete compounding $(1 + r/n)^(n·t)$ to the continuous form $e^(rt)$: take the log of the discrete expression, watch it reduce to $r·t$ in the limit. *Continuous compounding isn't a separate operation — it's the discrete one looked at through log.*
+- [**Confidently wrong**](/en/ml/confident-wrong) builds the loss $−\log p_true$. Multiple training examples have likelihoods that *multiply*; logs turn that product into a sum, and the negative sign makes "more confident, more wrong" climb instead of vanish.
+- [**TF-IDF**](/en/ml/tf-idf) measures rarity in *bits*: $idf(t) = \log(N / df(t))$. The logarithm is what makes 'three times rarer' into 'one bit more surprising' — directly comparable to other bit-measured quantities like password strength and English-letter entropy.
+- [**Model calibration**](/en/ml/model-calibration) fits temperature `T` by minimizing log-loss on held-out validation; the logit function $\log(p/(1−p))$ is the basis change that linearizes the calibration curve in the first place. *Two different log uses inside one workflow.*
 
 Five problems across two pillars, one identity: the swap from × into +. Napier's slide rule from arc 3 is the same machine running today inside `log_softmax` and the calibration optimizer.
 
@@ -138,7 +137,7 @@ On the Two Stacks widget, set **a = 4**. What value of **b** makes **a·b** land
 
 <Exercise number={2} tag="compute by hand · the digit rule" noCalculator>
 
-Without a calculator, give **log₁₀(2,000,000)** using only <Formula>log₁₀(2) ≈ 0.301</Formula>.
+Without a calculator, give **log₁₀(2,000,000)** using only $\log₁₀(2) ≈ 0.301$.
 
 <Solution>
   log₁₀(2 · 10⁶) = log₁₀(2) + log₁₀(10⁶) = 0.301 + 6 = **6.301**. The whole exercise is the identity
@@ -150,10 +149,10 @@ Without a calculator, give **log₁₀(2,000,000)** using only <Formula>log₁�
 
 <Exercise number={3} tag="write the equation · sequence probability">
 
-You evaluate a 50-token sequence; each token has probability ~**0.05**. Write the formula your code should compute, _and_ the formula it should _avoid_. Use <Formula>log(0.05) ≈ −3.00</Formula>.
+You evaluate a 50-token sequence; each token has probability ~**0.05**. Write the formula your code should compute, _and_ the formula it should _avoid_. Use $\log(0.05) ≈ −3.00$.
 
 <Solution>
-  *Avoid*: P = 0.05⁵⁰ ≈ <Formula>10⁻⁶⁵</Formula> — zero in float32, almost zero in float64.
+  *Avoid*: P = 0.05⁵⁰ ≈ $10⁻⁶⁵$ — zero in float32, almost zero in float64.
   *Compute*: log P = 50·log(0.05) ≈ 50·(−3.00) = **−150**. The product is the same number; the sum
   is the only one your computer can hold.
 </Solution>
@@ -163,7 +162,7 @@ You evaluate a 50-token sequence; each token has probability ~**0.05**. Write th
 <Exercise number={4} tag="compute by hand · Stirling on a napkin" noCalculator>
 
 <Term id="stirling-approximation">Stirling</Term>:
-<Formula>log₁₀(n!) ≈ n·log₁₀(n) − n·log₁₀(e)</Formula>, with <Formula>log₁₀(e) ≈ 0.434</Formula>.
+$\log₁₀(n!) ≈ n·\log₁₀(n) − n·\log₁₀(e)$, with $\log₁₀(e) ≈ 0.434$.
 Estimate **log₁₀(100!)**. *How many digits* does 100! have?
 
 <Solution>
@@ -188,13 +187,13 @@ On Two Stacks, drag **a** and **b** so that the gap log(b) − log(a) is exactly
 
 <Exercise number={6} tag="write the equation · logsumexp">
 
-You're given two probabilities p and q, but you only know <Formula>log p</Formula> and <Formula>log q</Formula> (not p, q themselves — they'd underflow). Derive a numerically stable expression for <Formula>log(p + q)</Formula>. (This is the <Term id="logsumexp">_logsumexp_</Term> trick.)
+You're given two probabilities p and q, but you only know $\log p$ and $\log q$ (not p, q themselves — they'd underflow). Derive a numerically stable expression for $\log(p + q)$. (This is the <Term id="logsumexp">_logsumexp_</Term> trick.)
 
 <Solution>
-  Let <Formula>M = max(log p, log q)</Formula>. Factor:{" "}
-  <Formula>log(p + q) = M + log(e^(log p − M) + e^(log q − M))</Formula>. Both inner exponents are ≤
+  Let $M = \max(\log p, \log q)$. Factor:{" "}
+  $\log(p + q) = M + \log(e^(\log p − M) + e^(\log q − M))$. Both inner exponents are ≤
   0, so their exponentials are ≤ 1 — no overflow, no underflow. This is *the* function in every ML
-  library: <Formula>torch.logsumexp</Formula>, <Formula>scipy.special.logsumexp</Formula>. Same
+  library: $torch.logsumexp$, $scipy.special.logsumexp$. Same
   identity from § 1, used backwards.
 </Solution>
 
@@ -202,13 +201,13 @@ You're given two probabilities p and q, but you only know <Formula>log p</Formul
 
 <Exercise number={7} tag="the evil one · 'just multiply'">
 
-A junior says: "<Term id="log-softmax"><Formula>log_softmax</Formula></Term> is just a perf optimization. Mathematically you could just multiply the probabilities — switch to float64 if you're worried." Write a _one-paragraph* rebuttal that holds for both <Term id="float32"><Formula>float32</Formula></Term> and <Formula>float64</Formula>. Then state the single equation that makes log-space work.
+A junior says: "<Term id="log-softmax">$\log_softmax$</Term> is just a perf optimization. Mathematically you could just multiply the probabilities — switch to float64 if you're worried." Write a _one-paragraph* rebuttal that holds for both <Term id="float32">$float32$</Term> and $float64$. Then state the single equation that makes log-space work.
 
 <Solution>
-  Wrong for both. <Formula>float32</Formula> underflows below <Formula>~10⁻³⁸</Formula>;{" "}
-  <Formula>float64</Formula> below <Formula>~10⁻³⁰⁸</Formula>. A 1000-token sequence at p = 0.1 per
+  Wrong for both. $float32$ underflows below $~10⁻³⁸$;{" "}
+  $float64$ below $~10⁻³⁰⁸$. A 1000-token sequence at p = 0.1 per
   token is 10⁻¹⁰⁰⁰ — zero in *both*. The product literally does not exist in machine arithmetic; the
-  sum-of-logs always does. The single equation: <Formula>log(a·b) = log(a) + log(b)</Formula>.
+  sum-of-logs always does. The single equation: $\log(a·b) = \log(a) + \log(b)$.
 </Solution>
 
 </Exercise>

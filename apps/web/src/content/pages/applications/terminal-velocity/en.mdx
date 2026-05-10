@@ -21,13 +21,12 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · two forces, one fixed point">
 
 # Why doesn't a falling raindrop keep speeding up?
 
-Gravity pulls down with the same force the entire fall — about <Formula>g = 9.8 m/s²</Formula> per kilogram, second after second. Free-fall in vacuum keeps accelerating; that's the no-drag picture from [projectile motion](/en/physics/projectile-motion). But in air, raindrops settle at maybe 9 m/s, parachutists at maybe 5 m/s, and dust motes barely move at all. None of them are violating Newton; they've just hit a *fixed point* where two forces cancel exactly. The math is one line — and it's the same shape you'd see for a heating cup of coffee or a charging capacitor.
+Gravity pulls down with the same force the entire fall — about $g = 9.8 m/s²$ per kilogram, second after second. Free-fall in vacuum keeps accelerating; that's the no-drag picture from [projectile motion](/en/physics/projectile-motion). But in air, raindrops settle at maybe 9 m/s, parachutists at maybe 5 m/s, and dust motes barely move at all. None of them are violating Newton; they've just hit a *fixed point* where two forces cancel exactly. The math is one line — and it's the same shape you'd see for a heating cup of coffee or a charging capacitor.
 
 <Lede>**Terminal velocity isn't a maximum — it's an equilibrium.** The asymptote where gravity and drag cancel.</Lede>
 
@@ -39,17 +38,17 @@ Gravity pulls down with the same force the entire fall — about <Formula>g = 9.
 
 <ArcRow n={1} title="Velocity is a derivative; acceleration is another">
 
-A falling object has a position <Formula>y(t)</Formula>. From the [derivatives module](/en/modules/derivatives), <Term id="velocity">velocity</Term> is the rate at which position changes: <Formula>v = dy/dt</Formula>. Apply the same machine again and you get <Term id="acceleration">acceleration</Term> <Formula>a = dv/dt</Formula> — the rate at which velocity changes. Newton's second law packages this: net force per unit mass equals <Formula>dv/dt</Formula>. Once you can write down the forces and divide by mass, you have a recipe for predicting motion. The whole drama of this page sits in two terms on the right-hand side.
+A falling object has a position $y(t)$. From the [derivatives module](/en/modules/derivatives), <Term id="velocity">velocity</Term> is the rate at which position changes: $v = dy/dt$. Apply the same machine again and you get <Term id="acceleration">acceleration</Term> $a = dv/dt$ — the rate at which velocity changes. Newton's second law packages this: net force per unit mass equals $dv/dt$. Once you can write down the forces and divide by mass, you have a recipe for predicting motion. The whole drama of this page sits in two terms on the right-hand side.
 
 </ArcRow>
 
 <ArcRow n={2} title="Two forces — gravity is constant, drag isn't">
 
-A falling raindrop has two forces acting on it. **Gravity** pulls down with constant magnitude <Formula>F_g = m·g</Formula>; per unit mass that's just <Formula>g ≈ 9.8 m/s²</Formula>, regardless of how fast it's moving. **<Term id="drag">Drag</Term>** pushes up against the motion, and unlike gravity it *grows with speed*. For small objects in air, a clean approximation is *linear drag*: <Formula>F_drag = k·v</Formula> per unit mass. Slow raindrop → small drag. Fast raindrop → big drag. The two forces are <Term id="vector">vectors</Term> pointing opposite — exactly the simple-1D add-and-subtract case from the [vectors module](/en/modules/vectors).
+A falling raindrop has two forces acting on it. **Gravity** pulls down with constant magnitude $F_g = m·g$; per unit mass that's just $g ≈ 9.8 m/s²$, regardless of how fast it's moving. **<Term id="drag">Drag</Term>** pushes up against the motion, and unlike gravity it *grows with speed*. For small objects in air, a clean approximation is *linear drag*: $F_drag = k·v$ per unit mass. Slow raindrop → small drag. Fast raindrop → big drag. The two forces are <Term id="vector">vectors</Term> pointing opposite — exactly the simple-1D add-and-subtract case from the [vectors module](/en/modules/vectors).
 
-The net force per unit mass — what goes into <Formula>dv/dt</Formula> — is the difference:
+The net force per unit mass — what goes into $dv/dt$ — is the difference:
 
-<Formula>dv/dt = g − k v</Formula>
+$dv/dt = g − k v$
 
 Two terms. The first is constant. The second isn't. *That's the whole equation.*
 
@@ -61,12 +60,12 @@ Read it left-to-right: at any instant, the rate at which velocity is changing eq
 
 Three regimes, all readable from the formula alone:
 
-- **<Formula>v</Formula> small** (just dropped from rest): <Formula>kv</Formula> is small, so <Formula>dv/dt ≈ g</Formula> — full acceleration, just like vacuum free-fall.
-- **<Formula>v</Formula> moderate**: <Formula>kv</Formula> is significant. <Formula>dv/dt = g − kv</Formula> is positive but smaller. Velocity still grows, but more slowly.
-- **<Formula>v = g/k</Formula>** exactly: <Formula>kv = g</Formula>. <Formula>dv/dt = 0</Formula>. Velocity stops changing. This is <Term id="terminal-velocity">terminal velocity</Term>.
-- **<Formula>v &gt; g/k</Formula>** (e.g., thrown downward fast): <Formula>kv &gt; g</Formula>. <Formula>dv/dt &lt; 0</Formula>. Velocity *decreases* — drag wins, the object slows down. Until it hits <Formula>v_t</Formula> from above.
+- **$v$ small** (just dropped from rest): $kv$ is small, so $dv/dt ≈ g$ — full acceleration, just like vacuum free-fall.
+- **$v$ moderate**: $kv$ is significant. $dv/dt = g − kv$ is positive but smaller. Velocity still grows, but more slowly.
+- **$v = g/k$** exactly: $kv = g$. $dv/dt = 0$. Velocity stops changing. This is <Term id="terminal-velocity">terminal velocity</Term>.
+- **$v &gt; g/k$** (e.g., thrown downward fast): $kv &gt; g$. $dv/dt &lt; 0$. Velocity *decreases* — drag wins, the object slows down. Until it hits $v_t$ from above.
 
-The widget's blue curve is approaching the dashed green line from below; in either direction, <Formula>v_t</Formula> is the destination.
+The widget's blue curve is approaching the dashed green line from below; in either direction, $v_t$ is the destination.
 
 <CodeBlock slug="terminalVelocity" arc="arc3" />
 
@@ -74,13 +73,13 @@ The widget's blue curve is approaching the dashed green line from below; in eith
 
 <ArcRow n={4} title="Terminal velocity = solving dv/dt = 0">
 
-The "destination" is just whatever value of <Formula>v</Formula> makes <Formula>dv/dt = 0</Formula>. Set it and solve:
+The "destination" is just whatever value of $v$ makes $dv/dt = 0$. Set it and solve:
 
-<Formula>g − k v_t = 0  →  v_t = g / k</Formula>
+$g − k v_t = 0 → v_t = g / k$
 
-One line of algebra. Larger drag (bigger <Formula>k</Formula>) gives smaller terminal velocity — a feather settles fast and slow; a bowling ball would take forever to reach <Formula>v_t</Formula> in air (and in practice would hit the ground first). This is a <Term id="equilibrium">equilibrium</Term>: the speed at which two competing influences exactly cancel. Gravity wants to add to <Formula>v</Formula>; drag wants to subtract from it; at <Formula>v_t</Formula> they tie. Forces don't *disappear* — they *balance*. That distinction is the page's most common misunderstanding.
+One line of algebra. Larger drag (bigger $k$) gives smaller terminal velocity — a feather settles fast and slow; a bowling ball would take forever to reach $v_t$ in air (and in practice would hit the ground first). This is a <Term id="equilibrium">equilibrium</Term>: the speed at which two competing influences exactly cancel. Gravity wants to add to $v$; drag wants to subtract from it; at $v_t$ they tie. Forces don't *disappear* — they *balance*. That distinction is the page's most common misunderstanding.
 
-The formula <Formula>v_t = g/k</Formula> isn't a deep theorem; it's a fixed-point reading. The same shape appears every time a quantity has competing influences that depend on the quantity itself: heating coffee in a cool room reaches the room temperature; a capacitor charging through a resistor reaches the supply voltage; a population with births and deaths proportional to size reaches a carrying capacity. *Different physics, same fixed-point hunt.*
+The formula $v_t = g/k$ isn't a deep theorem; it's a fixed-point reading. The same shape appears every time a quantity has competing influences that depend on the quantity itself: heating coffee in a cool room reaches the room temperature; a capacitor charging through a resistor reaches the supply voltage; a population with births and deaths proportional to size reaches a carrying capacity. *Different physics, same fixed-point hunt.*
 
 <CodeBlock slug="terminalVelocity" arc="arc4" />
 
@@ -90,22 +89,22 @@ The formula <Formula>v_t = g/k</Formula> isn't a deep theorem; it's a fixed-poin
 
 The closed-form solution from rest is
 
-<Formula>v(t) = v_t · (1 − e^(−k t))</Formula>
+$v(t) = v_t · (1 − e^(−k t))$
 
-The error from terminal — the gap <Formula>v_t − v(t)</Formula> — is <Formula>v_t · e^(−k t)</Formula>: it shrinks exponentially. After <Formula>t = ln 2 / k ≈ 0.693/k</Formula> seconds, the error has halved. After <Formula>5/k</Formula> seconds, the error is below 1% of <Formula>v_t</Formula>. The widget makes this readable: drag slider up (large <Formula>k</Formula>) pulls the curve hard to the asymptote in a fraction of a second; drag slider down (small <Formula>k</Formula>) lets it crawl up over many seconds.
+The error from terminal — the gap $v_t − v(t)$ — is $v_t · e^(−k t)$: it shrinks exponentially. After $t = \ln 2 / k ≈ 0.693/k$ seconds, the error has halved. After $5/k$ seconds, the error is below 1% of $v_t$. The widget makes this readable: drag slider up (large $k$) pulls the curve hard to the asymptote in a fraction of a second; drag slider down (small $k$) lets it crawl up over many seconds.
 
-Why exponential? Take the derivative of the error <Formula>ε(t) = v_t − v(t)</Formula>: <Formula>dε/dt = −dv/dt = −(g − kv) = −k ε</Formula>. The error's rate of change is *proportional to the error itself*, with a negative sign. That's the defining shape of exponential decay. Anything whose rate of change is proportional to itself ends up being an exponential — the [logarithm module](/en/modules/log) names this from the other direction. Linear-drag falling, capacitor charging, radioactive decay, Newton's cooling: same equation, same answer.
+Why exponential? Take the derivative of the error $ε(t) = v_t − v(t)$: $dε/dt = −dv/dt = −(g − kv) = −k ε$. The error's rate of change is *proportional to the error itself*, with a negative sign. That's the defining shape of exponential decay. Anything whose rate of change is proportional to itself ends up being an exponential — the [logarithm module](/en/modules/log) names this from the other direction. Linear-drag falling, capacitor charging, radioactive decay, Newton's cooling: same equation, same answer.
 
 <CodeBlock slug="terminalVelocity" arc="arc5" />
 
-Terminal velocity tells you *how fast* the object eventually falls. The next obvious question is *how far has it fallen by time t?* — and that's an [integration](/en/modules/integration) question. Once <Formula>v(t)</Formula> is known, distance is *accumulated velocity*: <Formula>{"y(t) = ∫_0^t v(s) ds"}</Formula>. The area under the velocity curve, from 0 to <Formula>t</Formula>, is the distance fallen by then. Plug in <Formula>v(s) = v_t · (1 − e^(−k s))</Formula> and the integral is closed-form: <Formula>{"y(t) = v_t · t − (v_t/k)(1 − e^(−kt))"}</Formula>. Two regimes are readable from this: for small <Formula>t</Formula>, the curve sits below the line <Formula>v_t · t</Formula> (you haven't been falling at terminal speed for the whole interval); for large <Formula>t</Formula>, the gap stops growing and <Formula>y(t)</Formula> is essentially <Formula>v_t · t − v_t/k</Formula> — terminal speed times time, minus a constant offset that records "the time you spent accelerating up to terminal."
+Terminal velocity tells you *how fast* the object eventually falls. The next obvious question is *how far has it fallen by time t?* — and that's an [integration](/en/modules/integration) question. Once $v(t)$ is known, distance is *accumulated velocity*: $y(t) = ∫_0^t v(s) ds$. The area under the velocity curve, from 0 to $t$, is the distance fallen by then. Plug in $v(s) = v_t · (1 − e^(−k s))$ and the integral is closed-form: $y(t) = v_t · t − (v_t/k)(1 − e^(−kt))$. Two regimes are readable from this: for small $t$, the curve sits below the line $v_t · t$ (you haven't been falling at terminal speed for the whole interval); for large $t$, the gap stops growing and $y(t)$ is essentially $v_t · t − v_t/k$ — terminal speed times time, minus a constant offset that records "the time you spent accelerating up to terminal."
 
 <Counterexample>
-  Real raindrops obey <em>quadratic</em> drag, not linear. <Formula>F_drag = ½ ρ C_d A v²</Formula>:
+  Real raindrops obey <em>quadratic</em> drag, not linear. $F_drag = \tfrac{1}{2} ρ C_d A v²$:
   the force grows with the *square* of speed, not its first power. The terminal-velocity logic
-  still works — set <Formula>dv/dt = 0</Formula>, solve <Formula>g = k v_t²</Formula>,{" "}
-  <Formula>v_t = √(g/k)</Formula> — but the *approach* is no longer a clean exponential and the
-  numbers are different. Linear drag's <Formula>v_t = g/k</Formula> is a teaching simplification
+  still works — set $dv/dt = 0$, solve $g = k v_t²$,{" "}
+  $v_t = \sqrt{g/k}$ — but the *approach* is no longer a clean exponential and the
+  numbers are different. Linear drag's $v_t = g/k$ is a teaching simplification
   for low Reynolds number (small or slow). The shape of the answer (asymptote at force balance)
   doesn't depend on which drag law; the closed form does.
 </Counterexample>
@@ -116,9 +115,9 @@ Terminal velocity tells you *how fast* the object eventually falls. The next obv
 
 <Pin>
   **Terminal velocity isn't a maximum — it's an equilibrium.** Gravity is a constant force; drag
-  is a force that grows with speed. Where they balance, <Formula>dv/dt = 0</Formula>, and velocity
-  stops changing. The equation <Formula>dv/dt = g − kv</Formula> turns "why does falling level
-  off" into "where's the fixed point of <Formula>g − kv = 0</Formula>?" — and the answer is one
+  is a force that grows with speed. Where they balance, $dv/dt = 0$, and velocity
+  stops changing. The equation $dv/dt = g − kv$ turns "why does falling level
+  off" into "where's the fixed point of $g − kv = 0$?" — and the answer is one
   line of algebra.
 </Pin>
 
@@ -126,10 +125,10 @@ Terminal velocity tells you *how fast* the object eventually falls. The next obv
 
 <Exercise number={1} tag="read the widget · terminal velocity by inspection">
 
-In the widget, set the *raindrop* preset (<Formula>k = 1.6</Formula>). Read off the terminal velocity from the dashed asymptote without computing. Now confirm it from the formula <Formula>v_t = g/k</Formula> with <Formula>g = 9.8</Formula>.
+In the widget, set the *raindrop* preset ($k = 1.6$). Read off the terminal velocity from the dashed asymptote without computing. Now confirm it from the formula $v_t = g/k$ with $g = 9.8$.
 
 <Solution>
-  Asymptote sits near <Formula>6.1 m/s</Formula>. Formula: <Formula>v_t = 9.8 / 1.6 ≈ 6.13</Formula>.
+  Asymptote sits near $6.1 m/s$. Formula: $v_t = 9.8 / 1.6 ≈ 6.13$.
   Match. Real raindrops fall at ~9 m/s because real drag is closer to quadratic; linear drag with
   this k undershoots a bit. The *shape* of the answer (asymptote at the force balance) is exactly
   the same in either drag law.
@@ -139,13 +138,13 @@ In the widget, set the *raindrop* preset (<Formula>k = 1.6</Formula>). Read off 
 
 <Exercise number={2} tag="solve dv/dt = 0 by hand" noCalculator>
 
-Take <Formula>g = 10 m/s²</Formula> and <Formula>k = 0.5 / s</Formula>. What is the terminal velocity? Now double <Formula>k</Formula> to <Formula>1.0</Formula>. What happens to <Formula>v_t</Formula>? Now halve it to <Formula>0.25</Formula>?
+Take $g = 10 m/s²$ and $k = 0.5 / s$. What is the terminal velocity? Now double $k$ to $1.0$. What happens to $v_t$? Now halve it to $0.25$?
 
 <Solution>
-  <Formula>v_t = g/k</Formula>. With <Formula>k = 0.5</Formula>: <Formula>v_t = 20 m/s</Formula>.
-  Doubling <Formula>k → 1.0</Formula> halves <Formula>v_t</Formula> to{" "}
-  <Formula>10 m/s</Formula>. Halving <Formula>k → 0.25</Formula> doubles{" "}
-  <Formula>v_t</Formula> to <Formula>40 m/s</Formula>. The relationship is *inverse linear*:
+  $v_t = g/k$. With $k = 0.5$: $v_t = 20 m/s$.
+  Doubling $k → 1.0$ halves $v_t$ to{" "}
+  $10 m/s$. Halving $k → 0.25$ doubles{" "}
+  $v_t$ to $40 m/s$. The relationship is *inverse linear*:
   more drag, less terminal speed; less drag, more terminal speed. (A bowling ball has tiny k
   per unit mass; a feather has huge k.)
 </Solution>
@@ -154,16 +153,16 @@ Take <Formula>g = 10 m/s²</Formula> and <Formula>k = 0.5 / s</Formula>. What is
 
 <Exercise number={3} tag="sign of dv/dt above and below v_t">
 
-For <Formula>g = 9.8</Formula>, <Formula>k = 0.4</Formula>: terminal velocity is{" "}
-<Formula>v_t = 24.5 m/s</Formula>. Compute <Formula>dv/dt</Formula> at three speeds:{" "}
-<Formula>v = 10 m/s</Formula>, <Formula>v = 24.5 m/s</Formula>, <Formula>v = 40 m/s</Formula>.
+For $g = 9.8$, $k = 0.4$: terminal velocity is{" "}
+$v_t = 24.5 m/s$. Compute $dv/dt$ at three speeds:{" "}
+$v = 10 m/s$, $v = 24.5 m/s$, $v = 40 m/s$.
 What does the *sign* tell you in each case?
 
 <Solution>
-  <Formula>dv/dt = 9.8 − 0.4 v</Formula>. At <Formula>v = 10</Formula>:{" "}
-  <Formula>9.8 − 4 = +5.8 m/s²</Formula> (positive — still accelerating). At{" "}
-  <Formula>v = 24.5</Formula>: <Formula>9.8 − 9.8 = 0</Formula> (terminal). At{" "}
-  <Formula>v = 40</Formula>: <Formula>9.8 − 16 = −6.2 m/s²</Formula> (negative — decelerating
+  $dv/dt = 9.8 − 0.4 v$. At $v = 10$:{" "}
+  $9.8 − 4 = +5.8 m/s²$ (positive — still accelerating). At{" "}
+  $v = 24.5$: $9.8 − 9.8 = 0$ (terminal). At{" "}
+  $v = 40$: $9.8 − 16 = −6.2 m/s²$ (negative — decelerating
   toward v_t from above). *The sign of dv/dt is what tells you whether v will rise, hold, or
   fall — and the equilibrium is precisely where the sign flips.*
 </Solution>
@@ -175,7 +174,7 @@ What does the *sign* tell you in each case?
 A student watches a raindrop fall at terminal velocity and concludes: "since the drop isn't accelerating, gravity has stopped acting on it." Refute in one sentence. What's the correct picture?
 
 <Solution>
-  Gravity is unchanged — it's still pulling with full force <Formula>m·g</Formula>. What changed
+  Gravity is unchanged — it's still pulling with full force $m·g$. What changed
   is that drag has grown to *equal* gravity in the opposite direction; the *net* force is zero,
   not the gravitational one. Acceleration is the response to *net* force, not the absence of
   individual forces. *Equilibrium means cancellation, not disappearance.* The same misreading
@@ -187,20 +186,20 @@ A student watches a raindrop fall at terminal velocity and concludes: "since the
 
 <Exercise number={5} tag="distance is area under v(t)">
 
-Two intervals of equal length, both <Formula>1 s</Formula>: one early in the fall (<Formula>t = 0</Formula> to <Formula>1</Formula>) and one late (<Formula>t = 10</Formula> to <Formula>11</Formula>, by which point <Formula>v(t)</Formula> is essentially <Formula>v_t</Formula>). Use <Formula>k = 0.4</Formula>, <Formula>v_t = 24.5 m/s</Formula>. Compute the distance fallen during each interval. Why does the late interval cover more ground despite being the same time?
+Two intervals of equal length, both $1 s$: one early in the fall ($t = 0$ to $1$) and one late ($t = 10$ to $11$, by which point $v(t)$ is essentially $v_t$). Use $k = 0.4$, $v_t = 24.5 m/s$. Compute the distance fallen during each interval. Why does the late interval cover more ground despite being the same time?
 
 <Solution>
-  Distance during <Formula>[t_1, t_2]</Formula> is{" "}
-  <Formula>{"∫_{t_1}^{t_2} v(s) ds"}</Formula> — the area under <Formula>v(t)</Formula> over that
-  window. Early interval (<Formula>0</Formula> to <Formula>1</Formula>):{" "}
-  <Formula>v</Formula> ramps from <Formula>0</Formula> to <Formula>v_t (1 − e^(−0.4))</Formula>{" "}
-  ≈ <Formula>8.1 m/s</Formula>; the area is roughly the triangle/curve under that ramp,{" "}
-  <Formula>{"≈ ∫_0^1 v_t(1−e^(−0.4s)) ds ≈ 4 m"}</Formula>. Late interval (<Formula>10</Formula> to{" "}
-  <Formula>11</Formula>): <Formula>v ≈ v_t = 24.5 m/s</Formula> throughout, so the area is just{" "}
-  <Formula>v_t · 1 s ≈ 24.5 m</Formula>. *Same time, six times more distance.* The fall accelerates
+  Distance during $[t_1, t_2]$ is{" "}
+  $∫_{t_1}^{t_2} v(s) ds$ — the area under $v(t)$ over that
+  window. Early interval ($0$ to $1$):{" "}
+  $v$ ramps from $0$ to $v_t (1 − e^(−0.4))${" "}
+  ≈ $8.1 m/s$; the area is roughly the triangle/curve under that ramp,{" "}
+  $≈ ∫_0^1 v_t(1−e^(−0.4s)) ds ≈ 4 m$. Late interval ($10$ to{" "}
+  $11$): $v ≈ v_t = 24.5 m/s$ throughout, so the area is just{" "}
+  $v_t · 1 s ≈ 24.5 m$. *Same time, six times more distance.* The fall accelerates
   early then plateaus; integration turns "speed at this moment" into "ground covered so far," and
-  the early interval's smaller area is exactly the offset <Formula>v_t/k</Formula> in the closed
-  form for <Formula>y(t)</Formula>.
+  the early interval's smaller area is exactly the offset $v_t/k$ in the closed
+  form for $y(t)$.
 </Solution>
 
 </Exercise>
@@ -210,8 +209,8 @@ Two intervals of equal length, both <Formula>1 s</Formula>: one early in the fal
 <WhyNotTaught>
   Introductory physics teaches free-fall (no drag) for tractability, then waves at "real falls
   involve air resistance, but it's complicated." The complication is one extra term in one
-  equation: <Formula>dv/dt = g − kv</Formula>. From that single line, terminal velocity is one
-  line of algebra (<Formula>g = kv_t</Formula>), the approach is one line of integration (<Formula>v(t) = v_t(1−e^(−kt))</Formula>),
+  equation: $dv/dt = g − kv$. From that single line, terminal velocity is one
+  line of algebra ($g = kv_t$), the approach is one line of integration ($v(t) = v_t(1−e^(−kt))$),
   and the *connection* to charging capacitors and cooling coffee is one paragraph. Lemma keeps
   the equation in front of the reader because *that's where the physics actually lives* — not in
   the table of "common terminal velocities" that fills textbook sidebars. Terminal velocity is

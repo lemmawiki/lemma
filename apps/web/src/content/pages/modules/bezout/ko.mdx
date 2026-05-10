@@ -16,7 +16,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="도입 · 곱셈 규칙">
 
@@ -30,8 +29,8 @@ import Formula from "@/components/page/formula.astro";
 
 <ToolSpec>
   <Fragment slot="definition">
-    사영 평면 위 차수 <Formula>d</Formula>, <Formula>e</Formula>인 두 대수 곡선은 정확히{" "}
-    <Formula>d·e</Formula> 점에서 만난다 — 중복도까지 세서, 대수적 폐쇄체 위에서. 순진한 셈법은 세
+    사영 평면 위 차수 $d$, $e$인 두 대수 곡선은 정확히{" "}
+    $d·e$ 점에서 만난다 — 중복도까지 세서, 대수적 폐쇄체 위에서. 순진한 셈법은 세
     군데서 깨지고, 정리는 그 셋을 한 번에 메운다.
   </Fragment>
   <Fragment slot="applies">
@@ -53,7 +52,7 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={1} title="순진한 셈법의 세 가지 실패">
 
-차수 1 직선과 차수 2 포물선을 보자. <Formula>y = mx + c</Formula>를 <Formula>y = x²</Formula>에 대입하면 x에 대한 이차방정식 — 두 근, 두 교점. <Formula>1 · 2 = 2</Formula>. 깔끔하다. 이제 세 군데서 깨뜨려 보자. (a) 평행한 두 직선 <Formula>y = x</Formula>와 <Formula>y = x + 1</Formula> — 대입하면 <Formula>0 = 1</Formula>, 모순이다. 교점 0개, <Formula>1 · 1 = 1</Formula>이 아니다. (b) 직선 <Formula>y = 0</Formula>은 원점에서 <Formula>y = x²</Formula>에 _접한다_ — 두 점이 아니라 한 점에서 만난다. (c) 서로 만나지 않는 두 단위원 <Formula>x² + y² = 1</Formula>과 <Formula>(x − 3)² + y² = 1</Formula> — 교점 0개, 4개가 아니다.
+차수 1 직선과 차수 2 포물선을 보자. $y = mx + c$를 $y = x²$에 대입하면 x에 대한 이차방정식 — 두 근, 두 교점. $1 · 2 = 2$. 깔끔하다. 이제 세 군데서 깨뜨려 보자. (a) 평행한 두 직선 $y = x$와 $y = x + 1$ — 대입하면 $0 = 1$, 모순이다. 교점 0개, $1 · 1 = 1$이 아니다. (b) 직선 $y = 0$은 원점에서 $y = x²$에 _접한다_ — 두 점이 아니라 한 점에서 만난다. (c) 서로 만나지 않는 두 단위원 $x² + y² = 1$과 $(x − 3)² + y² = 1$ — 교점 0개, 4개가 아니다.
 
 곱셈 규칙은 맞을 때가 많아 정리처럼 보이지만, 틀릴 때도 많아 추측처럼 보인다. 둘 중 하나다 — 추측이거나, 아니면 평면이 잘못된 무대거나. 두 번째를 택한다.
 
@@ -61,23 +60,23 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={2} title="보정 1 — 사영평면">
 
-직선은 *방향* 하나에 위치 하나를 더한 것이다. 평행선은 방향을 공유한다. 평면에 _방향마다_ 새 점 하나씩을 더해 보자 — 그 방향의 <Term id="point-at-infinity">무한원점</Term>이라 부른다. 그러면 평행한 두 직선은 방향이 같으므로 이 추가된 한 점을 공유하고, 평행하지 않은 두 직선은 원래 한 점에서 만난다. 이렇게 하면 _서로 다른 임의의 두 직선은 정확히 한 점에서 만난다_. 모든 방향의 무한원점을 한데 모으면 한 줄의 *무한원선*이 된다. 평면에 이 직선을 더한 것이 <Term id="projective-plane">사영평면</Term> <Formula>ℝℙ²</Formula>이다.
+직선은 *방향* 하나에 위치 하나를 더한 것이다. 평행선은 방향을 공유한다. 평면에 _방향마다_ 새 점 하나씩을 더해 보자 — 그 방향의 <Term id="point-at-infinity">무한원점</Term>이라 부른다. 그러면 평행한 두 직선은 방향이 같으므로 이 추가된 한 점을 공유하고, 평행하지 않은 두 직선은 원래 한 점에서 만난다. 이렇게 하면 _서로 다른 임의의 두 직선은 정확히 한 점에서 만난다_. 모든 방향의 무한원점을 한데 모으면 한 줄의 *무한원선*이 된다. 평면에 이 직선을 더한 것이 <Term id="projective-plane">사영평면</Term> $ℝℙ²$이다.
 
-사영점은 <Formula>[X : Y : Z]</Formula>로 쓴다 — 셋이 모두 0은 아닌 세 수이며, 전체에 같은 수를 곱한 것은 같은 점으로 본다 (즉 <Formula>[2 : 2 : 0], [1 : 1 : 0], [5 : 5 : 0]</Formula>은 같은 점). affine (보통의 유한) 점은 <Formula>[x : y : 1]</Formula>, 무한원점은 <Formula>[X : Y : 0]</Formula>: _방향_ <Formula>(X, Y)</Formula>. §1의 두 평행선은 둘 다 <Formula>[1 : 1 : 0]</Formula>을 지난다 — "방향 (1, 1)"이라는 점이다. 실패 (a) 보정 완료.
+사영점은 $[X : Y : Z]$로 쓴다 — 셋이 모두 0은 아닌 세 수이며, 전체에 같은 수를 곱한 것은 같은 점으로 본다 (즉 $[2 : 2 : 0], [1 : 1 : 0], [5 : 5 : 0]$은 같은 점). affine (보통의 유한) 점은 $[x : y : 1]$, 무한원점은 $[X : Y : 0]$: _방향_ $(X, Y)$. §1의 두 평행선은 둘 다 $[1 : 1 : 0]$을 지난다 — "방향 (1, 1)"이라는 점이다. 실패 (a) 보정 완료.
 
 </ArcRow>
 
 <ArcRow n={3} title="보정 2 — 중복도">
 
-접선은 포물선과 *기하적으로*는 한 점에서 만나지만 *대수적으로*는 두 점이다. <Formula>y = 0</Formula>을 <Formula>y = x²</Formula>에 대입하면 <Formula>x² = 0</Formula> — _중근_ <Formula>x = 0</Formula>이 나온다. 다항식은 그림이 잊는 것을 기억한다. 두 곡선이 한 점에서 갖는 <Term id="intersection-multiplicity">교차 중복도</Term>는, 한 변수를 소거한 다항식이 그 점에서 *몇 차로 사라지는가*로 정의한다. 가로지름은 1, 단순 접촉은 2, 3중 접촉은 3, ⋯. 베주의 수는 언제나 _중복도까지 더한_ 수, 날것 그대로가 아니다.
+접선은 포물선과 *기하적으로*는 한 점에서 만나지만 *대수적으로*는 두 점이다. $y = 0$을 $y = x²$에 대입하면 $x² = 0$ — _중근_ $x = 0$이 나온다. 다항식은 그림이 잊는 것을 기억한다. 두 곡선이 한 점에서 갖는 <Term id="intersection-multiplicity">교차 중복도</Term>는, 한 변수를 소거한 다항식이 그 점에서 *몇 차로 사라지는가*로 정의한다. 가로지름은 1, 단순 접촉은 2, 3중 접촉은 3, ⋯. 베주의 수는 언제나 _중복도까지 더한_ 수, 날것 그대로가 아니다.
 
-위 위젯에서 **접** 프리셋으로 바꾼 뒤 *중복도 표시*를 켜 보라: 접점에 <Formula>×2</Formula> 라벨이 붙고, 보이던 3이 4로 채워진다. 실패 (b) 보정 완료.
+위 위젯에서 **접** 프리셋으로 바꾼 뒤 *중복도 표시*를 켜 보라: 접점에 $×2$ 라벨이 붙고, 보이던 3이 4로 채워진다. 실패 (b) 보정 완료.
 
 </ArcRow>
 
 <ArcRow n={4} title="보정 3 — 복소수 좌표">
 
-서로 만나지 않는 두 원 <Formula>x² + y² = 1</Formula>과 <Formula>(x − 3)² + y² = 1</Formula>은 어디서도 만나지 않는 듯 보인다. 두 식을 빼면 <Formula>−6x + 9 = 0</Formula>, 즉 <Formula>x = 3/2</Formula>. 그 x에서 첫째 원은 <Formula>y² = 1 − 9/4 = −5/4</Formula> — 실수 해는 없지만 멀쩡한 복소수 해가 둘 있다: <Formula>y = ± i √5 / 2</Formula>. 두 원은 실제로 두 점 <Formula>(3/2, ± i √5 / 2)</Formula>에서 만난다 — 그 점이 <Formula>ℝ²</Formula>이 아니라 <Formula>ℂ²</Formula> 위에 있을 뿐이다.
+서로 만나지 않는 두 원 $x² + y² = 1$과 $(x − 3)² + y² = 1$은 어디서도 만나지 않는 듯 보인다. 두 식을 빼면 $−6x + 9 = 0$, 즉 $x = 3/2$. 그 x에서 첫째 원은 $y² = 1 − 9/4 = −5/4$ — 실수 해는 없지만 멀쩡한 복소수 해가 둘 있다: $y = ± i \sqrt{5} / 2$. 두 원은 실제로 두 점 $(3/2, ± i \sqrt{5} / 2)$에서 만난다 — 그 점이 $ℝ²$이 아니라 $ℂ²$ 위에 있을 뿐이다.
 
 위 위젯의 **분리** 프리셋은 실수 교점이 0개임을 보여준다 — *복소 보기*를 켜면 옆 패널에 네 개의 빈 동그라미가 뜬다: 베주가 약속한 네 교점이 복소 x-평면 위에 찍힌 것이다. 실패 (c) 보정 완료.
 
@@ -92,13 +91,13 @@ import Formula from "@/components/page/formula.astro";
 </ArcRow>
 
 <Pin>
-  **베주.** 차수 <Formula>d</Formula>, <Formula>e</Formula>의 두 평면 곡선이 공통 성분을 갖지 않을
-  때 — <Formula>ℂℙ²</Formula>에서, 중복도까지 세면 — 정확히 <Formula>d · e</Formula> 점에서 만난다.
+  **베주.** 차수 $d$, $e$의 두 평면 곡선이 공통 성분을 갖지 않을
+  때 — $ℂℙ²$에서, 중복도까지 세면 — 정확히 $d · e$ 점에서 만난다.
 </Pin>
 
 <ArcRow n={6} title="왜 성립하는가 — 종결식">
 
-한 변수를 소거한다. 두 다항식 <Formula>f(x, y), g(x, y)</Formula>를 <Formula>y</Formula>에 대한 다항식 (계수는 <Formula>x</Formula>의 식)으로 보면, 둘이 공통 근을 갖는 것은 <Formula>y</Formula>에 대한 <Term id="resultant">종결식</Term>이 0이 되는 것과 동치다. <Formula>f</Formula>의 <Formula>y</Formula>-차수가 <Formula>d</Formula>, <Formula>g</Formula>의 <Formula>y</Formula>-차수가 <Formula>e</Formula>이면 종결식은 <Formula>x</Formula>에 대한 차수 <Formula>d · e</Formula>의 다항식이고, 그 <Formula>d · e</Formula>개의 (중복도 포함) 복소근이 곧 <Formula>d · e</Formula>개 교점의 <Formula>x</Formula>좌표다. 두 원뿔곡선이라면: <Formula>x</Formula>에 대한 4차 다항식. 네 근. 네 교점. 위 위젯은 바로 이 4차 방정식을 푼 결과다.
+한 변수를 소거한다. 두 다항식 $f(x, y), g(x, y)$를 $y$에 대한 다항식 (계수는 $x$의 식)으로 보면, 둘이 공통 근을 갖는 것은 $y$에 대한 <Term id="resultant">종결식</Term>이 0이 되는 것과 동치다. $f$의 $y$-차수가 $d$, $g$의 $y$-차수가 $e$이면 종결식은 $x$에 대한 차수 $d · e$의 다항식이고, 그 $d · e$개의 (중복도 포함) 복소근이 곧 $d · e$개 교점의 $x$좌표다. 두 원뿔곡선이라면: $x$에 대한 4차 다항식. 네 근. 네 교점. 위 위젯은 바로 이 4차 방정식을 푼 결과다.
 
 <CodeBlock slug="bezout" arc="arc6" />
 
@@ -122,13 +121,13 @@ import Formula from "@/components/page/formula.astro";
 
 <Exercise number={2} tag="손계산 · 차수 1 × 2" noCalculator>
 
-<Formula>y = x²</Formula>와 <Formula>y = 2x − 1</Formula>의 교점을 모두 구하라. 베주의 예측은 1 · 2
+$y = x²$와 $y = 2x − 1$의 교점을 모두 구하라. 베주의 예측은 1 · 2
 = 2. 이 경우 기하와 대수의 간극을 무엇이 메우는지 짚어라.
 
 <Solution>
-  대입: <Formula>x² = 2x − 1</Formula>, 즉 <Formula>x² − 2x + 1 = (x − 1)² = 0</Formula>. 기하
-  교점은 한 점 <Formula>(1, 1)</Formula> — 직선이 그 점에서 포물선에 접한다. 대수는{" "}
-  <Formula>x = 1</Formula>을 *이중근*으로 보고하므로 그 교점의{" "}
+  대입: $x² = 2x − 1$, 즉 $x² − 2x + 1 = (x − 1)² = 0$. 기하
+  교점은 한 점 $(1, 1)$ — 직선이 그 점에서 포물선에 접한다. 대수는{" "}
+  $x = 1$을 *이중근*으로 보고하므로 그 교점의{" "}
   <Term id="intersection-multiplicity">중복도</Term>는 2. 베주 셈: 1점 × 중복도 2 = 2 ✓. 간극을
   *중복도*가 메웠다.
 </Solution>
@@ -137,13 +136,13 @@ import Formula from "@/components/page/formula.astro";
 
 <Exercise number={3} tag="무한원점 좌표">
 
-두 평행선 <Formula>y = x</Formula>와 <Formula>y = x + 1</Formula>의 유일한 교점을 <Term id="projective-plane">ℝℙ²</Term>의 점 <Formula>[X : Y : Z]</Formula>로 적어라. (힌트: 각 직선을 <Formula>X, Y, Z</Formula>의 동차식으로 다시 쓰고 풀어라.)
+두 평행선 $y = x$와 $y = x + 1$의 유일한 교점을 <Term id="projective-plane">ℝℙ²</Term>의 점 $[X : Y : Z]$로 적어라. (힌트: 각 직선을 $X, Y, Z$의 동차식으로 다시 쓰고 풀어라.)
 
 <Solution>
-  <Formula>y = x</Formula>를 <Formula>x = X/Z, y = Y/Z</Formula>로{" "}
-  <Term id="homogenize">동차화</Term>: <Formula>Y = X</Formula>. 둘째 직선도 같은 방식으로:{" "}
-  <Formula>Y = X + Z</Formula>. 빼면 <Formula>Z = 0</Formula>. 이를 <Formula>Y = X</Formula>와
-  합치면 점 <Formula>[1 : 1 : 0]</Formula> — 방향 <Formula>(1, 1)</Formula>의{" "}
+  $y = x$를 $x = X/Z, y = Y/Z$로{" "}
+  <Term id="homogenize">동차화</Term>: $Y = X$. 둘째 직선도 같은 방식으로:{" "}
+  $Y = X + Z$. 빼면 $Z = 0$. 이를 $Y = X$와
+  합치면 점 $[1 : 1 : 0]$ — 방향 $(1, 1)$의{" "}
   <Term id="point-at-infinity">무한원점</Term>. 베주 셈: 1 · 1 = 1 ✓.
 </Solution>
 
@@ -151,12 +150,12 @@ import Formula from "@/components/page/formula.astro";
 
 <Exercise number={4} tag="악마의 문제 · 원점의 3차">
 
-<Formula>y = x³</Formula> (3차 곡선)와 직선 <Formula>y = 0</Formula> (차수 1)을 보자. 베주는 3개의
+$y = x³$ (3차 곡선)와 직선 $y = 0$ (차수 1)을 보자. 베주는 3개의
 교점을 예측한다. 기하적으로는 하나 — 원점에서. 베주가 어떻게 만족되는지 정확히 말하고, 이 경우와
 문제 2를 대비해 보아라.
 
 <Solution>
-  대입: <Formula>x³ = 0</Formula>, 즉 <Formula>x = 0</Formula>이 *삼중근*이다. 원점이라는 한 기하
+  대입: $x³ = 0$, 즉 $x = 0$이 *삼중근*이다. 원점이라는 한 기하
   점이 <Term id="intersection-multiplicity">중복도</Term> 3을 갖는다. 베주: 1 × 3 = 3 ✓. 문제 2와의
   차이: 거기서는 두 대수 교점이 한 접점으로 뭉개졌고 (중복도 2), 여기서는 세 점이 한 변곡 접촉으로
   뭉개진다 (중복도 3). 평면은 두 경우 모두 한 점만 보지만, 대수는 그 차이를 본다.
@@ -166,14 +165,14 @@ import Formula from "@/components/page/formula.astro";
 
 <Exercise number={5} tag="두 원의 무한원">
 
-일치하지 않는 두 원 <Formula>x² + y² + a x + b y + c = 0</Formula>을 보자. 차수의 곱은 4지만, 보통 보이는 affine 교점은 많아야 2개다. 나머지 둘은 어디 있는가? (힌트: <Term id="homogenize">동차화</Term>한 뒤 무한원선 <Formula>Z = 0</Formula>을 보라.) 이 두 점에는 이름이 있다. 그 결과: 이 두 점은 _모든_ 원이 공유하는가, 아니면 주어진 쌍에만 해당하는가?
+일치하지 않는 두 원 $x² + y² + a x + b y + c = 0$을 보자. 차수의 곱은 4지만, 보통 보이는 affine 교점은 많아야 2개다. 나머지 둘은 어디 있는가? (힌트: <Term id="homogenize">동차화</Term>한 뒤 무한원선 $Z = 0$을 보라.) 이 두 점에는 이름이 있다. 그 결과: 이 두 점은 _모든_ 원이 공유하는가, 아니면 주어진 쌍에만 해당하는가?
 
 <Solution>
-  동차화: <Formula>X² + Y² + a X Z + b Y Z + c Z² = 0</Formula>. <Formula>Z = 0</Formula>에서{" "}
-  <Formula>X² + Y² = 0</Formula>, 즉 <Formula>[1 : ± i : 0]</Formula>. 이 두 복소{" "}
+  동차화: $X² + Y² + a X Z + b Y Z + c Z² = 0$. $Z = 0$에서{" "}
+  $X² + Y² = 0$, 즉 $[1 : ± i : 0]$. 이 두 복소{" "}
   <Term id="point-at-infinity">무한원점</Term>을 *circular points* (좌표계의 원점 (0, 0)이 아니라,
-  "원에 딸린 무한원점"이라는 뜻)라 부르고 <Formula>I = [1 : i : 0]</Formula>,{" "}
-  <Formula>J = [1 : −i : 0]</Formula>로 쓴다. 식이 <Formula>a, b, c</Formula>에 의존하지 않으므로
+  "원에 딸린 무한원점"이라는 뜻)라 부르고 $I = [1 : i : 0]$,{" "}
+  $J = [1 : −i : 0]$로 쓴다. 식이 $a, b, c$에 의존하지 않으므로
   모든 원이 이 둘을 포함하고, 따라서 *임의의* 두 원은 이 둘을 공유한다. 두 원의 베주 수 4 = (affine
   ≤ 2) + (무한원의 I, J 2개). affine 수가 2에서 줄면 그 차이를 중복도 또는 복소 affine 점이 메운다.
 </Solution>
@@ -182,20 +181,20 @@ import Formula from "@/components/page/formula.astro";
 
 <Exercise number={6} tag="합성 · 타원곡선의 씨앗">
 
-<Formula>E : y² = x³ − x</Formula> (차수 3)와 직선 <Formula>L : y = m x + c</Formula> (차수 1)을
-보자. 베주: 세 교점. 셋 모두 affine이고 x좌표가 <Formula>x₁, x₂, x₃</Formula>라 하자.
-<Formula>x₁ + x₂ + x₃ = m²</Formula>임을 보여라. (이 항등식이 타원곡선 군법칙의 씨앗이다 — E 위 두
+$E : y² = x³ − x$ (차수 3)와 직선 $L : y = m x + c$ (차수 1)을
+보자. 베주: 세 교점. 셋 모두 affine이고 x좌표가 $x₁, x₂, x₃$라 하자.
+$x₁ + x₂ + x₃ = m²$임을 보여라. (이 항등식이 타원곡선 군법칙의 씨앗이다 — E 위 두
 점이 주어지면 그 현이 만드는 세 번째 교점은 기하적으로 결정되고, x좌표는 비에타가 공짜로 준다.)
 
 <Solution>
-  <Formula>y = m x + c</Formula>를 곡선에 대입: <Formula>(m x + c)² = x³ − x</Formula>, 정리하면{" "}
-  <Formula>x³ − m² x² − (2 m c + 1) x − c² = 0</Formula>이 된다. 이 monic (최고차항 계수가 1) 3차식에{" "}
-  <Term id="vieta-formulas">비에타 공식</Term>을 적용하면 근의 합은 <Formula>x²</Formula> 계수의
-  부호를 뒤집은 값, 즉 −(−m²) = m². 따라서 <Formula>x₁ + x₂ + x₃ = m²</Formula>이다. 기하적으로:{" "}
-  <Formula>E</Formula> 위 두 점 <Formula>P₁, P₂</Formula>를 잡아 그 둘을 잇는 현을 긋는다. 그 직선은{" "}
-  <Formula>E</Formula>와 정확히 한 점 <Formula>P₃</Formula>을 더 만나고 (베주가 세 번째를 요구한다),{" "}
-  <Formula>x₃ = m² − x₁ − x₂</Formula>를 추가 계산 없이 읽어낸다. <Formula>E</Formula> 위의 군법칙은
-  바로 이 사실로부터 <Formula>P₁ + P₂ = − P₃</Formula>으로 정의된다.
+  $y = m x + c$를 곡선에 대입: $(m x + c)² = x³ − x$, 정리하면{" "}
+  $x³ − m² x² − (2 m c + 1) x − c² = 0$이 된다. 이 monic (최고차항 계수가 1) 3차식에{" "}
+  <Term id="vieta-formulas">비에타 공식</Term>을 적용하면 근의 합은 $x²$ 계수의
+  부호를 뒤집은 값, 즉 −(−m²) = m². 따라서 $x₁ + x₂ + x₃ = m²$이다. 기하적으로:{" "}
+  $E$ 위 두 점 $P₁, P₂$를 잡아 그 둘을 잇는 현을 긋는다. 그 직선은{" "}
+  $E$와 정확히 한 점 $P₃$을 더 만나고 (베주가 세 번째를 요구한다),{" "}
+  $x₃ = m² − x₁ − x₂$를 추가 계산 없이 읽어낸다. $E$ 위의 군법칙은
+  바로 이 사실로부터 $P₁ + P₂ = − P₃$으로 정의된다.
 </Solution>
 
 </Exercise>

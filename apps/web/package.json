@@ -23,9 +23,12 @@
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.3.0",
     "js-yaml": "^4.1.1",
+    "katex": "^0.16.45",
     "mafs": "^0.21.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {

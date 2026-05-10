@@ -21,13 +21,12 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="도입 · 두 힘, 한 고정점">
 
 # 빗방울은 왜 계속 빨라지지 않을까?
 
-중력은 낙하하는 내내 같은 힘으로 끌어당긴다 — 질량 1kg당 약 <Formula>g = 9.8 m/s²</Formula>, 1초가 지나든 1분이 지나든 변함없이. 진공이라면 자유낙하는 끝없이 빨라진다 — [포물선 운동](/ko/physics/projectile-motion)에서 다룬 저항 없는 풍경. 그런데 공기 중에서 빗방울은 약 9 m/s, 낙하산을 편 사람은 약 5 m/s, 먼지 알갱이는 거의 가만히 떠 있다. 누구도 뉴턴 법칙을 어기지 않는다 — 두 힘이 정확히 상쇄되는 *고정점*에 닿았을 뿐. 수학은 한 줄, 그리고 그 모양은 식어가는 커피잔이나 충전 중인 축전기에서 보이는 것과 똑같다.
+중력은 낙하하는 내내 같은 힘으로 끌어당긴다 — 질량 1kg당 약 $g = 9.8 m/s²$, 1초가 지나든 1분이 지나든 변함없이. 진공이라면 자유낙하는 끝없이 빨라진다 — [포물선 운동](/ko/physics/projectile-motion)에서 다룬 저항 없는 풍경. 그런데 공기 중에서 빗방울은 약 9 m/s, 낙하산을 편 사람은 약 5 m/s, 먼지 알갱이는 거의 가만히 떠 있다. 누구도 뉴턴 법칙을 어기지 않는다 — 두 힘이 정확히 상쇄되는 *고정점*에 닿았을 뿐. 수학은 한 줄, 그리고 그 모양은 식어가는 커피잔이나 충전 중인 축전기에서 보이는 것과 똑같다.
 
 <Lede>**종단속도는 최대값이 아니다 — 평형이다.** 중력과 저항이 상쇄되는 점근선.</Lede>
 
@@ -39,17 +38,17 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={1} title="속도는 미분, 가속도는 또 한 번의 미분">
 
-낙하하는 물체에는 위치 <Formula>y(t)</Formula>가 있다. [미분 모듈](/ko/modules/derivatives)에서 본 대로, <Term id="velocity">속도</Term>는 위치가 변하는 비율 <Formula>v = dy/dt</Formula>. 같은 기계를 한 번 더 돌리면 <Term id="acceleration">가속도</Term> <Formula>a = dv/dt</Formula> — 속도가 변하는 비율. 뉴턴의 제2법칙이 이걸 한 줄로 묶는다: 단위 질량당 알짜힘 = <Formula>dv/dt</Formula>. 힘을 적고 질량으로 나누는 순간, 운동을 예측하는 레시피가 손에 들어온다. 이 페이지의 모든 이야기는 우변의 두 항에서 벌어진다.
+낙하하는 물체에는 위치 $y(t)$가 있다. [미분 모듈](/ko/modules/derivatives)에서 본 대로, <Term id="velocity">속도</Term>는 위치가 변하는 비율 $v = dy/dt$. 같은 기계를 한 번 더 돌리면 <Term id="acceleration">가속도</Term> $a = dv/dt$ — 속도가 변하는 비율. 뉴턴의 제2법칙이 이걸 한 줄로 묶는다: 단위 질량당 알짜힘 = $dv/dt$. 힘을 적고 질량으로 나누는 순간, 운동을 예측하는 레시피가 손에 들어온다. 이 페이지의 모든 이야기는 우변의 두 항에서 벌어진다.
 
 </ArcRow>
 
 <ArcRow n={2} title="두 힘 — 중력은 상수, 저항은 아니다">
 
-낙하하는 빗방울에 두 힘이 작용한다. **중력**은 <Formula>F_g = m·g</Formula>의 일정한 크기로 아래로 당긴다. 단위 질량당 그저 <Formula>g ≈ 9.8 m/s²</Formula>, 빠르기와 무관하다. **<Term id="drag">공기 저항</Term>**은 운동 반대 방향으로 밀어 올리고, 중력과 달리 *속도에 따라 자란다*. 공기 중 작은 물체라면 *선형 저항*이 깔끔하게 들어맞는다: 단위 질량당 <Formula>F_drag = k·v</Formula>. 빗방울이 느리면 저항도 작고, 빠르면 저항도 크다. 두 힘은 서로 반대 방향을 가리키는 <Term id="vector">벡터</Term> — [벡터 모듈](/ko/modules/vectors)에서 다룬, 1차원에서 더하고 빼는 단순한 경우다.
+낙하하는 빗방울에 두 힘이 작용한다. **중력**은 $F_g = m·g$의 일정한 크기로 아래로 당긴다. 단위 질량당 그저 $g ≈ 9.8 m/s²$, 빠르기와 무관하다. **<Term id="drag">공기 저항</Term>**은 운동 반대 방향으로 밀어 올리고, 중력과 달리 *속도에 따라 자란다*. 공기 중 작은 물체라면 *선형 저항*이 깔끔하게 들어맞는다: 단위 질량당 $F_drag = k·v$. 빗방울이 느리면 저항도 작고, 빠르면 저항도 크다. 두 힘은 서로 반대 방향을 가리키는 <Term id="vector">벡터</Term> — [벡터 모듈](/ko/modules/vectors)에서 다룬, 1차원에서 더하고 빼는 단순한 경우다.
 
-<Formula>dv/dt</Formula>로 들어가는 단위 질량당 알짜힘은 그 차이:
+$dv/dt$로 들어가는 단위 질량당 알짜힘은 그 차이:
 
-<Formula>dv/dt = g − k v</Formula>
+$dv/dt = g − k v$
 
 두 항. 첫 항은 상수. 둘째 항은 아니다. *그게 식 전부다.*
 
@@ -61,12 +60,12 @@ import Formula from "@/components/page/formula.astro";
 
 식만 보고도 세 영역을 읽을 수 있다:
 
-- **<Formula>v</Formula>가 작을 때** (정지에서 막 떨어진 직후): <Formula>kv</Formula>가 작으니 <Formula>dv/dt ≈ g</Formula> — 진공에서의 자유낙하처럼 가속이 그대로 살아 있다.
-- **<Formula>v</Formula>가 중간일 때**: <Formula>kv</Formula>가 무시할 수 없는 크기. <Formula>dv/dt = g − kv</Formula>는 여전히 양수지만 작아진다. 속도는 자라되 점점 느리게.
-- **<Formula>v = g/k</Formula>** 일 때: <Formula>kv = g</Formula>. <Formula>dv/dt = 0</Formula>. 속도가 더 이상 변하지 않는다. 이게 <Term id="terminal-velocity">종단속도</Term>.
-- **<Formula>v &gt; g/k</Formula>** (예: 아래로 세게 던진 경우): <Formula>kv &gt; g</Formula>. <Formula>dv/dt &lt; 0</Formula>. 속도가 *줄어든다* — 저항이 이긴다. 위쪽에서 <Formula>v_t</Formula>로 내려올 때까지.
+- **$v$가 작을 때** (정지에서 막 떨어진 직후): $kv$가 작으니 $dv/dt ≈ g$ — 진공에서의 자유낙하처럼 가속이 그대로 살아 있다.
+- **$v$가 중간일 때**: $kv$가 무시할 수 없는 크기. $dv/dt = g − kv$는 여전히 양수지만 작아진다. 속도는 자라되 점점 느리게.
+- **$v = g/k$** 일 때: $kv = g$. $dv/dt = 0$. 속도가 더 이상 변하지 않는다. 이게 <Term id="terminal-velocity">종단속도</Term>.
+- **$v &gt; g/k$** (예: 아래로 세게 던진 경우): $kv &gt; g$. $dv/dt &lt; 0$. 속도가 *줄어든다* — 저항이 이긴다. 위쪽에서 $v_t$로 내려올 때까지.
 
-위젯의 파란 곡선은 점선 초록선을 아래에서부터 따라붙는다. 어느 쪽에서 출발하든 <Formula>v_t</Formula>가 종착점.
+위젯의 파란 곡선은 점선 초록선을 아래에서부터 따라붙는다. 어느 쪽에서 출발하든 $v_t$가 종착점.
 
 <CodeBlock slug="terminalVelocity" arc="arc3" />
 
@@ -74,13 +73,13 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={4} title="종단속도 = dv/dt = 0 풀기">
 
-"종착점"은 그저 <Formula>dv/dt = 0</Formula>이 되도록 만드는 <Formula>v</Formula> 값이다. 식을 세우고 풀면:
+"종착점"은 그저 $dv/dt = 0$이 되도록 만드는 $v$ 값이다. 식을 세우고 풀면:
 
-<Formula>g − k v_t = 0  →  v_t = g / k</Formula>
+$g − k v_t = 0 → v_t = g / k$
 
-대수 한 줄. 저항이 클수록 (큰 <Formula>k</Formula>) 종단속도는 작아진다 — 깃털은 작은 속도에서 일찍 안정되고, 볼링공은 공기 중에서 <Formula>v_t</Formula>에 닿는 데 영원에 가까운 시간이 걸린다 (실제로는 그 전에 땅에 부딪힌다). 이것이 <Term id="equilibrium">평형</Term>이다. 서로 맞서는 두 영향이 정확히 상쇄되는 속도. 중력은 <Formula>v</Formula>를 키우려 하고 저항은 깎으려 한다 — <Formula>v_t</Formula>에서 둘의 힘이 같아진다. 힘이 *사라진* 게 아니라 *균형*을 이룬 것. 이 차이를 놓치는 게 이 페이지가 잡으려는 가장 흔한 오해다.
+대수 한 줄. 저항이 클수록 (큰 $k$) 종단속도는 작아진다 — 깃털은 작은 속도에서 일찍 안정되고, 볼링공은 공기 중에서 $v_t$에 닿는 데 영원에 가까운 시간이 걸린다 (실제로는 그 전에 땅에 부딪힌다). 이것이 <Term id="equilibrium">평형</Term>이다. 서로 맞서는 두 영향이 정확히 상쇄되는 속도. 중력은 $v$를 키우려 하고 저항은 깎으려 한다 — $v_t$에서 둘의 힘이 같아진다. 힘이 *사라진* 게 아니라 *균형*을 이룬 것. 이 차이를 놓치는 게 이 페이지가 잡으려는 가장 흔한 오해다.
 
-식 <Formula>v_t = g/k</Formula>는 깊은 정리가 아니다 — 고정점을 그대로 읽었을 뿐. 어떤 양에 그 양 자체에 따라 변하는 두 영향이 맞서고 있을 때면 어디서나 똑같은 모양이 나타난다. 시원한 방에서 식어가는 커피는 방 온도에 가까워지고, 저항을 거쳐 충전되는 축전기는 공급 전압에 가까워지고, 크기에 비례하는 출생률·사망률을 가진 인구는 환경수용력 (carrying capacity) 에 가까워진다. *물리는 달라도, 찾는 건 같은 고정점이다.*
+식 $v_t = g/k$는 깊은 정리가 아니다 — 고정점을 그대로 읽었을 뿐. 어떤 양에 그 양 자체에 따라 변하는 두 영향이 맞서고 있을 때면 어디서나 똑같은 모양이 나타난다. 시원한 방에서 식어가는 커피는 방 온도에 가까워지고, 저항을 거쳐 충전되는 축전기는 공급 전압에 가까워지고, 크기에 비례하는 출생률·사망률을 가진 인구는 환경수용력 (carrying capacity) 에 가까워진다. *물리는 달라도, 찾는 건 같은 고정점이다.*
 
 <CodeBlock slug="terminalVelocity" arc="arc4" />
 
@@ -90,21 +89,21 @@ import Formula from "@/components/page/formula.astro";
 
 정지에서의 닫힌 형식 해는
 
-<Formula>v(t) = v_t · (1 − e^(−k t))</Formula>
+$v(t) = v_t · (1 − e^(−k t))$
 
-종단속도와의 오차 — 격차 <Formula>v_t − v(t)</Formula> — 는 <Formula>v_t · e^(−k t)</Formula>로 지수적으로 줄어든다. <Formula>t = ln 2 / k ≈ 0.693/k</Formula>초가 지나면 오차가 절반. <Formula>5/k</Formula>초가 지나면 오차는 <Formula>v_t</Formula>의 1% 아래로 떨어진다. 위젯에서 그대로 보인다. 저항 슬라이더를 위로 (큰 <Formula>k</Formula>) 올리면 곡선이 1초도 안 돼 점근선에 들러붙고, 아래로 내리면 몇 초에 걸쳐 천천히 올라간다.
+종단속도와의 오차 — 격차 $v_t − v(t)$ — 는 $v_t · e^(−k t)$로 지수적으로 줄어든다. $t = \ln 2 / k ≈ 0.693/k$초가 지나면 오차가 절반. $5/k$초가 지나면 오차는 $v_t$의 1% 아래로 떨어진다. 위젯에서 그대로 보인다. 저항 슬라이더를 위로 (큰 $k$) 올리면 곡선이 1초도 안 돼 점근선에 들러붙고, 아래로 내리면 몇 초에 걸쳐 천천히 올라간다.
 
-왜 지수일까? 오차 <Formula>ε(t) = v_t − v(t)</Formula>를 미분해 보면 <Formula>dε/dt = −dv/dt = −(g − kv) = −k ε</Formula>. *오차가 변하는 비율이 오차 자체에 비례하고*, 부호는 음수다. 지수 감쇠의 전형적인 모양. 자기 자신에 비례하는 비율로 변하는 양은 결국 모두 지수가 된다 — [로그 모듈](/ko/modules/log)에서는 같은 사실을 반대편에서 부른다. 선형 저항 낙하, 축전기 충전, 방사능 붕괴, 뉴턴 냉각 법칙 — 같은 식, 같은 답.
+왜 지수일까? 오차 $ε(t) = v_t − v(t)$를 미분해 보면 $dε/dt = −dv/dt = −(g − kv) = −k ε$. *오차가 변하는 비율이 오차 자체에 비례하고*, 부호는 음수다. 지수 감쇠의 전형적인 모양. 자기 자신에 비례하는 비율로 변하는 양은 결국 모두 지수가 된다 — [로그 모듈](/ko/modules/log)에서는 같은 사실을 반대편에서 부른다. 선형 저항 낙하, 축전기 충전, 방사능 붕괴, 뉴턴 냉각 법칙 — 같은 식, 같은 답.
 
 <CodeBlock slug="terminalVelocity" arc="arc5" />
 
-종단속도는 결국 *얼마나 빠르게* 떨어지는지를 알려줄 뿐이다. 다음 질문은 자연스럽게 *t초 동안 얼마나 떨어졌는가?* — 이건 [적분](/ko/modules/integration)이 답한다. <Formula>v(t)</Formula>를 알면 거리는 *속도가 쌓인 양*이 된다: <Formula>{"y(t) = ∫_0^t v(s) ds"}</Formula>. 0부터 <Formula>t</Formula>까지 속도 곡선 아래의 넓이가 그때까지 떨어진 거리다. <Formula>v(s) = v_t · (1 − e^(−k s))</Formula>를 대입하면 닫힌 형식 — <Formula>{"y(t) = v_t · t − (v_t/k)(1 − e^(−kt))"}</Formula> — 이 나온다. 식에서 두 가지 영역이 그대로 읽힌다. 작은 <Formula>t</Formula>에서는 곡선이 <Formula>v_t · t</Formula> 직선 *아래*에 놓인다 (처음부터 종단속도로 떨어진 게 아니니까). 큰 <Formula>t</Formula>에서는 격차가 더 자라지 않고 <Formula>y(t)</Formula>가 <Formula>v_t · t − v_t/k</Formula>에 가까워진다 — 종단속도 × 시간에서 "종단속도까지 가속하는 데 든 시간"을 빼는 상수 오프셋이 남는 셈.
+종단속도는 결국 *얼마나 빠르게* 떨어지는지를 알려줄 뿐이다. 다음 질문은 자연스럽게 *t초 동안 얼마나 떨어졌는가?* — 이건 [적분](/ko/modules/integration)이 답한다. $v(t)$를 알면 거리는 *속도가 쌓인 양*이 된다: $y(t) = ∫_0^t v(s) ds$. 0부터 $t$까지 속도 곡선 아래의 넓이가 그때까지 떨어진 거리다. $v(s) = v_t · (1 − e^(−k s))$를 대입하면 닫힌 형식 — $y(t) = v_t · t − (v_t/k)(1 − e^(−kt))$ — 이 나온다. 식에서 두 가지 영역이 그대로 읽힌다. 작은 $t$에서는 곡선이 $v_t · t$ 직선 *아래*에 놓인다 (처음부터 종단속도로 떨어진 게 아니니까). 큰 $t$에서는 격차가 더 자라지 않고 $y(t)$가 $v_t · t − v_t/k$에 가까워진다 — 종단속도 × 시간에서 "종단속도까지 가속하는 데 든 시간"을 빼는 상수 오프셋이 남는 셈.
 
 <Counterexample>
-  실제 빗방울은 *이차* 저항을 따른다. <Formula>F_drag = ½ ρ C_d A v²</Formula>: 힘이 속도의 1차가
-  아니라 *제곱*에 비례해 자란다. 종단속도를 구하는 논리는 그대로다 — <Formula>dv/dt = 0</Formula>을
-  풀어 <Formula>g = k v_t²</Formula>, <Formula>v_t = √(g/k)</Formula> — 다만 *다가가는 모양*은 더
-  이상 깔끔한 지수가 아니고 수치도 달라진다. 선형 저항의 <Formula>v_t = g/k</Formula>는 저속·소형
+  실제 빗방울은 *이차* 저항을 따른다. $F_drag = \tfrac{1}{2} ρ C_d A v²$: 힘이 속도의 1차가
+  아니라 *제곱*에 비례해 자란다. 종단속도를 구하는 논리는 그대로다 — $dv/dt = 0$을
+  풀어 $g = k v_t²$, $v_t = \sqrt{g/k}$ — 다만 *다가가는 모양*은 더
+  이상 깔끔한 지수가 아니고 수치도 달라진다. 선형 저항의 $v_t = g/k$는 저속·소형
   (낮은 레이놀즈 수) 에 맞춘 교육용 단순화일 뿐. 답의 *형태* (힘 균형 자리의 점근선) 는 어떤 저항
   법칙에서도 똑같지만, 닫힌 형식은 달라진다.
 </Counterexample>
@@ -115,8 +114,8 @@ import Formula from "@/components/page/formula.astro";
 
 <Pin>
   **종단속도는 최대값이 아니다 — 평형이다.** 중력은 일정한 힘, 저항은 속도에 따라 자라는 힘. 둘이
-  균형을 이루는 자리에서 <Formula>dv/dt = 0</Formula>, 속도는 더 이상 변하지 않는다. 식{" "}
-  <Formula>dv/dt = g − kv</Formula>가 "낙하는 왜 평탄해질까?"라는 물음을 "<Formula>g − kv = 0</Formula>
+  균형을 이루는 자리에서 $dv/dt = 0$, 속도는 더 이상 변하지 않는다. 식{" "}
+  $dv/dt = g − kv$가 "낙하는 왜 평탄해질까?"라는 물음을 "$g − kv = 0$
   의 고정점은 어디인가?"로 바꿔 놓고, 답은 대수 한 줄로 끝난다.
 </Pin>
 
@@ -124,10 +123,10 @@ import Formula from "@/components/page/formula.astro";
 
 <Exercise number={1} tag="위젯 읽기 · 점근선에서 종단속도 읽기">
 
-위젯에서 *빗방울* 프리셋 (<Formula>k = 1.6</Formula>) 을 눌러 보자. 점선 점근선에서 계산 없이 종단속도를 눈으로 읽어 본 뒤, <Formula>v_t = g/k</Formula>와 <Formula>g = 9.8</Formula>로 식에서 다시 확인한다.
+위젯에서 *빗방울* 프리셋 ($k = 1.6$) 을 눌러 보자. 점선 점근선에서 계산 없이 종단속도를 눈으로 읽어 본 뒤, $v_t = g/k$와 $g = 9.8$로 식에서 다시 확인한다.
 
 <Solution>
-  점근선이 <Formula>6.1 m/s</Formula> 부근에 놓여 있다. 식으로는 <Formula>v_t = 9.8 / 1.6 ≈ 6.13</Formula>.
+  점근선이 $6.1 m/s$ 부근에 놓여 있다. 식으로는 $v_t = 9.8 / 1.6 ≈ 6.13$.
   맞아떨어진다. 실제 빗방울이 ~9 m/s에 안착하는 건 실제 저항이 이차에 가깝기 때문 — 같은 k의 선형
   저항은 종단속도를 살짝 과소평가한다. 답의 *형태* (힘 균형 자리의 점근선) 는 어느 저항 법칙에서도
   똑같다.
@@ -137,13 +136,13 @@ import Formula from "@/components/page/formula.astro";
 
 <Exercise number={2} tag="dv/dt = 0을 손으로 풀기" noCalculator>
 
-<Formula>g = 10 m/s²</Formula>, <Formula>k = 0.5 / s</Formula>일 때 종단속도는? 이번에는 <Formula>k</Formula>를 두 배 (<Formula>1.0</Formula>) 로 키우면 <Formula>v_t</Formula>는 어떻게 바뀌나? 절반 (<Formula>0.25</Formula>) 으로 줄이면?
+$g = 10 m/s²$, $k = 0.5 / s$일 때 종단속도는? 이번에는 $k$를 두 배 ($1.0$) 로 키우면 $v_t$는 어떻게 바뀌나? 절반 ($0.25$) 으로 줄이면?
 
 <Solution>
-  <Formula>v_t = g/k</Formula>. <Formula>k = 0.5</Formula>이면 <Formula>v_t = 20 m/s</Formula>.{" "}
-  <Formula>k → 1.0</Formula>으로 두 배가 되면 <Formula>v_t</Formula>는 절반인{" "}
-  <Formula>10 m/s</Formula>. <Formula>k → 0.25</Formula>로 절반이 되면 <Formula>v_t</Formula>는 두
-  배인 <Formula>40 m/s</Formula>. 관계는 *반비례*다. 저항이 크면 종단속도가 작고, 저항이 작으면
+  $v_t = g/k$. $k = 0.5$이면 $v_t = 20 m/s$.{" "}
+  $k → 1.0$으로 두 배가 되면 $v_t$는 절반인{" "}
+  $10 m/s$. $k → 0.25$로 절반이 되면 $v_t$는 두
+  배인 $40 m/s$. 관계는 *반비례*다. 저항이 크면 종단속도가 작고, 저항이 작으면
   종단속도가 크다. (볼링공은 단위 질량당 k가 작고, 깃털은 크다.)
 </Solution>
 
@@ -151,13 +150,13 @@ import Formula from "@/components/page/formula.astro";
 
 <Exercise number={3} tag="v_t 위/아래에서 dv/dt 부호">
 
-<Formula>g = 9.8</Formula>, <Formula>k = 0.4</Formula>일 때 종단속도는 <Formula>v_t = 24.5 m/s</Formula>. 세 가지 속도, <Formula>v = 10 m/s</Formula>, <Formula>v = 24.5 m/s</Formula>, <Formula>v = 40 m/s</Formula>에서 <Formula>dv/dt</Formula>를 계산하라. 각각의 *부호*는 무엇을 말해 주는가?
+$g = 9.8$, $k = 0.4$일 때 종단속도는 $v_t = 24.5 m/s$. 세 가지 속도, $v = 10 m/s$, $v = 24.5 m/s$, $v = 40 m/s$에서 $dv/dt$를 계산하라. 각각의 *부호*는 무엇을 말해 주는가?
 
 <Solution>
-  <Formula>dv/dt = 9.8 − 0.4 v</Formula>. <Formula>v = 10</Formula>일 때{" "}
-  <Formula>9.8 − 4 = +5.8 m/s²</Formula> (양수 — 아직 가속 중). <Formula>v = 24.5</Formula>에서는{" "}
-  <Formula>9.8 − 9.8 = 0</Formula> (종단). <Formula>v = 40</Formula>에서는{" "}
-  <Formula>9.8 − 16 = −6.2 m/s²</Formula> (음수 — 위쪽에서 v_t를 향해 감속). *dv/dt의 부호가 v가
+  $dv/dt = 9.8 − 0.4 v$. $v = 10$일 때{" "}
+  $9.8 − 4 = +5.8 m/s²$ (양수 — 아직 가속 중). $v = 24.5$에서는{" "}
+  $9.8 − 9.8 = 0$ (종단). $v = 40$에서는{" "}
+  $9.8 − 16 = −6.2 m/s²$ (음수 — 위쪽에서 v_t를 향해 감속). *dv/dt의 부호가 v가
   올라갈지, 머무를지, 내려갈지를 알려 준다 — 평형은 그 부호가 뒤집히는 바로 그 자리다.*
 </Solution>
 
@@ -168,7 +167,7 @@ import Formula from "@/components/page/formula.astro";
 한 학생이 종단속도로 떨어지는 빗방울을 보고 이런 결론을 내린다: "방울이 가속하지 않으니까, 중력은 더 이상 작용하지 않는 거다." 한 문장으로 반박하라. 올바른 그림은 무엇인가?
 
 <Solution>
-  중력은 그대로다 — 여전히 <Formula>m·g</Formula>의 온전한 힘으로 당기고 있다. 달라진 건 저항이
+  중력은 그대로다 — 여전히 $m·g$의 온전한 힘으로 당기고 있다. 달라진 건 저항이
   자라서 *중력과 같은 크기로 반대 방향*을 가리키게 됐다는 것. 0이 된 건 *알짜* 힘이지 중력이
   아니다. 가속은 *알짜* 힘에 대한 반응이지, 개별 힘이 사라졌다는 뜻이 아니다. *평형은 상쇄이지
   소멸이 아니다.* 같은 오해는 곳곳에 있다 — 공중에 떠 있는 헬리콥터에도, 책상에 놓인 책에도
@@ -179,19 +178,19 @@ import Formula from "@/components/page/formula.astro";
 
 <Exercise number={5} tag="거리는 v(t) 아래 면적">
 
-길이가 같은 두 구간, 둘 다 <Formula>1 s</Formula>다 — 하나는 낙하 초반 (<Formula>t = 0</Formula>에서 <Formula>1</Formula>), 다른 하나는 후반 (<Formula>t = 10</Formula>에서 <Formula>11</Formula>, 그쯤이면 <Formula>v(t)</Formula>는 사실상 <Formula>v_t</Formula>). <Formula>k = 0.4</Formula>, <Formula>v_t = 24.5 m/s</Formula>. 각 구간에서 떨어진 거리를 계산하라. 같은 시간인데 후반 구간이 더 많이 떨어지는 이유는?
+길이가 같은 두 구간, 둘 다 $1 s$다 — 하나는 낙하 초반 ($t = 0$에서 $1$), 다른 하나는 후반 ($t = 10$에서 $11$, 그쯤이면 $v(t)$는 사실상 $v_t$). $k = 0.4$, $v_t = 24.5 m/s$. 각 구간에서 떨어진 거리를 계산하라. 같은 시간인데 후반 구간이 더 많이 떨어지는 이유는?
 
 <Solution>
-  구간 <Formula>[t_1, t_2]</Formula>에서 떨어진 거리는{" "}
-  <Formula>{"∫_{t_1}^{t_2} v(s) ds"}</Formula> — 그 창 안에서 <Formula>v(t)</Formula> 아래 넓이다.
-  초반 구간 (<Formula>0</Formula>에서 <Formula>1</Formula>): <Formula>v</Formula>가 <Formula>0</Formula>
-  에서 <Formula>v_t (1 − e^(−0.4))</Formula> ≈ <Formula>8.1 m/s</Formula>까지 올라온다. 그 비탈
-  아래 넓이는 대략 <Formula>{"≈ ∫_0^1 v_t(1−e^(−0.4s)) ds ≈ 4 m"}</Formula>. 후반 구간 (<Formula>10</Formula>
-  에서 <Formula>11</Formula>): <Formula>v ≈ v_t = 24.5 m/s</Formula>로 거의 일정하니 넓이는{" "}
-  <Formula>v_t · 1 s ≈ 24.5 m</Formula>. *같은 시간에 여섯 배 거리.* 낙하는 초반에 가속하다가
+  구간 $[t_1, t_2]$에서 떨어진 거리는{" "}
+  $∫_{t_1}^{t_2} v(s) ds$ — 그 창 안에서 $v(t)$ 아래 넓이다.
+  초반 구간 ($0$에서 $1$): $v$가 $0$
+  에서 $v_t (1 − e^(−0.4))$ ≈ $8.1 m/s$까지 올라온다. 그 비탈
+  아래 넓이는 대략 $≈ ∫_0^1 v_t(1−e^(−0.4s)) ds ≈ 4 m$. 후반 구간 ($10$
+  에서 $11$): $v ≈ v_t = 24.5 m/s$로 거의 일정하니 넓이는{" "}
+  $v_t · 1 s ≈ 24.5 m$. *같은 시간에 여섯 배 거리.* 낙하는 초반에 가속하다가
   안정 구간으로 들어선다. 적분은 "이 순간의 속도"를 "지금까지 간 거리"로 바꿔 주고, 초반 구간에서
-  덜 떨어진 그 작은 넓이가 정확히 <Formula>y(t)</Formula> 닫힌 형식의 상수 오프셋{" "}
-  <Formula>v_t/k</Formula>에 해당한다.
+  덜 떨어진 그 작은 넓이가 정확히 $y(t)$ 닫힌 형식의 상수 오프셋{" "}
+  $v_t/k$에 해당한다.
 </Solution>
 
 </Exercise>
@@ -201,8 +200,8 @@ import Formula from "@/components/page/formula.astro";
 <WhyNotTaught>
   입문 물리는 다루기 쉬운 자유낙하 (저항 없음) 만 가르친 뒤, "실제 낙하에는 공기 저항이 있어서
   복잡하다"라고 손사래를 친다. 그 복잡함은 식 하나에 항 하나가 더 붙는 것뿐이다:{" "}
-  <Formula>dv/dt = g − kv</Formula>. 이 한 줄에서 종단속도는 대수 한 줄 (<Formula>g = kv_t</Formula>)
-  로 나오고, 다가가는 모양은 적분 한 줄 (<Formula>v(t) = v_t(1−e^(−kt))</Formula>) 로, 그리고
+  $dv/dt = g − kv$. 이 한 줄에서 종단속도는 대수 한 줄 ($g = kv_t$)
+  로 나오고, 다가가는 모양은 적분 한 줄 ($v(t) = v_t(1−e^(−kt))$) 로, 그리고
   충전되는 축전기·식어가는 커피와의 *연결*은 한 문단으로 끝난다. Lemma는 식을 독자 눈앞에 그대로
   둔다 — *물리는 거기서 진짜로 일어나기 때문이다.* 교과서 사이드바를 채우는 "흔한 종단속도 표" 같은
   데가 아니라. 종단속도는 빗방울에 관한 사실이 아니다. 안정한 고정점을 가진 모든 1계 시스템에 관한

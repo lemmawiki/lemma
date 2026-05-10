@@ -14,7 +14,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="도입 · 중력의 서명">
 
@@ -41,16 +40,16 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={2} title="운동 방정식">
 
-발사 속도를 성분으로 나누자: <Formula>vₓ = v₀ cos θ</Formula>, <Formula>v_y = v₀ sin θ</Formula>. 가로 성분은 일정. 세로 성분은 매초 <Formula>g</Formula>씩 줄어든다 — 아래로 향하는 일정한 <Term id="acceleration">가속도</Term>의 몫: <Formula>v_y(t) = v₀ sin θ − g·t</Formula>. 한 번 적분하면 위치:
+발사 속도를 성분으로 나누자: $vₓ = v₀ \cos θ$, $v_y = v₀ \sin θ$. 가로 성분은 일정. 세로 성분은 매초 $g$씩 줄어든다 — 아래로 향하는 일정한 <Term id="acceleration">가속도</Term>의 몫: $v_y(t) = v₀ \sin θ − g·t$. 한 번 적분하면 위치:
 
 ```
 x(t) = v₀ cos θ · t
 y(t) = v₀ sin θ · t − ½ g t²
 ```
 
-이 한 쌍이 [매개변수 곡선](/ko/modules/parametric-curves) — 시간 매개변수 <Formula>t</Formula>를 공유하는 두 함수. 이 곡선의 *이미지*는 운동장 위에 그려진 모양, *매개변수화*는 시간상의 실제 운동. 같은 이미지를 여러 매개변수화가 칠해낼 수 있다 — 곧 본다.
+이 한 쌍이 [매개변수 곡선](/ko/modules/parametric-curves) — 시간 매개변수 $t$를 공유하는 두 함수. 이 곡선의 *이미지*는 운동장 위에 그려진 모양, *매개변수화*는 시간상의 실제 운동. 같은 이미지를 여러 매개변수화가 칠해낼 수 있다 — 곧 본다.
 
-"한 번 적분하면 위치"라는 문구가 여기서 진짜 일을 하고 있다. 중력이 가속도를 준다. 가속도를 [적분](/ko/modules/integration)하면 속도가 되고, 속도를 적분하면 위치가 된다. *포물선은 마술이 아니다 — 변화가 두 번 쌓인 결과다.* 적분 상수는 초기 조건이 정한다 — <Formula>t = 0</Formula>에서 속도는 발사 속도 (아직 떨어지지 않았으니), 위치는 발사점 (아직 움직이지 않았으니). 두 번의 적분, 두 개의 상수, 닫힌 형식의 궤적 하나.
+"한 번 적분하면 위치"라는 문구가 여기서 진짜 일을 하고 있다. 중력이 가속도를 준다. 가속도를 [적분](/ko/modules/integration)하면 속도가 되고, 속도를 적분하면 위치가 된다. *포물선은 마술이 아니다 — 변화가 두 번 쌓인 결과다.* 적분 상수는 초기 조건이 정한다 — $t = 0$에서 속도는 발사 속도 (아직 떨어지지 않았으니), 위치는 발사점 (아직 움직이지 않았으니). 두 번의 적분, 두 개의 상수, 닫힌 형식의 궤적 하나.
 
 <CodeBlock slug="projectileMotion" arc="arc2" />
 
@@ -58,14 +57,14 @@ y(t) = v₀ sin θ · t − ½ g t²
 
 <ArcRow n={3} title="시간을 지우면 포물선이 보인다">
 
-<Formula>x(t) = v₀ cos θ · t</Formula>를 <Formula>t</Formula>에 대해 풀면
-<Formula>t = x / (v₀ cos θ)</Formula>. 이걸 <Formula>y(t)</Formula>에 넣자:
+$x(t) = v₀ \cos θ · t$를 $t$에 대해 풀면
+$t = x / (v₀ \cos θ)$. 이걸 $y(t)$에 넣자:
 
 ```
 y(x) = (tan θ) · x  −  g · x² / (2 v₀² cos²θ)
 ```
 
-이게 <Formula>x</Formula>에 대한 이차식. <Formula>t</Formula>에 대한 독립적인 두 선형 과정의 자취는 필연적으로 <Formula>x</Formula>에 대한 이차식이 되고, 이차식의 그래프는 <Term id="parabola">포물선</Term>. 포물선은 이 운동의 _이미지_, 운동은 _매개변수화_. 이미지는 시간 축을 지운다 — 모양은 읽을 수 있지만, 공이 그 자리까지 얼마나 빠르게 갔는지는 알 수 없다.
+이게 $x$에 대한 이차식. $t$에 대한 독립적인 두 선형 과정의 자취는 필연적으로 $x$에 대한 이차식이 되고, 이차식의 그래프는 <Term id="parabola">포물선</Term>. 포물선은 이 운동의 _이미지_, 운동은 _매개변수화_. 이미지는 시간 축을 지운다 — 모양은 읽을 수 있지만, 공이 그 자리까지 얼마나 빠르게 갔는지는 알 수 없다.
 
 <CodeBlock slug="projectileMotion" arc="arc3" />
 
@@ -75,10 +74,10 @@ y(x) = (tan θ) · x  −  g · x² / (2 v₀² cos²θ)
 
 식에서 네 가지가 떨어진다.
 
-- **정점까지의 시간.** 세로 속도 <Formula>v_y(t) = v₀ sin θ − g·t</Formula>가 0이 되는 시점: <Formula>t_정점 = v₀ sin θ / g</Formula>. 이때 공이 최고점.
-- **착지까지의 시간.** 대칭으로 내려오는 길은 올라간 길의 거울: <Formula>t_착지 = 2 · t_정점</Formula>. 위젯의 통계 줄이 보여준다.
-- **사거리.** <Formula>R = v₀ cos θ · t_착지 = v₀² sin(2θ) / g</Formula>. <Formula>2θ = 90°</Formula>, 즉 발사각 <Formula>θ = 45°</Formula>에서 최대. 가장 멀리 가는 던지기는 위로 가는 힘과 앞으로 가는 힘이 정확히 반씩 나뉜 던지기.
-- **대칭.** 정점은 <Formula>x = R/2</Formula>. 착지 속력은 발사 속력과 같다 (같은 <Formula>vₓ</Formula>, 부호만 뒤집힌 같은 크기의 <Formula>v_y</Formula>). 공기저항이 없으면 공기에게 에너지를 잃지 않는다.
+- **정점까지의 시간.** 세로 속도 $v_y(t) = v₀ \sin θ − g·t$가 0이 되는 시점: $t_{\text{정점}} = v_0 \sin θ / g$. 이때 공이 최고점.
+- **착지까지의 시간.** 대칭으로 내려오는 길은 올라간 길의 거울: $t_{\text{착지}} = 2 · t_{\text{정점}}$. 위젯의 통계 줄이 보여준다.
+- **사거리.** $R = v_0 \cos θ · t_{\text{착지}} = v_0^2 \sin(2θ) / g$. $2θ = 90°$, 즉 발사각 $θ = 45°$에서 최대. 가장 멀리 가는 던지기는 위로 가는 힘과 앞으로 가는 힘이 정확히 반씩 나뉜 던지기.
+- **대칭.** 정점은 $x = R/2$. 착지 속력은 발사 속력과 같다 (같은 $vₓ$, 부호만 뒤집힌 같은 크기의 $v_y$). 공기저항이 없으면 공기에게 에너지를 잃지 않는다.
 
 <CodeBlock slug="projectileMotion" arc="arc4" />
 
@@ -86,13 +85,13 @@ y(x) = (tan θ) · x  −  g · x² / (2 v₀² cos²θ)
 
 <ArcRow n={5} title="같은 이미지, 다른 운동">
 
-[매개변수 곡선](/ko/modules/parametric-curves) 모듈이 정밀하게 만든 _이미지 vs 매개변수화_ 구분이 여기서도 그대로 적용된다. <Formula>y(x) = (tan θ) x − g x² / (2 v₀² cos²θ)</Formula>를 보자: 포물선 모양은 <Formula>θ</Formula>와 비율 <Formula>g/v₀²</Formula>에만 의존한다. <Formula>v₀</Formula>와 <Formula>g</Formula>를 알맞은 배율로 함께 키우면 _같은 포물선을 다른 시간에 걸쳐 지나간다_. 알맞은 속력으로 달에서 던지면 지구에서 던질 때와 _모양은 똑같지만_ 더 느리게 — 같은 모양을 그리는 데 달의 시계는 다르게 흐르니까.
+[매개변수 곡선](/ko/modules/parametric-curves) 모듈이 정밀하게 만든 _이미지 vs 매개변수화_ 구분이 여기서도 그대로 적용된다. $y(x) = (\tan θ) x − g x² / (2 v₀² \cos²θ)$를 보자: 포물선 모양은 $θ$와 비율 $g/v₀²$에만 의존한다. $v₀$와 $g$를 알맞은 배율로 함께 키우면 _같은 포물선을 다른 시간에 걸쳐 지나간다_. 알맞은 속력으로 달에서 던지면 지구에서 던질 때와 _모양은 똑같지만_ 더 느리게 — 같은 모양을 그리는 데 달의 시계는 다르게 흐르니까.
 
 베지에 곡선, 그리고 모듈이 된 매개변수 곡선 스파이크와 _똑같은_ 교훈: 그림은 그림이고, 그것을 칠하는 움직임은 또 다른 것. 두 매개변수화가 _세세한 부분에서 모두 달라도_ 만들어내는 *이미지*는 같을 수 있다.
 
 <Counterexample>
   포물선은 *공기를 무시할 때* 나오는 궤적이다. 40 m/s로 던진 야구공의 레이놀즈 수는 ~10⁵; 항력은
-  작은 보정 정도가 아니다. 145 g 공에 2차 항력 <Formula>F_d = ½ ρ C_d A v²</Formula>를 넣고 같은
+  작은 보정 정도가 아니다. 145 g 공에 2차 항력 $F_d = \tfrac{1}{2} ρ C_d A v²$를 넣고 같은
   식을 풀면, **θ = 45°**에서 사거리가 **~163 m** (진공)에서 **~98 m** (공기)로 줄고, *최적 각도*도
   **45°**에서 **~38°**로 옮겨간다. 깔끔한 포물선은 진공에서나 나오는 모양. 실제 야외의 궤적은 그것과
   닮긴 했지만, 비대칭이고, 짧게 끊긴다.
@@ -111,54 +110,54 @@ y(x) = (tan θ) · x  −  g · x² / (2 v₀² cos²θ)
 
 <Exercise number={1} tag="정점까지의 시간" noCalculator>
 
-공이 <Formula>v₀ = 20 m/s</Formula>, <Formula>θ = 30°</Formula>, <Formula>g = 10 m/s²</Formula>로 발사된다. <Formula>t_정점</Formula>과 최고 높이를 구하라. <Formula>sin 30° = 1/2</Formula> 사용.
+공이 $v₀ = 20 m/s$, $θ = 30°$, $g = 10 m/s²$로 발사된다. $t_{\text{정점}}$과 최고 높이를 구하라. $\sin 30° = 1/2$ 사용.
 
 <Solution>
-  <Formula>v_y(0) = v₀ sin 30° = 10 m/s</Formula>. <Formula>v_y(t) = 10 − 10·t = 0</Formula>에서
-  **t_정점 = 1 s**. 최고 높이 <Formula>= v_y(0)·t_정점 − ½ g t_정점² = 10·1 − ½·10·1 = 5 m</Formula>
-  . (<Formula>v_y(0)² / (2g) = 100/20 = 5 m</Formula>과 동일.)
+  $v_y(0) = v₀ \sin 30° = 10 m/s$. $v_y(t) = 10 − 10·t = 0$에서
+  **t_정점 = 1 s**. 최고 높이 $= v_y(0)·t_{\text{정점}} − \tfrac{1}{2} g\, t_{\text{정점}}^2 = 10·1 − \tfrac{1}{2}·10·1 = 5\text{ m}$
+  . ($v_y(0)² / (2g) = 100/20 = 5 m$과 동일.)
 </Solution>
 
 </Exercise>
 
 <Exercise number={2} tag="사거리 공식 유도">
 
-<Formula>x(t_착지) = v₀ cos θ · t_착지</Formula>와 <Formula>t_착지 = 2 v₀ sin θ / g</Formula>에서
-<Formula>R = v₀² sin(2θ) / g</Formula>를 유도하라. 위젯에서 <Formula>θ = 45°</Formula>일 때 사거리가
+$x(t_{\text{착지}}) = v_0 \cos θ · t_{\text{착지}}$와 $t_{\text{착지}} = 2 v_0 \sin θ / g$에서
+$R = v₀² \sin(2θ) / g$를 유도하라. 위젯에서 $θ = 45°$일 때 사거리가
 최대인지 확인.
 
 <Solution>
-  <Formula>R = v₀ cos θ · (2 v₀ sin θ / g) = (2 v₀² sin θ cos θ) / g = v₀² sin(2θ) / g</Formula>.
-  배각 공식 <Formula>sin(2θ) = 2 sin θ cos θ</Formula>를 썼다. <Formula>sin(2θ)</Formula>의 최댓값은{" "}
-  <Formula>2θ = 90°</Formula>, 즉 **θ = 45°**에서 1.
+  $R = v₀ \cos θ · (2 v₀ \sin θ / g) = (2 v₀² \sin θ \cos θ) / g = v₀² \sin(2θ) / g$.
+  배각 공식 $\sin(2θ) = 2 \sin θ \cos θ$를 썼다. $\sin(2θ)$의 최댓값은{" "}
+  $2θ = 90°$, 즉 **θ = 45°**에서 1.
 </Solution>
 
 </Exercise>
 
 <Exercise number={3} tag="같은 이미지, 다른 시간">
 
-두 던지기가 같은 발사각 <Formula>θ = 45°</Formula>를 가진다. 하나는 <Formula>(v₀, g) = (20, 10)</Formula>, 다른 하나는 <Formula>(v₀, g) = (40, 40)</Formula>. 둘이 _같은 포물선_ <Formula>y(x)</Formula>를 그리지만 두 번째가 시간상 *더 빠르다*는 것을 보여라. 어느 양이 이미지를 결정하고, 어느 양이 운동을 결정하는가?
+두 던지기가 같은 발사각 $θ = 45°$를 가진다. 하나는 $(v₀, g) = (20, 10)$, 다른 하나는 $(v₀, g) = (40, 40)$. 둘이 _같은 포물선_ $y(x)$를 그리지만 두 번째가 시간상 *더 빠르다*는 것을 보여라. 어느 양이 이미지를 결정하고, 어느 양이 운동을 결정하는가?
 
 <Solution>
-  <Formula>y(x) = (tan θ) x − g·x² / (2 v₀² cos²θ)</Formula>는 <Formula>θ</Formula>와{" "}
-  <Formula>g/v₀²</Formula>에만 의존. 두 던지기 모두 이 비가{" "}
-  <Formula>10/400 = 40/1600 = 0.025</Formula> — 같은 포물선. 그런데{" "}
-  <Formula>t_착지 = 2 v₀ sin θ / g</Formula>는 첫째에서 <Formula>√2 · 20/10 ≈ 2.83 s</Formula>,
-  둘째에서 <Formula>√2 · 40/40 ≈ 1.41 s</Formula> — 절반의 비행 시간. **이미지:{" "}
-  <Formula>(θ, g/v₀²)</Formula>**, **운동: 그 외 모든 것 (v₀와 g의 절대값 포함).**
+  $y(x) = (\tan θ) x − g·x² / (2 v₀² \cos²θ)$는 $θ$와{" "}
+  $g/v₀²$에만 의존. 두 던지기 모두 이 비가{" "}
+  $10/400 = 40/1600 = 0.025$ — 같은 포물선. 그런데{" "}
+  $t_{\text{착지}} = 2 v_0 \sin θ / g$는 첫째에서 $\sqrt{2} · 20/10 ≈ 2.83 s$,
+  둘째에서 $\sqrt{2} · 40/40 ≈ 1.41 s$ — 절반의 비행 시간. **이미지:{" "}
+  $(θ, g/v₀²)$**, **운동: 그 외 모든 것 (v₀와 g의 절대값 포함).**
 </Solution>
 
 </Exercise>
 
 <Exercise number={4} tag="착지 속력">
 
-시간 계산을 전혀 하지 않고, 착지 시 공의 *속력*이 발사 속력 <Formula>v₀</Formula>와 같음을 논증하라. (같은 높이, 공기저항 무시.) 착지 순간 속도 벡터가 지면과 이루는 각은?
+시간 계산을 전혀 하지 않고, 착지 시 공의 *속력*이 발사 속력 $v₀$와 같음을 논증하라. (같은 높이, 공기저항 무시.) 착지 순간 속도 벡터가 지면과 이루는 각은?
 
 <Solution>
-  포물선의 대칭성과 등가속 운동의 시간 역전 대칭에서: 착지 시 <Formula>vₓ</Formula>는 그대로 (가로
-  힘 없음), <Formula>v_y</Formula>는 같은 크기에 부호만 반대. 그러므로{" "}
-  <Formula>|v_착지|² = vₓ² + v_y² = v₀²</Formula> — 같은 속력. 방향: 발사가 지면 위{" "}
-  <Formula>+θ</Formula>였다면 착지는 지면 아래 <Formula>−θ</Formula> — 같은 각, 반대편.
+  포물선의 대칭성과 등가속 운동의 시간 역전 대칭에서: 착지 시 $vₓ$는 그대로 (가로
+  힘 없음), $v_y$는 같은 크기에 부호만 반대. 그러므로{" "}
+  $|v_{\text{착지}}|^2 = v_x^2 + v_y^2 = v_0^2$ — 같은 속력. 방향: 발사가 지면 위{" "}
+  $+θ$였다면 착지는 지면 아래 $−θ$ — 같은 각, 반대편.
 </Solution>
 
 </Exercise>

@@ -21,7 +21,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · the lie a clock runs on">
 
@@ -49,21 +48,21 @@ A mechanical clock counts swings. For "minute" to mean what we want it to mean, 
 
 <ArcRow n={2} title="The real equation">
 
-For a bob of mass <Formula>m</Formula> on a rigid rod of length <Formula>L</Formula>, the only force giving it angular <Term id="acceleration">acceleration</Term> is the component of <Term id="gravity">gravity</Term> tangent to the arc, which equals <Formula>−mg sin θ</Formula> for angle <Formula>θ</Formula> measured from straight down. Newton's second law along the arc gives:
+For a bob of mass $m$ on a rigid rod of length $L$, the only force giving it angular <Term id="acceleration">acceleration</Term> is the component of <Term id="gravity">gravity</Term> tangent to the arc, which equals $−mg \sin θ$ for angle $θ$ measured from straight down. Newton's second law along the arc gives:
 
 ```
 θ̈ = −(g/L) · sin θ
 ```
 
-That is a _nonlinear_ differential equation. There is no clean elementary solution; the period _does_ depend on the amplitude <Formula>θ₀</Formula> the bob is launched at. If the world worked exactly like this, no mechanical clock could keep time.
+That is a _nonlinear_ differential equation. There is no clean elementary solution; the period _does_ depend on the amplitude $θ₀$ the bob is launched at. If the world worked exactly like this, no mechanical clock could keep time.
 
 </ArcRow>
 
 <ArcRow n={3} title="The small-angle move">
 
-Look at <Formula>sin θ</Formula> near zero. Its <Term id="tangent">tangent line</Term> at the origin is just <Formula>y = θ</Formula>. So <Formula>sin θ ≈ θ</Formula> for small <Formula>θ</Formula> (in radians). At <Formula>θ = 5°</Formula> (≈ 0.087 rad) the error is about 0.1%. At <Formula>30°</Formula> it's about 4.5%. At <Formula>60°</Formula> it's nearly 18% — the approximation breaks down quickly. This is the <Term id="small-angle-approximation">small-angle approximation</Term>; replacing a nonlinear function by its tangent line is <Term id="linearization">linearization</Term> in general.
+Look at $\sin θ$ near zero. Its <Term id="tangent">tangent line</Term> at the origin is just $y = θ$. So $\sin θ ≈ θ$ for small $θ$ (in radians). At $θ = 5°$ (≈ 0.087 rad) the error is about 0.1%. At $30°$ it's about 4.5%. At $60°$ it's nearly 18% — the approximation breaks down quickly. This is the <Term id="small-angle-approximation">small-angle approximation</Term>; replacing a nonlinear function by its tangent line is <Term id="linearization">linearization</Term> in general.
 
-The crisis: the equation in §2 is hard. The move: replace <Formula>sin θ</Formula> by <Formula>θ</Formula> wherever it appears. The trade: the new equation will be wrong for big swings; the gamble is that real clocks operate in the regime where it isn't.
+The crisis: the equation in §2 is hard. The move: replace $\sin θ$ by $θ$ wherever it appears. The trade: the new equation will be wrong for big swings; the gamble is that real clocks operate in the regime where it isn't.
 
 </ArcRow>
 
@@ -75,7 +74,7 @@ Substitute. The pendulum equation becomes:
 θ̈ = −(g/L) · θ
 ```
 
-That is <Term id="simple-harmonic-motion">simple harmonic motion</Term>: the acceleration is proportional to the negative of the displacement. The general solution is <Formula>θ(t) = θ₀ cos(ω·t + φ)</Formula> for <Formula>ω = √(g/L)</Formula>. Plug in initial conditions ("released from rest at angle <Formula>θ₀</Formula>") and the phase <Formula>φ</Formula> goes to zero, leaving <Formula>θ(t) = θ₀ cos(√(g/L) · t)</Formula>.
+That is <Term id="simple-harmonic-motion">simple harmonic motion</Term>: the acceleration is proportional to the negative of the displacement. The general solution is $θ(t) = θ₀ \cos(ω·t + φ)$ for $ω = \sqrt{g/L}$. Plug in initial conditions ("released from rest at angle $θ₀$") and the phase $φ$ goes to zero, leaving $θ(t) = θ₀ \cos(\sqrt{g/L} · t)$.
 
 <CodeBlock slug="pendulumClock" arc="arc4" />
 
@@ -83,13 +82,13 @@ That is <Term id="simple-harmonic-motion">simple harmonic motion</Term>: the acc
 
 <ArcRow n={5} title="The clock formula — period without amplitude">
 
-The cosine has period <Formula>2π</Formula>; the angular frequency <Formula>ω</Formula> ticks at <Formula>2π/T</Formula> radians per second. So:
+The cosine has period $2π$; the angular frequency $ω$ ticks at $2π/T$ radians per second. So:
 
 ```
 T = 2π √(L/g)
 ```
 
-_The amplitude is gone._ Period depends only on the rod length <Formula>L</Formula> and the local <Formula>g</Formula>; not on the bob's mass, not on how widely it's swinging. That is the property a clock needs, derived as a clean consequence of the linearized equation. A 1-meter rod on Earth swings with <Formula>T ≈ 2.007 s</Formula>; on the Moon, where <Formula>g ≈ 1.62 m/s²</Formula>, the same rod swings with <Formula>T ≈ 4.93 s</Formula>.
+_The amplitude is gone._ Period depends only on the rod length $L$ and the local $g$; not on the bob's mass, not on how widely it's swinging. That is the property a clock needs, derived as a clean consequence of the linearized equation. A 1-meter rod on Earth swings with $T ≈ 2.007 s$; on the Moon, where $g ≈ 1.62 m/s²$, the same rod swings with $T ≈ 4.93 s$.
 
 </ArcRow>
 
@@ -101,18 +100,18 @@ The amplitude does not _vanish_ from the real period — it shrinks. The next te
 T(θ₀) = T₀ · (1  +  θ₀²/16  +  …)
 ```
 
-At <Formula>θ₀ = 10°</Formula> (≈ 0.175 rad) the correction is about 0.2% — a tolerable second per eight minutes. At <Formula>30°</Formula> it's 1.7%, half a minute per half-hour — already worse than a digital watch. At <Formula>60°</Formula> it's 6.9%, six minutes per hour — uselessly far from a clock. The widget shows it: with correction on and <Formula>θ_B = 60°</Formula>, pendulum B drifts visibly behind A within a handful of swings.
+At $θ₀ = 10°$ (≈ 0.175 rad) the correction is about 0.2% — a tolerable second per eight minutes. At $30°$ it's 1.7%, half a minute per half-hour — already worse than a digital watch. At $60°$ it's 6.9%, six minutes per hour — uselessly far from a clock. The widget shows it: with correction on and $θ_B = 60°$, pendulum B drifts visibly behind A within a handful of swings.
 
 Real pendulum clocks worked because their escapements force the bob to swing in _small_ arcs — 17th-century clockmakers added cycloidal "cheeks" to the suspension to compensate for what amplitude error remained, and modern designs keep the arc small enough for the linear approximation to stay nearly true. The entire technology is built around the regime in which the lie holds. That, more than the formula itself, is the lesson worth pinning.
 
 <CodeBlock slug="pendulumClock" arc="arc6" />
 
 <Counterexample>
-  The amplitude is not the only axis the model sweeps under the rug. <Formula>T = 2π√(L/g)</Formula>{" "}
-  assumes <Formula>g</Formula> is fixed — but <Formula>g</Formula> drops by ~0.031% per 100 m of
+  The amplitude is not the only axis the model sweeps under the rug. $T = 2π\sqrt{L/g}${" "}
+  assumes $g$ is fixed — but $g$ drops by ~0.031% per 100 m of
   altitude. Carry a perfectly tuned grandfather clock from London to Denver (≈1,600 m): the period
   lengthens by ~0.025%, and the clock falls behind by **~21 seconds per day**. Linearizing{" "}
-  <Formula>sin θ</Formula> is one of several lies the clock runs on; the small-angle move is just
+  $\sin θ$ is one of several lies the clock runs on; the small-angle move is just
   the most visible one.
 </Counterexample>
 
@@ -130,12 +129,12 @@ Real pendulum clocks worked because their escapements force the bob to swing in 
 
 <Exercise number={1} tag="small-angle period by hand" noCalculator>
 
-Estimate the small-angle period <Formula>T = 2π√(L/g)</Formula> for <Formula>L = 1 m</Formula>, <Formula>g = 10 m/s²</Formula>. Use <Formula>π² ≈ 10</Formula> to dodge the calculator.
+Estimate the small-angle period $T = 2π\sqrt{L/g}$ for $L = 1 m$, $g = 10 m/s²$. Use $π² ≈ 10$ to dodge the calculator.
 
 <Solution>
-  <Formula>L/g = 0.1</Formula>, so <Formula>√(L/g) = √0.1 ≈ 0.316</Formula>. Then{" "}
-  <Formula>T ≈ 2π · 0.316 ≈ 6.28 · 0.316 ≈ 1.99 s</Formula>. (More cleanly:{" "}
-  <Formula>T = 2π · √(L/g)</Formula>, so <Formula>T² = 4π²·L/g ≈ 40·0.1 = 4</Formula>, **T ≈ 2 s**.
+  $L/g = 0.1$, so $\sqrt{L/g} = \sqrt{0.1} ≈ 0.316$. Then{" "}
+  $T ≈ 2π · 0.316 ≈ 6.28 · 0.316 ≈ 1.99 s$. (More cleanly:{" "}
+  $T = 2π · \sqrt{L/g}$, so $T² = 4π²·L/g ≈ 40·0.1 = 4$, **T ≈ 2 s**.
   The "seconds pendulum" is exactly the rod whose half-period is one second — a meter long, on
   Earth.)
 </Solution>
@@ -144,44 +143,44 @@ Estimate the small-angle period <Formula>T = 2π√(L/g)</Formula> for <Formula>
 
 <Exercise number={2} tag="a 2-second pendulum on the Moon">
 
-On the Moon, <Formula>g_moon ≈ 1.62 m/s²</Formula>. What length <Formula>L_moon</Formula> gives a small-angle pendulum of period <Formula>T = 2 s</Formula> there? How does that compare to the Earth length from exercise 1?
+On the Moon, $g_moon ≈ 1.62 m/s²$. What length $L_moon$ gives a small-angle pendulum of period $T = 2 s$ there? How does that compare to the Earth length from exercise 1?
 
 <Solution>
-  From <Formula>T = 2π√(L/g)</Formula> and <Formula>T = 2</Formula>:{" "}
-  <Formula>L = g · (T/2π)² = g/π²</Formula>. With <Formula>π² ≈ 9.87</Formula> and{" "}
-  <Formula>g_moon = 1.62</Formula>: <Formula>L_moon ≈ 0.164 m</Formula> ≈ 16 cm. Earth needed 1 m.
+  From $T = 2π\sqrt{L/g}$ and $T = 2$:{" "}
+  $L = g · (T/2π)² = g/π²$. With $π² ≈ 9.87$ and{" "}
+  $g_moon = 1.62$: $L_moon ≈ 0.164 m$ ≈ 16 cm. Earth needed 1 m.
   The Moon clock pendulum is about 6× shorter for the same tick. (Equivalently, the same meter-long
-  rod ticks every <Formula>≈ 4.93 s</Formula> on the Moon.)
+  rod ticks every $≈ 4.93 s$ on the Moon.)
 </Solution>
 
 </Exercise>
 
 <Exercise number={3} tag="where amplitude went">
 
-Walk through the algebra: starting from <Formula>θ̈ = −(g/L) sin θ</Formula> and the substitution <Formula>sin θ ≈ θ</Formula>, explain in one paragraph why <Formula>θ₀</Formula> drops out of the period. Be precise about _where_ the amplitude dependence was hiding before linearization.
+Walk through the algebra: starting from $\ddot{θ} = −(g/L) \sin θ$ and the substitution $\sin θ ≈ θ$, explain in one paragraph why $θ₀$ drops out of the period. Be precise about _where_ the amplitude dependence was hiding before linearization.
 
 <Solution>
-  Before linearization, the right-hand side is <Formula>−(g/L)·sin θ</Formula>. The function{" "}
-  <Formula>sin</Formula> grows slower than its argument: at <Formula>θ = 1</Formula>,{" "}
-  <Formula>sin 1 ≈ 0.84</Formula> (16% smaller). So at large angles, the restoring
-  "force-per-unit-displacement" is *less than* <Formula>g/L</Formula>; the pendulum accelerates less
+  Before linearization, the right-hand side is $−(g/L)·\sin θ$. The function{" "}
+  $\sin$ grows slower than its argument: at $θ = 1$,{" "}
+  $\sin 1 ≈ 0.84$ (16% smaller). So at large angles, the restoring
+  "force-per-unit-displacement" is *less than* $g/L$; the pendulum accelerates less
   per unit of angle than a linear law would predict, so it returns more slowly. The rate at which
-  the restoring strength weakens depends on <Formula>θ₀</Formula>, which is precisely how{" "}
-  <Formula>θ₀</Formula> enters the period. Replace <Formula>sin θ</Formula> with{" "}
-  <Formula>θ</Formula> and the restoring strength is exactly proportional to displacement at all{" "}
-  <Formula>θ</Formula>; <Formula>θ₀</Formula> no longer modifies the rate of return, so{" "}
-  <Formula>T</Formula> stops depending on it.
+  the restoring strength weakens depends on $θ₀$, which is precisely how{" "}
+  $θ₀$ enters the period. Replace $\sin θ$ with{" "}
+  $θ$ and the restoring strength is exactly proportional to displacement at all{" "}
+  $θ$; $θ₀$ no longer modifies the rate of return, so{" "}
+  $T$ stops depending on it.
 </Solution>
 
 </Exercise>
 
 <Exercise number={4} tag="how big is the lie at 60°?" noCalculator>
 
-Use the leading correction <Formula>T(θ₀) ≈ T₀ · (1 + θ₀²/16)</Formula> with <Formula>θ₀ = 60°</Formula>. Estimate the relative error <Formula>(T − T₀)/T₀</Formula> as a percentage. How many seconds per hour is that? Check the widget.
+Use the leading correction $T(θ₀) ≈ T₀ · (1 + θ₀²/16)$ with $θ₀ = 60°$. Estimate the relative error $(T − T₀)/T₀$ as a percentage. How many seconds per hour is that? Check the widget.
 
 <Solution>
-  <Formula>60° = π/3 rad ≈ 1.05</Formula>; <Formula>θ₀² ≈ 1.10</Formula>;{" "}
-  <Formula>θ₀²/16 ≈ 0.069</Formula>. So <Formula>(T − T₀)/T₀ ≈ 6.9%</Formula>. In an hour (3600 s),
+  $60° = π/3 rad ≈ 1.05$; $θ₀² ≈ 1.10$;{" "}
+  $θ₀²/16 ≈ 0.069$. So $(T − T₀)/T₀ ≈ 6.9\%$. In an hour (3600 s),
   that is about **250 seconds slow** — over four minutes per hour. A "clock" with that error
   wouldn't reliably tell you breakfast from dinner.
 </Solution>
@@ -202,6 +201,6 @@ Use the leading correction <Formula>T(θ₀) ≈ T₀ · (1 + θ₀²/16)</Formu
   application: **The Pendulum Clock**. Sister application: [Projectile
   Motion](/en/physics/projectile-motion). Both are physics applications that lean on small-deviation
   linear behaviour — the projectile because we ignore drag, the pendulum because we ignore{" "}
-  <Formula>sin θ − θ</Formula>. Modules consumed eventually: a future *derivatives* or
+  $\sin θ − θ$. Modules consumed eventually: a future *derivatives* or
   *linearization* module.
 </PageFooter>

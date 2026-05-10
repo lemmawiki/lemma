@@ -14,16 +14,15 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · which knob, how much">
 
 # A model is wrong. Which knob should move, and by how much?
 
-You have a parameter <Formula>w</Formula> and a way to measure how wrong the model is — a <Term id="loss-function">loss</Term> <Formula>L(w)</Formula>. _Which direction_ should <Formula>w</Formula> move to make <Formula>L</Formula> smaller? _How far_? Answers: the <Term id="derivative">derivative</Term> tells you the direction; a number called the <Term id="learning-rate">learning rate</Term> tells you how far. Together they make one of the simplest, oldest, most-used recipes in numerical mathematics — and the engine of every modern ML system.
+You have a parameter $w$ and a way to measure how wrong the model is — a <Term id="loss-function">loss</Term> $L(w)$. _Which direction_ should $w$ move to make $L$ smaller? _How far_? Answers: the <Term id="derivative">derivative</Term> tells you the direction; a number called the <Term id="learning-rate">learning rate</Term> tells you how far. Together they make one of the simplest, oldest, most-used recipes in numerical mathematics — and the engine of every modern ML system.
 
 <Lede>
-  In the widget below, drag the starting <Formula>w₀</Formula> and the <Formula>η</Formula> slider,
+  In the widget below, drag the starting $w₀$ and the $η$ slider,
   then press **step**. Three preset rates: *too small* crawls down, *good* snaps to the minimum in a
   couple of steps, *too big* oscillates and explodes. The boundary between "good" and "explodes" is
   the entire stability theory of the method, in one screen.
@@ -37,17 +36,17 @@ You have a parameter <Formula>w</Formula> and a way to measure how wrong the mod
 
 <ArcRow n={1} title="Wrongness as a number">
 
-Take the simplest possible model: one parameter <Formula>w</Formula>, one input <Formula>x</Formula>, prediction <Formula>ŷ = w · x</Formula>. We want <Formula>ŷ ≈ y</Formula> for the true value <Formula>y</Formula>. "Closeness" needs a number; the standard choice is squared error <Formula>L(w) = (w·x − y)²</Formula> — zero when the prediction is exact, large when it's far, and (importantly) _smooth_ everywhere so we can take derivatives.
+Take the simplest possible model: one parameter $w$, one input $x$, prediction $\hat{y} = w · x$. We want $\hat{y} ≈ y$ for the true value $y$. "Closeness" needs a number; the standard choice is squared error $L(w) = (w·x − y)²$ — zero when the prediction is exact, large when it's far, and (importantly) _smooth_ everywhere so we can take derivatives.
 
-The widget fixes <Formula>(x, y) = (2, 6)</Formula>, so the loss is <Formula>L(w) = (2w − 6)² = 4(w − 3)²</Formula> — a parabola with minimum at <Formula>w\_ = 3</Formula>. The whole problem reduces to: how do we get from any starting <Formula>w₀</Formula> to <Formula>3</Formula>?
+The widget fixes $(x, y) = (2, 6)$, so the loss is $L(w) = (2w − 6)² = 4(w − 3)²$ — a parabola with minimum at $w\_ = 3$. The whole problem reduces to: how do we get from any starting $w₀$ to $3$?
 
 </ArcRow>
 
 <ArcRow n={2} title="Which direction? — the derivative">
 
-The [derivatives module](/en/modules/derivatives) gives the answer in one line: <Formula>L'(w) = 2x(wx − y)</Formula> — the slope of the loss curve at the current <Formula>w</Formula>. If <Formula>L'(w) &gt; 0</Formula>, <Formula>L</Formula> is rising as <Formula>w</Formula> grows; we should make <Formula>w</Formula> _smaller_. If <Formula>L'(w) &lt; 0</Formula>, the opposite. The descent direction is always <Formula>−L'(w)</Formula>.
+The [derivatives module](/en/modules/derivatives) gives the answer in one line: $L'(w) = 2x(wx − y)$ — the slope of the loss curve at the current $w$. If $L'(w) &gt; 0$, $L$ is rising as $w$ grows; we should make $w$ _smaller_. If $L'(w) &lt; 0$, the opposite. The descent direction is always $−L'(w)$.
 
-In the widget, the green arrow at the current point shows that direction. As <Formula>w</Formula> approaches the minimum, the arrow shrinks; right at <Formula>w\_</Formula> it has zero length — there's no signal left, because the gradient is exactly zero at the minimum.
+In the widget, the green arrow at the current point shows that direction. As $w$ approaches the minimum, the arrow shrinks; right at $w\_$ it has zero length — there's no signal left, because the gradient is exactly zero at the minimum.
 
 <CodeBlock slug="gradientDescent" arc="arc2" />
 
@@ -55,11 +54,11 @@ In the widget, the green arrow at the current point shows that direction. As <Fo
 
 <ArcRow n={3} title="How far? — the learning rate">
 
-The direction is settled. The size still isn't. We multiply the gradient by a positive number <Formula>η</Formula> (the <Term id="learning-rate">learning rate</Term> · <Dialect concept="learning-rate" />) and subtract:
+The direction is settled. The size still isn't. We multiply the gradient by a positive number $η$ (the <Term id="learning-rate">learning rate</Term> · <Dialect concept="learning-rate" />) and subtract:
 
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`w  ←  w  −  η · L'(w)`}</pre>
 
-Different <Formula>η</Formula> shapes the trajectory. Try <Formula>η = 0.04</Formula> in the widget: each step shrinks the distance to <Formula>w_</Formula> by a constant factor (about 0.68 here), so convergence is geometric but slow. <Formula>η = 0.12</Formula> is near the Newton-optimal <Formula>η = 1/L''(w_) = 1/8 = 0.125</Formula> — convergence in two or three steps. <Formula>η = 0.27</Formula> is past the boundary; we'll see what happens to it next.
+Different $η$ shapes the trajectory. Try $η = 0.04$ in the widget: each step shrinks the distance to $w_$ by a constant factor (about 0.68 here), so convergence is geometric but slow. $η = 0.12$ is near the Newton-optimal $η = 1/L''(w_) = 1/8 = 0.125$ — convergence in two or three steps. $η = 0.27$ is past the boundary; we'll see what happens to it next.
 
 </ArcRow>
 
@@ -70,7 +69,7 @@ The whole method is just step → step → step until either the gradient is sma
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`for _ in range(steps):
     w = w − η · L'(w)`}</pre>
 
-Five lines of code. That's gradient descent. The widget runs exactly this loop when you press _auto_. Press it with <Formula>η = 0.12</Formula> and watch <Formula>w</Formula> converge to <Formula>3</Formula>. Press it with <Formula>η = 0.27</Formula> and watch the iterates leave the screen.
+Five lines of code. That's gradient descent. The widget runs exactly this loop when you press _auto_. Press it with $η = 0.12$ and watch $w$ converge to $3$. Press it with $η = 0.27$ and watch the iterates leave the screen.
 
 <CodeBlock slug="gradientDescent" arc="arc4" />
 
@@ -78,9 +77,9 @@ Five lines of code. That's gradient descent. The widget runs exactly this loop w
 
 <ArcRow n={5} title="Diverge — when η goes too far">
 
-For our quadratic loss, write <Formula>u = w − w_</Formula>. The update rule becomes <Formula>u ← (1 − η · L''(w_)) · u</Formula> — the _distance to the minimum_ gets multiplied by <Formula>r = 1 − η · L''(w_)</Formula> at each step. Stable convergence requires <Formula>|r| &lt; 1</Formula>, i.e. <Formula>0 &lt; η &lt; 2/L''(w_)</Formula>. For our specific loss, <Formula>L''(w) = 8</Formula>, so any <Formula>η &lt; 0.25</Formula> converges and any <Formula>η &gt; 0.25</Formula> diverges.
+For our quadratic loss, write $u = w − w_$. The update rule becomes $u ← (1 − η · L''(w_)) · u$ — the _distance to the minimum_ gets multiplied by $r = 1 − η · L''(w_)$ at each step. Stable convergence requires $|r| &lt; 1$, i.e. $0 &lt; η &lt; 2/L''(w_)$. For our specific loss, $L''(w) = 8$, so any $η &lt; 0.25$ converges and any $η &gt; 0.25$ diverges.
 
-Above <Formula>0.25</Formula>, each step overshoots the minimum by _more_ than it corrected for. The signs of <Formula>u</Formula> alternate (we land on opposite sides) and the magnitude grows. The widget makes this picture: at <Formula>η = 0.27</Formula>, the iterates ping-pong and balloon. The fix in real ML is never "trial and error" alone — it's measuring local curvature (second-order methods, Adam-style adaptive rates) and using a schedule that _shrinks_ <Formula>η</Formula> as the optimum gets closer.
+Above $0.25$, each step overshoots the minimum by _more_ than it corrected for. The signs of $u$ alternate (we land on opposite sides) and the magnitude grows. The widget makes this picture: at $η = 0.27$, the iterates ping-pong and balloon. The fix in real ML is never "trial and error" alone — it's measuring local curvature (second-order methods, Adam-style adaptive rates) and using a schedule that _shrinks_ $η$ as the optimum gets closer.
 
 </ArcRow>
 
@@ -90,14 +89,14 @@ Real ML doesn't have one parameter; it has millions or billions. It doesn't have
 
 <ul className="m-0 mb-3 list-none space-y-1.5 pl-0 [&_li]:border-l-[3px] [&_li]:border-rule [&_li]:pl-3.5 [&_b]:font-semibold [&_b]:text-ink">
   <li>
-    **One parameter → vector.** <Formula>w</Formula> becomes a parameter{" "}
-    <Term id="vector">vector</Term> <Formula>θ</Formula>; the gradient becomes a vector of partial
+    **One parameter → vector.** $w$ becomes a parameter{" "}
+    <Term id="vector">vector</Term> $θ$; the gradient becomes a vector of partial
     derivatives. Vector subtraction in place of the scalar update — the same two operations the
     [vectors module](/en/modules/vectors) walks through (add, scale).
   </li>
   <li>
     **One example → mini-batch.** Sum (or average) the loss over a small random sample of examples
-    each step. The gradient is now *noisy* — that's <Formula>SGD</Formula>. The noise is a feature:
+    each step. The gradient is now *noisy* — that's $SGD$. The noise is a feature:
     it helps escape bad local geometry.
   </li>
   <li>
@@ -106,12 +105,12 @@ Real ML doesn't have one parameter; it has millions or billions. It doesn't have
   </li>
   <li>
     **Hand-derived gradient → autograd.** The chain rule is mechanical. Modern ML frameworks build a
-    computation graph during the forward pass and walk it backward to produce <Formula>∇L</Formula>{" "}
+    computation graph during the forward pass and walk it backward to produce $∇L${" "}
     automatically. The derivative we computed by hand for the toy is the same operation, scaled.
   </li>
 </ul>
 
-The bridge to [Confidently Wrong](/en/ml/confident-wrong): the squared loss here is the warm-up. The cross-entropy loss there has the same "compute gradient, take a step" geometry — just with <Formula>−log p_true</Formula> instead of <Formula>(ŷ − y)²</Formula>. Same descent algorithm, different landscape.
+The bridge to [Confidently Wrong](/en/ml/confident-wrong): the squared loss here is the warm-up. The cross-entropy loss there has the same "compute gradient, take a step" geometry — just with $−\log p_true$ instead of $(\hat{y} − y)²$. Same descent algorithm, different landscape.
 
 <CodeBlock slug="gradientDescent" arc="arc6" />
 
@@ -121,62 +120,62 @@ The bridge to [Confidently Wrong](/en/ml/confident-wrong): the squared loss here
 
 <Pin>
   **Direction from the derivative. Distance from η. Repeat.** The whole machinery of modern ML is
-  one variable substitution away from this single line: <Formula>w ← w − η · L'(w)</Formula>.
+  one variable substitution away from this single line: $w ← w − η · L'(w)$.
 </Pin>
 
 <Exercises lang="en">
 
 <Exercise number={1} tag="compute the loss" noCalculator>
 
-With <Formula>x = 2</Formula>, <Formula>y = 6</Formula>, and <Formula>w = 1</Formula>, compute the prediction <Formula>ŷ</Formula> and the loss <Formula>L(w) = (ŷ − y)²</Formula>.
+With $x = 2$, $y = 6$, and $w = 1$, compute the prediction $\hat{y}$ and the loss $L(w) = (\hat{y} − y)²$.
 
 <Solution>
-  <Formula>ŷ = 1 · 2 = 2</Formula>. Off by <Formula>(2 − 6) = −4</Formula>. Loss{" "}
-  <Formula>(−4)² = 16</Formula>. Verify in the widget by setting <Formula>w = 1</Formula>.
+  $\hat{y} = 1 · 2 = 2$. Off by $(2 − 6) = −4$. Loss{" "}
+  $(−4)² = 16$. Verify in the widget by setting $w = 1$.
 </Solution>
 
 </Exercise>
 
 <Exercise number={2} tag="gradient by hand" noCalculator>
 
-Use the secant-to-tangent recipe from the [derivatives module](/en/modules/derivatives) to derive <Formula>L'(w) = 2x(wx − y)</Formula> from scratch. Then evaluate at <Formula>w = 1</Formula> with <Formula>(x, y) = (2, 6)</Formula>.
+Use the secant-to-tangent recipe from the [derivatives module](/en/modules/derivatives) to derive $L'(w) = 2x(wx − y)$ from scratch. Then evaluate at $w = 1$ with $(x, y) = (2, 6)$.
 
 <Solution>
-  <Formula>L(w + h) − L(w) = ((w + h)x − y)² − (wx − y)²</Formula>. Expand the squares and subtract:
-  the result is <Formula>2(wx − y)·xh + x²h²</Formula>. Divide by <Formula>h</Formula>:{" "}
-  <Formula>2x(wx − y) + x²h</Formula>. Let <Formula>h → 0</Formula>:{" "}
-  <Formula>L'(w) = 2x(wx − y)</Formula>. At <Formula>w = 1</Formula>:{" "}
-  <Formula>2 · 2 · (2 − 6) = 4 · (−4) = −16</Formula>. Negative — the loss is decreasing as{" "}
-  <Formula>w</Formula> grows, so descent will push <Formula>w</Formula> upward. ✓
+  $L(w + h) − L(w) = ((w + h)x − y)² − (wx − y)²$. Expand the squares and subtract:
+  the result is $2(wx − y)·xh + x²h²$. Divide by $h$:{" "}
+  $2x(wx − y) + x²h$. Let $h → 0$:{" "}
+  $L'(w) = 2x(wx − y)$. At $w = 1$:{" "}
+  $2 · 2 · (2 − 6) = 4 · (−4) = −16$. Negative — the loss is decreasing as{" "}
+  $w$ grows, so descent will push $w$ upward. ✓
 </Solution>
 
 </Exercise>
 
 <Exercise number={3} tag="one step by hand" noCalculator>
 
-Starting at <Formula>w = 1</Formula> with <Formula>η = 0.12</Formula> and gradient <Formula>−16</Formula>, what is <Formula>w</Formula> after one step? After two? You should land near the optimum quickly.
+Starting at $w = 1$ with $η = 0.12$ and gradient $−16$, what is $w$ after one step? After two? You should land near the optimum quickly.
 
 <Solution>
-  Step 1: <Formula>w = 1 − 0.12 · (−16) = 1 + 1.92 = 2.92</Formula>. Recompute gradient:{" "}
-  <Formula>2 · 2 · (5.84 − 6) = −0.64</Formula>. Step 2:{" "}
-  <Formula>w = 2.92 − 0.12 · (−0.64) = 2.92 + 0.077 ≈ 3.00</Formula>. Already at the optimum, two
-  steps. <Formula>η = 0.12</Formula> is near the Newton-optimal{" "}
-  <Formula>1/L''(w_) = 1/8 = 0.125</Formula>.
+  Step 1: $w = 1 − 0.12 · (−16) = 1 + 1.92 = 2.92$. Recompute gradient:{" "}
+  $2 · 2 · (5.84 − 6) = −0.64$. Step 2:{" "}
+  $w = 2.92 − 0.12 · (−0.64) = 2.92 + 0.077 ≈ 3.00$. Already at the optimum, two
+  steps. $η = 0.12$ is near the Newton-optimal{" "}
+  $1/L''(w_) = 1/8 = 0.125$.
 </Solution>
 
 </Exercise>
 
 <Exercise number={4} tag="why too-large η explodes">
 
-For our quadratic loss, the update on the displacement <Formula>u = w − w\_</Formula> is <Formula>u ← (1 − 8η) · u</Formula>. Show that <Formula>η = 0.27</Formula> gives <Formula>|u_n| → ∞</Formula> exponentially in <Formula>n</Formula>. At what <Formula>η</Formula> does the iteration sit at the boundary (constant amplitude, no growth, no decay)? What's special about that <Formula>η</Formula>?
+For our quadratic loss, the update on the displacement $u = w − w\_$ is $u ← (1 − 8η) · u$. Show that $η = 0.27$ gives $|u_n| → ∞$ exponentially in $n$. At what $η$ does the iteration sit at the boundary (constant amplitude, no growth, no decay)? What's special about that $η$?
 
 <Solution>
-  <Formula>r = 1 − 8 · 0.27 = 1 − 2.16 = −1.16</Formula>; <Formula>|r| = 1.16 &gt; 1</Formula>. So{" "}
-  <Formula>|u_n| = |r|^n · |u_0| = 1.16^n · |u_0|</Formula> — exponential growth. The boundary is{" "}
-  <Formula>|r| = 1</Formula>: either <Formula>r = 1</Formula> (no update at all, only at{" "}
-  <Formula>η = 0</Formula>) or <Formula>r = −1</Formula> (perfect oscillation around{" "}
-  <Formula>w_</Formula>), which gives **η = 0.25 = 2/L''(w*)**. Right at this critical{" "}
-  <Formula>η</Formula>, the iterate flips sign every step but never shrinks — the algorithm sits on
+  $r = 1 − 8 · 0.27 = 1 − 2.16 = −1.16$; $|r| = 1.16 &gt; 1$. So{" "}
+  $|u_n| = |r|^n · |u_0| = 1.16^n · |u_0|$ — exponential growth. The boundary is{" "}
+  $|r| = 1$: either $r = 1$ (no update at all, only at{" "}
+  $η = 0$) or $r = −1$ (perfect oscillation around{" "}
+  $w_$), which gives **η = 0.25 = 2/L''(w*)**. Right at this critical{" "}
+  $η$, the iterate flips sign every step but never shrinks — the algorithm sits on
   the edge between converging and exploding. Real ML training stays well below this boundary, often
   by 10× or more, especially when curvature is unknown or varies across parameters.
 </Solution>

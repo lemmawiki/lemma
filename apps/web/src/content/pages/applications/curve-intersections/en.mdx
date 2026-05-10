@@ -14,7 +14,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · the count that won't sit still">
 
@@ -39,7 +38,7 @@ Drag two conics on a screen. Sometimes you see **four** crossings. Sometimes **t
 
 Two real curves on a 2D plane. The "visible count" is just _the number of points your eye finds at the same pixel_ — real coordinates, both finite. That is the count a naive collision detector returns by raster sampling, or a CAD engine returns by approximate root-finding. It depends on where the curves happen to be drifting today and is not stable under tiny perturbations.
 
-Try the widget. The <Formula>general</Formula> preset shows 4 real crossings — visible count agrees with Bezout. The <Formula>tangent</Formula> preset drops to 3 visible — turn on _show multiplicity_ and one of those gets a <Formula>×2</Formula> tag. The <Formula>disjoint</Formula> preset shows 0 visible — turn on _show complex_ and four open dots appear in the side panel. None of the missing intersections were lost. They just left the real-affine plane.
+Try the widget. The $general$ preset shows 4 real crossings — visible count agrees with Bezout. The $tangent$ preset drops to 3 visible — turn on _show multiplicity_ and one of those gets a $×2$ tag. The $disjoint$ preset shows 0 visible — turn on _show complex_ and four open dots appear in the side panel. None of the missing intersections were lost. They just left the real-affine plane.
 
 </ArcRow>
 
@@ -48,8 +47,8 @@ Try the widget. The <Formula>general</Formula> preset shows 4 real crossings —
 Bezout's repair (covered fully in the [Bezout module](/en/modules/bezout)) tells you exactly where the missing crossings went. Three corrections; three places to look.
 
 - **Tangency.** Two crossings collapsed onto one geometric point — the algebra still says two, but the renderer sees one dot. The bookkeeping is <Term id="intersection-multiplicity">intersection multiplicity</Term>: a tangent intersection counts as 2.
-- **Off the visible plane.** The intersection points have complex coordinates — they exist as solutions of the algebra but cannot be plotted in the real <Formula>(x, y)</Formula> grid. Two disjoint circles still intersect at <Formula>(3/2, ± i √5 / 2)</Formula>; the screen has nowhere to put those.
-- **At infinity.** Some intersections live on the line at infinity. Every two distinct circles, no matter where they sit, share the two _circular points_ <Formula>I = [1 : i : 0]</Formula> and <Formula>J = [1 : −i : 0]</Formula> — that's two of their four Bezout intersections, off-screen and complex, accounted for whether you like it or not. The fix is the <Term id="projective-plane">projective plane</Term>.
+- **Off the visible plane.** The intersection points have complex coordinates — they exist as solutions of the algebra but cannot be plotted in the real $(x, y)$ grid. Two disjoint circles still intersect at $(3/2, ± i \sqrt{5} / 2)$; the screen has nowhere to put those.
+- **At infinity.** Some intersections live on the line at infinity. Every two distinct circles, no matter where they sit, share the two _circular points_ $I = [1 : i : 0]$ and $J = [1 : −i : 0]$ — that's two of their four Bezout intersections, off-screen and complex, accounted for whether you like it or not. The fix is the <Term id="projective-plane">projective plane</Term>.
 
 </ArcRow>
 
@@ -94,13 +93,13 @@ In every case the surface story is "count and classify"; the deep story is Bezou
 
 <Exercise number={1} tag="line meets circle" noCalculator>
 
-The line <Formula>y = mx + c</Formula> meets the unit circle <Formula>x² + y² = 1</Formula> in how many points, by Bezout? For what range of <Formula>(m, c)</Formula> are all of those visible (real-affine), and for what range do the missing ones become complex? Sketch one example of each.
+The line $y = mx + c$ meets the unit circle $x² + y² = 1$ in how many points, by Bezout? For what range of $(m, c)$ are all of those visible (real-affine), and for what range do the missing ones become complex? Sketch one example of each.
 
 <Solution>
-  Bezout: 1·2 = **2**. Substitute to get <Formula>(1+m²)x² + 2mc·x + (c²−1) = 0</Formula>;
-  discriminant is <Formula>4(m² + 1 − c²)</Formula>. **Two real-affine** when{" "}
-  <Formula>c² &lt; m² + 1</Formula> (the line crosses the disk). **Tangent (multiplicity 2)** when{" "}
-  <Formula>c² = m² + 1</Formula>. **Two complex** when <Formula>c² &gt; m² + 1</Formula> (the line
+  Bezout: 1·2 = **2**. Substitute to get $(1+m²)x² + 2mc·x + (c²−1) = 0$;
+  discriminant is $4(m² + 1 − c²)$. **Two real-affine** when{" "}
+  $c² &lt; m² + 1$ (the line crosses the disk). **Tangent (multiplicity 2)** when{" "}
+  $c² = m² + 1$. **Two complex** when $c² &gt; m² + 1$ (the line
   misses the circle entirely on the real plane). Same Bezout count of 2 in all three cases.
 </Solution>
 
@@ -108,14 +107,14 @@ The line <Formula>y = mx + c</Formula> meets the unit circle <Formula>x² + y² 
 
 <Exercise number={2} tag="two circles share infinity">
 
-Take any two distinct circles. Bezout says they meet 4 times. Yet the picture on screen never shows more than 2 real-affine intersections. Where are the other 2 always? (Hint: the <Term id="homogenize">homogenized</Term> equation of any circle, evaluated at the line at infinity <Formula>Z = 0</Formula>, depends only on the leading term.)
+Take any two distinct circles. Bezout says they meet 4 times. Yet the picture on screen never shows more than 2 real-affine intersections. Where are the other 2 always? (Hint: the <Term id="homogenize">homogenized</Term> equation of any circle, evaluated at the line at infinity $Z = 0$, depends only on the leading term.)
 
 <Solution>
-  Homogenize <Formula>x² + y² + ax + by + c = 0</Formula> →{" "}
-  <Formula>X² + Y² + aXZ + bYZ + cZ² = 0</Formula>. At <Formula>Z = 0</Formula>:{" "}
-  <Formula>X² + Y² = 0</Formula>, so <Formula>[X : Y : 0] = [1 : ± i : 0]</Formula> — independent of{" "}
-  <Formula>a, b, c</Formula>. So *every* circle passes through <Formula>I = [1 : i : 0]</Formula>{" "}
-  and <Formula>J = [1 : −i : 0]</Formula> at infinity. Two distinct circles share both. Bezout's 4 =
+  Homogenize $x² + y² + ax + by + c = 0$ →{" "}
+  $X² + Y² + aXZ + bYZ + cZ² = 0$. At $Z = 0$:{" "}
+  $X² + Y² = 0$, so $[X : Y : 0] = [1 : ± i : 0]$ — independent of{" "}
+  $a, b, c$. So *every* circle passes through $I = [1 : i : 0]${" "}
+  and $J = [1 : −i : 0]$ at infinity. Two distinct circles share both. Bezout's 4 =
   (≤ 2 real-affine) + (2 complex at infinity). When the real-affine count drops below 2,
   multiplicity or complex-affine intersections fill the gap.
 </Solution>
@@ -124,13 +123,13 @@ Take any two distinct circles. Bezout says they meet 4 times. Yet the picture on
 
 <Exercise number={3} tag="tangent vs near-miss" noCalculator>
 
-An engine has two parameters: an angle <Formula>θ</Formula> and a tolerance <Formula>ε</Formula>. As <Formula>θ</Formula> sweeps through a tangent configuration, the visible-count goes 2 → 1 → 0 → 1 → 2. The "tangent" instant is one configuration; the surrounding "near-tangent" instants are different. State the difference algebraically (one root with multiplicity 2 vs two roots within ε), and explain why a robust engine should not dedupe based on raw <Formula>ε</Formula>-distance.
+An engine has two parameters: an angle $θ$ and a tolerance $ε$. As $θ$ sweeps through a tangent configuration, the visible-count goes 2 → 1 → 0 → 1 → 2. The "tangent" instant is one configuration; the surrounding "near-tangent" instants are different. State the difference algebraically (one root with multiplicity 2 vs two roots within ε), and explain why a robust engine should not dedupe based on raw $ε$-distance.
 
 <Solution>
-  At the tangent instant, the resultant has a *repeated* real root <Formula>x = a</Formula> — the
-  polynomial factors as <Formula>(x − a)² · q(x)</Formula>. Near-tangent has two close but *simple*
-  real roots <Formula>a ± δ</Formula>. Both look like "one point" to a tolerance-based deduplicator
-  with <Formula>ε &gt; δ</Formula>; but the tangent case has different physics (no transverse
+  At the tangent instant, the resultant has a *repeated* real root $x = a$ — the
+  polynomial factors as $(x − a)² · q(x)$. Near-tangent has two close but *simple*
+  real roots $a ± δ$. Both look like "one point" to a tolerance-based deduplicator
+  with $ε &gt; δ$; but the tangent case has different physics (no transverse
   crossing — the curves graze and separate) and different robustness behaviour (stable under
   perturbation in one direction; unstable in the other). Robust engines compute exact discriminants
   when possible, or use interval arithmetic to bound the multiplicity decision — never raw distance
@@ -141,13 +140,13 @@ An engine has two parameters: an angle <Formula>θ</Formula> and a tolerance <Fo
 
 <Exercise number={4} tag="the cubic that won't fit">
 
-You're computing intersections of a horizontal line <Formula>y = 0</Formula> with the cubic <Formula>y = x³ + 1</Formula>. Bezout predicts 1·3 = 3. How many real-affine? Where are the others? (No <Formula>i</Formula> required for the visible ones; one for each of the others.)
+You're computing intersections of a horizontal line $y = 0$ with the cubic $y = x³ + 1$. Bezout predicts 1·3 = 3. How many real-affine? Where are the others? (No $i$ required for the visible ones; one for each of the others.)
 
 <Solution>
-  Solve <Formula>x³ + 1 = 0</Formula>: roots are the cube roots of −1, i.e.{" "}
-  <Formula>x = −1</Formula>, <Formula>x = e^(iπ/3) = ½ + i√3/2</Formula>, and{" "}
-  <Formula>x = e^(−iπ/3) = ½ − i√3/2</Formula>. **One real-affine intersection** at{" "}
-  <Formula>(−1, 0)</Formula> — the only point you'll see plotted. **Two complex** at the conjugate
+  Solve $x³ + 1 = 0$: roots are the cube roots of −1, i.e.{" "}
+  $x = −1$, $x = e^(iπ/3) = \tfrac{1}{2} + i\sqrt{3}/2$, and{" "}
+  $x = e^(−iπ/3) = \tfrac{1}{2} − i\sqrt{3}/2$. **One real-affine intersection** at{" "}
+  $(−1, 0)$ — the only point you'll see plotted. **Two complex** at the conjugate
   pair, off the real plane. Bezout count: 3, picture count: 1, missing count: 2 complex.
 </Solution>
 

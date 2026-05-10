@@ -15,13 +15,12 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · definitional crisis">
 
 # What is "the same curve"?
 
-Drawing the parabola <Formula>y = x²</Formula> on a board, you'd say _this is a curve_. Below you'll see the same picture drawn three different ways — same paint, different motions. Which one is **the** curve? Pick an answer in your head before pressing play. Then play.
+Drawing the parabola $y = x²$ on a board, you'd say _this is a curve_. Below you'll see the same picture drawn three different ways — same paint, different motions. Which one is **the** curve? Pick an answer in your head before pressing play. Then play.
 
 <Lede>
   A module that opens with a <Term id="definitional-crisis">*definitional crisis*</Term> instead of
@@ -34,7 +33,7 @@ Drawing the parabola <Formula>y = x²</Formula> on a board, you'd say _this is a
 
 <ToolSpec>
   <Fragment slot="definition">
-    A function <Formula>γ : [0, 1] → ℝ²</Formula>. Not its picture, not its image — the *function*.
+    A function $γ : [0, 1] → ℝ²$. Not its picture, not its image — the *function*.
     Three layers of "same": same image (loosest), same up to monotone reparametrization (geometric),
     equal as functions (strictest).
   </Fragment>
@@ -56,7 +55,7 @@ Drawing the parabola <Formula>y = x²</Formula> on a board, you'd say _this is a
 
 <ArcRow n={1} title="γ is a function, not a shape">
 
-A <Term id="parametrized-curve">parametrized curve</Term> is a function <Formula>γ : [0, 1] → ℝ²</Formula>. The three γ above are three _different_ functions. They happen to share an <Term id="image-of-curve">image</Term> — the set <Formula>{"{γ(t) : t ∈ [0, 1]}"}</Formula>, which is the parabola <Formula>y = x²</Formula> on <Formula>x ∈ [−1, 1]</Formula> — but the image is a _set of points_, stripped of order, speed, and visit count. The function γ is none of those things. Two parametrized curves are equal when <Formula>γ₁(t) = γ₂(t)</Formula> for every t — the same equality you'd use for any other function. By _that_ test, the three γ above are three different curves that happen to leave the same shadow. But functional equality is only the strictest of three layers; the next step locates where the line should actually be drawn.
+A <Term id="parametrized-curve">parametrized curve</Term> is a function $γ : [0, 1] → ℝ²$. The three γ above are three _different_ functions. They happen to share an <Term id="image-of-curve">image</Term> — the set ${γ(t) : t ∈ [0, 1]}$, which is the parabola $y = x²$ on $x ∈ [−1, 1]$ — but the image is a _set of points_, stripped of order, speed, and visit count. The function γ is none of those things. Two parametrized curves are equal when $γ₁(t) = γ₂(t)$ for every t — the same equality you'd use for any other function. By _that_ test, the three γ above are three different curves that happen to leave the same shadow. But functional equality is only the strictest of three layers; the next step locates where the line should actually be drawn.
 
 
 
@@ -64,7 +63,7 @@ A <Term id="parametrized-curve">parametrized curve</Term> is a function <Formula
 
 <ArcRow n={2} title="Same image, but is it the same curve?">
 
-Step 1's strict test separates γ₁ from γ₂ even though they paint the same picture in the same direction at different paces. That feels too strict — geometrically they ought to be the same. Differential geometry agrees: it identifies γ with <Formula>γ ∘ φ</Formula> whenever <Term id="reparametrization">φ</Term> is a monotone bijection <Formula>[0, 1] → [0, 1]</Formula>. With <Formula>φ(u) = ((2u−1)³ + 1) / 2</Formula> (monotone since <Formula>dφ/du = 3(2u−1)² ≥ 0</Formula>), one checks <Formula>γ₁ ∘ φ = γ₂</Formula> exactly: γ₁ and γ₂ are the same curve at different paces. γ₃ has no such partner — it visits each interior image point twice, and no monotone φ can take a once-visit schedule to a twice-visit one. So between strict equality (too tight) and image equality (too loose) sits <Term id="reparametrization">reparametrization</Term> equivalence — and that is what most working mathematicians mean by "the same curve."
+Step 1's strict test separates γ₁ from γ₂ even though they paint the same picture in the same direction at different paces. That feels too strict — geometrically they ought to be the same. Differential geometry agrees: it identifies γ with $γ ∘ φ$ whenever <Term id="reparametrization">φ</Term> is a monotone bijection $[0, 1] → [0, 1]$. With $φ(u) = ((2u−1)³ + 1) / 2$ (monotone since $dφ/du = 3(2u−1)² ≥ 0$), one checks $γ₁ ∘ φ = γ₂$ exactly: γ₁ and γ₂ are the same curve at different paces. γ₃ has no such partner — it visits each interior image point twice, and no monotone φ can take a once-visit schedule to a twice-visit one. So between strict equality (too tight) and image equality (too loose) sits <Term id="reparametrization">reparametrization</Term> equivalence — and that is what most working mathematicians mean by "the same curve."
 
 
 
@@ -89,8 +88,8 @@ The picture is the weakest layer; the function is the strictest. **Geometry live
 Play γ₂ and look at the trail. Where are the points _most_ tightly packed — near the origin, or near the endpoints? Why? (Trail spacing is constant in time, not in arc length.)
 
 <Solution>
-  Densest *at the origin*. With <Formula>x(u) = (2u−1)³</Formula>, the speed{" "}
-  <Formula>dx/du = 6(2u−1)²</Formula> vanishes at <Formula>u = 1/2</Formula> — γ₂ crawls through the
+  Densest *at the origin*. With $x(u) = (2u−1)³$, the speed{" "}
+  $dx/du = 6(2u−1)²$ vanishes at $u = 1/2$ — γ₂ crawls through the
   origin and sprints through the endpoints. Equal time steps spend most of their time near the slow
   point, so trail dots pile up there. The image is the same parabola; only the schedule differs.
 </Solution>
@@ -99,13 +98,13 @@ Play γ₂ and look at the trail. Where are the points _most_ tightly packed —
 
 <Exercise number={2} tag="construct · same image, different schedule" noCalculator>
 
-Write a γ : [0, 1] → ℝ² whose image is exactly <Formula>y = x²</Formula> on <Formula>x ∈ [−1, 1]</Formula>, but which traces that parabola _three times_ as t goes 0 → 1. Give a closed-form expression. (Hint: the round trip γ₃ traces it twice using cosine.)
+Write a γ : [0, 1] → ℝ² whose image is exactly $y = x²$ on $x ∈ [−1, 1]$, but which traces that parabola _three times_ as t goes 0 → 1. Give a closed-form expression. (Hint: the round trip γ₃ traces it twice using cosine.)
 
 <Solution>
-  One choice: <Formula>γ(t) = (cos(3πt), cos²(3πt))</Formula>. As t runs 0 → 1, the argument{" "}
-  <Formula>3πt</Formula> sweeps <Formula>[0, 3π]</Formula>; cosine completes one and a half full
-  periods, traversing <Formula>[−1, 1]</Formula> three times. Image: the parabola{" "}
-  <Formula>y = x²</Formula> on <Formula>[−1, 1]</Formula>. Same shadow, triple-pace schedule. The
+  One choice: $γ(t) = (\cos(3πt), \cos²(3πt))$. As t runs 0 → 1, the argument{" "}
+  $3πt$ sweeps $[0, 3π]$; cosine completes one and a half full
+  periods, traversing $[−1, 1]$ three times. Image: the parabola{" "}
+  $y = x²$ on $[−1, 1]$. Same shadow, triple-pace schedule. The
   image cannot tell this trip apart from γ₁'s single one.
 </Solution>
 
@@ -116,9 +115,9 @@ Write a γ : [0, 1] → ℝ² whose image is exactly <Formula>y = x²</Formula> 
 A junior says: "Two functions with the same outputs are the same function — that's extensional equality. Three γ producing the same image must be the same curve." Find the bug in one sentence. Then state the correct equality test for parametrized curves.
 
 <Solution>
-  The bug: extensional equality of γ compares <Formula>γ(t)</Formula> at every t, not{" "}
-  <Formula>{"{γ(t) : t}"}</Formula> as a set; the junior swapped the function for its image. Correct
-  test: <Formula>γ₁ = γ₂ ⇔ γ₁(t) = γ₂(t) for all t</Formula>. Two γ with the same image are equal
+  The bug: extensional equality of γ compares $γ(t)$ at every t, not{" "}
+  ${γ(t) : t}$ as a set; the junior swapped the function for its image. Correct
+  test: $γ₁ = γ₂ ⇔ γ₁(t) = γ₂(t) for all t$. Two γ with the same image are equal
   iff the schedule also matches, point by point.
 </Solution>
 

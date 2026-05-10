@@ -89,6 +89,18 @@ When code mode is off, the page must still answer every question on its own.
 
 For Korean register and translation triage, switch to the `translate` skill.
 
+## Math notation
+
+All math goes inside `$...$` (inline) or `$$...$$` (block) using KaTeX-renderable
+LaTeX. The build is strict — incompatible math fails CI.
+
+- `$x^2 + y^2 = r^2$`, not `<Formula>...</Formula>` (retired) or Unicode (`x²`)
+- Function names backslashed: `\cos\theta`, `\log_2 x`, `\sqrt{x}`, `\frac{a}{b}`
+- Currency in prose escapes: `\$100`. Korean labels in math wrap: `\text{달}`
+- KaTeX subset reference: <https://katex.org/docs/supported.html>
+
+Full rule and gotchas in [CONTRIBUTING.md § Math notation in prose](../../../CONTRIBUTING.md#math-notation-in-prose).
+
 ## Committee pattern (review)
 
 For any non-trivial new page, spawn parallel subagents with different lenses

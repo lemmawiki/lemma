@@ -21,7 +21,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · counts → bits → ranking">
 
@@ -39,15 +38,15 @@ For thirty years the decision rule barely changed. <Term id="tf-idf">TF-IDF</Ter
 
 <ArcRow n={1} title="Counting matches ranks docs by length">
 
-Search <Formula>"the cat sat"</Formula>. Every doc has <Formula>the</Formula>. The longest doc has it most. Counting matches ranks documents by how many words they contain — not by how relevant they are. We need a score that knows _which words mean something_.
+Search $"the cat sat"$. Every doc has $the$. The longest doc has it most. Counting matches ranks documents by how many words they contain — not by how relevant they are. We need a score that knows _which words mean something_.
 
 </ArcRow>
 
 <ArcRow n={2} title="TF — count, divided by length">
 
 <Term id="term-frequency">Term frequency</Term>:
-<Formula>tf(t, d) = count(t, d) / length(d)</Formula>. The fraction of words in <Formula>d</Formula>
-that equal <Formula>t</Formula>. Without dividing by length, a long doc would win every comparison
+$tf(t, d) = count(t, d) / length(d)$. The fraction of words in $d$
+that equal $t$. Without dividing by length, a long doc would win every comparison
 just by repeating every word more often. Length normalization is "level the playing field" — same
 evidence per word, regardless of how many words there are.
 
@@ -58,22 +57,22 @@ evidence per word, regardless of how many words there are.
 <ArcRow n={3} title="IDF — rarity is signal">
 
 <Term id="inverse-document-frequency">Inverse document frequency</Term>:
-<Formula>idf(t) = log₂(N / df(t))</Formula>, where <Formula>N</Formula> is the corpus size and
-<Term id="document-frequency">df(t)</Term> counts how many docs contain <Formula>t</Formula>. Walk
+$idf(t) = \log₂(N / df(t))$, where $N$ is the corpus size and
+<Term id="document-frequency">df(t)</Term> counts how many docs contain $t$. Walk
 the extremes:
 
 <ul className="m-0 mb-3 list-disc pl-6 text-[16.5px] text-ink-soft [&_li]:my-1.5">
   <li>
-    <Formula>df = N</Formula> (every doc has it): <Formula>log₂(1) = 0</Formula> bits. Stopword.
+    $df = N$ (every doc has it): $\log₂(1) = 0$ bits. Stopword.
     Zero contribution.
   </li>
   <li>
-    <Formula>df = 1</Formula> (only one doc has it): <Formula>log₂(N)</Formula> bits. Maximum
+    $df = 1$ (only one doc has it): $\log₂(N)$ bits. Maximum
     signal. The query word *singles out* that doc.
   </li>
 </ul>
 
-In the 4-doc widget above: <Formula>"the"</Formula> shows up in 3 of 4 docs, so its IDF is <Formula>log₂(4/3) ≈ 0.42</Formula> bits — almost nothing. <Formula>"fox"</Formula> shows up in 1 of 4, so its IDF is <Formula>log₂(4/1) = 2</Formula> bits. _The same word "fox" is worth 5× more_ to a query than "the", and nobody hard-coded that.
+In the 4-doc widget above: $"the"$ shows up in 3 of 4 docs, so its IDF is $\log₂(4/3) ≈ 0.42$ bits — almost nothing. $"fox"$ shows up in 1 of 4, so its IDF is $\log₂(4/1) = 2$ bits. _The same word "fox" is worth 5× more_ to a query than "the", and nobody hard-coded that.
 
 <CodeBlock slug="tfIdf" arc="arc3" />
 
@@ -81,7 +80,7 @@ In the 4-doc widget above: <Formula>"the"</Formula> shows up in 3 of 4 docs, so 
 
 <ArcRow n={4} title="Why log? — the same log as in entropy">
 
-The log is not a smoothing trick. Treat <Formula>df/N</Formula> as "the probability that a random doc contains <Formula>t</Formula>". Then
+The log is not a smoothing trick. Treat $df/N$ as "the probability that a random doc contains $t$". Then
 
 <div className="my-3 rounded-md border border-rule bg-rule-soft px-5 py-4 text-center font-mono text-[15px] text-ink">
   idf(t) = log₂(N / df(t)) = −log₂ P(t) = <Term id="surprise">surprise</Term> of seeing t
@@ -95,13 +94,13 @@ The frame is heuristic — it pretends "random doc" is uniform over the corpus a
 
 <ArcRow n={5} title="Why product (tf × idf)? — borrowing from log-probability">
 
-Independent events have probabilities that [multiply](/en/modules/log); their logs add. So if a doc had a probability for each query term independently, the log of the joint probability would be a clean sum: <Formula>Σᵢ −log P(tᵢ)</Formula>. TF-IDF imitates that shape:
+Independent events have probabilities that [multiply](/en/modules/log); their logs add. So if a doc had a probability for each query term independently, the log of the joint probability would be a clean sum: $Σᵢ −\log P(tᵢ)$. TF-IDF imitates that shape:
 
 <div className="my-3 rounded-md border border-rule bg-rule-soft px-5 py-4 text-center font-mono text-[15px] text-ink">
   score(q, d) = Σ<sub>t ∈ q</sub> tf(t, d) · idf(t)
 </div>
 
-**But the imitation is not the thing.** <Formula>tf</Formula> is a count, not a probability. Multiplying it by <Formula>idf</Formula> is _not_ literally taking the log of a joint probability. TF-IDF is a useful ranking score that _borrows_ the "logs of independent probabilities add" shape — not a real likelihood. Treat it as a heuristic motivated by information theory; that is exactly the right amount of trust to give it.
+**But the imitation is not the thing.** $tf$ is a count, not a probability. Multiplying it by $idf$ is _not_ literally taking the log of a joint probability. TF-IDF is a useful ranking score that _borrows_ the "logs of independent probabilities add" shape — not a real likelihood. Treat it as a heuristic motivated by information theory; that is exactly the right amount of trust to give it.
 
 <CodeBlock slug="tfIdf" arc="arc5" />
 
@@ -111,7 +110,7 @@ Independent events have probabilities that [multiply](/en/modules/log); their lo
 
 Pin a column for every word in the vocabulary. Each doc becomes a <Term id="vector">vector</Term> of TF-IDF weights — mostly zeros, a few non-zeros where the doc actually uses those words. (This sparse-vector representation is called <Term id="bag-of-words">bag of words</Term>: it keeps frequencies but throws away order.) The query is the same kind of vector. Ranking docs becomes "find the doc-vectors closest to the query-vector".
 
-Why <Term id="cosine-similarity">cosine similarity</Term>, not Euclidean distance? Because doc length should not move the score. Take a doc <Formula>d</Formula> and its concatenation with itself, <Formula>d ++ d</Formula>: the second has every component doubled — a vector pointing the same direction, twice as long. Cosine of the angle between the two: <Formula>1</Formula> (identical direction). Euclidean distance: <Formula>‖d‖</Formula> (non-zero). _Doubling a doc shouldn't change its meaning_; cosine is the metric that agrees.
+Why <Term id="cosine-similarity">cosine similarity</Term>, not Euclidean distance? Because doc length should not move the score. Take a doc $d$ and its concatenation with itself, $d ++ d$: the second has every component doubled — a vector pointing the same direction, twice as long. Cosine of the angle between the two: $1$ (identical direction). Euclidean distance: $\|d\|$ (non-zero). _Doubling a doc shouldn't change its meaning_; cosine is the metric that agrees.
 
 </ArcRow>
 
@@ -120,15 +119,15 @@ Why <Term id="cosine-similarity">cosine similarity</Term>, not Euclidean distanc
 TF-IDF won three races at once. It was _fast_ (sparse vectors, inverted index), _scalable_ (web-sized corpora fit in commodity hardware), and _interpretable_ (every score has a per-term breakdown — exactly what the widget shows). It also produced rankings that were hard to embarrass: the model has one strong assumption (term independence) and a probability-flavored intuition, and the failure modes were familiar.
 
 <Term id="bm25">BM25</Term> = TF-IDF + two empirical patches. (a) *Saturation*: the 5th occurrence
-shouldn't count as much as the 1st; <Formula>tf</Formula> is replaced by
-<Formula>(k₁+1)·tf / (k₁+tf)</Formula>, saturating around <Formula>k₁ ≈ 1.2</Formula>. (b) *Length
+shouldn't count as much as the 1st; $tf$ is replaced by
+$(k₁+1)·tf / (k₁+tf)$, saturating around $k₁ ≈ 1.2$. (b) *Length
 normalization*: docs longer than the average get their tf damped further. Both patches were tuned on
 TREC evaluations in the 1990s and stayed.
 
 The bridge to ML: TF-IDF was the first feature vector for text. Naive Bayes classifiers, logistic regression on text, latent semantic analysis — all stand on this representation. Modern dense neural retrievers (DPR, ColBERT, the dual-encoder family) replaced sparse TF-IDF vectors with dense embeddings, but _they still benchmark against BM25_. A new method that doesn't beat the 30-year-old baseline on a real retrieval task is not a new method. The log is still there.
 
 <Counterexample>
-  The independence assumption sometimes lies. A query for <Formula>"new york"</Formula> on a TF-IDF
+  The independence assumption sometimes lies. A query for $"new york"$ on a TF-IDF
   index returns docs that contain *either* "new" or "york" with high score, including docs about
   *new things* in *York, England*. TF-IDF cannot tell that "new york" is one thing. Phrase matching,
   n-grams, and (eventually) dense embeddings are how search engines patched this — none of them
@@ -150,12 +149,12 @@ The bridge to ML: TF-IDF was the first feature vector for text. Naive Bayes clas
 
 <Exercise number={1} tag="read the widget">
 
-In the widget, search <Formula>the</Formula> with the **raw count** ranking. Which doc wins, and why? Now switch to **TF-IDF**. What happens to the ranking, and what does the IDF panel say about <Formula>"the"</Formula>?
+In the widget, search $the$ with the **raw count** ranking. Which doc wins, and why? Now switch to **TF-IDF**. What happens to the ranking, and what does the IDF panel say about $"the"$?
 
 <Solution>
   Raw count: doc 1 ("the cat sat on the mat") wins with count 2. Under TF-IDF, every doc's score
-  collapses toward zero — the IDF of "the" is <Formula>log₂(4/3) ≈ 0.42</Formula> bits, so even doc
-  1's contribution is <Formula>(2/6) · 0.42 ≈ 0.14</Formula>. The widget visibly de-emphasizes the
+  collapses toward zero — the IDF of "the" is $\log₂(4/3) ≈ 0.42$ bits, so even doc
+  1's contribution is $(2/6) · 0.42 ≈ 0.14$. The widget visibly de-emphasizes the
   "stopword winner". *The score learned to ignore "the" without anyone telling it to.*
 </Solution>
 
@@ -163,12 +162,12 @@ In the widget, search <Formula>the</Formula> with the **raw count** ranking. Whi
 
 <Exercise number={2} tag="compute by hand · TF-IDF" noCalculator>
 
-For the 4-doc corpus in the widget and query <Formula>cat</Formula>: compute (a) <Formula>tf(cat, d)</Formula> for each doc, (b) <Formula>idf(cat)</Formula>, (c) the TF-IDF score for each doc. Which doc wins, and is it the longer or the shorter cat-containing doc?
+For the 4-doc corpus in the widget and query $cat$: compute (a) $tf(cat, d)$ for each doc, (b) $idf(cat)$, (c) the TF-IDF score for each doc. Which doc wins, and is it the longer or the shorter cat-containing doc?
 
 <Solution>
   Lengths: doc 1 = 6, doc 2 = 4, doc 3 = 5, doc 4 = 4. Cat appears in docs 1 and 3, so df = 2 and
-  idf = <Formula>log₂(4/2) = 1</Formula> bit. tf values: <Formula>{`{1/6, 0, 1/5, 0}`}</Formula>.
-  Scores: <Formula>{`{0.167, 0, 0.2, 0}`}</Formula>. **Doc 3 wins** — the shorter of the two
+  idf = $\log₂(4/2) = 1$ bit. tf values: ${1/6, 0, 1/5, 0}$.
+  Scores: ${0.167, 0, 0.2, 0}$. **Doc 3 wins** — the shorter of the two
   cat-docs. Length normalization picks the doc that's "more about cat per word".
 </Solution>
 
@@ -176,11 +175,11 @@ For the 4-doc corpus in the widget and query <Formula>cat</Formula>: compute (a)
 
 <Exercise number={3} tag="predict · adding a duplicate">
 
-Imagine we add 100 copies of doc 1 ("the cat sat on the mat") to the corpus, growing N from 4 to 104. For the query <Formula>cat</Formula>: predict (without recomputing) what happens to (a) idf(cat), (b) the score of doc 3 ("cat and dog are friends"), (c) the ranking of doc 3 vs the (now numerous) copies of doc 1.
+Imagine we add 100 copies of doc 1 ("the cat sat on the mat") to the corpus, growing N from 4 to 104. For the query $cat$: predict (without recomputing) what happens to (a) idf(cat), (b) the score of doc 3 ("cat and dog are friends"), (c) the ranking of doc 3 vs the (now numerous) copies of doc 1.
 
 <Solution>
   df(cat) goes from 2 to 102 (every duplicate also contains cat); N goes 4 → 104. So{" "}
-  <Formula>idf(cat) = log₂(104/102) ≈ 0.028</Formula> bits — collapsed to near zero. Doc 3's score:
+  $idf(cat) = \log₂(104/102) ≈ 0.028$ bits — collapsed to near zero. Doc 3's score:
   tf unchanged, idf collapsed, so total score collapses proportionally. *The ranking flattens* —
   once everything contains "cat", "cat" stops being a useful query word. The corpus determined the
   meaning of the query, not the doc. (This is also why search results from a niche corpus rank
@@ -194,11 +193,11 @@ Imagine we add 100 copies of doc 1 ("the cat sat on the mat") to the corpus, gro
 Suppose a query word appears in _literally every doc_ in the corpus. Compute its IDF and explain why the score for that word, on every doc, is exactly zero. Then: write a one-sentence explanation of why this matches intuition (rather than being a bug).
 
 <Solution>
-  <Formula>df = N</Formula>, so <Formula>idf = log₂(N/N) = log₂(1) = 0</Formula>. Every term's
-  contribution <Formula>tf · idf = 0</Formula>. The intuition: a word in every doc carries no
+  $df = N$, so $idf = \log₂(N/N) = \log₂(1) = 0$. Every term's
+  contribution $tf · idf = 0$. The intuition: a word in every doc carries no
   information about *which* doc you want — it's the worst possible answer to the question "which doc
   is this query about?". TF-IDF made that "worst possible" be exactly zero, which is what
-  self-information also says: <Formula>−log₂ 1 = 0</Formula> bits of surprise. *Stopwords aren't a
+  self-information also says: $−\log₂ 1 = 0$ bits of surprise. *Stopwords aren't a
   list — they're the zero set of a function.*
 </Solution>
 

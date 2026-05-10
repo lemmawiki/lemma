@@ -15,7 +15,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="도입 · 속도계만 보고 거리 알아내기">
 
@@ -33,8 +32,8 @@ import Formula from "@/components/page/formula.astro";
 
 <ToolSpec>
   <Fragment slot="definition">
-    <Formula>{"∫_a^b f(x) dx"}</Formula>: <Formula>[a, b]</Formula>에서 <Formula>f</Formula>의 누적
-    총량. 리만 합의 극한 — <Formula>{"lim_(N → ∞) Σ f(x_i) · Δx"}</Formula>. 기하적으로는 곡선과
+    $∫_a^b f(x) dx$: $[a, b]$에서 $f$의 누적
+    총량. 리만 합의 극한 — $\lim_(N → ∞) Σ f(x_i) · Δx$. 기하적으로는 곡선과
     x축 사이의 부호 있는 넓이. 미분의 짝 연산 — 미분이 되돌리는 대상.
   </Fragment>
   <Fragment slot="applies">
@@ -44,7 +43,7 @@ import Formula from "@/components/page/formula.astro";
   </Fragment>
   <Fragment slot="breaks">
     불연속 구간과 무한 구간은 *이상적분*이 필요하다. 닫힌 형식 원시함수가 없는 함수
-    (<Formula>e^(−x²)</Formula>, <Formula>sin x / x</Formula>) 는 수치적으로 평가해야 한다. 고차원
+    ($e^(−x²)$, $\sin x / x$) 는 수치적으로 평가해야 한다. 고차원
     확장 (선·면·부피 적분, 측도론) 도 같은 직관을 쓰지만 장부를 훨씬 꼼꼼히 맞춰야 한다. 그리고
     FTC는 피적분 함수가 구간에서 연속이라야 성립한다. 더 정교한 버전이 이 조건을 누그러뜨리긴
     하지만, 한 줄짜리 정리만으로 모든 함수를 덮을 수는 없다.
@@ -57,19 +56,19 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={1} title="넓이부터 — 일정한 속도의 누적">
 
-가장 단순한 경우는 비율이 일정할 때다. <Formula>60 km/h</Formula>로 <Formula>2 h</Formula> 운전하면 <Formula>60 × 2 = 120 km</Formula>. 속도-시간 그래프로 보면 폭 × 높이의 직사각형 넓이다. 곡선이 일정하지 않을 때도 총 거리는 여전히 *속도 곡선 아래 넓이*. 이 단순한 경우를 *비일정한* 비율로 다시 풀어쓰는 것이 모듈 전체의 일이다.
+가장 단순한 경우는 비율이 일정할 때다. $60 km/h$로 $2 h$ 운전하면 $60 × 2 = 120 km$. 속도-시간 그래프로 보면 폭 × 높이의 직사각형 넓이다. 곡선이 일정하지 않을 때도 총 거리는 여전히 *속도 곡선 아래 넓이*. 이 단순한 경우를 *비일정한* 비율로 다시 풀어쓰는 것이 모듈 전체의 일이다.
 
-비율이 선형으로 변할 때 — 가만히 있다 떨어뜨린 물체에 중력이 만드는 <Formula>v(t) = g · t</Formula>가 그 예다 — <Formula>[0, T]</Formula>에서 직선 아래 넓이는 *삼각형*이고, 그 넓이가 <Formula>(1/2) · T · (g · T) = (g · T²) / 2</Formula>. 그게 떨어진 거리. 새로운 물리학도, 새로운 미적분도 필요 없다 — *넓이*만으로 풀린다.
+비율이 선형으로 변할 때 — 가만히 있다 떨어뜨린 물체에 중력이 만드는 $v(t) = g · t$가 그 예다 — $[0, T]$에서 직선 아래 넓이는 *삼각형*이고, 그 넓이가 $(1/2) · T · (g · T) = (g · T²) / 2$. 그게 떨어진 거리. 새로운 물리학도, 새로운 미적분도 필요 없다 — *넓이*만으로 풀린다.
 
 </ArcRow>
 
 <ArcRow n={2} title="리만 합 — 유한 장부질">
 
-삼각형이 아닌 곡선은 기하만으로는 넓이가 보이지 않는다. 그러니 *근사*하자. 구간 <Formula>[a, b]</Formula>를 폭 <Formula>Δx = (b − a)/N</Formula>의 <Formula>N</Formula>개 띠로 자른다. 각 띠 안에서 표본점 하나 — 왼쪽 끝, 오른쪽 끝, 중점 중 골라 — 를 잡고 그 한 값을 띠의 "일정한" 높이로 쓴다. 띠의 넓이를 모두 더한다. 그 결과가 <Term id="riemann-sum">리만 합</Term>이다:
+삼각형이 아닌 곡선은 기하만으로는 넓이가 보이지 않는다. 그러니 *근사*하자. 구간 $[a, b]$를 폭 $Δx = (b − a)/N$의 $N$개 띠로 자른다. 각 띠 안에서 표본점 하나 — 왼쪽 끝, 오른쪽 끝, 중점 중 골라 — 를 잡고 그 한 값을 띠의 "일정한" 높이로 쓴다. 띠의 넓이를 모두 더한다. 그 결과가 <Term id="riemann-sum">리만 합</Term>이다:
 
-<Formula>S_N = Σ f(x_i) · Δx</Formula>
+$S_N = Σ f(x_i) · Δx$
 
-위 위젯이 이걸 직접 보여준다. <Formula>f(x) = x²</Formula>를 <Formula>[0, 1]</Formula>에서 골라 N을 올려보자. <Formula>N = 1</Formula>에선 직사각형이 우스울 정도로 틀리고, <Formula>N = 8</Formula>에선 알아볼 만해지고, <Formula>N = 80</Formula>에선 정확값 <Formula>1/3</Formula>과의 격차가 보이지 않는다. 규칙을 (왼쪽/오른쪽/중점) 어떻게 잡든 같은 극한에 다가가지만 다가가는 속도는 다르다 — 왼/오른은 <Formula>O(1/N)</Formula>, 중점은 <Formula>O(1/N²)</Formula>. *그래서 수치 적분기는 모두 중점 이상을 고른다.*
+위 위젯이 이걸 직접 보여준다. $f(x) = x²$를 $[0, 1]$에서 골라 N을 올려보자. $N = 1$에선 직사각형이 우스울 정도로 틀리고, $N = 8$에선 알아볼 만해지고, $N = 80$에선 정확값 $1/3$과의 격차가 보이지 않는다. 규칙을 (왼쪽/오른쪽/중점) 어떻게 잡든 같은 극한에 다가가지만 다가가는 속도는 다르다 — 왼/오른은 $O(1/N)$, 중점은 $O(1/N²)$. *그래서 수치 적분기는 모두 중점 이상을 고른다.*
 
 <CodeBlock slug="integration" arc="arc2" />
 
@@ -79,9 +78,9 @@ import Formula from "@/components/page/formula.astro";
 
 <Term id="definite-integral">정적분</Term>은 극한에 살아남는 것:
 
-<Formula>{"∫_a^b f(x) dx = lim_(N → ∞) Σ_{i=1}^N f(x_i) · Δx"}</Formula>
+$∫_a^b f(x) dx = \lim_(N → ∞) Σ_{i=1}^N f(x_i) · Δx$
 
-*하나의 수* — 누적된 총량이다. 이 표기는 리만 이전부터 쓰였다. <Formula>∫</Formula> 기호는 "sum"의 S를 길게 늘인 모양이고, <Formula>dx</Formula>는 극한이 줄여낸 <Formula>Δx</Formula>의 후손이다. "<Formula>{"∫_a^b f(x) dx"}</Formula>"를 "<Formula>a</Formula>에서 <Formula>b</Formula>까지 <Formula>f(x)</Formula> 곱하기 아주 작은 <Formula>dx</Formula>들의 합"으로 읽는 건 정확한 직관이다 — 리만 이전 뉴턴과 라이프니츠가 쓰던 직관이기도 하다.
+*하나의 수* — 누적된 총량이다. 이 표기는 리만 이전부터 쓰였다. $∫$ 기호는 "sum"의 S를 길게 늘인 모양이고, $dx$는 극한이 줄여낸 $Δx$의 후손이다. "$∫_a^b f(x) dx$"를 "$a$에서 $b$까지 $f(x)$ 곱하기 아주 작은 $dx$들의 합"으로 읽는 건 정확한 직관이다 — 리만 이전 뉴턴과 라이프니츠가 쓰던 직관이기도 하다.
 
 위젯의 "정확한 적분" 칸이 바로 이 값이다 — 닫힌 형식으로 계산했다 (쉬운 함수를 골랐기 때문에). 현실의 대부분의 함수에서는 극한을 수치적으로 잡을 수밖에 없고, 컴퓨터가 적분을 실제로 계산하는 방식이 어떤 형태로든 결국 리만 합이다.
 
@@ -89,11 +88,11 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={4} title="원시함수 — 미분의 역연산">
 
-적분이 미분과 만난다. [미분 모듈](/ko/modules/derivatives)에서 <Formula>F(x) = x³</Formula>를 미분하면 <Formula>F'(x) = 3x²</Formula>. 거꾸로 읽으면 — <Formula>3x²</Formula>는 *원시함수를 갖는다* — 그것이 <Formula>x³</Formula>. <Formula>f</Formula>의 <Term id="antiderivative">원시함수</Term>는 <Formula>F'(x) = f(x)</Formula>를 만족하는 임의의 함수 <Formula>F</Formula>.
+적분이 미분과 만난다. [미분 모듈](/ko/modules/derivatives)에서 $F(x) = x³$를 미분하면 $F'(x) = 3x²$. 거꾸로 읽으면 — $3x²$는 *원시함수를 갖는다* — 그것이 $x³$. $f$의 <Term id="antiderivative">원시함수</Term>는 $F'(x) = f(x)$를 만족하는 임의의 함수 $F$.
 
-원시함수는 유일하지 않다 — <Formula>x³</Formula>도 <Formula>x³ + 5</Formula>도 둘 다 미분하면 <Formula>3x²</Formula>가 된다. 어떤 상수 <Formula>C</Formula>를 더해도 미분값이 변하지 않기 때문이다. 그래서 교과서가 <Formula>F(x) + C</Formula>라고 적는 것이다. 한 <Formula>f</Formula>의 원시함수 전체는 한 매개변수 가족 — 서로 평행 이동된 함수들의 모임이다.
+원시함수는 유일하지 않다 — $x³$도 $x³ + 5$도 둘 다 미분하면 $3x²$가 된다. 어떤 상수 $C$를 더해도 미분값이 변하지 않기 때문이다. 그래서 교과서가 $F(x) + C$라고 적는 것이다. 한 $f$의 원시함수 전체는 한 매개변수 가족 — 서로 평행 이동된 함수들의 모임이다.
 
-다항식이라면 규칙이 기계적이다. <Formula>x^n</Formula>의 미분이 <Formula>n · x^(n−1)</Formula>이니, <Formula>x^n</Formula>의 원시함수는 <Formula>x^(n+1) / (n+1)</Formula>. *공식의 장부를 거꾸로 뒤집은 것이다.* <Formula>sin x</Formula>의 원시함수는 <Formula>−cos x</Formula>, <Formula>e^x</Formula>의 원시함수는 <Formula>e^x</Formula> (출발한 자리 그대로). 이 짧은 목록과 연쇄법칙만으로 실무에서 만나는 적분의 대부분이 처리된다.
+다항식이라면 규칙이 기계적이다. $x^n$의 미분이 $n · x^(n−1)$이니, $x^n$의 원시함수는 $x^(n+1) / (n+1)$. *공식의 장부를 거꾸로 뒤집은 것이다.* $\sin x$의 원시함수는 $−\cos x$, $e^x$의 원시함수는 $e^x$ (출발한 자리 그대로). 이 짧은 목록과 연쇄법칙만으로 실무에서 만나는 적분의 대부분이 처리된다.
 
 <CodeBlock slug="integration" arc="arc4" />
 
@@ -103,13 +102,13 @@ import Formula from "@/components/page/formula.astro";
 
 두 이야기 — *곡선 아래 넓이*와 *미분의 역연산* — 가 알고 보면 같은 이야기다. <Term id="fundamental-theorem-of-calculus">미적분학의 기본정리</Term>가 그 다리다:
 
-<Formula>{"∫_a^b f(x) dx = F(b) − F(a)"}</Formula>
+$∫_a^b f(x) dx = F(b) − F(a)$
 
-— *어떤* 원시함수 <Formula>F</Formula>를 잡아도 성립한다. 리만 합의 무한 극한이 함수 평가 두 번과 뺄셈 한 번으로 줄어든다. 손으로 풀든 계산기로 풀든, *대부분의* 정적분은 이렇게 계산한다. 리만 극한이 적분의 *정체*라면, FTC는 적분의 *계산법*이다.
+— *어떤* 원시함수 $F$를 잡아도 성립한다. 리만 합의 무한 극한이 함수 평가 두 번과 뺄셈 한 번으로 줄어든다. 손으로 풀든 계산기로 풀든, *대부분의* 정적분은 이렇게 계산한다. 리만 극한이 적분의 *정체*라면, FTC는 적분의 *계산법*이다.
 
-포물선 운동을 보자. 속도가 <Formula>v(t) = g · t</Formula>면 원시함수는 <Formula>(g · t²) / 2</Formula>. FTC에 따라 <Formula>0</Formula>에서 <Formula>T</Formula>까지 떨어진 거리는 <Formula>(g · T²)/2 − 0 = (g · T²) / 2</Formula> — § 1에서 기하로 읽어냈던 그 삼각형 넓이가, 이번에는 원시함수에서 유도된다. 두 길, 한 수.
+포물선 운동을 보자. 속도가 $v(t) = g · t$면 원시함수는 $(g · t²) / 2$. FTC에 따라 $0$에서 $T$까지 떨어진 거리는 $(g · T²)/2 − 0 = (g · T²) / 2$ — § 1에서 기하로 읽어냈던 그 삼각형 넓이가, 이번에는 원시함수에서 유도된다. 두 길, 한 수.
 
-기본정리의 나머지 반쪽 — <Formula>{"(d/dx) ∫_a^x f(t) dt = f(x)"}</Formula> — 이 양방향의 연결을 단단히 죈다. *미분이 적분을 되돌리고, 적분이 미분을 누적한다.* 둘은 우연히 같은 장(章)에 묶인 별개의 연산이 아니라, 덧셈과 뺄셈이 서로의 역인 것과 똑같은 의미에서 *역*이다.
+기본정리의 나머지 반쪽 — $(d/dx) ∫_a^x f(t) dt = f(x)$ — 이 양방향의 연결을 단단히 죈다. *미분이 적분을 되돌리고, 적분이 미분을 누적한다.* 둘은 우연히 같은 장(章)에 묶인 별개의 연산이 아니라, 덧셈과 뺄셈이 서로의 역인 것과 똑같은 의미에서 *역*이다.
 
 <CodeBlock slug="integration" arc="arc5" />
 
@@ -127,11 +126,11 @@ import Formula from "@/components/page/formula.astro";
 
 <Exercise number={1} tag="일정 속도 손계산" noCalculator>
 
-차가 <Formula>60 km/h</Formula>로 2시간 일정하게 운전. 총 거리를 두 길로 계산하라 — (a) 속도-시간 그래프의 직사각형 넓이로, (b) 일정 함수 <Formula>v(t) = 60</Formula>의 원시함수를 구하고 FTC를 적용해.
+차가 $60 km/h$로 2시간 일정하게 운전. 총 거리를 두 길로 계산하라 — (a) 속도-시간 그래프의 직사각형 넓이로, (b) 일정 함수 $v(t) = 60$의 원시함수를 구하고 FTC를 적용해.
 
 <Solution>
-  (a) 60 × 2 직사각형 넓이 = **120 km**. (b) 일정 <Formula>60</Formula>의 원시함수는{" "}
-  <Formula>60 · t</Formula>; FTC: <Formula>60 · 2 − 60 · 0 = 120</Formula>. 같은 답, 다른 길. *일정
+  (a) 60 × 2 직사각형 넓이 = **120 km**. (b) 일정 $60$의 원시함수는{" "}
+  $60 · t$; FTC: $60 · 2 − 60 · 0 = 120$. 같은 답, 다른 길. *일정
   속도가 보정점이다 — 모든 더 복잡한 적분은 "비율이 일정하지 않을 때의 넓이"이고, FTC가 그것을
   원시함수의 두 값을 빼는 일로 줄인다.*
 </Solution>
@@ -140,29 +139,29 @@ import Formula from "@/components/page/formula.astro";
 
 <Exercise number={2} tag="리만 합 손계산" noCalculator>
 
-<Formula>f(x) = x²</Formula>를 <Formula>[0, 1]</Formula>에서 <Formula>N = 4</Formula>개 직사각형의 중점 리만 합으로 계산. (중점: <Formula>0.125, 0.375, 0.625, 0.875</Formula>; <Formula>Δx = 0.25</Formula>.) 정확값 <Formula>1/3 ≈ 0.3333</Formula>과 비교.
+$f(x) = x²$를 $[0, 1]$에서 $N = 4$개 직사각형의 중점 리만 합으로 계산. (중점: $0.125, 0.375, 0.625, 0.875$; $Δx = 0.25$.) 정확값 $1/3 ≈ 0.3333$과 비교.
 
 <Solution>
-  중점 높이: <Formula>0.125² = 0.0156</Formula>, <Formula>0.375² = 0.1406</Formula>,{" "}
-  <Formula>0.625² = 0.3906</Formula>, <Formula>0.875² = 0.7656</Formula>. 합:{" "}
-  <Formula>0.0156 + 0.1406 + 0.3906 + 0.7656 = 1.3125</Formula>. <Formula>Δx = 0.25</Formula>를
-  곱하면 <Formula>S_4 = 0.3281</Formula>. 정확값은 <Formula>1/3 ≈ 0.3333</Formula>; 오차{" "}
-  <Formula>≈ 0.005</Formula>, 약 <Formula>1.5%</Formula>. 이미 <Formula>N = 4</Formula>에서
-  쓸만하고, 두 배인 <Formula>N = 8</Formula>이면 오차가 <Formula>0.4%</Formula>로 떨어진다 (중점은{" "}
-  <Formula>O(1/N²)</Formula>).
+  중점 높이: $0.125² = 0.0156$, $0.375² = 0.1406$,{" "}
+  $0.625² = 0.3906$, $0.875² = 0.7656$. 합:{" "}
+  $0.0156 + 0.1406 + 0.3906 + 0.7656 = 1.3125$. $Δx = 0.25$를
+  곱하면 $S_4 = 0.3281$. 정확값은 $1/3 ≈ 0.3333$; 오차{" "}
+  $≈ 0.005$, 약 $1.5\%$. 이미 $N = 4$에서
+  쓸만하고, 두 배인 $N = 8$이면 오차가 $0.4\%$로 떨어진다 (중점은{" "}
+  $O(1/N²)$).
 </Solution>
 
 </Exercise>
 
 <Exercise number={3} tag="원시함수로 풀기">
 
-FTC로 <Formula>{"∫_0^2 (3t² + 2t + 1) dt"}</Formula>를 계산. 위젯에서 <Formula>N = 100</Formula> 중점으로도 시도해 결과가 일치하는지 확인.
+FTC로 $∫_0^2 (3t² + 2t + 1) dt$를 계산. 위젯에서 $N = 100$ 중점으로도 시도해 결과가 일치하는지 확인.
 
 <Solution>
-  원시함수: <Formula>F(t) = t³ + t² + t</Formula> (각 항을{" "}
-  <Formula>x^n → x^(n+1)/(n+1)</Formula> 규칙으로 거꾸로). FTC:{" "}
-  <Formula>F(2) − F(0) = (8 + 4 + 2) − 0 = 14</Formula>. 위젯이 이 함수를 직접 못 돌리지만 (프리셋
-  세 개 고정), code-mode arc 5가 <Formula>N = 10000</Formula> 중점으로 돌리면 소수점 4자리에서
+  원시함수: $F(t) = t³ + t² + t$ (각 항을{" "}
+  $x^n → x^(n+1)/(n+1)$ 규칙으로 거꾸로). FTC:{" "}
+  $F(2) − F(0) = (8 + 4 + 2) − 0 = 14$. 위젯이 이 함수를 직접 못 돌리지만 (프리셋
+  세 개 고정), code-mode arc 5가 $N = 10000$ 중점으로 돌리면 소수점 4자리에서
   일치. *FTC: 14, 정확, 함수 평가 두 번. 리만 합: 13.999..., 근사, 평가 10000번.* 둘 다 옳고, 한
   쪽이 훨씬 빠르다.
 </Solution>
@@ -171,13 +170,13 @@ FTC로 <Formula>{"∫_0^2 (3t² + 2t + 1) dt"}</Formula>를 계산. 위젯에서
 
 <Exercise number={4} tag="속도에서 낙하 거리">
 
-공이 정지에서 떨어진다. 중력이 일정 가속도 <Formula>g = 9.8 m/s²</Formula>를 주니, 시간 <Formula>t</Formula> 후 속도는 <Formula>v(t) = g·t</Formula>. <Formula>t = 3 s</Formula>까지 얼마나 떨어졌나?
+공이 정지에서 떨어진다. 중력이 일정 가속도 $g = 9.8 m/s²$를 주니, 시간 $t$ 후 속도는 $v(t) = g·t$. $t = 3 s$까지 얼마나 떨어졌나?
 
 <Solution>
-  거리는 <Formula>{"∫_0^3 g·t dt = g · t²/2 |_0^3 = (9.8)(9)/2 = 44.1 m"}</Formula>. 동등하게, 밑변{" "}
-  <Formula>3</Formula>, 높이 <Formula>v(3) = 29.4 m/s</Formula>인 삼각형의 넓이는{" "}
-  <Formula>(1/2)(3)(29.4) = 44.1 m</Formula>. 두 길, 같은 수. *이게 포물선 운동 페이지의{" "}
-  <Formula>y(t) = (1/2) g t²</Formula> 공식 — 한 번은 운동학에서, 한 번은 여기서 "v를 적분해 y를
+  거리는 $∫_0^3 g·t dt = g · t²/2 |_0^3 = (9.8)(9)/2 = 44.1 m$. 동등하게, 밑변{" "}
+  $3$, 높이 $v(3) = 29.4 m/s$인 삼각형의 넓이는{" "}
+  $(1/2)(3)(29.4) = 44.1 m$. 두 길, 같은 수. *이게 포물선 운동 페이지의{" "}
+  $y(t) = (1/2) g t²$ 공식 — 한 번은 운동학에서, 한 번은 여기서 "v를 적분해 y를
   얻는다"로 유도.*
 </Solution>
 

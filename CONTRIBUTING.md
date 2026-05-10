@@ -198,6 +198,20 @@ Until then, `pick` calls are honest about being ad hoc.
 
 Pure functions go in `lib/`. They are the canonical math the page is teaching — code mode displays exactly these. Keep them small and untyped beyond `number`.
 
+### Math notation in prose
+
+Math is rendered with **KaTeX** at build time via `remark-math` + `rehype-katex`. The source you write inside delimiters is **standard LaTeX** (the KaTeX-renderable subset).
+
+- **Inline:** `$x^2 + y^2 = r^2$`
+- **Block:** `$$\int_0^t v(s)\,ds$$` on its own line
+- **Currency in prose:** escape as `\$100`, otherwise it opens a math span
+- **Korean labels inside math:** wrap in `\text{...}` — `$g_{\text{달}} \approx 1.62$`
+- **No Unicode-typed math.** Use `$\theta$` not `θ`, `$\sqrt{x}$` not `√x`, `$\frac{1}{2}$` not `½`, `$\hat{y}$` not `ŷ`, `$\dot{x}$` not `ẋ`
+- **Function names need `\`:** `$\cos\theta$` not `$cos θ$`. Same for `\sin`, `\tan`, `\log`, `\ln`, `\exp`, `\min`, `\max`, `\lim`, etc. Without the backslash they render as italic juxtaposed letters.
+- **No `<Formula>` component.** It was retired in favour of standard `$...$`. If you see it in old content, rewrite.
+
+KaTeX support reference: <https://katex.org/docs/supported.html>. If KaTeX warns at build time about your math, fix the source — don't suppress.
+
 ---
 
 ## Manifesto bar
@@ -217,7 +231,7 @@ We will not accept content that is correct but inert. We will not accept content
 
 These are deferred until they pull weight:
 
-- **KaTeX in glossary bodies.** Phase 2 of the loader: pipe markdown through `unified` + `remark-math` + `rehype-katex` + `rehype-sanitize`. Render via `dangerouslySetInnerHTML` in `Term`. Sanitization happens at build time.
+- **KaTeX in glossary bodies.** Page MDX is already wired (see _Math notation in prose_). Glossary `.md` files still go through a different loader; phase 2 is to pipe them through `unified` + `remark-math` + `rehype-katex` + `rehype-sanitize` and render via `dangerouslySetInnerHTML` in `Term`. Sanitization happens at build time.
 - **Wikilinks** (`[[term-id]]`) between glossary entries. Custom remark plugin emits `<a data-term-id>` that the popover binds to navigate.
 - **i18next migration.** Converts `pick(language, en, ko)` to `t('namespace:key')` with extracted JSON catalogs.
 - **Per-application pages.** Each application gets its own route; modules (this glossary) stay shared.

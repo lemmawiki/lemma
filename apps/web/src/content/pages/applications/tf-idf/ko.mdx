@@ -21,7 +21,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="도입 · 빈도 → 비트 → 순위">
 
@@ -39,7 +38,7 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={1} title="빈도로 세면, 길이로 순위가 매겨진다">
 
-<Formula>"the cat sat"</Formula>로 검색한다. 모든 문서에 <Formula>the</Formula>가 있다. 가장 긴
+$"the cat sat"$로 검색한다. 모든 문서에 $the$가 있다. 가장 긴
 문서에 가장 많이. 빈도만 세면 결국 단어 수가 많은 문서가 이긴다 — 관련성이 아니라 길이가 순위를
 정한다. *어떤 단어가 의미를 짊어지는지*를 아는 점수가 필요하다.
 
@@ -48,8 +47,8 @@ import Formula from "@/components/page/formula.astro";
 <ArcRow n={2} title="TF — 빈도, 길이로 나눈">
 
 <Term id="term-frequency">단어 빈도 (term frequency)</Term>:
-<Formula>tf(t, d) = count(t, d) / length(d)</Formula>. 문서 <Formula>d</Formula>에서
-<Formula>t</Formula>가 차지하는 비율이다. 길이로 나누지 않으면 긴 문서가 그저 단어를 더 많이
+$tf(t, d) = count(t, d) / length(d)$. 문서 $d$에서
+$t$가 차지하는 비율이다. 길이로 나누지 않으면 긴 문서가 그저 단어를 더 많이
 썼다는 이유로 매번 이긴다. 길이 정규화는 출발선을 맞추는 일 — 문서가 길든 짧든 단어 하나당
 같은 무게의 증거가 된다.
 
@@ -60,22 +59,22 @@ import Formula from "@/components/page/formula.astro";
 <ArcRow n={3} title="IDF — 희귀함이 신호다">
 
 <Term id="inverse-document-frequency">역문서빈도 (inverse document frequency)</Term>:
-<Formula>idf(t) = log₂(N / df(t))</Formula>. <Formula>N</Formula>은 코퍼스 크기,
-<Term id="document-frequency">df(t)</Term>는 <Formula>t</Formula>를 담은 문서의 수다. 양 극단을
+$idf(t) = \log₂(N / df(t))$. $N$은 코퍼스 크기,
+<Term id="document-frequency">df(t)</Term>는 $t$를 담은 문서의 수다. 양 극단을
 따라가 보자.
 
 <ul className="m-0 mb-3 list-disc pl-6 text-[16.5px] text-ink-soft [&_li]:my-1.5">
   <li>
-    <Formula>df = N</Formula> (모든 문서에 등장): <Formula>log₂(1) = 0</Formula>비트. Stopword.
+    $df = N$ (모든 문서에 등장): $\log₂(1) = 0$비트. Stopword.
     기여도는 0.
   </li>
   <li>
-    <Formula>df = 1</Formula> (한 문서에만 등장): <Formula>log₂(N)</Formula>비트. 최대 신호.
+    $df = 1$ (한 문서에만 등장): $\log₂(N)$비트. 최대 신호.
     그 단어 하나가 그 문서를 *콕 집어낸다*.
   </li>
 </ul>
 
-위 위젯의 4-문서 코퍼스를 보자. <Formula>"the"</Formula>는 4개 중 3개에 등장하니 IDF는 <Formula>log₂(4/3) ≈ 0.42</Formula>비트 — 거의 0이다. <Formula>"fox"</Formula>는 4개 중 1개에만 등장하니 IDF는 <Formula>log₂(4/1) = 2</Formula>비트. _쿼리 안에서 "fox"는 "the"보다 5배 값어치를 한다_ — 누가 따로 정해 준 적도 없는데.
+위 위젯의 4-문서 코퍼스를 보자. $"the"$는 4개 중 3개에 등장하니 IDF는 $\log₂(4/3) ≈ 0.42$비트 — 거의 0이다. $"fox"$는 4개 중 1개에만 등장하니 IDF는 $\log₂(4/1) = 2$비트. _쿼리 안에서 "fox"는 "the"보다 5배 값어치를 한다_ — 누가 따로 정해 준 적도 없는데.
 
 <CodeBlock slug="tfIdf" arc="arc3" />
 
@@ -83,7 +82,7 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={4} title="왜 log? — 엔트로피의 그 log">
 
-log는 곡선을 매끄럽게 만드는 트릭이 아니다. <Formula>df/N</Formula>을 "아무 문서나 하나 골랐을 때 단어 <Formula>t</Formula>가 들어 있을 확률"로 보면,
+log는 곡선을 매끄럽게 만드는 트릭이 아니다. $df/N$을 "아무 문서나 하나 골랐을 때 단어 $t$가 들어 있을 확률"로 보면,
 
 <div className="my-3 rounded-md border border-rule bg-rule-soft px-5 py-4 text-center font-mono text-[15px] text-ink">
   idf(t) = log₂(N / df(t)) = −log₂ P(t) = <Term id="surprise">surprise</Term> of seeing t
@@ -97,13 +96,13 @@ log는 곡선을 매끄럽게 만드는 트릭이 아니다. <Formula>df/N</Form
 
 <ArcRow n={5} title="왜 곱하기 (tf × idf) ? — 로그-확률에서 빌려오기">
 
-독립 사건의 확률은 [곱셈으로 결합하고](/ko/modules/log), 그 log는 덧셈으로 결합한다. 문서가 각 쿼리 단어에 대해 독립 확률을 가진다면, 결합 확률의 log는 깔끔한 합 <Formula>Σᵢ −log P(tᵢ)</Formula>가 된다. TF-IDF는 바로 이 모양을 흉내 낸다.
+독립 사건의 확률은 [곱셈으로 결합하고](/ko/modules/log), 그 log는 덧셈으로 결합한다. 문서가 각 쿼리 단어에 대해 독립 확률을 가진다면, 결합 확률의 log는 깔끔한 합 $Σᵢ −\log P(tᵢ)$가 된다. TF-IDF는 바로 이 모양을 흉내 낸다.
 
 <div className="my-3 rounded-md border border-rule bg-rule-soft px-5 py-4 text-center font-mono text-[15px] text-ink">
   score(q, d) = Σ<sub>t ∈ q</sub> tf(t, d) · idf(t)
 </div>
 
-**그러나 흉내는 진짜가 아니다.** <Formula>tf</Formula>는 빈도지 확률이 아니다. 그걸 <Formula>idf</Formula>와 곱한다고 해서 결합 확률의 log를 문자 그대로 취하는 건 _아니다_. TF-IDF는 "독립 확률들의 log는 더해진다"는 모양을 _빌려 쓴_ 유용한 순위 점수일 뿐, 진짜 가능도가 아니다. 정보이론에서 영감을 받은 휴리스틱 — 딱 그만큼만 믿으면 된다.
+**그러나 흉내는 진짜가 아니다.** $tf$는 빈도지 확률이 아니다. 그걸 $idf$와 곱한다고 해서 결합 확률의 log를 문자 그대로 취하는 건 _아니다_. TF-IDF는 "독립 확률들의 log는 더해진다"는 모양을 _빌려 쓴_ 유용한 순위 점수일 뿐, 진짜 가능도가 아니다. 정보이론에서 영감을 받은 휴리스틱 — 딱 그만큼만 믿으면 된다.
 
 <CodeBlock slug="tfIdf" arc="arc5" />
 
@@ -113,7 +112,7 @@ log는 곡선을 매끄럽게 만드는 트릭이 아니다. <Formula>df/N</Form
 
 어휘의 모든 단어에 열을 하나씩 잡아 둔다. 각 문서는 TF-IDF 가중치의 <Term id="vector">벡터</Term>가 된다 — 대부분의 자리는 0, 그 문서가 실제로 쓰는 몇몇 단어 자리에서만 0이 아닌 값을 갖는다. (이 희소 벡터 표현이 <Term id="bag-of-words">bag of words (BoW)</Term>다. 빈도는 살리고 순서는 버린다.) 쿼리도 같은 모양의 벡터다. 그러면 순위 매기기는 "쿼리 벡터에 가장 가까운 문서 벡터를 찾는 일"이 된다.
 
-왜 유클리드 거리가 아니라 <Term id="cosine-similarity">코사인 유사도</Term>일까? 문서 길이가 점수를 흔들어선 안 되기 때문이다. 문서 <Formula>d</Formula>와 자기 자신을 이어 붙인 <Formula>d ++ d</Formula>를 보자. 뒤쪽은 모든 성분이 두 배다 — 방향은 그대로, 길이만 두 배인 벡터. 두 벡터 사이 각의 코사인은 <Formula>1</Formula> (같은 방향). 유클리드 거리는 <Formula>‖d‖</Formula> (0이 아니다). _문서를 두 번 이어 붙였다고 의미까지 두 배가 되진 않는다_. 코사인은 그 직관에 동의하는 지표다.
+왜 유클리드 거리가 아니라 <Term id="cosine-similarity">코사인 유사도</Term>일까? 문서 길이가 점수를 흔들어선 안 되기 때문이다. 문서 $d$와 자기 자신을 이어 붙인 $d ++ d$를 보자. 뒤쪽은 모든 성분이 두 배다 — 방향은 그대로, 길이만 두 배인 벡터. 두 벡터 사이 각의 코사인은 $1$ (같은 방향). 유클리드 거리는 $\|d\|$ (0이 아니다). _문서를 두 번 이어 붙였다고 의미까지 두 배가 되진 않는다_. 코사인은 그 직관에 동의하는 지표다.
 
 </ArcRow>
 
@@ -122,14 +121,14 @@ log는 곡선을 매끄럽게 만드는 트릭이 아니다. <Formula>df/N</Form
 TF-IDF는 세 경주에서 동시에 이겼다. _빨랐고_ (희소 벡터, 역색인), _잘 확장됐고_ (웹 규모 코퍼스가 평범한 하드웨어에 올라갔고), _해석이 됐다_ (모든 점수에 단어별 내역이 붙는다 — 위젯이 보여 주는 바로 그것이다). 순위 자체도 부끄럽지 않았다. 강한 가정 하나 (단어 독립) 와 확률을 닮은 직관 위에 서 있어서, 어떻게 틀리는지가 늘 익숙한 모양이었다.
 
 <Term id="bm25">BM25</Term> = TF-IDF + 경험적 보정 두 가지. (a) *포화*: 다섯 번째 출현이 첫
-번째만큼 무거우면 곤란하다. <Formula>tf</Formula>를 <Formula>(k₁+1)·tf / (k₁+tf)</Formula>로
-바꿔 <Formula>k₁ ≈ 1.2</Formula> 근처에서 포화시킨다. (b) *길이 정규화*: 평균보다 긴 문서는
+번째만큼 무거우면 곤란하다. $tf$를 $(k₁+1)·tf / (k₁+tf)$로
+바꿔 $k₁ ≈ 1.2$ 근처에서 포화시킨다. (b) *길이 정규화*: 평균보다 긴 문서는
 tf를 한 번 더 깎는다. 둘 다 1990년대 TREC 평가에서 튜닝된 채 그대로 살아남았다.
 
 ML로 건너가는 다리이기도 하다. TF-IDF는 텍스트의 첫 번째 특징 벡터였다. 나이브 베이즈, 텍스트 위의 로지스틱 회귀, 잠재 의미 분석 — 모두 이 표현 위에 서 있다. 요즘의 밀집 신경 검색기 (DPR, ColBERT, 듀얼 인코더 계열) 는 희소 TF-IDF 벡터를 밀집 임베딩으로 갈아 끼웠지만, _여전히 BM25를 기준선 삼아 비교한다_. 실제 검색 과제에서 30년 된 기준선을 못 이기는 새 방법은 새 방법이 아니다. log는 아직 그 자리에 있다.
 
 <Counterexample>
-  독립 가정은 가끔 우리를 속인다. TF-IDF 색인에 <Formula>"new york"</Formula>으로 쿼리를 던지면
+  독립 가정은 가끔 우리를 속인다. TF-IDF 색인에 $"new york"$으로 쿼리를 던지면
   "new"나 "york" 둘 중 하나라도 들어 있는 문서가 높은 점수로 올라온다 — 영국 *York*에서 일어난
   *새로운 일들* 같은 문서까지 섞여서. TF-IDF는 "new york"이 한 덩어리라는 걸 모른다. 구절 매칭,
   n-그램, 그리고 (결국) 밀집 임베딩이 검색엔진들이 이 구멍을 메운 방법이다. 어느 것도 TF-IDF를
@@ -151,12 +150,12 @@ ML로 건너가는 다리이기도 하다. TF-IDF는 텍스트의 첫 번째 특
 
 <Exercise number={1} tag="위젯 읽기">
 
-위젯에서 <Formula>the</Formula>를 **원시 빈도** 순위로 검색해 보자. 어느 문서가 이기고, 왜? 이제 **TF-IDF**로 바꿔 보자. 순위는 어떻게 바뀌고, IDF 패널은 <Formula>"the"</Formula>에 대해 무어라 말하는가?
+위젯에서 $the$를 **원시 빈도** 순위로 검색해 보자. 어느 문서가 이기고, 왜? 이제 **TF-IDF**로 바꿔 보자. 순위는 어떻게 바뀌고, IDF 패널은 $"the"$에 대해 무어라 말하는가?
 
 <Solution>
   원시 빈도에서는 문서 1 ("the cat sat on the mat") 이 빈도 2로 이긴다. TF-IDF로 가면 모든 문서의
-  점수가 0 쪽으로 주저앉는다 — "the"의 IDF가 <Formula>log₂(4/3) ≈ 0.42</Formula>비트라서, 문서 1의
-  기여도조차 <Formula>(2/6) · 0.42 ≈ 0.14</Formula>밖에 안 된다. 위젯은 "stopword 승자"를 눈에 띄게
+  점수가 0 쪽으로 주저앉는다 — "the"의 IDF가 $\log₂(4/3) ≈ 0.42$비트라서, 문서 1의
+  기여도조차 $(2/6) · 0.42 ≈ 0.14$밖에 안 된다. 위젯은 "stopword 승자"를 눈에 띄게
   깎아낸다. *누가 시키지 않았는데도 점수가 "the"를 무시하도록 자란 셈이다.*
 </Solution>
 
@@ -164,13 +163,13 @@ ML로 건너가는 다리이기도 하다. TF-IDF는 텍스트의 첫 번째 특
 
 <Exercise number={2} tag="손으로 계산 · TF-IDF" noCalculator>
 
-위젯의 4-문서 코퍼스와 쿼리 <Formula>cat</Formula>에 대해 (a) 각 문서의 <Formula>tf(cat, d)</Formula>, (b) <Formula>idf(cat)</Formula>, (c) 각 문서의 TF-IDF 점수를 구해 보자. 어느 문서가 이기는가? cat이 들어 있는 두 문서 중 긴 쪽인가, 짧은 쪽인가?
+위젯의 4-문서 코퍼스와 쿼리 $cat$에 대해 (a) 각 문서의 $tf(cat, d)$, (b) $idf(cat)$, (c) 각 문서의 TF-IDF 점수를 구해 보자. 어느 문서가 이기는가? cat이 들어 있는 두 문서 중 긴 쪽인가, 짧은 쪽인가?
 
 <Solution>
   길이는 문서 1 = 6, 문서 2 = 4, 문서 3 = 5, 문서 4 = 4. cat은 문서 1과 3에만 등장하니 df = 2,
   idf ={" "}
-  <Formula>log₂(4/2) = 1</Formula>비트. tf 값은 <Formula>{`{1/6, 0, 1/5, 0}`}</Formula>, 점수는{" "}
-  <Formula>{`{0.167, 0, 0.2, 0}`}</Formula>. **문서 3이 이긴다** — cat이 들어 있는 두 문서 중 짧은
+  $\log₂(4/2) = 1$비트. tf 값은 ${1/6, 0, 1/5, 0}$, 점수는{" "}
+  ${0.167, 0, 0.2, 0}$. **문서 3이 이긴다** — cat이 들어 있는 두 문서 중 짧은
   쪽이다. 길이 정규화는 "단어 하나당 cat의 비중이 더 큰" 문서를 골라 준다.
 </Solution>
 
@@ -178,11 +177,11 @@ ML로 건너가는 다리이기도 하다. TF-IDF는 텍스트의 첫 번째 특
 
 <Exercise number={3} tag="예측 · 사본 추가">
 
-문서 1 ("the cat sat on the mat") 의 사본 100개를 코퍼스에 더해 N이 4 → 104가 됐다고 하자. 쿼리 <Formula>cat</Formula>에 대해 (다시 계산하지 말고) 예측해 보자. (a) idf(cat) 은 어떻게 변하는가? (b) 문서 3 ("cat and dog are friends") 의 점수는? (c) 문서 3과 (이제 한 무더기가 된) 문서 1 사본들의 순위는?
+문서 1 ("the cat sat on the mat") 의 사본 100개를 코퍼스에 더해 N이 4 → 104가 됐다고 하자. 쿼리 $cat$에 대해 (다시 계산하지 말고) 예측해 보자. (a) idf(cat) 은 어떻게 변하는가? (b) 문서 3 ("cat and dog are friends") 의 점수는? (c) 문서 3과 (이제 한 무더기가 된) 문서 1 사본들의 순위는?
 
 <Solution>
   df(cat) 은 2에서 102로 (사본도 모두 cat을 담고 있다), N은 4 → 104로 간다. 그러면{" "}
-  <Formula>idf(cat) = log₂(104/102) ≈ 0.028</Formula>비트 — 거의 0까지 주저앉는다. 문서 3의 점수는
+  $idf(cat) = \log₂(104/102) ≈ 0.028$비트 — 거의 0까지 주저앉는다. 문서 3의 점수는
   tf가 그대로지만 idf가 무너지므로 총점도 비례해서 무너진다. *순위가 평평해진다*. 모두가 "cat"을
   품으면, "cat"은 더 이상 쓸 만한 쿼리 단어가 아니다. 쿼리의 의미를 정하는 건 문서가 아니라
   코퍼스다. (좁은 코퍼스에서의 검색 결과가 같은 쿼리를 오픈 웹에서 던졌을 때와 다른 이유이기도
@@ -196,11 +195,11 @@ ML로 건너가는 다리이기도 하다. TF-IDF는 텍스트의 첫 번째 특
 어떤 쿼리 단어가 코퍼스 안의 *모든 문서*에 등장한다고 하자. IDF를 구하고, 그 단어의 점수가 모든 문서에서 정확히 0인 이유를 설명해 보자. 그리고 이게 버그가 아니라 직관에 들어맞는 이유를 한 문장으로 써 보자.
 
 <Solution>
-  <Formula>df = N</Formula>이니 <Formula>idf = log₂(N/N) = log₂(1) = 0</Formula>. 모든 문서의
-  기여도가 <Formula>tf · idf = 0</Formula>이다. 직관은 이렇다. 모든 문서에 들어 있는 단어는 *어느*
+  $df = N$이니 $idf = \log₂(N/N) = \log₂(1) = 0$. 모든 문서의
+  기여도가 $tf · idf = 0$이다. 직관은 이렇다. 모든 문서에 들어 있는 단어는 *어느*
   문서를 찾고 있는지에 대해 정보를 1비트도 나르지 못한다 — "이 쿼리는 어느 문서를 가리키는가?" 라는
   질문에 줄 수 있는 최악의 답이다. TF-IDF는 그 "최악"을 정확히 0으로 못 박았고, 자기정보도 같은
-  말을 한다. <Formula>−log₂ 1 = 0</Formula>비트의 놀람도. *Stopword는 목록이 아니라 어떤 함수의
+  말을 한다. $−\log₂ 1 = 0$비트의 놀람도. *Stopword는 목록이 아니라 어떤 함수의
   영점이다.*
 </Solution>
 

@@ -35,11 +35,15 @@ Direct calque from English produces awkward Korean. Some patterns to watch:
 
 ## Math notation stays in source form
 
-- `log₁₀`, not `로그₁₀`
+- `$\log_{10}$`, not `로그₁₀`
 - `e`, not `자연상수` (the term `e` itself is taught; don't translate it)
-- `Σ`, `∫`, function names — Latin / symbolic
+- `\Sigma`, `\int`, function names — Latin / symbolic
 - The exception: when the symbol _is_ the Korean term being defined, define it
   via the glossary, not by translating in prose
+
+All math goes inside `$...$` (inline) or `$$...$$` (block) using KaTeX-renderable
+LaTeX. A Korean label inside math wraps in `\text{}`: `$g_{\text{달}} \approx 1.62$`.
+Currency in prose escapes: `\$100`, never bare `$100`. Full rule in [CONTRIBUTING.md](../../../CONTRIBUTING.md#math-notation-in-prose).
 
 ## Term policy
 

@@ -21,7 +21,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · two risks, one safer mix">
 
@@ -39,19 +38,19 @@ Two stocks, each with the same average return and the same volatility. Hold one 
 
 <ArcRow n={1} title="Risk as variance — what 'risky' actually measures">
 
-In finance, _risk_ is shorthand for _how much the outcome jitters around its average_, not _how much you might lose worst-case_. The standard tool is <Term id="variance">variance</Term>: <Formula>Var(r) = E[(r − μ)²]</Formula> — the expected squared deviation. Its square root, the standard deviation <Formula>σ</Formula>, has the same units as the return and is what most people mean by "volatility." Doubling σ is "twice as risky" in this sense; halving it is "half as risky." It's an imperfect proxy (a chart that crashes once doesn't have the same character as one that wobbles every day, even at matched σ), but it's the coordinate that quadratic math lives in. Modern Portfolio Theory, capital asset pricing, Sharpe ratios — all sit on top of variance.
+In finance, _risk_ is shorthand for _how much the outcome jitters around its average_, not _how much you might lose worst-case_. The standard tool is <Term id="variance">variance</Term>: $Var(r) = E[(r − μ)²]$ — the expected squared deviation. Its square root, the standard deviation $σ$, has the same units as the return and is what most people mean by "volatility." Doubling σ is "twice as risky" in this sense; halving it is "half as risky." It's an imperfect proxy (a chart that crashes once doesn't have the same character as one that wobbles every day, even at matched σ), but it's the coordinate that quadratic math lives in. Modern Portfolio Theory, capital asset pricing, Sharpe ratios — all sit on top of variance.
 
 </ArcRow>
 
 <ArcRow n={2} title="Two assets, four numbers">
 
-Pick two assets, A and B. Each has a mean return and a variance: <Formula>μ_A, σ_A², μ_B, σ_B²</Formula>. Mix them in proportion <Formula>w</Formula> in A and <Formula>1−w</Formula> in B. The mean of the mix is the easy part — averaging:
+Pick two assets, A and B. Each has a mean return and a variance: $μ_A, σ_A², μ_B, σ_B²$. Mix them in proportion $w$ in A and $1−w$ in B. The mean of the mix is the easy part — averaging:
 
-<Formula>μ_p = w μ_A + (1−w) μ_B</Formula>
+$μ_p = w μ_A + (1−w) μ_B$
 
 If you only cared about means, mixing assets with the same μ is pointless: you get the same μ. But the _variance_ of the mix has _three_ terms, not two:
 
-<Formula>σ_p² = w² σ_A² + (1−w)² σ_B² + 2 w (1−w) Cov(A, B)</Formula>
+$σ_p² = w² σ_A² + (1−w)² σ_B² + 2 w (1−w) Cov(A, B)$
 
 The first two are what you'd guess: each asset's own variance, scaled by its share squared. The third — the <Term id="covariance">covariance</Term> — is the surprise. It's the *cross-term*, and it's where mixing earns or loses you something. When A and B move together (positive covariance), mixing piles risk on. When they move opposite (negative covariance), mixing _cancels_ risk.
 
@@ -62,11 +61,11 @@ The first two are what you'd guess: each asset's own variance, scaled by its sha
 <ArcRow n={3} title="Correlation — covariance, normalized">
 
 Covariance has awkward units (the product of A's units and B's units), so people quote the unit-free version: <Term id="correlation">correlation</Term>{" "}
-<Formula>ρ = Cov(A, B) / (σ_A σ_B)</Formula>, which lives in <Formula>[−1, 1]</Formula>. Now the variance formula reads:
+$ρ = Cov(A, B) / (σ_A σ_B)$, which lives in $[−1, 1]$. Now the variance formula reads:
 
-<Formula>σ_p² = w² σ_A² + (1−w)² σ_B² + 2 w (1−w) ρ σ_A σ_B</Formula>
+$σ_p² = w² σ_A² + (1−w)² σ_B² + 2 w (1−w) ρ σ_A σ_B$
 
-Three regimes. **<Formula>ρ = +1</Formula>** — perfect lockstep — and <Formula>σ_p</Formula> is just the weighted average of <Formula>σ_A</Formula> and <Formula>σ_B</Formula>. Mixing buys nothing. **<Formula>ρ = 0</Formula>** — independent — and the cross-term vanishes; <Formula>σ_p²</Formula> falls strictly below the weighted average of the variances. **<Formula>ρ = −1</Formula>** — perfect anti-lockstep — and the cross-term is _negative_, large; with <Formula>σ_A = σ_B</Formula> at <Formula>w = 1/2</Formula> the variance hits exactly zero. Risk doesn't just shrink; it _disappears_. The widget above is a one-line dial through these three regimes.
+Three regimes. **$ρ = +1$** — perfect lockstep — and $σ_p$ is just the weighted average of $σ_A$ and $σ_B$. Mixing buys nothing. **$ρ = 0$** — independent — and the cross-term vanishes; $σ_p²$ falls strictly below the weighted average of the variances. **$ρ = −1$** — perfect anti-lockstep — and the cross-term is _negative_, large; with $σ_A = σ_B$ at $w = 1/2$ the variance hits exactly zero. Risk doesn't just shrink; it _disappears_. The widget above is a one-line dial through these three regimes.
 
 <CodeBlock slug="portfolioRisk" arc="arc3" />
 
@@ -76,9 +75,9 @@ Three regimes. **<Formula>ρ = +1</Formula>** — perfect lockstep — and <Form
 
 The portfolio variance formula isn't a finance invention — it's the formula for the squared length of a vector sum, dressed in finance words. Treat returns as random vectors: each asset is one component of a 2D vector, and the portfolio is a weighted combination. The squared length identity from the [vectors module](/en/modules/vectors):
 
-<Formula>|a + b|² = |a|² + |b|² + 2 a · b</Formula>
+$|a + b|² = |a|² + |b|² + 2 a · b$
 
-Replace <Formula>|a|²</Formula> with <Formula>w² σ_A²</Formula>, <Formula>|b|²</Formula> with <Formula>(1−w)² σ_B²</Formula>, and the dot product <Formula>a · b</Formula> with <Formula>w (1−w) Cov(A, B)</Formula> — and you've recovered portfolio variance. _Covariance is just a dot product on random variables._ The cosine of the angle between them is _correlation_. "Two assets at right angles" means uncorrelated; "two assets pointing the same way" means correlated; "two assets pointing opposite" means anti-correlated, and that pair _cancels_.
+Replace $|a|²$ with $w² σ_A²$, $|b|²$ with $(1−w)² σ_B²$, and the dot product $a · b$ with $w (1−w) Cov(A, B)$ — and you've recovered portfolio variance. _Covariance is just a dot product on random variables._ The cosine of the angle between them is _correlation_. "Two assets at right angles" means uncorrelated; "two assets pointing the same way" means correlated; "two assets pointing opposite" means anti-correlated, and that pair _cancels_.
 
 This is why the [vectors module](/en/modules/vectors) is consumed by physics, graphics, ML, _and_ finance: the same two operations (add and scale) that move a Bezier control handle also build a portfolio. The applications don't share theorems — they share the algebra.
 
@@ -86,11 +85,11 @@ This is why the [vectors module](/en/modules/vectors) is consumed by physics, gr
 
 <ArcRow n={5} title="The minimum-variance mix">
 
-Set <Formula>d/dw [σ_p²] = 0</Formula>: a one-line calculus problem. The answer is
+Set $d/dw [σ_p²] = 0$: a one-line calculus problem. The answer is
 
-<Formula>w* = (σ_B² − ρ σ_A σ_B) / (σ_A² + σ_B² − 2 ρ σ_A σ_B)</Formula>
+$w* = (σ_B² − ρ σ_A σ_B) / (σ_A² + σ_B² − 2 ρ σ_A σ_B)$
 
-When <Formula>σ_A = σ_B</Formula>, this reduces to <Formula>w* = 1/2</Formula> for any <Formula>ρ</Formula>: the safest mix of two equally-volatile assets is always half-and-half. When <Formula>σ_A ≠ σ_B</Formula>, the formula tilts: the lower-volatility asset gets more weight, but the tilt depends on <Formula>ρ</Formula> too. The widget marks <Formula>w*</Formula> as the green dot on the variance curve; drag <Formula>ρ</Formula> and watch the curve flatten or sharpen around it. The full _Modern Portfolio Theory_ generalization — N assets, an N×N covariance matrix, a quadratic to minimize subject to constraints — is just this same calculation written in vector-matrix form. One pair, three terms, one cross-term. Everything else is bookkeeping.
+When $σ_A = σ_B$, this reduces to $w* = 1/2$ for any $ρ$: the safest mix of two equally-volatile assets is always half-and-half. When $σ_A ≠ σ_B$, the formula tilts: the lower-volatility asset gets more weight, but the tilt depends on $ρ$ too. The widget marks $w*$ as the green dot on the variance curve; drag $ρ$ and watch the curve flatten or sharpen around it. The full _Modern Portfolio Theory_ generalization — N assets, an N×N covariance matrix, a quadratic to minimize subject to constraints — is just this same calculation written in vector-matrix form. One pair, three terms, one cross-term. Everything else is bookkeeping.
 
 <CodeBlock slug="portfolioRisk" arc="arc4" />
 
@@ -110,7 +109,7 @@ When <Formula>σ_A = σ_B</Formula>, this reduces to <Formula>w* = 1/2</Formula>
 
 <Pin>
   **Risk doesn't add — it composes through correlation.** Portfolio variance is{" "}
-  <Formula>w² σ_A² + (1−w)² σ_B² + 2 w (1−w) ρ σ_A σ_B</Formula> — three terms, one cross-term. The
+  $w² σ_A² + (1−w)² σ_B² + 2 w (1−w) ρ σ_A σ_B$ — three terms, one cross-term. The
   cross-term is what mixing buys you, and it can be negative. *That's* why two risky things can be
   safer together than either alone.
 </Pin>
@@ -119,11 +118,11 @@ When <Formula>σ_A = σ_B</Formula>, this reduces to <Formula>w* = 1/2</Formula>
 
 <Exercise number={1} tag="compute by hand · the 50/50 mean" noCalculator>
 
-Asset A has mean return <Formula>μ_A = 8%</Formula>; asset B has <Formula>μ_B = 12%</Formula>. You hold the 50/50 mix. What is the portfolio's mean return? Now you tilt to 25% A, 75% B — what changes?
+Asset A has mean return $μ_A = 8\%$; asset B has $μ_B = 12\%$. You hold the 50/50 mix. What is the portfolio's mean return? Now you tilt to 25% A, 75% B — what changes?
 
 <Solution>
-  50/50: <Formula>μ_p = 0.5(8) + 0.5(12) = 10%</Formula>. 25/75:{" "}
-  <Formula>μ_p = 0.25(8) + 0.75(12) = 11%</Formula>. The mean is the easy part: it's a linear
+  50/50: $μ_p = 0.5(8) + 0.5(12) = 10\%$. 25/75:{" "}
+  $μ_p = 0.25(8) + 0.75(12) = 11\%$. The mean is the easy part: it's a linear
   combination, so tilting the weights tilts the mean linearly. *The interesting question is how
   the variance moves under the same tilt — which is what the next exercises poke at.*
 </Solution>
@@ -132,11 +131,11 @@ Asset A has mean return <Formula>μ_A = 8%</Formula>; asset B has <Formula>μ_B 
 
 <Exercise number={2} tag="ρ = 1 · why mixing doesn't help" noCalculator>
 
-A and B both have <Formula>σ = 1</Formula>, and <Formula>ρ = 1</Formula> (perfect lockstep). Compute <Formula>σ_p</Formula> at <Formula>w = 0.5</Formula>. Compare to <Formula>w = 0</Formula> (all B) and <Formula>w = 1</Formula> (all A).
+A and B both have $σ = 1$, and $ρ = 1$ (perfect lockstep). Compute $σ_p$ at $w = 0.5$. Compare to $w = 0$ (all B) and $w = 1$ (all A).
 
 <Solution>
-  <Formula>σ_p² = (0.5)² + (0.5)² + 2(0.5)(0.5)(1)(1)(1) = 0.25 + 0.25 + 0.5 = 1.0</Formula>, so{" "}
-  <Formula>σ_p = 1</Formula>. Same as either pure holding. With perfect correlation, mixing is
+  $σ_p² = (0.5)² + (0.5)² + 2(0.5)(0.5)(1)(1)(1) = 0.25 + 0.25 + 0.5 = 1.0$, so{" "}
+  $σ_p = 1$. Same as either pure holding. With perfect correlation, mixing is
   *just averaging two copies of the same risk* — there's no statistical advantage, only the
   appearance of one. The widget at ρ = 1 shows a flat line: variance is constant in w. Diversifying
   across perfectly correlated assets is doing nothing twice.
@@ -146,14 +145,14 @@ A and B both have <Formula>σ = 1</Formula>, and <Formula>ρ = 1</Formula> (perf
 
 <Exercise number={3} tag="ρ = −1 · the magic cancellation">
 
-Same σ = 1 each, now <Formula>ρ = −1</Formula>. Show that there exists a <Formula>w</Formula> at which <Formula>σ_p = 0</Formula> exactly. Find the value of <Formula>w</Formula>. Why can't real portfolios achieve this?
+Same σ = 1 each, now $ρ = −1$. Show that there exists a $w$ at which $σ_p = 0$ exactly. Find the value of $w$. Why can't real portfolios achieve this?
 
 <Solution>
-  <Formula>σ_p² = w² + (1-w)² − 2w(1-w) = (w − (1-w))² = (2w − 1)²</Formula>. This is zero at{" "}
-  <Formula>w = 1/2</Formula>. So a 50/50 mix of two perfectly anti-correlated, equally-volatile
+  $σ_p² = w² + (1-w)² − 2w(1-w) = (w − (1-w))² = (2w − 1)²$. This is zero at{" "}
+  $w = 1/2$. So a 50/50 mix of two perfectly anti-correlated, equally-volatile
   assets has *literally zero variance* — the gain on one always offsets the loss on the other.
   Real portfolios can't hit this because:{" "}
-  *(i)* finding two assets with sustained ρ = −1 is rare (most pairs have <Formula>ρ ≈ 0–0.3</Formula>),
+  *(i)* finding two assets with sustained ρ = −1 is rare (most pairs have $ρ ≈ 0-0.3$),
   *(ii)* if such a pair existed and was widely known, arbitrage would push their joint pricing toward
   the no-risk return, removing the opportunity, *(iii)* ρ is estimated from past data and the future
   may diverge.
@@ -163,11 +162,11 @@ Same σ = 1 each, now <Formula>ρ = −1</Formula>. Show that there exists a <Fo
 
 <Exercise number={4} tag="the evil one · maximize return only">
 
-Asset A: <Formula>μ_A = 12%</Formula>, <Formula>σ_A = 0.20</Formula>. Asset B: <Formula>μ_B = 8%</Formula>, <Formula>σ_B = 0.10</Formula>, <Formula>ρ = 0.0</Formula>. A "common sense" investor says: A has the higher expected return and the same horizon — go all-in on A. Show why a *mix* with some B can give a *better risk-adjusted return* (lower σ per unit μ above the riskless rate). Compute σ_p for w = 0.5 and compare to σ_A.
+Asset A: $μ_A = 12\%$, $σ_A = 0.20$. Asset B: $μ_B = 8\%$, $σ_B = 0.10$, $ρ = 0.0$. A "common sense" investor says: A has the higher expected return and the same horizon — go all-in on A. Show why a *mix* with some B can give a *better risk-adjusted return* (lower σ per unit μ above the riskless rate). Compute σ_p for w = 0.5 and compare to σ_A.
 
 <Solution>
   All-A: μ = 12%, σ = 0.20. Mix w = 0.5: μ = 0.5(12) + 0.5(8) = 10%;{" "}
-  <Formula>σ_p² = 0.25(0.04) + 0.25(0.01) + 0 = 0.0125</Formula>; <Formula>σ_p ≈ 0.112</Formula>.
+  $σ_p² = 0.25(0.04) + 0.25(0.01) + 0 = 0.0125$; $σ_p ≈ 0.112$.
   All-A: 12% return for σ = 0.20 → ratio = 60.{" "}
   Mix: 10% return for σ = 0.112 → ratio = 89.{" "}
   *Even though the mix's expected return is lower, its return-per-unit-risk is higher.* Whether
@@ -184,8 +183,8 @@ Asset A: <Formula>μ_A = 12%</Formula>, <Formula>σ_A = 0.20</Formula>. Asset B:
   Finance courses introduce portfolio variance as a *new* identity, with a covariance matrix that
   arrives without provenance. Linear-algebra courses introduce dot products and squared lengths
   without mentioning that a dot product is what makes a portfolio more than the sum of its parts.
-  *The two are the same piece of math.* Lemma puts the formula <Formula>|a + b|² = |a|² + |b|² + 2 a · b</Formula>{" "}
-  next to <Formula>σ_p² = w² σ_A² + (1−w)² σ_B² + 2 w (1−w) Cov(A, B)</Formula> so the sameness
+  *The two are the same piece of math.* Lemma puts the formula $|a + b|² = |a|² + |b|² + 2 a · b${" "}
+  next to $σ_p² = w² σ_A² + (1−w)² σ_B² + 2 w (1−w) Cov(A, B)$ so the sameness
   is visible. Modern Portfolio Theory, the Sharpe ratio, the efficient frontier — all are this
   identity with more dimensions and constraints stacked on. None require new math, only patience
   with the bookkeeping.

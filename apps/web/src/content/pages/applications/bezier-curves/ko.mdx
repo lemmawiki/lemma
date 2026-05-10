@@ -21,7 +21,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="도입 · 손잡이 몇 개, 매끄러운 길">
 
@@ -48,7 +47,7 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={2} title="두 점 케이스 — lerp">
 
-두 점 <Formula>P₀</Formula>와 <Formula>P₁</Formula> 사이의 선형 보간 <Term id="lerp">lerp</Term>는 <Formula>lerp(P₀, P₁, t) = (1−t)·P₀ + t·P₁</Formula>. <Formula>t = 0</Formula>이면 <Formula>P₀</Formula>, <Formula>t = 1</Formula>이면 <Formula>P₁</Formula>, 그 사이는 직선. 너무 단순해서 아무것도 아닌 듯 보인다. 그런데 베지에 곡선에 필요한 도구는 *이것뿐*이다.
+두 점 $P₀$와 $P₁$ 사이의 선형 보간 <Term id="lerp">lerp</Term>는 $lerp(P₀, P₁, t) = (1−t)·P₀ + t·P₁$. $t = 0$이면 $P₀$, $t = 1$이면 $P₁$, 그 사이는 직선. 너무 단순해서 아무것도 아닌 듯 보인다. 그런데 베지에 곡선에 필요한 도구는 *이것뿐*이다.
 
 <CodeBlock slug="bezierCurves" arc="arc2" />
 
@@ -56,15 +55,15 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={3} title="재귀적 lerp — 드 카스텔조">
 
-<Term id="control-point">제어점</Term> 네 개 <Formula>P₀, P₁, P₂, P₃</Formula>에 이렇게 해보자.
-인접 쌍을 모두 <Formula>t</Formula>로 lerp해 새 점 셋을 얻는다. 그 셋의 인접 쌍을 lerp해 둘. 그 둘을
-lerp해 하나. 그 마지막 점이 매개변수 <Formula>t</Formula>에서의 <Formula>B(t)</Formula>. 한 "층"이
-점의 개수를 하나씩 줄이고, 제어점이 <Formula>n+1</Formula>개면 <Formula>n</Formula>층 만에 끝난다.
+<Term id="control-point">제어점</Term> 네 개 $P₀, P₁, P₂, P₃$에 이렇게 해보자.
+인접 쌍을 모두 $t$로 lerp해 새 점 셋을 얻는다. 그 셋의 인접 쌍을 lerp해 둘. 그 둘을
+lerp해 하나. 그 마지막 점이 매개변수 $t$에서의 $B(t)$. 한 "층"이
+점의 개수를 하나씩 줄이고, 제어점이 $n+1$개면 $n$층 만에 끝난다.
 이것이 <Term id="de-casteljau">드 카스텔조 알고리즘</Term>이고, 다항식 형태
-<Formula>B(t) = (1−t)³P₀ + 3(1−t)²t·P₁ + 3(1−t)t²·P₂ + t³P₃</Formula>와 *완전히 동치* — 수는 같고,
+$B(t) = (1−t)³P₀ + 3(1−t)²t·P₁ + 3(1−t)t²·P₂ + t³P₃$와 *완전히 동치* — 수는 같고,
 셈만 더 친절하다.
 
-위젯에서 층마다 색이 다르다. 점선 회색이 원래 제어 다각형, 주황이 레벨-1 lerp, 갈색이 레벨-2 lerp, 마지막 초록 점이 <Formula>B(t)</Formula>. <Formula>t</Formula> 슬라이더를 끌어보면 작도가 무너지면서 초록 점이 움직이고, 그 자취가 _그대로_ 곡선이 된다. 곡선은 별도의 공식으로 그리는 게 아니다 — 재귀의 자취 자체다.
+위젯에서 층마다 색이 다르다. 점선 회색이 원래 제어 다각형, 주황이 레벨-1 lerp, 갈색이 레벨-2 lerp, 마지막 초록 점이 $B(t)$. $t$ 슬라이더를 끌어보면 작도가 무너지면서 초록 점이 움직이고, 그 자취가 _그대로_ 곡선이 된다. 곡선은 별도의 공식으로 그리는 게 아니다 — 재귀의 자취 자체다.
 
 <CodeBlock slug="bezierCurves" arc="arc3" />
 
@@ -74,8 +73,8 @@ lerp해 하나. 그 마지막 점이 매개변수 <Formula>t</Formula>에서의 
 
 증명 없이, 작도를 들여다보기만 해도 네 가지 사실이 떨어진다.
 
-- **끝점.** <Formula>t = 0</Formula>에서 모든 lerp가 왼쪽 점을 돌려주므로 <Formula>B(0) = P₀</Formula>. 대칭으로 <Formula>B(1) = P₃</Formula>. _곡선은 첫 제어점과 마지막 제어점을 지난다._
-- **끝점에서의 접선.** <Formula>t ≈ 0</Formula> 부근의 레벨-1 lerp는 선분 <Formula>P₀P₁</Formula> 위에 놓이고, 곡선은 그 방향으로 출발한다. 따라서 _<Formula>P₀</Formula>에서 <Formula>P₁</Formula> 쪽으로 출발하고_, <Formula>P₃</Formula>에는 <Formula>P₂P₃</Formula> 방향으로 도착한다. 디자이너는 이 사실로 두 곡선을 _매끄럽게_ 잇는다 — 끝 손잡이를 정렬하면 된다.
+- **끝점.** $t = 0$에서 모든 lerp가 왼쪽 점을 돌려주므로 $B(0) = P₀$. 대칭으로 $B(1) = P₃$. _곡선은 첫 제어점과 마지막 제어점을 지난다._
+- **끝점에서의 접선.** $t ≈ 0$ 부근의 레벨-1 lerp는 선분 $P₀P₁$ 위에 놓이고, 곡선은 그 방향으로 출발한다. 따라서 _$P₀$에서 $P₁$ 쪽으로 출발하고_, $P₃$에는 $P₂P₃$ 방향으로 도착한다. 디자이너는 이 사실로 두 곡선을 _매끄럽게_ 잇는다 — 끝 손잡이를 정렬하면 된다.
 - **볼록껍질.** 층마다 lerp는 이전 층의 볼록조합 — 마지막 점은 제어점들의 볼록조합이다. 그래서 곡선은 다각형의 볼록껍질 안에 머물고 _밖으로 나가지 않는다_. 충돌 판정과 클리핑에 유용하다.
 - **제어 다각형은 곡선이 아니다.** 곡선을 가두고, 곡선의 방향을 가리키며, 끌어 움직일 수 있는 도구지만, 곡선은 다각형 *안쪽*에 — 모서리에서 부드럽게 멀어진 채로 — 자리 잡는다.
 
@@ -89,13 +88,13 @@ lerp해 하나. 그 마지막 점이 매개변수 <Formula>t</Formula>에서의 
 
 구체적으로: TrueType은 2차 베지에, PostScript와 현대 폰트 대부분은 3차; SVG의 `path` 데이터는 약식 표기를 더한 베지에 문법; Figma·Illustrator·Inkscape — 바닥엔 모두 같은 재귀; 픽사의 매끄러운 애니메이션 곡선, CSS의 "ease-in-out" 타이밍 함수 — 사람이 손수 고른 3차 베지에다. 한 가지 알고리즘, 네 개의 손잡이, 곡선 산업 전체.
 
-더 깊은 다리: 베지에 곡선은 [매개변수 곡선](/ko/modules/parametric-curves) 모듈을 소비한다. 곡선의 *이미지*는 매끄러운 경로, *매개변수화*는 <Formula>t ↦ B(t)</Formula>. 디자이너에게 보이는 것은 보통 이미지뿐이지만, 그것을 한 단계씩 따라가 그려내는 쪽은 매개변수화다.
+더 깊은 다리: 베지에 곡선은 [매개변수 곡선](/ko/modules/parametric-curves) 모듈을 소비한다. 곡선의 *이미지*는 매끄러운 경로, *매개변수화*는 $t ↦ B(t)$. 디자이너에게 보이는 것은 보통 이미지뿐이지만, 그것을 한 단계씩 따라가 그려내는 쪽은 매개변수화다.
 
 <Counterexample>
   베지에의 "매끄러움"은 *국소* 주장이지 전역 주장이 아니다. 제어 다각형이 날카롭게 꺾이는 3차
   베지에는 자기 자신과 교차하는 곡선을 만든다 — 미분적으로는 여전히 매끄럽지만 (B'(t) 연속),
   시각적으로는 병적이다. 위젯에서{" "}
-  <Formula>P₀ = (60, 80), P₁ = (440, 240), P₂ = (60, 240), P₃ = (440, 80)</Formula>으로 두면 자기
+  $P₀ = (60, 80), P₁ = (440, 240), P₂ = (60, 240), P₃ = (440, 80)$으로 두면 자기
   교차하는 Z가 나온다. 디자이너의 "매끄러움"과 미분기하학의 "매끄러움"은 여기서 갈라지지만, 손잡이
   네 개라는 추상화는 그 사실을 한 마디도 경고해주지 않는다.
 </Counterexample>
@@ -113,24 +112,24 @@ lerp해 하나. 그 마지막 점이 매개변수 <Formula>t</Formula>에서의 
 
 <Exercise number={1} tag="손으로 lerp" noCalculator>
 
-<Formula>lerp((0, 0), (4, 2), 0.25)</Formula>를 계산하라. 그 다음
-<Formula>lerp((0, 0), (4, 2), 0.75)</Formula>. 두 점을 양 끝점 사이에 그려보자.
+$lerp((0, 0), (4, 2), 0.25)$를 계산하라. 그 다음
+$lerp((0, 0), (4, 2), 0.75)$. 두 점을 양 끝점 사이에 그려보자.
 
 <Solution>
-  t = 0.25일 때: <Formula>(0.75·0, 0.75·0) + (0.25·4, 0.25·2) = (1, 0.5)</Formula>. t = 0.75일 때:{" "}
-  <Formula>(3, 1.5)</Formula>. 둘 다 (0,0) → (4,2) 선분 위, 1/4 지점과 3/4 지점.
+  t = 0.25일 때: $(0.75·0, 0.75·0) + (0.25·4, 0.25·2) = (1, 0.5)$. t = 0.75일 때:{" "}
+  $(3, 1.5)$. 둘 다 (0,0) → (4,2) 선분 위, 1/4 지점과 3/4 지점.
 </Solution>
 
 </Exercise>
 
 <Exercise number={2} tag="3차 곡선의 중간점" noCalculator>
 
-제어점 <Formula>P = [(0, 0), (1, 2), (3, 2), (4, 0)]</Formula>인 3차 베지에에서 드 카스텔조로 <Formula>B(0.5)</Formula>를 계산하라. 모든 층을 다 보여라.
+제어점 $P = [(0, 0), (1, 2), (3, 2), (4, 0)]$인 3차 베지에에서 드 카스텔조로 $B(0.5)$를 계산하라. 모든 층을 다 보여라.
 
 <Solution>
-  층 1: <Formula>L₀ = (0.5, 1), L₁ = (2, 2), L₂ = (3.5, 1)</Formula>. 층 2:{" "}
-  <Formula>M₀ = (1.25, 1.5), M₁ = (2.75, 1.5)</Formula>. 층 3 (최종):{" "}
-  <Formula>B(0.5) = (2, 1.5)</Formula>. 마지막 두 층이 <Formula>y = 1.5</Formula> 평탄선 위에 있음 —
+  층 1: $L₀ = (0.5, 1), L₁ = (2, 2), L₂ = (3.5, 1)$. 층 2:{" "}
+  $M₀ = (1.25, 1.5), M₁ = (2.75, 1.5)$. 층 3 (최종):{" "}
+  $B(0.5) = (2, 1.5)$. 마지막 두 층이 $y = 1.5$ 평탄선 위에 있음 —
   곡선이 이 중간점을 x축에 평행하게 지난다.
 </Solution>
 
@@ -138,15 +137,15 @@ lerp해 하나. 그 마지막 점이 매개변수 <Formula>t</Formula>에서의 
 
 <Exercise number={3} tag="끝점에서의 접선">
 
-왜 3차 베지에는 <Formula>P₁ − P₀</Formula> 방향으로 *출발*하고 <Formula>P₃ − P₂</Formula> 방향으로 *도착*할까? 드 카스텔조 작도로 기하적 논증을 하고, 다항식 형태에서 <Formula>B'(0)</Formula>를 계산해 확인하라.
+왜 3차 베지에는 $P₁ − P₀$ 방향으로 *출발*하고 $P₃ − P₂$ 방향으로 *도착*할까? 드 카스텔조 작도로 기하적 논증을 하고, 다항식 형태에서 $B'(0)$를 계산해 확인하라.
 
 <Solution>
-  기하: <Formula>t = 0</Formula>에서 레벨-1 lerp는 정확히 <Formula>P₀, P₁, P₂</Formula> (각 lerp가
-  왼쪽 끝점을 돌려준다). 아주 작은 <Formula>t</Formula>에서는 작도가 <Formula>P₀ → P₁</Formula>{" "}
+  기하: $t = 0$에서 레벨-1 lerp는 정확히 $P₀, P₁, P₂$ (각 lerp가
+  왼쪽 끝점을 돌려준다). 아주 작은 $t$에서는 작도가 $P₀ → P₁${" "}
   선분에 지배되므로 곡선이 그쪽으로 향한다. 대수:{" "}
-  <Formula>B(t) = (1−t)³P₀ + 3(1−t)²t·P₁ + …</Formula>를 미분해 0에서 계산하면{" "}
-  <Formula>B'(0) = 3(P₁ − P₀)</Formula>. 같은 방향, 크기는 3배. 끝점 대칭으로{" "}
-  <Formula>B'(1) = 3(P₃ − P₂)</Formula>.
+  $B(t) = (1−t)³P₀ + 3(1−t)²t·P₁ + …$를 미분해 0에서 계산하면{" "}
+  $B'(0) = 3(P₁ − P₀)$. 같은 방향, 크기는 3배. 끝점 대칭으로{" "}
+  $B'(1) = 3(P₃ − P₂)$.
 </Solution>
 
 </Exercise>
@@ -156,10 +155,10 @@ lerp해 하나. 그 마지막 점이 매개변수 <Formula>t</Formula>에서의 
 제어 다각형과 베지에 곡선은 첫 점과 마지막 점이 같고 대략 비슷한 모양이다. 둘이 **다른** 세 가지 방식을 들어라. 차이가 분명히 보이는 예를 위젯으로 만들어보자.
 
 <Solution>
-  (1) 다각형은 <Formula>P₁</Formula>과 <Formula>P₂</Formula>에서 꺾이지만 곡선은 매끄럽다 (코너
-  없음). (2) 다각형은 모든 제어점을 *지나가지만* 곡선은 <Formula>P₀, P₃</Formula>에만 닿는다. (3)
+  (1) 다각형은 $P₁$과 $P₂$에서 꺾이지만 곡선은 매끄럽다 (코너
+  없음). (2) 다각형은 모든 제어점을 *지나가지만* 곡선은 $P₀, P₃$에만 닿는다. (3)
   다각형의 변은 직선이지만, 그 사이를 잇는 곡선의 구간은 직선이 아니다 — 안쪽 제어점 쪽으로 휜다.
-  보너스로 눈에 보이는 차이: <Formula>P₀, P₂, P₃</Formula>는 두고 <Formula>P₁</Formula>만 멀리
+  보너스로 눈에 보이는 차이: $P₀, P₂, P₃$는 두고 $P₁$만 멀리
   끌어보면 — 다각형은 거기서 뾰족한 봉우리, 곡선은 둥근 언덕.
 </Solution>
 
@@ -169,7 +168,7 @@ lerp해 하나. 그 마지막 점이 매개변수 <Formula>t</Formula>에서의 
 
 <WhyNotTaught>
   컴퓨터 그래픽 교과서는 보통 베지에를 *번스타인 기저* 공식 —{" "}
-  <Formula>B(t) = Σ b_i,n(t) · P_i</Formula> — 으로 소개한다. 독자가 믿을 만한 근거가 전혀 없는
+  $B(t) = Σ b_i,n(t) · P_i$ — 으로 소개한다. 독자가 믿을 만한 근거가 전혀 없는
   다항식 합인 채로. Lemma는 반대편 끝에서 출발한다: *lerp* — 디자이너가 이미 아는 단 하나의 연산.
   그 lerp를 재귀로 세 번 적용하면 번스타인 형식이 *유도*된다. 업계는 공식을 쓰지만, 이해는 재귀에서
   시작한다. 번스타인 기저는 결과지, 출발점이 아니다.

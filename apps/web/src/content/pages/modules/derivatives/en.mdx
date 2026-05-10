@@ -16,7 +16,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · the arrow the trail wants to be">
 
@@ -25,7 +24,7 @@ import Formula from "@/components/page/formula.astro";
 A moving point leaves a trail. **The derivative is not the trail.** It is the arrow the trail wants to become at this instant. Average speed knows two points and divides; instantaneous speed knows only one point, but somehow has a number anyway. That number — what every _rate_ in physics, ML, and engineering ultimately is — comes from forcing the secant line through two points to collapse onto the tangent line at one.
 
 <Lede>
-  In the widget below: the orange **secant** through two points on <Formula>y = x²</Formula>. Drag
+  In the widget below: the orange **secant** through two points on $y = x²$. Drag
   **h** toward 0 and the secant rotates onto the brown **tangent**. The slope it converges to is the
   derivative at that point — the curve's instantaneous direction, made into a number.
 </Lede>
@@ -34,7 +33,7 @@ A moving point leaves a trail. **The derivative is not the trail.** It is the ar
 
 <ToolSpec>
   <Fragment slot="definition">
-    The instantaneous rate of change. <Formula>f'(a) = lim h→0 (f(a+h) − f(a)) / h</Formula>. The
+    The instantaneous rate of change. $f'(a) = \lim h→0 (f(a+h) − f(a)) / h$. The
     arrow the trail wants to be at this instant — secant slopes squeezed onto a single tangent slope
     as the second point collapses into the first.
   </Fragment>
@@ -57,7 +56,7 @@ A moving point leaves a trail. **The derivative is not the trail.** It is the ar
 
 <ArcRow n={1} title="Δ over Δ — average rate">
 
-You drove from <Formula>x = 1 km</Formula> at <Formula>t = 0 s</Formula> to <Formula>x = 9 km</Formula> at <Formula>t = 4 s</Formula>. Your _average_ speed is <Formula>(9 − 1) / (4 − 0) = 2 km/s</Formula>. That number describes the trip as a whole — but it does not tell you what you were doing at <Formula>t = 2 s</Formula>. The line through <Formula>(0, 1)</Formula> and <Formula>(4, 9)</Formula> on the position graph is a <Term id="secant">secant</Term>, and its slope is the average. _You can compute it without any limit._
+You drove from $x = 1 km$ at $t = 0 s$ to $x = 9 km$ at $t = 4 s$. Your _average_ speed is $(9 − 1) / (4 − 0) = 2 km/s$. That number describes the trip as a whole — but it does not tell you what you were doing at $t = 2 s$. The line through $(0, 1)$ and $(4, 9)$ on the position graph is a <Term id="secant">secant</Term>, and its slope is the average. _You can compute it without any limit._
 
 <CodeBlock slug="derivatives" arc="arc2" />
 
@@ -65,14 +64,14 @@ You drove from <Formula>x = 1 km</Formula> at <Formula>t = 0 s</Formula> to <For
 
 <ArcRow n={2} title="Shrink the interval — instantaneous rate">
 
-"What was I doing at <Formula>t = 2 s</Formula>?" requires the secant's two points to merge into one. Pick a fixed anchor <Formula>a = 2</Formula> and a small interval <Formula>h</Formula>; compute <Formula>(f(a+h) − f(a)) / h</Formula> as <Formula>h</Formula> shrinks. For <Formula>f(t) = t²</Formula>:
+"What was I doing at $t = 2 s$?" requires the secant's two points to merge into one. Pick a fixed anchor $a = 2$ and a small interval $h$; compute $(f(a+h) − f(a)) / h$ as $h$ shrinks. For $f(t) = t²$:
 
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`(f(2+h) − f(2)) / h
    = ((2+h)² − 4) / h
    = (4 + 4h + h² − 4) / h
    = 4 + h            ← independent of how big h is, except for the +h tail`}</pre>
 
-As <Formula>h → 0</Formula>, the expression converges to <Formula>4</Formula>. Not "approaches" in some hand-wavy sense — the value _is_ <Formula>4 + h</Formula>, and <Formula>h</Formula> can be made as small as you want. The number that survives in the limit, **4**, is the <Term id="derivative">derivative</Term> of <Formula>t²</Formula> at <Formula>t = 2</Formula>: <Formula>f'(2) = 4</Formula>. Geometrically, the slope of the <Term id="tangent">tangent line</Term> through <Formula>(2, 4)</Formula>.
+As $h → 0$, the expression converges to $4$. Not "approaches" in some hand-wavy sense — the value _is_ $4 + h$, and $h$ can be made as small as you want. The number that survives in the limit, **4**, is the <Term id="derivative">derivative</Term> of $t²$ at $t = 2$: $f'(2) = 4$. Geometrically, the slope of the <Term id="tangent">tangent line</Term> through $(2, 4)$.
 
 <CodeBlock slug="derivatives" arc="arc3" />
 
@@ -80,9 +79,9 @@ As <Formula>h → 0</Formula>, the expression converges to <Formula>4</Formula>.
 
 <ArcRow n={3} title="One machine, three names — slope, velocity, rate">
 
-The recipe — pick two points, compute the secant slope, shrink the interval, take the limit — gives the same kind of number whatever you plug in. If <Formula>f</Formula> is a position-vs-time function, the derivative is <Term id="velocity">velocity</Term>. If <Formula>f</Formula> is a graph of revenue vs price, the derivative is "marginal revenue." If <Formula>f</Formula> is a curve drawn on paper, the derivative is the tangent's slope at each point. _Same operation; different physical or geometric interpretation depending on what was on the axes._
+The recipe — pick two points, compute the secant slope, shrink the interval, take the limit — gives the same kind of number whatever you plug in. If $f$ is a position-vs-time function, the derivative is <Term id="velocity">velocity</Term>. If $f$ is a graph of revenue vs price, the derivative is "marginal revenue." If $f$ is a curve drawn on paper, the derivative is the tangent's slope at each point. _Same operation; different physical or geometric interpretation depending on what was on the axes._
 
-The standard pattern: derivative of <Formula>x^n</Formula> is <Formula>n·x^(n−1)</Formula>. The widget shows it for <Formula>n = 2</Formula>: drag the anchor and read off <Formula>2a</Formula>. The same machinery, applied to <Formula>sin x</Formula>, gives <Formula>cos x</Formula>; applied to <Formula>e^x</Formula>, gives <Formula>e^x</Formula> back; applied to a constant, gives 0. The names of these — "differentiation rules" — are bookkeeping. The single underlying operation is the limit of secant slopes.
+The standard pattern: derivative of $x^n$ is $n·x^(n−1)$. The widget shows it for $n = 2$: drag the anchor and read off $2a$. The same machinery, applied to $\sin x$, gives $\cos x$; applied to $e^x$, gives $e^x$ back; applied to a constant, gives 0. The names of these — "differentiation rules" — are bookkeeping. The single underlying operation is the limit of secant slopes.
 
 <Proof id="deriv-pow" />
 
@@ -90,7 +89,7 @@ The standard pattern: derivative of <Formula>x^n</Formula> is <Formula>n·x^(n�
 
 <ArcRow n={4} title="Differentiate twice — acceleration">
 
-The derivative of a function is itself a function. You can differentiate it again. For <Formula>f(t) = t²</Formula>: <Formula>f'(t) = 2t</Formula> (a line); <Formula>f''(t) = 2</Formula> (a constant). Two derivatives of position give <Term id="acceleration">acceleration</Term> — the rate of change of velocity, which for free fall is the constant <Formula>−g</Formula>.
+The derivative of a function is itself a function. You can differentiate it again. For $f(t) = t²$: $f'(t) = 2t$ (a line); $f''(t) = 2$ (a constant). Two derivatives of position give <Term id="acceleration">acceleration</Term> — the rate of change of velocity, which for free fall is the constant $−g$.
 
 That tower — position, velocity, acceleration — is the entire content of "Newton's second law" once you have the derivative as a tool: force is mass times the second derivative of position. Most introductory physics is the algebraic and geometric consequences of this single fact.
 
@@ -105,13 +104,13 @@ That tower — position, velocity, acceleration — is the entire content of "Ne
 ml      : loss changes when a parameter moves; the gradient tells
           which way the loss falls.`}</pre>
 
-[**Projectile motion**](/en/physics/projectile-motion) — the equations <Formula>x(t) = v₀ cos θ · t</Formula> and <Formula>y(t) = v₀ sin θ · t − ½ g t²</Formula> have derivatives <Formula>vₓ = v₀ cos θ</Formula> (constant) and <Formula>v_y(t) = v₀ sin θ − g t</Formula> (linear). Differentiating the *position* gives the *velocity* directly; one more derivative gives the constant <Formula>−g</Formula> acceleration.
+[**Projectile motion**](/en/physics/projectile-motion) — the equations $x(t) = v₀ \cos θ · t$ and $y(t) = v₀ \sin θ · t − \tfrac{1}{2} g t²$ have derivatives $vₓ = v₀ \cos θ$ (constant) and $v_y(t) = v₀ \sin θ − g t$ (linear). Differentiating the *position* gives the *velocity* directly; one more derivative gives the constant $−g$ acceleration.
 
-[**The pendulum clock**](/en/physics/pendulum-clock) — the equation of motion <Formula>θ̈ = −(g/L) sin θ</Formula> is *two derivatives of θ on the left, equals a function of θ on the right*. Replace <Formula>sin θ</Formula> with <Formula>θ</Formula> (the linearization trick) and you get <Formula>θ̈ = −(g/L) θ</Formula> — simple harmonic motion, which the derivative tool can recognize and solve.
+[**The pendulum clock**](/en/physics/pendulum-clock) — the equation of motion $\ddot{θ} = −(g/L) \sin θ$ is *two derivatives of θ on the left, equals a function of θ on the right*. Replace $\sin θ$ with $θ$ (the linearization trick) and you get $\ddot{θ} = −(g/L) θ$ — simple harmonic motion, which the derivative tool can recognize and solve.
 
-[**Terminal velocity**](/en/physics/terminal-velocity) — the differential equation <Formula>dv/dt = g − k v</Formula> is one derivative on the left, the net force per unit mass on the right. The fixed point — the terminal speed — is found by setting the derivative to zero: <Formula>g − k v_t = 0</Formula>. *Force balance is exactly "the derivative vanishes here."*
+[**Terminal velocity**](/en/physics/terminal-velocity) — the differential equation $dv/dt = g − k v$ is one derivative on the left, the net force per unit mass on the right. The fixed point — the terminal speed — is found by setting the derivative to zero: $g − k v_t = 0$. *Force balance is exactly "the derivative vanishes here."*
 
-[**Gradient descent**](/en/ml/gradient-descent) — the loss <Formula>L(w)</Formula> is a multivariable function; its <Term id="gradient">gradient</Term> <Formula>∇L</Formula> is the vector of partial derivatives. The descent step <Formula>w ← w − η · ∇L</Formula> uses one derivative per parameter, all at once. The rate at which the loss falls is <Formula>‖∇L‖²</Formula> — a derivative-derived quantity that determines whether learning is making progress.
+[**Gradient descent**](/en/ml/gradient-descent) — the loss $L(w)$ is a multivariable function; its <Term id="gradient">gradient</Term> $∇L$ is the vector of partial derivatives. The descent step $w ← w − η · ∇L$ uses one derivative per parameter, all at once. The rate at which the loss falls is $\|∇L\|²$ — a derivative-derived quantity that determines whether learning is making progress.
 
 **Same idea, different nouns: velocity in physics, gradient in ML. In both cases, the derivative is the local rule for change.**
 
@@ -130,39 +129,37 @@ ml      : loss changes when a parameter moves; the gradient tells
 
 <Exercise number={1} tag="average rate by hand" noCalculator>
 
-For <Formula>f(t) = t²</Formula>, compute the average rate of change over the interval <Formula>[1, 3]</Formula>. Then over <Formula>[1, 1.1]</Formula>. Then over <Formula>[1, 1.001]</Formula>. What pattern do you see?
+For $f(t) = t²$, compute the average rate of change over the interval $[1, 3]$. Then over $[1, 1.1]$. Then over $[1, 1.001]$. What pattern do you see?
 
 <Solution>
-  <Formula>(9 − 1)/(3 − 1) = 4</Formula>. Then <Formula>(1.21 − 1)/0.1 = 2.1</Formula>. Then{" "}
-  <Formula>(1.002001 − 1)/0.001 = 2.001</Formula>. The values are **<Formula>2 + h</Formula>** with{" "}
-  <Formula>h = 2, 0.1, 0.001</Formula>. Limit at <Formula>h → 0</Formula> is **2** — the derivative{" "}
-  <Formula>f'(1)</Formula>.
+  $(9 − 1)/(3 − 1) = 4$. Then $(1.21 − 1)/0.1 = 2.1$. Then{" "}
+  $(1.002001 − 1)/0.001 = 2.001$. The values are **$2 + h$** with{" "}
+  $h = 2, 0.1, 0.001$. Limit at $h → 0$ is **2** — the derivative{" "}
+  $f'(1)$.
 </Solution>
 
 </Exercise>
 
 <Exercise number={2} tag="instantaneous rate at t = 3" noCalculator>
 
-For <Formula>f(t) = t²</Formula>, derive <Formula>f'(3)</Formula> from the secant-slope definition. Show every step of the algebra.
+For $f(t) = t²$, derive $f'(3)$ from the secant-slope definition. Show every step of the algebra.
 
 <Solution>
-  <Formula>
-    (f(3+h) − f(3)) / h = ((3+h)² − 9) / h = (9 + 6h + h² − 9) / h = (6h + h²) / h = 6 + h
-  </Formula>
-  . Now let <Formula>h → 0</Formula>: **f'(3) = 6**. (Same pattern: for any <Formula>a</Formula>,{" "}
-  <Formula>(2a)·h + h²</Formula> divided by <Formula>h</Formula> is <Formula>2a + h → 2a</Formula>.
-  That is why <Formula>d/dt [t²] = 2t</Formula>.)
+  $(f(3+h) − f(3)) / h = ((3+h)² − 9) / h = (9 + 6h + h² − 9) / h = (6h + h²) / h = 6 + h$
+  . Now let $h → 0$: **f'(3) = 6**. (Same pattern: for any $a$,{" "}
+  $(2a)·h + h²$ divided by $h$ is $2a + h → 2a$.
+  That is why $d/dt [t²] = 2t$.)
 </Solution>
 
 </Exercise>
 
 <Exercise number={3} tag="tangent slope from the curve">
 
-The widget shows <Formula>y = x²</Formula>. Without using the formula, just by sliding **a** and shrinking **h**, read off the tangent slope at <Formula>x = 0.5</Formula> and at <Formula>x = 1.5</Formula>. State a rule that fits both numbers.
+The widget shows $y = x²$. Without using the formula, just by sliding **a** and shrinking **h**, read off the tangent slope at $x = 0.5$ and at $x = 1.5$. State a rule that fits both numbers.
 
 <Solution>
-  At <Formula>x = 0.5</Formula>, the slope reads **1**. At <Formula>x = 1.5</Formula>, it reads
-  **3**. The rule: <Formula>m(x) = 2x</Formula>. Confirms <Formula>d/dx [x²] = 2x</Formula> directly
+  At $x = 0.5$, the slope reads **1**. At $x = 1.5$, it reads
+  **3**. The rule: $m(x) = 2x$. Confirms $d/dx [x²] = 2x$ directly
   from the picture, without ever doing the algebraic limit.
 </Solution>
 
@@ -170,15 +167,15 @@ The widget shows <Formula>y = x²</Formula>. Without using the formula, just by 
 
 <Exercise number={4} tag="differentiate the projectile" noCalculator>
 
-The vertical position of a projectile is <Formula>y(t) = v₀ sin θ · t − ½ g t²</Formula>. Use the same <Formula>(f(a+h) − f(a)) / h</Formula> recipe to derive <Formula>v_y(t) = dy/dt</Formula>. Confirm the answer matches the projectile widget's **v_y** readout.
+The vertical position of a projectile is $y(t) = v₀ \sin θ · t − \tfrac{1}{2} g t²$. Use the same $(f(a+h) − f(a)) / h$ recipe to derive $v_y(t) = dy/dt$. Confirm the answer matches the projectile widget's **v_y** readout.
 
 <Solution>
-  <Formula>y(t+h) = v₀ sin θ · (t+h) − ½ g (t+h)²</Formula>. Subtract <Formula>y(t)</Formula> and
-  divide by <Formula>h</Formula>: the <Formula>v₀ sin θ</Formula> term contributes{" "}
-  <Formula>v₀ sin θ</Formula>; the <Formula>½ g</Formula> term contributes{" "}
-  <Formula>½ g (2t + h) = g t + ½ g h</Formula>; subtract sign and let <Formula>h → 0</Formula>: **
-  <Formula>v_y(t) = v₀ sin θ − g t</Formula>**. Exactly the formula the projectile-motion widget
-  displays at any <Formula>t</Formula>.
+  $y(t+h) = v₀ \sin θ · (t+h) − \tfrac{1}{2} g (t+h)²$. Subtract $y(t)$ and
+  divide by $h$: the $v₀ \sin θ$ term contributes{" "}
+  $v₀ \sin θ$; the $\tfrac{1}{2} g$ term contributes{" "}
+  $\tfrac{1}{2} g (2t + h) = g t + \tfrac{1}{2} g h$; subtract sign and let $h → 0$: **
+  $v_y(t) = v₀ \sin θ − g t$**. Exactly the formula the projectile-motion widget
+  displays at any $t$.
 </Solution>
 
 </Exercise>

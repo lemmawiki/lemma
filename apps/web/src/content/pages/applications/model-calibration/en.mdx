@@ -21,7 +21,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · confidence vs. frequency">
 
@@ -39,7 +38,7 @@ A model says "70% confident." Does that mean, across many such predictions, _sev
 
 <ArcRow n={1} title="The promise of probability">
 
-When a model emits the number <Formula>0.7</Formula> for a class, what should that number _mean_? The honest contract is the long-run one: across many examples that the model labeled "70%," the truth lights up about <Formula>70%</Formula> of the time. That contract is not enforced by <Term id="softmax">softmax</Term>, by <Term id="cross-entropy">cross-entropy</Term>, or by training. Training rewards low loss on the data it sees; the alignment between probability and frequency is a _separate_ property the model picks up — or fails to — as a side effect.
+When a model emits the number $0.7$ for a class, what should that number _mean_? The honest contract is the long-run one: across many examples that the model labeled "70%," the truth lights up about $70\%$ of the time. That contract is not enforced by <Term id="softmax">softmax</Term>, by <Term id="cross-entropy">cross-entropy</Term>, or by training. Training rewards low loss on the data it sees; the alignment between probability and frequency is a _separate_ property the model picks up — or fails to — as a side effect.
 
 [Confidently wrong](/en/ml/confident-wrong) showed why softmax produces something that _looks_ like a probability. This page asks the next question: _does it mean what it looks like?_
 
@@ -47,9 +46,9 @@ When a model emits the number <Formula>0.7</Formula> for a class, what should th
 
 <ArcRow n={2} title="The reliability diagram">
 
-The standard way to _see_ calibration is a <Term id="reliability-diagram">reliability diagram</Term>. Bin predictions by their stated probability — say ten bins of width <Formula>0.1</Formula>. For each bin, plot two numbers. On the x-axis, the bin's _mean predicted probability_. On the y-axis, the _fraction that turned out correct_. Perfect calibration is the diagonal <Formula>y = x</Formula>. The widget above is exactly this plot, for a synthetic model with a tunable miscalibration.
+The standard way to _see_ calibration is a <Term id="reliability-diagram">reliability diagram</Term>. Bin predictions by their stated probability — say ten bins of width $0.1$. For each bin, plot two numbers. On the x-axis, the bin's _mean predicted probability_. On the y-axis, the _fraction that turned out correct_. Perfect calibration is the diagonal $y = x$. The widget above is exactly this plot, for a synthetic model with a tunable miscalibration.
 
-Bars sagging _below_ the diagonal — model says <Formula>0.9</Formula>, gets <Formula>0.78</Formula> right — are the signature of _overconfidence_. Bars rising _above_ mean the model is too humble: it says <Formula>0.6</Formula> but is actually right <Formula>0.8</Formula> of the time. The vertical gap at each bin, weighted by how many predictions land there, sums to a single number — the _expected calibration error_, ECE.
+Bars sagging _below_ the diagonal — model says $0.9$, gets $0.78$ right — are the signature of _overconfidence_. Bars rising _above_ mean the model is too humble: it says $0.6$ but is actually right $0.8$ of the time. The vertical gap at each bin, weighted by how many predictions land there, sums to a single number — the _expected calibration error_, ECE.
 
 <CodeBlock slug="modelCalibration" arc="arc2" />
 
@@ -57,9 +56,9 @@ Bars sagging _below_ the diagonal — model says <Formula>0.9</Formula>, gets <F
 
 <ArcRow n={3} title="Real models are overconfident — predictably">
 
-An empirical pattern reported across image classifiers, language models, and tabular networks alike: the bars sit _below_ the diagonal, and the gap is widest in the high-confidence tail. Models that say "very sure" are wrong more often than the number admits; models that say "uncertain" are roughly honest. The shape, drawn over the diagonal, looks like a sigmoid that has been slightly _squashed_ toward 0.5. That's not a coincidence — it's what you get if the true posterior is the model's stated probability run through <Formula>σ(logit(p)/T)</Formula> with <Formula>T &lt; 1</Formula>.
+An empirical pattern reported across image classifiers, language models, and tabular networks alike: the bars sit _below_ the diagonal, and the gap is widest in the high-confidence tail. Models that say "very sure" are wrong more often than the number admits; models that say "uncertain" are roughly honest. The shape, drawn over the diagonal, looks like a sigmoid that has been slightly _squashed_ toward 0.5. That's not a coincidence — it's what you get if the true posterior is the model's stated probability run through $σ(logit(p)/T)$ with $T &lt; 1$.
 
-In the widget, drag <Formula>T</Formula> to <Formula>0.55</Formula> (the "overconfident" preset). The bars in the right tail sag dramatically — the <Formula>0.9</Formula> bin lands near <Formula>0.78</Formula>. ECE jumps. Drag to <Formula>1.55</Formula> and the curve flips above the diagonal: _underconfident_, the bin labeled <Formula>0.6</Formula> lands near <Formula>0.7</Formula>.
+In the widget, drag $T$ to $0.55$ (the "overconfident" preset). The bars in the right tail sag dramatically — the $0.9$ bin lands near $0.78$. ECE jumps. Drag to $1.55$ and the curve flips above the diagonal: _underconfident_, the bin labeled $0.6$ lands near $0.7$.
 
 <CodeBlock slug="modelCalibration" arc="arc3" />
 
@@ -67,9 +66,9 @@ In the widget, drag <Formula>T</Formula> to <Formula>0.55</Formula> (the "overco
 
 <ArcRow n={4} title="Linearize at one bin — the local fix">
 
-Click any bar in the widget. The brown line that appears is the <Term id="tangent">tangent</Term> to the calibration curve at that bin's center — the page-three trick from the [linearization module](/en/modules/linearization), reused here. Locally, the curve looks like a line with slope <Formula>m</Formula> and offset <Formula>c</Formula>: <Formula>actual(p) ≈ m·p + c</Formula>. Two numbers. The reliability bar and the diagonal differ by <Formula>(m − 1)·p + c</Formula> in this neighborhood — a quantity you can read off the slope and the intercept of one tangent line.
+Click any bar in the widget. The brown line that appears is the <Term id="tangent">tangent</Term> to the calibration curve at that bin's center — the page-three trick from the [linearization module](/en/modules/linearization), reused here. Locally, the curve looks like a line with slope $m$ and offset $c$: $actual(p) ≈ m·p + c$. Two numbers. The reliability bar and the diagonal differ by $(m − 1)·p + c$ in this neighborhood — a quantity you can read off the slope and the intercept of one tangent line.
 
-Why does this matter? Because it tells you what kind of fix is needed. Slope <Formula>≈ 1</Formula> means "the curve is parallel to the diagonal here, just shifted" — a constant additive correction works. Slope <Formula>≠ 1</Formula> means the gap _changes_ with confidence — and the right correction must _rotate_ the curve toward the diagonal, not just shift it. That rotation is exactly what one parameter — temperature — buys you, globally.
+Why does this matter? Because it tells you what kind of fix is needed. Slope $≈ 1$ means "the curve is parallel to the diagonal here, just shifted" — a constant additive correction works. Slope $≠ 1$ means the gap _changes_ with confidence — and the right correction must _rotate_ the curve toward the diagonal, not just shift it. That rotation is exactly what one parameter — temperature — buys you, globally.
 
 <CodeBlock slug="modelCalibration" arc="arc4" />
 
@@ -77,9 +76,9 @@ Why does this matter? Because it tells you what kind of fix is needed. Slope <Fo
 
 <ArcRow n={5} title="Temperature scaling — one scalar, post-hoc">
 
-The recipe: take the trained model. Don't retrain. Don't change architecture. Take the raw <Term id="logit">logits</Term> on a held-out validation set, add one scalar <Formula>T &gt; 0</Formula>, and compute <Formula>softmax(z / T)</Formula>. Fit <Formula>T</Formula> by minimizing log loss on the validation set — a one-dimensional optimization, takes a second. That's <Term id="temperature-scaling">temperature scaling</Term>. The argmax is preserved (every logit divided by the same constant), so accuracy doesn't move; only the confidences rescale.
+The recipe: take the trained model. Don't retrain. Don't change architecture. Take the raw <Term id="logit">logits</Term> on a held-out validation set, add one scalar $T &gt; 0$, and compute $softmax(z / T)$. Fit $T$ by minimizing log loss on the validation set — a one-dimensional optimization, takes a second. That's <Term id="temperature-scaling">temperature scaling</Term>. The argmax is preserved (every logit divided by the same constant), so accuracy doesn't move; only the confidences rescale.
 
-Why this works: dividing the logits by <Formula>T &gt; 1</Formula> flattens the softmax — every output probability moves toward the uniform <Formula>1/K</Formula>. Across many examples, that pulls down the right-tail bars (the overconfident region) more than it pulls up the middle, exactly undoing the squash that produced the sigmoid bend. It's a remarkably cheap fix for a remarkably common failure mode — and the first thing to try whenever a reliability diagram bows below the diagonal.
+Why this works: dividing the logits by $T &gt; 1$ flattens the softmax — every output probability moves toward the uniform $1/K$. Across many examples, that pulls down the right-tail bars (the overconfident region) more than it pulls up the middle, exactly undoing the squash that produced the sigmoid bend. It's a remarkably cheap fix for a remarkably common failure mode — and the first thing to try whenever a reliability diagram bows below the diagonal.
 
 <CodeBlock slug="modelCalibration" arc="arc5" />
 
@@ -87,7 +86,7 @@ Why this works: dividing the logits by <Formula>T &gt; 1</Formula> flattens the 
   Temperature scaling assumes the miscalibration is the *same shape* everywhere in input space — one
   global rotation can fix it. Real models often miscalibrate *differently* on different slices: easy
   examples confidently right, hard examples confidently wrong, out-of-distribution inputs absurdly
-  confident. A single <Formula>T</Formula> averages the gap, which can leave both regimes worse than
+  confident. A single $T$ averages the gap, which can leave both regimes worse than
   nothing. The honest tell: ECE drops on validation, but the right tail of the held-out reliability
   diagram is still bowed. The fix isn't a bigger T; it's a model that asks "is this input near
   anything I've seen?" — a separate piece of machinery (selective prediction, conformal sets,
@@ -108,12 +107,12 @@ Why this works: dividing the logits by <Formula>T &gt; 1</Formula> flattens the 
 
 <Exercise number={1} tag="read the bin">
 
-In the widget, set <Formula>T = 0.55</Formula> (overconfident). Click the bin centered at <Formula>0.85</Formula>. Read off the bar height. Out of every 100 predictions the model labels "85% confident," about how many are actually correct? Now do the same for the bin at <Formula>0.55</Formula>. What kind of input is the model still being honest about?
+In the widget, set $T = 0.55$ (overconfident). Click the bin centered at $0.85$. Read off the bar height. Out of every 100 predictions the model labels "85% confident," about how many are actually correct? Now do the same for the bin at $0.55$. What kind of input is the model still being honest about?
 
 <Solution>
-  At <Formula>0.85</Formula>: <Formula>actual ≈ 0.74</Formula> — about 74 out of 100. The 11-point
+  At $0.85$: $actual ≈ 0.74$ — about 74 out of 100. The 11-point
   gap is the visible signature of overconfidence in the high-probability tail. At{" "}
-  <Formula>0.55</Formula>: <Formula>actual ≈ 0.53</Formula> — almost on the diagonal. Models are
+  $0.55$: $actual ≈ 0.53$ — almost on the diagonal. Models are
   calibrated near the middle (where they're already uncertain) and miscalibrated at the tails
   (where they think they're sure).
 </Solution>
@@ -125,7 +124,7 @@ In the widget, set <Formula>T = 0.55</Formula> (overconfident). Click the bin ce
 A friend looks at a reliability diagram where every bar in the right half lies _below_ the diagonal and says: "great — the model is being modest." Write a one-sentence reply that distinguishes _modest_ from _overconfident_. Which interpretation matches "below the diagonal"?
 
 <Solution>
-  Below the diagonal at <Formula>p = 0.9</Formula> means the bar height is *less* than 0.9 — i.e.,
+  Below the diagonal at $p = 0.9$ means the bar height is *less* than 0.9 — i.e.,
   the model *says* 0.9 but is correct *less than 0.9* of the time. That's the model claiming more
   than it can deliver: **overconfident**, not modest. "Modest" would be a model that says 0.6 and
   is right 0.8 of the time — bars *above* the diagonal.
@@ -135,13 +134,13 @@ A friend looks at a reliability diagram where every bar in the right half lies _
 
 <Exercise number={3} tag="local linear fit">
 
-In the overconfident regime (<Formula>T = 0.55</Formula>), click the bin at <Formula>0.85</Formula>. The widget reports a local slope. Suppose that slope is <Formula>m = 0.6</Formula> and the bar height is <Formula>0.74</Formula> at <Formula>p = 0.85</Formula>. Write the local linear approximation in the form <Formula>actual(p) ≈ m·p + c</Formula> — i.e., compute <Formula>c</Formula>. Use it to predict the calibration error at <Formula>p = 0.95</Formula>.
+In the overconfident regime ($T = 0.55$), click the bin at $0.85$. The widget reports a local slope. Suppose that slope is $m = 0.6$ and the bar height is $0.74$ at $p = 0.85$. Write the local linear approximation in the form $actual(p) ≈ m·p + c$ — i.e., compute $c$. Use it to predict the calibration error at $p = 0.95$.
 
 <Solution>
-  <Formula>0.74 = 0.6·0.85 + c → c = 0.74 − 0.51 = 0.23</Formula>. So{" "}
-  <Formula>actual(p) ≈ 0.6·p + 0.23</Formula>. At <Formula>p = 0.95</Formula>:{" "}
-  <Formula>actual ≈ 0.6·0.95 + 0.23 = 0.80</Formula>. The calibration error is{" "}
-  <Formula>0.95 − 0.80 = 0.15</Formula> — bigger than at <Formula>0.85</Formula>, exactly because
+  $0.74 = 0.6·0.85 + c → c = 0.74 − 0.51 = 0.23$. So{" "}
+  $actual(p) ≈ 0.6·p + 0.23$. At $p = 0.95$:{" "}
+  $actual ≈ 0.6·0.95 + 0.23 = 0.80$. The calibration error is{" "}
+  $0.95 − 0.80 = 0.15$ — bigger than at $0.85$, exactly because
   slope &lt; 1 means the gap *grows* with confidence in this neighborhood.
 </Solution>
 
@@ -149,12 +148,12 @@ In the overconfident regime (<Formula>T = 0.55</Formula>), click the bin at <For
 
 <Exercise number={4} tag="why cross-entropy → overconfidence">
 
-From the [confidently wrong](/en/ml/confident-wrong) page: cross-entropy is <Formula>−log p_true</Formula>. Sketch — in words, no math required — why a model trained to minimize this loss has an incentive to be _overconfident_ on the training set, and why this incentive doesn't translate into good calibration on held-out data.
+From the [confidently wrong](/en/ml/confident-wrong) page: cross-entropy is $−\log p_true$. Sketch — in words, no math required — why a model trained to minimize this loss has an incentive to be _overconfident_ on the training set, and why this incentive doesn't translate into good calibration on held-out data.
 
 <Solution>
-  <Formula>−log p</Formula> drops sharply as <Formula>p</Formula> approaches 1. So once the model
+  $−\log p$ drops sharply as $p$ approaches 1. So once the model
   is mostly right on a training example, the cheapest way to keep lowering its loss is to push{" "}
-  <Formula>p_true</Formula> from 0.9 to 0.99 to 0.999. The training signal rewards *more confidence
+  $p_true$ from 0.9 to 0.99 to 0.999. The training signal rewards *more confidence
   on examples it already gets right*. On held-out data, that confidence has nothing to anchor it —
   the model has learned to be loud on familiar inputs, and that loudness carries over to the
   unfamiliar ones it hasn't seen. Result: bars sag below the diagonal exactly where the model is
