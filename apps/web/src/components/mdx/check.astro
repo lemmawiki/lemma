@@ -1,0 +1,23 @@
+---
+import { Check as CheckReact } from "../widgets/check";
+
+interface Props {
+  expected?: number;
+  compute?: string;
+  vars?: Record<string, number>;
+  unit?: string;
+  tolerance?: string | number;
+}
+const { expected, compute, vars, unit, tolerance } = Astro.props;
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<CheckReact
+  expected={expected}
+  compute={compute}
+  vars={vars}
+  unit={unit}
+  tolerance={tolerance}
+  language={lang}
+  client:load
+/>

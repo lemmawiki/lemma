@@ -12,6 +12,7 @@ import {
   Counterexample,
   WhyNotTaught,
   Compute,
+  Check,
   PizzaSlider,
   ThreeDoors,
 } from "@/components/mdx";
@@ -149,6 +150,8 @@ BTC의 189%에서도 이 법칙이 통할까? (계산 말고 — 예측만.)
 <Exercise number={6} tag="악마의 문제 · 거짓말탐지기로서의 로그">
 
 비트코인을 미래로 던져 보자. 오늘 (2026): 10,000 BTC ≈ **$10억**. BTC가 **연 189%**라는 16년치 CAGR을 앞으로 **20년** 더 유지하면 (2046년) 그 피자의 값은? 세계 GDP (~$110조)와 비교하라. 그 답은 지수 이야기에 대해 무엇을 말해주는가? <Formula>log₁₀(2.89) ≈ 0.461</Formula> 사용.
+
+<Check compute="bitcoin-pizza-2046" tolerance="20%" unit="$" />
 
 <Solution>
   F = 10⁹ · 2.89²⁰. 양변에 log₁₀: log₁₀(F) = 9 + 20 · 0.461 = 9 + 9.22 = **18.22**. 따라서 F ≈

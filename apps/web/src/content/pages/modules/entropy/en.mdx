@@ -7,7 +7,7 @@ breadcrumb:
   current: module · entropy
 ---
 
-import { Term, Exercise, Solution, ToolSpec, ShannonBars } from "@/components/mdx";
+import { Term, Exercise, Solution, ToolSpec, History, ShannonBars } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -28,6 +28,8 @@ Halve the list each time and the answer is **10** — <Term id="logarithm">log�
   collapses to <Formula>log₂ N</Formula>. When one outcome dominates, it falls toward 0. Wordle,
   Huffman compression, password strength, decision trees — all are bumping against the same number.
 </Lede>
+
+<History concept="entropy" />
 
 </Hook>
 

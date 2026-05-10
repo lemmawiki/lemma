@@ -12,6 +12,7 @@ import {
   Counterexample,
   WhyNotTaught,
   Compute,
+  Check,
   PizzaSlider,
   ThreeDoors,
 } from "@/components/mdx";
@@ -146,6 +147,8 @@ Investor A puts **$1,000,000** into **SPY at 8%/yr** in 2010. Investor B puts ju
 <Exercise number={6} tag="the evil one · log as lie detector">
 
 Project Bitcoin forward. Today (2026): 10,000 BTC ≈ **$1B**. If BTC keeps its 16-year CAGR of **189%** for another **20 years** (until 2046), what is the pizza worth? Compare to global GDP (~$110T). What does the answer tell you about exponential stories? Use <Formula>log₁₀(2.89) ≈ 0.461</Formula>.
+
+<Check compute="bitcoin-pizza-2046" tolerance="20%" unit="$" />
 
 <Solution>
   F = 10⁹ · 2.89²⁰. Take log₁₀: log₁₀(F) = 9 + 20 · 0.461 = 9 + 9.22 = **18.22**. So F ≈ 10^18.22 ≈
