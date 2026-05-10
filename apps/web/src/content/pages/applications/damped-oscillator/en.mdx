@@ -27,7 +27,7 @@ import Formula from "@/components/page/formula.astro";
 
 # Why does a swing stop on its own — and why does pushing on the beat make it grow?
 
-A pendulum left alone slows down and stops. The same pendulum, pushed at *exactly the right rhythm*, swings higher and higher until it loops the bar. Same hardware. Two opposite outcomes. The single equation that governs both — and every cousin of them, from car suspensions to laser cavities to bridges that fell down — has three terms: an inertia, a restoring force, and a *velocity-dependent* drag. When the drag wins, motion dies; when an external push lands at the natural beat, the drag can't keep up, and amplitude climbs.
+A pendulum left alone slows down and stops. The same pendulum, pushed at *exactly the right rhythm*, swings higher and higher until it loops the bar. Same hardware. Two opposite outcomes. The single equation that governs both — and every cousin of them, from car suspensions to laser cavities to bridges that fell down — has three terms: an inertia, a restoring force, and a *velocity-dependent* <Term id="drag">drag</Term>. When the drag wins, motion dies; when an external push lands at the natural beat, the drag can't keep up, and amplitude climbs.
 
 <Lede>**Damping decides *how* it stops. Resonance decides *when* a push wins.**</Lede>
 
@@ -87,7 +87,7 @@ The widget's lower panel shows <Formula>A(ω)</Formula> for the current <Formula
 
 Why does the peak sit at <Formula>ω ≈ ω₀</Formula>? <Term id="resonance">Resonance</Term> is what happens when each push lands while the oscillator is already moving in the same direction — energy goes in *coherently*, every cycle. Off-resonance, pushes alternate between adding and subtracting energy, and the net input averages out. The math underneath: average power input is <Formula>{"⟨F · ẋ⟩"}</Formula> — an [integral](/en/modules/integration) over a cycle — and that average is largest exactly when the forcing and the velocity stay in phase, which happens when <Formula>ω</Formula> hits <Formula>ω₀</Formula>.
 
-The same identity governs an opera singer breaking glass (vocal cord drives the glass at its natural frequency), the Tacoma Narrows bridge collapse (wind-driven aeroelastic flutter at one of the deck's natural frequencies), MRI nuclei flipping (RF pulse at the Larmor frequency), and the radio dial picking out one station from a sky full (LC circuit tuned to one ω₀). *Resonance is not a special force — it is energy injected on the beat the system already keeps.*
+The same identity governs an opera singer breaking glass (vocal cord drives the glass at its <Term id="natural-frequency">natural frequency</Term>), the Tacoma Narrows bridge collapse (wind-driven aeroelastic flutter at one of the deck's natural frequencies), MRI nuclei flipping (RF pulse at the Larmor frequency), and the radio dial picking out one station from a sky full (LC circuit tuned to one ω₀). *Resonance is not a special force — it is energy injected on the beat the system already keeps.*
 
 The Q-factor <Formula>Q = ω₀ / (2γ)</Formula> measures how *narrow* the resonance peak is. High Q (atomic clocks: Q ≈ 10¹⁰; pendulum: Q ≈ 100) means the system rings cleanly at exactly one frequency. Low Q means a broad, easily-driven response. Choosing Q is one of the first decisions any oscillator designer makes — the rest is consequence.
 
