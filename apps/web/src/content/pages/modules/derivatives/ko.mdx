@@ -101,14 +101,24 @@ import Formula from "@/components/page/formula.astro";
 
 </ArcRow>
 
-<ArcRow n={5} title="이 모듈이 어디서 소비되는가">
+<ArcRow n={5} title="이게 어디에 나타나나 — 같은 연산, 두 필러">
 
-이미 두 페이지가 미분을 _암묵적으로_ 사용해왔다. 이제 가리킬 대상이 생겼다.
+**미분은 단순히 기울기가 아니다. 국소적인 변화다 — 한 양을 아주 조금 건드렸을 때 다른 양이 어떻게 반응하는가.** 같은 연산이 필러마다 다른 이름으로 나타나지만, 대수는 같다.
 
-- [**포물선 운동**](/ko/physics/projectile-motion) — 운동 방정식 <Formula>x(t) = v₀ cos θ · t</Formula>와 <Formula>y(t) = v₀ sin θ · t − ½ g t²</Formula>의 미분이 <Formula>vₓ = v₀ cos θ</Formula> (상수)와 <Formula>v_y(t) = v₀ sin θ − g t</Formula> (선형, 포물선 위젯이 보여주는 그 속도). *위치*를 미분하면 곧 *속도_.
-- [**진자시계**](/ko/physics/pendulum-clock) — 식 <Formula>θ̈ = −(g/L) sin θ</Formula>는 _왼쪽은 θ의 두 번 미분, 오른쪽은 θ의 함수_. "선형화" 한 수가 <Formula>sin θ</Formula>를 <Formula>θ</Formula>로 바꿔 <Formula>θ̈ = −(g/L) θ</Formula>를 남긴다 — 미분 도구가 알아보고 풀 수 있는 단순조화진동자 방정식.
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`physics : 위치가 속도로 바뀌고, 속도가 가속도로 바뀐다.
+          그 변화를 결정하는 것이 힘.
+ml      : 매개변수가 움직일 때 손실이 변한다.
+          그래디언트가 손실이 떨어지는 방향을 말해준다.`}</pre>
 
-[/graph](/ko/graph)가 이제 이걸 반영한다: 두 physics 응용이 모두 <Formula>parametric-curves</Formula>와 <Formula>derivatives</Formula>를 소비한다. 모듈이 _모듈이 해야 하는_ 일을 하기 시작했다.
+[**포물선 운동**](/ko/physics/projectile-motion) — 식 <Formula>x(t) = v₀ cos θ · t</Formula>와 <Formula>y(t) = v₀ sin θ · t − ½ g t²</Formula>의 미분이 <Formula>vₓ = v₀ cos θ</Formula> (상수) 와 <Formula>v_y(t) = v₀ sin θ − g t</Formula> (선형). *위치*를 미분하면 곧 *속도*; 한 번 더 미분하면 상수 <Formula>−g</Formula> 가속도.
+
+[**진자시계**](/ko/physics/pendulum-clock) — 운동 방정식 <Formula>θ̈ = −(g/L) sin θ</Formula>는 *왼쪽은 θ의 두 번 미분, 오른쪽은 θ의 함수*. <Formula>sin θ</Formula>를 <Formula>θ</Formula>로 바꾸면 (선형화 트릭) <Formula>θ̈ = −(g/L) θ</Formula> — 단순조화진동자 방정식, 미분 도구가 알아보고 풀 수 있는 형태.
+
+[**종단속도**](/ko/physics/terminal-velocity) — 미분방정식 <Formula>dv/dt = g − k v</Formula>는 왼쪽이 한 번의 미분, 오른쪽이 단위 질량당 알짜힘. 고정점 — 종단속도 — 은 미분을 0으로 두어서 찾는다 — <Formula>g − k v_t = 0</Formula>. *힘 균형이 정확히 "여기서 미분이 사라진다"이다.*
+
+[**경사하강법**](/ko/ml/gradient-descent) — 손실 <Formula>L(w)</Formula>는 다변수 함수. 그 <Term id="gradient">그래디언트</Term> <Formula>∇L</Formula>은 편미분의 벡터. 한 스텝 <Formula>w ← w − η · ∇L</Formula>은 모든 매개변수에 대해 한 번의 미분을 동시에 사용. 손실이 떨어지는 비율은 <Formula>‖∇L‖²</Formula> — 학습이 진전하는지 결정하는 미분-유래 양.
+
+**이름은 달라도 같은 생각이다 — 물리에서는 속도, ML에서는 그래디언트. 둘 다 미분이 국소적인 변화 규칙을 말해준다.**
 
 <CodeBlock slug="derivatives" arc="arc5" />
 
@@ -182,7 +192,9 @@ import Formula from "@/components/page/formula.astro";
 </Exercises>
 
 <PageFooter>
-  모듈: **미분**. 소비처: [포물선 운동](/ko/physics/projectile-motion),
-  [진자시계](/ko/physics/pendulum-clock). 향후 ML/금융 응용도 "손실의 변화율," "순간 수익률"을 위해
-  이걸 소비하게 된다.
+  모듈: **미분**. 두 필러의 네 응용이 이 모듈을 소비한다 — 물리
+  ([포물선 운동](/ko/physics/projectile-motion), [진자시계](/ko/physics/pendulum-clock),
+  [종단속도](/ko/physics/terminal-velocity)) 와 ML
+  ([경사하강법](/ko/ml/gradient-descent)). *이름은 달라도 같은 생각이다 — 물리에서는 속도, ML에서는
+  그래디언트. 둘 다 미분이 국소적인 변화 규칙을 말해준다.*
 </PageFooter>

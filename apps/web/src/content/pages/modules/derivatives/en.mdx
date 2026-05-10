@@ -94,14 +94,24 @@ That tower — position, velocity, acceleration — is the entire content of "Ne
 
 </ArcRow>
 
-<ArcRow n={5} title="Where this module gets consumed">
+<ArcRow n={5} title="Where this shows up — same operation, two pillars">
 
-Two pages already ran on derivatives without naming them. Now they have a place to point at.
+**A derivative is not just a slope. It is local change: how one quantity responds when another is nudged.** The same operation shows up under different names in different pillars; the algebra stays the same.
 
-- [**Projectile motion**](/en/physics/projectile-motion) — the equations of motion <Formula>x(t) = v₀ cos θ · t</Formula> and <Formula>y(t) = v₀ sin θ · t − ½ g t²</Formula> have derivatives <Formula>vₓ = v₀ cos θ</Formula> (constant) and <Formula>v_y(t) = v₀ sin θ − g t</Formula> (linear, the velocity shown on the projectile widget). Differentiating the _position* gives the _velocity_ directly.
-- [**The pendulum clock**](/en/physics/pendulum-clock) — the equation <Formula>θ̈ = −(g/L) sin θ</Formula> is just _two derivatives of θ on the left, equals a function of θ on the right_. The "linearization" trick replaces <Formula>sin θ</Formula> with <Formula>θ</Formula>, leaving <Formula>θ̈ = −(g/L) θ</Formula> — the simple harmonic oscillator equation, which the derivative tool can recognize and solve.
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`physics : position changes into velocity; velocity into acceleration;
+          forces decide those changes.
+ml      : loss changes when a parameter moves; the gradient tells
+          which way the loss falls.`}</pre>
 
-The graph at [/graph](/en/graph) now reflects this: both physics applications consume both <Formula>parametric-curves</Formula> and <Formula>derivatives</Formula>. The module is doing the job a module is supposed to do.
+[**Projectile motion**](/en/physics/projectile-motion) — the equations <Formula>x(t) = v₀ cos θ · t</Formula> and <Formula>y(t) = v₀ sin θ · t − ½ g t²</Formula> have derivatives <Formula>vₓ = v₀ cos θ</Formula> (constant) and <Formula>v_y(t) = v₀ sin θ − g t</Formula> (linear). Differentiating the *position* gives the *velocity* directly; one more derivative gives the constant <Formula>−g</Formula> acceleration.
+
+[**The pendulum clock**](/en/physics/pendulum-clock) — the equation of motion <Formula>θ̈ = −(g/L) sin θ</Formula> is *two derivatives of θ on the left, equals a function of θ on the right*. Replace <Formula>sin θ</Formula> with <Formula>θ</Formula> (the linearization trick) and you get <Formula>θ̈ = −(g/L) θ</Formula> — simple harmonic motion, which the derivative tool can recognize and solve.
+
+[**Terminal velocity**](/en/physics/terminal-velocity) — the differential equation <Formula>dv/dt = g − k v</Formula> is one derivative on the left, the net force per unit mass on the right. The fixed point — the terminal speed — is found by setting the derivative to zero: <Formula>g − k v_t = 0</Formula>. *Force balance is exactly "the derivative vanishes here."*
+
+[**Gradient descent**](/en/ml/gradient-descent) — the loss <Formula>L(w)</Formula> is a multivariable function; its <Term id="gradient">gradient</Term> <Formula>∇L</Formula> is the vector of partial derivatives. The descent step <Formula>w ← w − η · ∇L</Formula> uses one derivative per parameter, all at once. The rate at which the loss falls is <Formula>‖∇L‖²</Formula> — a derivative-derived quantity that determines whether learning is making progress.
+
+**Same idea, different nouns: velocity in physics, gradient in ML. In both cases, the derivative is the local rule for change.**
 
 <CodeBlock slug="derivatives" arc="arc5" />
 
@@ -174,7 +184,10 @@ The vertical position of a projectile is <Formula>y(t) = v₀ sin θ · t − ½
 </Exercises>
 
 <PageFooter>
-  module: **The Derivative**. Consumed by [Projectile Motion](/en/physics/projectile-motion) and
-  [The Pendulum Clock](/en/physics/pendulum-clock). Future ML and finance applications will plug in
-  for "rate of change of loss" and "instantaneous return."
+  module: **The Derivative**. Consumed by four applications across two pillars: physics
+  ([projectile motion](/en/physics/projectile-motion),
+  [the pendulum clock](/en/physics/pendulum-clock),
+  [terminal velocity](/en/physics/terminal-velocity)) and ML
+  ([gradient descent](/en/ml/gradient-descent)). *Same idea, different nouns: velocity in physics,
+  gradient in ML. In both cases, the derivative is the local rule for change.*
 </PageFooter>
