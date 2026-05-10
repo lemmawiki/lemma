@@ -6,6 +6,7 @@ breadcrumb:
 ---
 
 import {
+  CodeBlock,
   Term,
   Exercise,
   Solution,
@@ -51,17 +52,23 @@ import Formula from "@/components/page/formula.astro";
 반복; 그 반복을 한 기호로 압축한 게 <Term id="exponent">지수</Term>:
 <Compute id="bitcoin-pizza-future-value" />. 클릭해보자. _r_을 0.10 (SPY 페이스) 로 끌면 미래가 무너진다 — 같은 식, 다른 이야기.
 
+<CodeBlock slug="bitcoinPizza" arc="arc1" />
+
 </ArcRow>
 
 <ArcRow n={2} title="언제까지? — 피자가 $100만이 된 건 언제?">
 
 질문을 뒤집자. BTC 실제 속도로, 10,000 BTC가 처음 **$100만**을 넘긴 건 언제? 곱해서 도달할 길은 없다. 지수를 _되돌려야_ 한다. <Term id="logarithm">로그</Term>가 바로 그것이다: 결과를 주면 _몇 번 곱했는지를 센다_. <Formula>t = log(F / P) ÷ log(1 + r)</Formula>. 로그는 지수의 역함수. 서로가 서로를 정의한다. 답: 약 **9.5년** 후 — 2019년 말. 평범한 어느 화요일에, 그 피자는 백만 달러짜리 피자가 되어 있었다.
 
+<CodeBlock slug="bitcoinPizza" arc="arc2" />
+
 </ArcRow>
 
 <ArcRow n={3} title="이율은? — 라즐로의 손실은 정말 '특별했나'?">
 
 $41이 16년 만에 $10억이 됐다는 건 안다. r은 모른다. 지수를 되돌릴 수도 없고 (지수 자체를 모르니까), 로그를 씌울 수도 없다 (엉뚱한 미지수가 분리된다). _세 번째_ 연산이 필요하다: <Term id="nth-root">거듭제곱근</Term>. <Formula>r = (F / P)^(1/t) − 1</Formula>. 금융에서는 <Term id="cagr">CAGR</Term>이라 부른다. 1/16 제곱 — 분수 지수. 결과: **연 189%**. <Term id="spy">SPY</Term>는 약 10%. 버크셔 (버핏의 투자회사)는 약 20%. 25년간의 엔비디아는 약 33%. 비트코인은 — _189_. _거듭제곱근은 정수가 아닌 지수일 뿐이다._
+
+<CodeBlock slug="bitcoinPizza" arc="arc3" />
 
 <Counterexample>
   "연 189% CAGR"이라는 한 숫자는 16년의 난동을 숨긴다. **2018 → 2022** (정점-정점)의 CAGR을 계산해

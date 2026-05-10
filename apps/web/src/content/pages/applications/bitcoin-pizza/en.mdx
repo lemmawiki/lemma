@@ -6,6 +6,7 @@ breadcrumb:
 ---
 
 import {
+  CodeBlock,
   Term,
   Exercise,
   Solution,
@@ -48,17 +49,23 @@ Sixteen years later, those 10,000 BTC are worth about **$1 billion**. The most e
 
 If <Term id="bitcoin">Bitcoin</Term> keeps its historical pace, what's 10,000 BTC worth in 2046? Stack <Formula>×2.89</Formula> twenty more times on $1B. <Term id="compound-interest">Compound</Term> growth is repeated multiplication; repeated multiplication, compressed into one symbol, is <Term id="exponent">exponentiation</Term>: <Compute id="bitcoin-pizza-future-value" />. Click it. Drag _r_ to 0.10 (SPY's pace) and watch the future collapse — the same equation, a different story.
 
+<CodeBlock slug="bitcoinPizza" arc="arc1" />
+
 </ArcRow>
 
 <ArcRow n={2} title="How long? — when did the pizza hit $1M?">
 
 Reverse the question: at BTC's actual rate, when did 10,000 BTC first cross **$1,000,000**? You can't multiply your way there — you have to _undo_ the exponent. The <Term id="logarithm">logarithm</Term> is exactly that: given the result, _count the steps_. <Formula>t = log(F / P) ÷ log(1 + r)</Formula>. Log _is_ the inverse of exp. They are defined by each other. Answer: about **9.5 years** in — late 2019. The pizza became a million-dollar pizza on a random Tuesday.
 
+<CodeBlock slug="bitcoinPizza" arc="arc2" />
+
 </ArcRow>
 
 <ArcRow n={3} title="What rate? — was Laszlo's loss really 'extraordinary'?">
 
 We know $41 became $1B in 16 years. We don't know r. We can't undo the exponent (we don't know it); we can't take a log (we'd get the wrong unknown). We need a _third_ operation: the <Term id="nth-root">n-th root</Term>. <Formula>r = (F / P)^(1/t) − 1</Formula>. Finance calls this <Term id="cagr">CAGR</Term>. It is a fractional exponent — a 1/16th power. The number that comes out: **189% per year**. <Term id="spy">SPY</Term> does ~10%. Buffett's Berkshire (his investment company): ~20%. NVIDIA over 25 years: ~33%. Bitcoin: _189_. _Roots are exponents whose value is not a whole number._
+
+<CodeBlock slug="bitcoinPizza" arc="arc3" />
 
 <Counterexample>
   The single number "189% CAGR" hides 16 years of violence. Compute the CAGR over **2018 → 2022**
