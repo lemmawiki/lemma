@@ -1,0 +1,13 @@
+{
+  "name": "@lemma/extension",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Chrome extension — highlights math claims on any web page and links to Lemma.",
+  "type": "module",
+  "scripts": {
+    "build:corpus": "node scripts/build-corpus.mjs"
+  },
+  "devDependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

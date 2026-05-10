@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Lemma — Deconstruct",
+  "version": "0.1.0",
+  "description": "Highlights math/finance/ML claims on any web page and links to Lemma's deconstruction. Read articles with Lemma's glossary as an ambient layer.",
+  "homepage_url": "https://lemma.wiki",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Lemma — Deconstruct this page"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["corpus.json"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

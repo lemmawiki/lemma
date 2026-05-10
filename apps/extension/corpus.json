@@ -1,0 +1,1208 @@
+{
+  "schema_version": "0.1",
+  "generated_at": "2026-05-10T13:34:33.747Z",
+  "site": "https://lemma.wiki",
+  "count": 100,
+  "entries": [
+    {
+      "id": "acceleration",
+      "en": {
+        "term": "acceleration",
+        "oneLiner": "The rate of change of velocity. Also a vector. In one dimension, `a = dv/dt = d²x/dt²`; constant acceleration produces velocity that is linear in time and position that is quadratic. Newton's second law `F = ma` says force and acceleration are proportional, with mass as the conversion factor. On Earth's surface, near the ground, the acceleration of any object in free fall is approximately constant — a single number that does not depend on the object's mass."
+      },
+      "ko": {
+        "term": "가속도",
+        "oneLiner": "속도의 변화율. 역시 벡터. 1차원에서 `a = dv/dt = d²x/dt²`. 가속도가 일정하면 속도는 시간에 선형, 위치는 이차. 뉴턴의 제2법칙 `F = ma`는 힘과 가속도가 비례한다고 말하며, 질량이 변환 상수. 지표면 근처에서 자유낙하하는 _어떤_ 물체든 가속도는 거의 일정하고, 그 값은 *물체의 질량과 무관*하다 — 한 숫자로 다 대신할 수 있다."
+      },
+      "url": "/en/modules/derivatives"
+    },
+    {
+      "id": "antiderivative",
+      "en": {
+        "term": "antiderivative",
+        "oneLiner": "A function whose derivative is the given function. If `F'(x) = f(x)`, then `F` is *an* antiderivative of `f` — there are infinitely many, all differing by a constant: `F(x) + C` is also an antiderivative for any constant `C`. The antiderivative is what differentiation *undoes*; the fundamental theorem of calculus says it's also what the definite integral *computes*: `∫_a^b f(x) dx = F(b) − F(a)`. The constant `C` cancels because the integral subtracts two values of `F`. Often called *indefinite integral* in textbooks (notation `∫ f(x) dx`), but \"antiderivative\" names the *function itself* more precisely; \"indefinite integral\" emphasizes the operation."
+      },
+      "ko": {
+        "term": "원시함수",
+        "oneLiner": "미분이 주어진 함수가 되는 함수. `F'(x) = f(x)`이면 `F`는 `f`의 *어떤* 원시함수 — 무한히 많고, 모두 상수만큼 차이 난다 — `F(x) + C`도 임의의 상수 `C`에 대해 원시함수다. 원시함수는 미분이 *되돌리는* 대상; 미적분학의 기본정리에 따르면 정적분이 *계산하는* 대상이기도 하다 — `∫_a^b f(x) dx = F(b) − F(a)`. 상수 `C`는 적분이 `F`의 두 값을 빼면서 사라진다. 교과서에서는 *부정적분* (표기 `∫ f(x) dx`) 이라 부르기도 하는데, \"원시함수\"는 *함수 자체*를 더 정확히 가리키고, \"부정적분\"은 *연산*을 강조한다."
+      },
+      "url": "/en/modules/integration"
+    },
+    {
+      "id": "bag-of-words",
+      "en": {
+        "term": "bag of words",
+        "oneLiner": "A representation that treats a document as a multiset of its tokens — counts only, no order. \"the cat sat\" and \"sat the cat\" produce the same bag. Crude (it loses syntax, negation, anaphora), but the right level of abstraction for the task TF-IDF solves: ranking docs by which words they contain. Every word-counting feature for text — TF-IDF, naive Bayes on text, latent Dirichlet allocation — sits on top of this representation."
+      },
+      "ko": {
+        "term": "bag of words (BoW)",
+        "oneLiner": "문서를 토큰의 다중집합으로 보는 표현 — 빈도만 세고 순서는 버린다. \"the cat sat\"과 \"sat the cat\"은 같은 가방을 만든다. 거칠지만 (구문, 부정, 지시 관계를 잃는다), TF-IDF가 푸는 문제 — 어떤 단어를 포함하느냐로 문서 순위를 매기기 — 에는 딱 맞는 추상도. 텍스트의 모든 단어-세기 특징 (TF-IDF, 텍스트 나이브 베이즈, LDA) 이 이 표현 위에 얹힌다."
+      },
+      "url": "/en/ml/tf-idf"
+    },
+    {
+      "id": "base",
+      "en": {
+        "term": "base",
+        "oneLiner": "The number being raised to a power. In log_b(x), the base is b — not x."
+      },
+      "ko": {
+        "term": "밑",
+        "oneLiner": "거듭제곱의 토대가 되는 수. log_b(x)에서 밑은 b이지 x가 아니다."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "basis",
+      "en": {
+        "term": "basis",
+        "oneLiner": "A set of _coordinate directions_ against which any vector in a space can be written as a unique combination of scalars. The same vector has different coordinates in different bases — the _thing_ doesn't change, only the _labels_ you give it. The standard pixel basis for an 8×8 image: 64 directions, one per pixel position. The DCT basis for the same block: 64 different directions, each a 2D cosine pattern at a particular spatial frequency. Both bases describe the same 64-dimensional space; choosing one over the other is a _change of perspective_, not a change of information. JPEG's whole trick is that _natural images have a sparser representation in the DCT basis than in the pixel basis_ — most of the energy concentrates in a few coefficients, which is what makes throwing the rest away survivable."
+      },
+      "ko": {
+        "term": "기저",
+        "oneLiner": "공간 안의 어떤 벡터든 _고유한_ 스칼라 결합으로 적을 수 있게 해주는 *좌표 방향*들의 모음. 같은 벡터가 기저에 따라 다른 좌표를 가진다 — *대상*은 변하지 않고 *이름표*만 변한다. 8×8 이미지의 표준 픽셀 기저: 64개 방향, 픽셀 위치마다 하나. 같은 블록의 DCT 기저: 또 다른 64개 방향, 각각 특정 공간 주파수의 2D 코사인 패턴. 두 기저 모두 같은 64차원 공간을 묘사한다 — 한쪽을 다른 쪽으로 바꾸는 건 *관점의 전환*이지 *정보의 변화*가 아니다. JPEG의 트릭 전체는 *자연 이미지가 픽셀 기저보다 DCT 기저에서 더 희소하게 표현된다*는 사실 — 에너지의 대부분이 몇 안 되는 계수에 집중되고, 그래서 나머지를 버려도 그림이 살아남는다."
+      },
+      "url": "/en/graphics/jpeg-compression"
+    },
+    {
+      "id": "bezier-curve",
+      "en": {
+        "term": "Bezier curve",
+        "oneLiner": "A parametric curve `B: [0, 1] → ℝ²` defined by a small list of control points and one operation: linear interpolation, applied recursively. For four control points `P₀, P₁, P₂, P₃`, the cubic Bezier curve is `B(t) = (1−t)³P₀ + 3(1−t)²tP₁ + 3(1−t)t²P₂ + t³P₃` — equivalent to De Casteljau's recursive lerp. The curve starts at `P₀`, ends at `P₃`, and bends toward the middle controls without passing through them. Every smooth path in fonts, vector art, motion graphics, and CAD is built from these."
+      },
+      "ko": {
+        "term": "베지에 곡선",
+        "oneLiner": "작은 제어점 목록과 단 하나의 연산 (선형 보간, 재귀적으로 적용)으로 정의되는 매개변수 곡선 `B: [0, 1] → ℝ²`. 제어점 4개 `P₀, P₁, P₂, P₃`가 주어지면 3차 베지에 곡선은 `B(t) = (1−t)³P₀ + 3(1−t)²tP₁ + 3(1−t)t²P₂ + t³P₃` — 드 카스텔조의 재귀 lerp와 동치. 곡선은 `P₀`에서 시작해 `P₃`에서 끝나고, 중간 제어점 쪽으로 _휘기만_ 한다 (그 점을 통과하지는 않는다). 폰트·벡터 그래픽·모션 그래픽·CAD에 보이는 모든 매끄러운 경로가 이 식 위에 서 있다."
+      },
+      "url": "/en/modules/parametric-curves"
+    },
+    {
+      "id": "bit",
+      "en": {
+        "term": "bit (information)",
+        "oneLiner": "The unit of information when the log base is 2. A coin flip carries exactly 1 bit because two equally-likely outcomes need one yes/no question to resolve. Distinct from \"bit\" the binary digit: a binary digit _can_ hold 1 bit, but a binary digit storing the result of a biased coin (90% heads) carries less than 1 bit on average. Information bits and storage bits are the same word for two different things."
+      },
+      "ko": {
+        "term": "비트 (정보)",
+        "oneLiner": "로그 밑이 2일 때의 정보 단위. 동전 던지기는 정확히 1 bit — 같은 확률의 두 결과를 가리려면 예/아니오 질문 1번이 필요해서. \"이진 숫자\"로서의 bit와는 다른 개념: 이진 숫자 한 자리는 1 bit를 _담을 수 있지만_, 90% 앞면이 나오는 편향 동전을 저장하는 이진 숫자 한 자리는 평균 1 bit *미만*의 정보만 담는다. 정보의 bit와 저장의 bit는 같은 단어를 쓰는 다른 것."
+      },
+      "url": "/en/modules/entropy"
+    },
+    {
+      "id": "bitcoin",
+      "en": {
+        "term": "Bitcoin (BTC)",
+        "oneLiner": "A digital currency launched in 2009 by an anonymous figure 'Satoshi Nakamoto'. New coins are released on a fixed schedule that halves every ~4 years."
+      },
+      "ko": {
+        "term": "비트코인",
+        "oneLiner": "2009년 익명의 '사토시 나카모토'가 만든 디지털 화폐. 신규 발행량은 약 4년마다 절반으로 줄어드는 고정 스케줄을 따른다."
+      },
+      "url": "/en/modules/bezout"
+    },
+    {
+      "id": "bm25",
+      "en": {
+        "term": "BM25",
+        "oneLiner": "`Okapi BM25` — TF-IDF with two empirical fixes. (1) **Saturation:** raw `tf` grows linearly, but the 5th occurrence of a term in a doc shouldn't count as much as the 1st. BM25 replaces `tf` with `(k₁+1)·tf / (k₁+tf)`, which saturates around `k₁ ≈ 1.2`. (2) **Length normalization:** docs longer than the average get their `tf` damped further. Both corrections were tuned on retrieval evaluations (TREC) in the 1990s and held up: BM25 is still the default sparse-retrieval baseline that dense neural retrievers must beat to claim progress."
+      },
+      "ko": {
+        "term": "BM25",
+        "oneLiner": "`Okapi BM25` — TF-IDF에 경험적 보정 두 개를 더한 것. (1) **포화:** 원시 `tf`는 선형으로 자라지만, 한 문서에서 단어가 다섯 번째 나오는 것이 첫 번째만큼 중요하진 않다. BM25는 `tf`를 `(k₁+1)·tf / (k₁+tf)`로 바꿔 `k₁ ≈ 1.2` 근처에서 포화시킨다. (2) **길이 정규화:** 평균보다 긴 문서는 `tf`를 더 깎는다. 두 보정 모두 1990년대 검색 평가 (TREC) 에서 튜닝되어 살아남았고, 지금도 BM25는 신경 검색기가 넘어야 할 희소 검색의 기본 베이스라인이다."
+      },
+      "url": "/en/ml/tf-idf"
+    },
+    {
+      "id": "cagr",
+      "en": {
+        "term": "CAGR",
+        "oneLiner": "Compound Annual Growth Rate. CAGR = (F/P)^(1/t) − 1. The implied rate that turns P into F over t years."
+      },
+      "ko": {
+        "term": "연평균 성장률",
+        "oneLiner": "Compound Annual Growth Rate. CAGR = (F/P)^(1/t) − 1. P를 t년 동안 F로 키워낸, 그 식이 함의하는 연이율."
+      },
+      "url": "/en/finance/bitcoin-pizza"
+    },
+    {
+      "id": "calibration",
+      "en": {
+        "term": "calibration",
+        "oneLiner": "The match between a model's predicted probabilities and actual frequencies. A model is _calibrated_ if, on examples it labels \"70% confident,\" it is correct close to 70% of the time. Calibration is plotted as a _reliability diagram_: predicted probability on the x-axis, observed accuracy on the y-axis; perfect calibration is the diagonal `y = x`. Most modern neural networks are _overconfident_ — their high-probability predictions are correct less often than they claim — and the standard fix is _temperature scaling_, a single dial that pulls the curve back toward the diagonal. Calibration is distinct from accuracy: a perfectly accurate classifier on a tiny dataset can be wildly miscalibrated, and a calibrated model can be wrong about every individual prediction as long as the _frequencies_ line up."
+      },
+      "ko": {
+        "term": "캘리브레이션",
+        "oneLiner": "모델이 내놓은 *예측 확률*과 실제로 일어난 *빈도*의 일치. \"70% 확신\"이라고 라벨한 예제들에서 실제로 70% 가까이 맞춘다면 그 모델은 _캘리브레이트되어 있다_. 캘리브레이션은 *신뢰도 다이어그램(reliability diagram)*으로 그린다 — 가로축은 예측 확률, 세로축은 관측 정확도; 완벽한 캘리브레이션은 대각선 `y = x`. 현대의 신경망은 대부분 _과신(overconfident)_ 한다 — 높은 확률로 예측한 것이 주장만큼 자주 맞지 않는다 — 그리고 표준 처방은 _온도 스케일링(temperature scaling)_, 곡선을 대각선 쪽으로 끌어당기는 단 하나의 다이얼이다. 캘리브레이션은 정확도와 다르다: 작은 데이터셋에서 100% 정확한 분류기가 끔찍하게 미스캘리브레이트될 수도 있고, 모든 개별 예측에서 틀리는 모델이라도 *빈도*만 맞으면 캘리브레이트되어 있다."
+      },
+      "url": "/en/ml/model-calibration"
+    },
+    {
+      "id": "common-log",
+      "en": {
+        "term": "common log",
+        "oneLiner": "Logarithm with base 10. Written log(x) in most engineering contexts."
+      },
+      "ko": {
+        "term": "상용로그",
+        "oneLiner": "밑이 10인 로그. 공학에서 그냥 log(x)라고 쓰면 보통 상용로그를 가리킨다."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "component",
+      "en": {
+        "term": "component",
+        "oneLiner": "One coordinate of a vector. The vector `v = (3, 4)` has x-component `3` and y-component `4`. Decomposing a vector into components is just rewriting it as a sum of axis-aligned pieces: `v = 3·x̂ + 4·ŷ`. Components depend on the choice of axes — rotate the coordinate system and the components change, even though the underlying vector hasn't moved. Most calculations split a vector into components, do scalar arithmetic on each, then reassemble."
+      },
+      "ko": {
+        "term": "성분",
+        "oneLiner": "벡터의 한 좌표. 벡터 `v = (3, 4)`의 x-성분은 `3`, y-성분은 `4`. 벡터를 성분으로 *분해*한다는 건 축에 정렬된 조각들의 합으로 다시 쓰는 일: `v = 3·x̂ + 4·ŷ`. 성분은 축의 선택에 의존한다 — 좌표계를 회전시키면 *벡터 자체는 그대로*인데도 성분은 바뀐다. 대부분의 계산은 벡터를 성분으로 쪼개고, 각 성분에 스칼라 산술을 한 뒤, 다시 합친다."
+      },
+      "url": "/en/modules/vectors"
+    },
+    {
+      "id": "compound-interest",
+      "en": {
+        "term": "compound interest",
+        "oneLiner": "Interest computed on principal plus accumulated interest. Each period multiplies, not adds."
+      },
+      "ko": {
+        "term": "복리",
+        "oneLiner": "원금 + 이미 쌓인 이자에 대해 다시 이자를 계산하는 방식. 매 기간 덧셈이 아니라 곱셈으로 불어난다."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "control-point",
+      "en": {
+        "term": "control point",
+        "oneLiner": "One of the handles that defines a Bezier curve. The curve starts at the first control point, ends at the last, and bends toward the inner ones without touching them. Move a control point and only the part of the curve nearest it changes — that _local control_ is the property a designer relies on. The polygon connecting consecutive control points is called the control polygon; it bounds the curve (Bezier curves lie inside the convex hull of their controls) but is never the curve itself."
+      },
+      "ko": {
+        "term": "제어점",
+        "oneLiner": "베지에 곡선을 정의하는 손잡이. 곡선은 첫 제어점에서 시작해 마지막 제어점에서 끝나고, 중간 제어점들 쪽으로 _휘기만_ 한다 (점을 통과하지 않는다). 제어점 하나를 움직이면 그 근처 곡선만 바뀐다 — 디자이너가 의존하는 _국소 제어_ 속성. 연속한 제어점들을 이은 다각형을 *제어 다각형*이라 부르며, 곡선을 가두긴 하지만 (베지에 곡선은 제어점들의 볼록껍질 안에 있다) 곡선 자체는 결코 아니다."
+      },
+      "url": "/en/modules/parametric-curves"
+    },
+    {
+      "id": "correlation",
+      "en": {
+        "term": "correlation",
+        "oneLiner": "Covariance, normalized to live on `[−1, 1]`. `ρ(X, Y) = Cov(X, Y) / (σ_X · σ_Y)`. The advantage over raw covariance: it's _unit-free_ and _scale-free_, which makes \"more correlated\" mean the same thing whether you're comparing daily returns or yearly returns. `ρ = 1`: the two variables move in lockstep (same direction, fixed ratio). `ρ = -1`: perfect anti-lockstep. `ρ = 0`: linearly uncorrelated, though _not_ necessarily independent — correlation only sees the linear part of joint motion. The whole point of diversification is to find `ρ < 1` pairs."
+      },
+      "ko": {
+        "term": "상관계수",
+        "oneLiner": "공분산을 `[−1, 1]`에 살도록 정규화한 것. `ρ(X, Y) = Cov(X, Y) / (σ_X · σ_Y)`. 원시 공분산보다 좋은 점: _단위 없음_, _스케일 없음_ — \"더 상관됐다\"가 일별 수익률을 비교하든 연별 수익률을 비교하든 같은 의미를 갖는다. `ρ = 1`: 두 변수가 한 몸으로 움직임 (같은 방향, 고정 비율). `ρ = -1`: 완벽한 반대 움직임. `ρ = 0`: 선형 무상관 — 단, *독립*이라는 뜻은 _아니다_. 상관계수는 결합 운동의 선형 부분만 본다. 분산투자의 핵심은 `ρ < 1`인 짝을 찾는 것."
+      },
+      "url": "/en/finance/portfolio-risk"
+    },
+    {
+      "id": "cosine-similarity",
+      "en": {
+        "term": "cosine similarity",
+        "oneLiner": "`cos(u, v) = (u · v) / (‖u‖ ‖v‖)`. The cosine of the angle between two vectors — a value in `[−1, 1]` (or `[0, 1]` when components are non-negative, as in TF-IDF). It measures _direction_, not _magnitude_: doubling a doc (concatenating it with itself) leaves cosine unchanged but blows up Euclidean distance. That length-invariance is why retrieval ranks by cosine, not by raw dot product or Euclidean."
+      },
+      "ko": {
+        "term": "코사인 유사도",
+        "oneLiner": "`cos(u, v) = (u · v) / (‖u‖ ‖v‖)`. 두 벡터 사이 각도의 코사인 — `[−1, 1]` 범위 (TF-IDF처럼 성분이 모두 비음수일 때는 `[0, 1]`). *방향*을 재고 *크기*는 안 잰다: 문서를 두 배로 늘려도 (자기 자신과 이어 붙여도) 코사인은 그대로지만 유클리드 거리는 폭발한다. 이 길이 불변성 덕에 검색은 원시 내적이나 유클리드가 아니라 코사인으로 순위를 매긴다."
+      },
+      "url": "/en/ml/tf-idf"
+    },
+    {
+      "id": "covariance",
+      "en": {
+        "term": "covariance",
+        "oneLiner": "A two-variable cousin of variance. For two random quantities `X` and `Y`, `Cov(X, Y) = E[(X − μ_X)(Y − μ_Y)]`: the expected product of their joint deviations. Positive when they tend to move together (both above-average together, both below-average together), negative when they move apart, zero when their joint motion averages out. Variance is just `Cov(X, X)` — a special case. Covariance is what couples two assets in a portfolio: the cross-terms in the variance formula are `2 w_A w_B Cov(A, B)`, and that's the door diversification walks through."
+      },
+      "ko": {
+        "term": "공분산",
+        "oneLiner": "분산의 두 변수 친척. 확률량 `X`와 `Y`에 대해 `Cov(X, Y) = E[(X − μ_X)(Y − μ_Y)]`: 두 양의 평균-편차의 곱의 기대값. 둘이 같이 움직일 때 (둘 다 평균 위에, 둘 다 평균 아래에 있을 때) 양수, 반대로 움직일 때 음수, 결합 운동이 평균적으로 상쇄될 때 0. 분산은 `Cov(X, X)`의 특수한 경우일 뿐. 공분산은 포트폴리오에서 두 자산을 연결하는 것 — 분산 공식의 교차항이 `2 w_A w_B Cov(A, B)`이고, 분산투자가 그 문으로 들어간다."
+      },
+      "url": "/en/finance/portfolio-risk"
+    },
+    {
+      "id": "cross-entropy",
+      "en": {
+        "term": "cross-entropy",
+        "oneLiner": "The loss function used to train classifiers. Given a true class `y` and a predicted distribution `p` over `n` classes, cross-entropy is `−log p_y` — the negative log of the probability the model assigned to the correct answer. Equal to negative log-likelihood when the target is one-hot. It punishes confident wrong answers harshly (`p_y → 0` sends loss `→ ∞`) and rewards confident right ones (`p_y → 1` sends loss `→ 0`). Built on log because log turns the product of independent likelihoods into a sum."
+      },
+      "ko": {
+        "term": "교차 엔트로피",
+        "oneLiner": "분류기 훈련에 쓰이는 손실 함수. 정답 클래스 `y`와 `n`개 클래스에 대한 예측 분포 `p`가 주어졌을 때, 교차 엔트로피는 `−log p_y` — 모델이 정답에 부여한 확률의 음의 로그. 타겟이 원-핫이면 음의 로그우도와 같다. 자신만만하게 _틀린_ 답을 가혹하게 처벌하고 (`p_y → 0`이면 손실 `→ ∞`), 자신만만하게 _맞춘_ 답을 보상한다 (`p_y → 1`이면 손실 `→ 0`). log가 들어간 이유는 *독립 가능도의 곱셈*을 *덧셈*으로 바꾸기 때문이다."
+      },
+      "url": "/en/modules/entropy"
+    },
+    {
+      "id": "dct",
+      "en": {
+        "term": "discrete cosine transform",
+        "oneLiner": "A change of _basis_ for a finite signal — same data, different coordinates. Applied to an 8×8 image block, the DCT produces 64 coefficients indexed `(u, v)` from 0 to 7: the `(0, 0)` coefficient (the _DC_ term) carries the block's average brightness; coefficients toward `(7, 7)` carry progressively higher spatial frequencies. For natural images, most of the energy lives in the low-frequency corner, and the high-frequency entries are tiny. JPEG exploits exactly that: throw away the small high-frequency coefficients, keep the large low-frequency ones, and the picture survives with most of its perceptual content intact. The DCT itself is _lossless_ and _invertible_; the loss happens in the next step (quantization)."
+      },
+      "ko": {
+        "term": "이산 코사인 변환",
+        "oneLiner": "유한 신호의 *기저*를 바꾸는 일 — 같은 데이터, 다른 좌표. 8×8 이미지 블록에 적용하면 DCT는 0부터 7까지 인덱스 `(u, v)`로 64개 계수를 만든다: `(0, 0)` 계수 (_DC_ 항) 는 블록의 평균 밝기, `(7, 7)` 쪽으로 갈수록 더 높은 공간 주파수. 자연 이미지에서는 에너지의 대부분이 저주파 코너에 살고, 고주파 항목은 작다. JPEG는 정확히 이 사실을 이용한다 — 작은 고주파 계수를 버리고, 큰 저주파 계수를 유지하면 그림은 지각적 내용 대부분을 유지한 채 살아남는다. DCT 자체는 *무손실*이고 _가역_. 손실은 다음 단계 (양자화) 에서 일어난다."
+      },
+      "url": "/en/graphics/jpeg-compression"
+    },
+    {
+      "id": "de-casteljau",
+      "en": {
+        "term": "De Casteljau's algorithm",
+        "oneLiner": "A recursive way to evaluate a Bezier curve at a parameter `t`. Given `n+1` control points, lerp every adjacent pair at `t` to get `n` new points; lerp those to get `n−1`; repeat until one point remains — that point is `B(t)`. Numerically stable, geometrically transparent, no Bernstein-coefficient bookkeeping, and the intermediate \"layers\" double as the construction lines a designer can see in any vector tool. Mathematically equivalent to the Bernstein-polynomial form, but kinder to hand."
+      },
+      "ko": {
+        "term": "드 카스텔조 알고리즘",
+        "oneLiner": "매개변수 `t`에서 베지에 곡선을 계산하는 재귀적 방법. 제어점 `n+1`개가 주어지면 인접 쌍을 모두 `t`로 lerp해서 새 점 `n`개를 얻고, 그 점들을 다시 lerp해서 `n−1`개를 얻고, … 점 하나가 남을 때까지 반복 — 그 점이 `B(t)`. 수치적으로 안정적, 기하적으로 투명, 번스타인 계수 관리 없음, 중간 \"층\" 자체가 디자이너가 벡터 도구에서 보는 보조선이 된다. 번스타인 다항식 형태와 수학적으로 동치이지만, 손으로 굴리기에 훨씬 친절하다."
+      },
+      "url": "/en/modules/parametric-curves"
+    },
+    {
+      "id": "definite-integral",
+      "en": {
+        "term": "definite integral",
+        "oneLiner": "The accumulated total of a function over an interval. Notation: `∫_a^b f(x) dx`. Geometrically, the *signed area* between the graph of `f` and the x-axis from `a` to `b` (positive above, negative below). Operationally, the limit of a Riemann sum as the rectangle width shrinks to zero. Physically: the total displacement when `f(t)` is velocity, the total work when `f(x)` is force, the total charge when `f(t)` is current. The bounds matter: a definite integral is *one number*, not a function. Differentiation undoes it (via the fundamental theorem) by varying one bound and treating the result as a function of that bound."
+      },
+      "ko": {
+        "term": "정적분",
+        "oneLiner": "함수가 한 구간에서 누적된 총량. 표기: `∫_a^b f(x) dx`. 기하적으로는 `f`의 그래프와 x축 사이의 *부호 있는 넓이*, `a`에서 `b`까지 (위는 양수, 아래는 음수). 연산적으로는 직사각형 폭이 0으로 줄어들 때 리만 합의 극한. 물리적으로: `f(t)`가 속도면 총 변위, `f(x)`가 힘이면 총 일, `f(t)`가 전류면 총 전하. 경계가 중요하다 — 정적분은 *하나의 수*지 함수가 아니다. 한쪽 경계를 변수로 두고 그 결과를 그 경계의 함수로 보면 미분이 다시 원래 함수를 돌려준다 (미적분학의 기본정리)."
+      },
+      "url": "/en/modules/integration"
+    },
+    {
+      "id": "definitional-crisis",
+      "en": {
+        "term": "definitional crisis",
+        "oneLiner": "A moment when a single everyday word turns out to be carrying multiple distinct objects, so a question that depended on it has no clean answer until those objects are named separately. Lemma uses such moments as motivating questions when no external application is needed."
+      },
+      "ko": {
+        "term": "정의의 위기",
+        "oneLiner": "일상에서 쓰던 한 단어가 사실 서로 다른 여러 대상을 한꺼번에 짊어지고 있었음이 드러나는 순간 — 그 단어에 기댄 질문은 대상들을 따로 이름 붙이기 전까지 깔끔한 답을 갖지 못한다. Lemma는 외부 응용을 끌어오지 않을 때 이런 순간을 동기 질문으로 삼는다."
+      },
+      "url": "/en/modules/parametric-curves"
+    },
+    {
+      "id": "derivative",
+      "en": {
+        "term": "derivative",
+        "oneLiner": "The _instantaneous_ rate of change of a function at a point — defined as the limit of secant slopes as the interval between the two sample points shrinks to zero: `f'(a) = lim_{h→0} (f(a+h) − f(a)) / h`. The derivative of position is velocity; of velocity, acceleration; of mass-with-respect-to-time, mass flow. Geometrically, the slope of the tangent line. Algebraically, the operation that turns `x²` into `2x` and `sin x` into `cos x`. Almost every quantity called a _rate_ anywhere in physics, ML, and engineering is some derivative."
+      },
+      "ko": {
+        "term": "미분",
+        "oneLiner": "한 점에서의 함수의 _순간_ 변화율 — 두 표본점 사이의 구간이 0으로 줄어들 때 할선 기울기의 극한으로 정의: `f'(a) = lim_{h→0} (f(a+h) − f(a)) / h`. 위치를 미분하면 속도, 속도를 미분하면 가속도, 시간에 대한 질량 미분은 질량 유량. 기하적으로는 접선의 기울기. 대수적으로는 `x²`를 `2x`로, `sin x`를 `cos x`로 바꾸는 연산. 물리·ML·공학에서 *변화율*이라 불리는 거의 모든 양이 무언가의 미분."
+      },
+      "url": "/en/modules/derivatives"
+    },
+    {
+      "id": "digital-signature",
+      "en": {
+        "term": "digital signature",
+        "oneLiner": "A short value `(r, s)` produced by the owner of a private key `d` over a message hash `h`, such that anyone with the matching public key `Q = dG` can verify the signature without learning `d`. In ECDSA, the signer picks a random nonce `k`, computes `R = kG`, sets `r = R.x mod n`, and `s = (h + r·d) · k⁻¹ mod n`. The verifier computes `u₁ = h/s`, `u₂ = r/s`, then checks that `(u₁G + u₂Q).x ≡ r (mod n)` — an equality that holds if and only if the signer knew `d`."
+      },
+      "ko": {
+        "term": "디지털 서명",
+        "oneLiner": "개인키 `d`의 소유자가 메시지 해시 `h`에 대해 만들어내는 짧은 값 `(r, s)`. 대응 공개키 `Q = dG`를 가진 누구나 `d`를 모르고도 서명을 검증할 수 있다. ECDSA에서는 서명자가 임의의 nonce `k`를 골라 `R = kG`를 계산하고, `r = R.x mod n`, `s = (h + r·d) · k⁻¹ mod n`. 검증자는 `u₁ = h/s`, `u₂ = r/s`를 계산해 `(u₁G + u₂Q).x ≡ r (mod n)`이 맞는지 확인 — 이 등식은 서명자가 `d`를 알고 있었을 때만 성립한다."
+      },
+      "url": "/en/finance/bitcoin-signature"
+    },
+    {
+      "id": "discrete-log",
+      "en": {
+        "term": "discrete logarithm",
+        "oneLiner": "The problem: given a group element `g` of known order and another element `h` known to lie in the cyclic subgroup `⟨g⟩`, find the integer `x` such that `g^x = h` (or in additive notation on a curve, `xG = Q`). For elliptic curves chosen carefully — like secp256k1 — the best known algorithms still take roughly `√n` group operations, where `n` is the subgroup order. With `n ≈ 2²⁵⁶`, that is about `2¹²⁸` operations — far beyond what any current or near-future computer can do."
+      },
+      "ko": {
+        "term": "이산 로그",
+        "oneLiner": "문제: 차수가 알려진 군 원소 `g`와 그 순환부분군 `⟨g⟩` 안의 원소 `h`가 주어졌을 때, `g^x = h`를 만족하는 정수 `x`를 찾아라 (곡선의 덧셈 표기로는 `xG = Q`). secp256k1처럼 잘 고른 타원곡선에서 알려진 가장 빠른 알고리즘조차 군 연산을 대략 `√n`번 필요로 한다 (`n`은 부분군 차수). `n ≈ 2²⁵⁶`이면 약 `2¹²⁸` 연산 — 현재나 가까운 미래의 어떤 컴퓨터로도 닿을 수 없는 규모."
+      },
+      "url": "/en/modules/bezout"
+    },
+    {
+      "id": "displacement",
+      "en": {
+        "term": "displacement",
+        "oneLiner": "The vector that takes you from one point to another: `displacement = end − start`. Unlike a position (which depends on where the origin sits), a displacement is _coordinate-free_ in spirit — moving the origin doesn't change the displacement between two points. Velocity is displacement per unit time; force is something that changes velocity (and thus, eventually, displacement). When physicists, graphics designers, and ML engineers all \"subtract two points,\" what they get back is a displacement vector — the same object in three costumes."
+      },
+      "ko": {
+        "term": "변위",
+        "oneLiner": "한 점에서 다른 점으로 가는 _벡터_: `변위 = 도착 − 출발`. 위치 (원점이 어디 있는지에 의존)와 달리, 변위는 _원점-자유_ — 원점을 옮겨도 두 점 사이의 변위는 변하지 않는다. 속도는 단위 시간당 변위, 힘은 속도를 바꾸는 것 (그리고 결국 변위를). 물리학자·그래픽 디자이너·ML 엔지니어가 모두 \"두 점을 뺀다\"고 할 때 나오는 것은 _변위 벡터_ — 같은 객체의 세 가지 옷."
+      },
+      "url": "/en/modules/vectors"
+    },
+    {
+      "id": "document-frequency",
+      "en": {
+        "term": "document frequency",
+        "oneLiner": "`df(t)` = the number of documents in the corpus that contain term `t` at least once. Binary presence per doc (a doc with the term ten times still counts as 1). Distinct from _collection frequency_ (total occurrences across the corpus). IDF is built on `df`, not collection frequency, because \"appears at all\" is the signal a query cares about."
+      },
+      "ko": {
+        "term": "문서빈도 (df)",
+        "oneLiner": "`df(t)` = 코퍼스에서 단어 `t`를 한 번이라도 포함하는 문서의 수. 문서당 이진 존재 (단어가 열 번 나와도 여전히 1로 셈). _집합 빈도_ (코퍼스 전체에서의 총 출현 수) 와는 다르다. IDF는 집합 빈도가 아니라 `df`로 만든다 — \"있느냐 없느냐\"가 쿼리가 신경 쓰는 신호이기 때문."
+      },
+      "url": "/en/ml/tf-idf"
+    },
+    {
+      "id": "drag",
+      "en": {
+        "term": "drag",
+        "oneLiner": "The force a fluid (air, water) exerts on an object moving through it, _opposing motion_. Two regimes matter for everyday physics: at low speed (or for small objects) drag is roughly proportional to velocity — `F_drag = k v`, called _linear_ or _Stokes_ drag. At high speed (or for large objects) it's roughly proportional to velocity squared — `F_drag = ½ ρ C_d A v²`, called _quadratic_ or _form_ drag. The proportionality constant absorbs cross-section, fluid density, and shape. Lemma's terminal-velocity page uses the linear case for clean closed-form math; raindrops and parachutists in real life sit in the quadratic regime, but the _shape_ of the answer (an asymptotic approach to a force-balance speed) is the same."
+      },
+      "ko": {
+        "term": "공기 저항",
+        "oneLiner": "유체 (공기, 물) 가 그 속을 움직이는 물체에 가하는 _운동에 반대되는_ 힘. 일상 물리에서 두 영역이 중요: 저속에서 (또는 작은 물체) 저항은 대략 속도에 비례 — `F_drag = k v`, _선형 저항_ 또는 _스토크스 저항_. 고속에서 (또는 큰 물체) 는 대략 속도 제곱에 비례 — `F_drag = ½ ρ C_d A v²`, _이차 저항_ 또는 _형상 저항_. 비례 상수는 단면적, 유체 밀도, 모양을 모두 흡수한다. Lemma의 종단속도 페이지는 깨끗한 닫힌 형식 수학을 위해 선형 케이스를 쓴다. 실제 빗방울과 낙하산은 이차 영역에 있지만 답의 _모양_ (힘 균형 속도로의 점근적 접근) 은 같다."
+      },
+      "url": "/en/physics/terminal-velocity"
+    },
+    {
+      "id": "elliptic-curve",
+      "en": {
+        "term": "elliptic curve",
+        "oneLiner": "A curve of the form `y² = x³ + ax + b` (with `4a³ + 27b² ≠ 0`, so the curve has no cusps or self-intersections). When taken over a finite field `F_p`, the affine solutions plus a single _point at infinity_ form a finite abelian group under the chord-and-tangent construction inherited from Bezout's theorem. ECDSA, EdDSA, and most modern public-key cryptography stand on this group. Bitcoin uses the specific curve `y² = x³ + 7` over the prime `p = 2²⁵⁶ − 2³² − 977`, called secp256k1."
+      },
+      "ko": {
+        "term": "타원곡선",
+        "oneLiner": "`y² = x³ + ax + b` (단, `4a³ + 27b² ≠ 0`이라 첨점이나 자기교차가 없는) 형태의 곡선. 유한체 `F_p` 위에서 보면, 아핀 해 모음에 단 하나의 *무한원점*을 더한 집합이 베주 정리에서 물려받은 현·접선 작도로 유한 아벨 군을 이룬다. ECDSA, EdDSA를 비롯한 현대 공개키 암호 대부분이 이 군 위에 서 있다. 비트코인은 소수 `p = 2²⁵⁶ − 2³² − 977` 위의 특수 곡선 `y² = x³ + 7`을 쓰며, 이 곡선의 이름이 secp256k1."
+      },
+      "url": "/en/finance/bitcoin-signature"
+    },
+    {
+      "id": "entropy",
+      "en": {
+        "term": "entropy",
+        "oneLiner": "`H(X) = −Σ pᵢ log₂ pᵢ`. The expected number of yes/no questions needed, on average, to identify which outcome occurred. Reaches `log₂ N` when all `N` outcomes are equally likely (maximum); collapses to 0 when one outcome has probability 1 (no uncertainty). The base of the log picks the unit: log₂ → bits, ln → nats, log₁₀ → bans. Built on `log` so that the entropy of independent variables adds: `H(X, Y) = H(X) + H(Y)` when X and Y are independent."
+      },
+      "ko": {
+        "term": "엔트로피",
+        "oneLiner": "`H(X) = −Σ pᵢ log₂ pᵢ`. 어떤 결과가 나왔는지 식별하는 데 평균적으로 필요한 예/아니오 질문의 수. `N`개 결과가 모두 같은 확률이면 `log₂ N`(최대)에 도달하고, 한 결과가 확률 1이면 0(불확실성 없음)으로 무너진다. 로그 밑이 단위를 정한다: log₂ → bit, ln → nat, log₁₀ → ban. `log` 위에 서 있어서 독립인 두 확률변수의 엔트로피가 더해진다: X, Y가 독립이면 `H(X, Y) = H(X) + H(Y)`."
+      },
+      "url": "/en/modules/entropy"
+    },
+    {
+      "id": "equilibrium",
+      "en": {
+        "term": "equilibrium",
+        "oneLiner": "A state where opposing influences cancel exactly, so the system stops changing. _Mechanical_ equilibrium: net force is zero, so acceleration is zero (Newton's first law). _Chemical_ equilibrium: forward and reverse reaction rates match, so concentrations are stable. _Economic_ equilibrium: supply and demand price match, so the market price stops drifting. The shared shape across all of them: a quantity has two competing influences that depend on the quantity itself, and the _fixed point_ where they balance is the equilibrium. Terminal velocity is the equilibrium of `dv/dt = g − kv` — the velocity at which \"gravity adds to v\" and \"drag removes from v\" cancel."
+      },
+      "ko": {
+        "term": "평형",
+        "oneLiner": "상반된 영향들이 정확히 상쇄되어 시스템이 더 이상 변하지 않는 상태. _역학적_ 평형: 알짜힘이 0이라 가속도가 0 (뉴턴 1법칙). _화학적_ 평형: 정반응과 역반응 속도가 같아 농도가 안정. _경제적_ 평형: 공급과 수요 가격이 일치해 시장 가격이 표류를 멈춤. 공통의 모양: 어떤 양에 그 양 자체에 의존하는 두 경쟁 영향이 있고, 둘이 균형을 이루는 *고정점*이 평형이다. 종단속도는 `dv/dt = g − kv`의 평형 — \"중력이 v를 더하고\" \"저항이 v를 빼는\" 두 영향이 상쇄되는 속도다."
+      },
+      "url": "/en/physics/terminal-velocity"
+    },
+    {
+      "id": "exponent",
+      "en": {
+        "term": "exponent",
+        "oneLiner": "The number of times you multiply a base by itself. In 2³ = 8, the exponent is 3."
+      },
+      "ko": {
+        "term": "지수",
+        "oneLiner": "밑(base)을 자기 자신과 곱하는 횟수. 2³ = 8에서 지수는 3."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "factorial",
+      "en": {
+        "term": "factorial",
+        "oneLiner": "`n!` is `1 × 2 × 3 × … × n`. It counts orderings: `n!` is the number of distinct ways to arrange n items in a line. `5! = 120`. `52!` (the number of distinct shuffles of a deck) is a 68-digit number. Grows faster than any exponential `aⁿ`, which is why `log(n!)` and Stirling's approximation matter."
+      },
+      "ko": {
+        "term": "계승",
+        "oneLiner": "`n!` 은 `1 × 2 × 3 × … × n`. 줄세우는 가짓수 — n개를 한 줄로 늘어놓는 방법의 수다. `5! = 120`. `52!` (카드 한 벌의 모든 셔플 순서) 는 68자리 수. 어떤 지수 `aⁿ` 보다도 빠르게 자란다. 그래서 `log(n!)` 과 스털링 근사가 따로 필요하다."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "float32",
+      "en": {
+        "term": "float32",
+        "oneLiner": "The 32-bit IEEE-754 floating-point format. About 7 decimal digits of precision, magnitude range roughly 1e-38 to 3.4e38. Numbers outside that range round to zero (underflow) or infinity (overflow)."
+      },
+      "ko": {
+        "term": "float32",
+        "oneLiner": "32비트 IEEE-754 부동소수점 형식. 약 10진수 7자리 정밀도, 약 1e-38 에서 3.4e38 까지의 크기 범위. 범위를 벗어나는 수는 0 (언더플로우) 또는 무한대 (오버플로우) 로 반올림된다."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "fundamental-theorem-of-calculus",
+      "en": {
+        "term": "fundamental theorem of calculus",
+        "oneLiner": "The bridge between integration and differentiation. Two halves, one statement."
+      },
+      "ko": {
+        "term": "미적분학의 기본정리",
+        "oneLiner": "적분과 미분을 이어주는 다리. 두 부분, 한 진술."
+      },
+      "url": "/en/modules/integration"
+    },
+    {
+      "id": "gradient",
+      "en": {
+        "term": "gradient",
+        "oneLiner": "The slope of a function in many directions at once. For a function f(x, y, z, ...), the gradient is the vector of partial derivatives — it points in the direction of steepest ascent. In machine learning, this vector tells the optimizer which way to step the parameters to reduce loss."
+      },
+      "ko": {
+        "term": "그래디언트",
+        "oneLiner": "함수의 여러 방향 기울기를 한 번에 모은 것. 함수 f(x, y, z, ...) 에 대해 그래디언트는 편미분의 벡터 — 가장 가파른 상승 방향을 가리킨다. 머신러닝에서 이 벡터는 손실을 줄이려면 파라미터를 어느 쪽으로 옮겨야 하는지 옵티마이저에게 알려준다."
+      },
+      "url": "/en/modules/derivatives"
+    },
+    {
+      "id": "gradient-descent",
+      "en": {
+        "term": "gradient descent",
+        "oneLiner": "The iterative recipe at the heart of every modern ML system. Compute the gradient of the loss with respect to the parameters; take a step in the _opposite_ direction (the steepest descent); repeat. In one dimension, `w ← w − η · L'(w)`. The same formula scales to a parameter vector — partial derivatives in each direction, vector subtraction. What separates research projects is rarely the algorithm itself; it's the choice of loss, the size and schedule of `η`, and tricks for noisy, stochastic, very-high-dimensional versions (mini-batches, momentum, Adam). The core idea has been the same since 1847: walk downhill."
+      },
+      "ko": {
+        "term": "경사하강법",
+        "oneLiner": "모든 현대 ML 시스템의 심장에 있는 반복 레시피. 매개변수에 대한 손실의 기울기를 계산하고, 그 _반대_ 방향 (가장 가파른 내리막) 으로 한 걸음, 반복. 1차원에서는 `w ← w − η · L'(w)`. 같은 식이 매개변수 벡터로 확장된다 — 각 방향의 편미분, 벡터 뺄셈. 연구 프로젝트들이 갈리는 지점은 알고리즘 자체가 아니라, 손실의 선택, `η`의 크기와 스케줄, 잡음 있는·확률적·아주 고차원의 변형을 위한 트릭들 (미니배치, 모멘텀, Adam). 핵심 아이디어는 1847년 이래로 같다 — _언덕을 내려간다_."
+      },
+      "url": "/en/graph"
+    },
+    {
+      "id": "gravity",
+      "en": {
+        "term": "gravity",
+        "oneLiner": "The downward acceleration that the Earth gives to any object near its surface, irrespective of mass. Magnitude `g ≈ 9.81 m/s²` at sea level, slightly different elsewhere (lower on a mountain, higher at the poles). In the context of projectile motion, \"gravity\" is shorthand for \"the constant acceleration vector pointing toward the Earth's center, taken as straight down for short flights.\" The mass-independence is what lets a feather and a hammer fall together in vacuum — and is the experimental seed of general relativity."
+      },
+      "ko": {
+        "term": "중력",
+        "oneLiner": "지표면 근처의 모든 물체에 작용하는 아래 방향 가속도, 질량과 무관. 해수면에서 크기는 `g ≈ 9.81 m/s²`이고, 산 위에서는 약간 작고 극지방에서는 약간 크다. 포물선 운동의 맥락에서 \"중력\"은 \"지구 중심을 향하지만 짧은 비행에서는 *수직 아래*로 근사하는, 일정한 가속도 벡터\"를 줄여 부르는 말. 질량 독립성 덕분에 진공에서 깃털과 망치가 함께 떨어지며, 이 사실이 일반 상대성이론의 실험적 씨앗."
+      },
+      "url": "/en/physics/pendulum-clock"
+    },
+    {
+      "id": "halving",
+      "en": {
+        "term": "halving",
+        "oneLiner": "In Bitcoin: every ~4 years (every 210,000 blocks), the reward for mining a block halves. Built-in disinflation."
+      },
+      "ko": {
+        "term": "반감기",
+        "oneLiner": "비트코인에서: 약 4년마다 (210,000블록마다) 채굴 보상이 절반으로 줄어든다. 프로토콜에 박혀 있는 공급 감속 장치."
+      },
+      "url": "/en/graph"
+    },
+    {
+      "id": "histogram",
+      "en": {
+        "term": "histogram",
+        "oneLiner": "A count of how often each _value_ appears in a dataset. For an image: how many pixels are this dark, how many are that light, ignoring _where_ in the picture they sit. The histogram throws away spatial structure on purpose — it answers \"what's the distribution of brightness?\" but not \"is the picture smooth or noisy?\". When you compute _entropy_ over a histogram, you get a lower bound on the bits-per-symbol needed to encode each value _independently_; for an image, that's almost always a loose bound, because real pixels aren't independent of their neighbors."
+      },
+      "ko": {
+        "term": "히스토그램",
+        "oneLiner": "데이터에서 각 *값*이 얼마나 자주 등장하는지 센 것. 이미지의 경우: 이 정도 어두운 픽셀이 몇 개, 저 정도 밝은 픽셀이 몇 개. 그 픽셀들이 그림 안 _어디에_ 있는지는 묻지 않는다. 히스토그램은 일부러 공간 구조를 버린다 — \"밝기 분포는 어떤가?\"에는 답하지만, \"그림이 매끈한가 거친가?\"에는 답하지 않는다. 히스토그램 위에서 *엔트로피*를 계산하면, 각 값을 _독립적으로_ 인코딩할 때 필요한 심볼당 비트 수의 하한이 나온다. 실제 이미지에서 이 하한은 거의 항상 *느슨한 하한*이다 — 실제 픽셀은 이웃 픽셀과 독립이 아니니까."
+      },
+      "url": "/en/graphics/image-compression"
+    },
+    {
+      "id": "homogenize",
+      "en": {
+        "term": "homogenize",
+        "oneLiner": "Rewrite an affine equation in projective coordinates: substitute x → X/Z, y → Y/Z, then clear Z so every term shares one total degree. Setting Z = 1 brings the affine version back. Example: y = x² becomes YZ = X²."
+      },
+      "ko": {
+        "term": "동차화",
+        "oneLiner": "affine 방정식을 사영좌표로 다시 쓰는 절차: x → X/Z, y → Y/Z를 대입하고 Z를 정리해 모든 항의 총 차수가 같아지게 한다. Z = 1을 대입하면 원래 affine 방정식으로 돌아온다. 예: y = x² → YZ = X²."
+      },
+      "url": "/en/modules/bezout"
+    },
+    {
+      "id": "image-of-curve",
+      "en": {
+        "term": "image (of γ)",
+        "oneLiner": "For γ : I → ℝⁿ, the image is the set {γ(t) : t ∈ I} ⊂ ℝⁿ. It records _where_ γ goes, not _when_ or _how often_. The image is what you see on paper; the curve γ is the function that drew it."
+      },
+      "ko": {
+        "term": "상 (γ의 상)",
+        "oneLiner": "γ : I → ℝⁿ에 대해 상은 집합 {γ(t) : t ∈ I} ⊂ ℝⁿ. γ가 _어디로_ 가는지를 기록할 뿐, _언제_ 또는 *몇 번*은 담지 않는다. 종이에 보이는 것이 상이고, 곡선 γ는 그것을 그린 함수다."
+      },
+      "url": "/en/modules/parametric-curves"
+    },
+    {
+      "id": "information-gain",
+      "en": {
+        "term": "information gain",
+        "oneLiner": "`IG(X | Y) = H(X) − H(X | Y)`. How many bits of uncertainty about X are removed, on average, by observing Y. The objective every Wordle solver, decision-tree split, and 20-questions strategy is implicitly maximizing. Bounded above by `H(X)`: you cannot gain more bits than the variable holds."
+      },
+      "ko": {
+        "term": "정보 이득",
+        "oneLiner": "`IG(X | Y) = H(X) − H(X | Y)`. Y를 관측해서 X에 대한 불확실성이 평균적으로 몇 비트 줄어드는가. Wordle 풀이, 결정 트리의 분기, 20 questions 전략 — 모두가 암묵적으로 *최대화*하는 목적함수가 이것. 위 한계는 `H(X)`: 변수가 담은 비트보다 더 얻을 수는 없다."
+      },
+      "url": "/en/modules/entropy"
+    },
+    {
+      "id": "intersection-multiplicity",
+      "en": {
+        "term": "intersection multiplicity",
+        "oneLiner": "The number of times an intersection point should be counted. A transverse crossing counts once. A simple tangency counts twice — algebraically, eliminating one variable produces a polynomial with a double root at that point. A higher-order tangency counts three, four, … times. Bezout's theorem is the count with multiplicity: a curve of degree d and a curve of degree e meet, multiplicity-counted, in exactly de points."
+      },
+      "ko": {
+        "term": "교차 중복도",
+        "oneLiner": "한 교점을 몇 번으로 셀지 정한 수. 두 곡선이 가로질러 만나면 한 번. 단순히 접하면 두 번 — 한 변수를 소거하면 그 점에서 이중근이 나온다. 더 높은 차수의 접촉이면 세 번, 네 번, … 베주 정리의 \"정확히 de 점\"은 중복도까지 더한 합이다."
+      },
+      "url": "/en/modules/bezout"
+    },
+    {
+      "id": "inverse-document-frequency",
+      "en": {
+        "term": "inverse document frequency",
+        "oneLiner": "`idf(t) = log(N / df(t))`, where `N` is the corpus size and `df(t)` is the number of docs containing term `t`. A term in every doc gives `log(1) = 0` — no signal. A term in 1 doc gives `log(N)` — maximum signal. The log isn't a tuning knob: treating `df/N` as \"the probability a random doc contains this term\", IDF is exactly the self-information `−log P(t)` from the entropy module — the bits of surprise the term carries. The probability frame is heuristic (assumes uniform random doc, binary presence), but the intuition is rigorous: rarity is signal."
+      },
+      "ko": {
+        "term": "역문서빈도 (IDF)",
+        "oneLiner": "`idf(t) = log(N / df(t))`, 여기서 `N`은 코퍼스 크기, `df(t)`는 단어 `t`를 포함하는 문서 수. 모든 문서에 있는 단어는 `log(1) = 0` — 신호 없음. 한 문서에만 있는 단어는 `log(N)` — 최대 신호. log는 튜닝 손잡이가 아니다: `df/N`을 \"무작위 문서가 이 단어를 포함할 확률\"로 보면, IDF는 엔트로피 모듈의 자기정보 `−log P(t)` 그 자체 — 단어가 나르는 놀람도의 비트 수. 확률 프레임은 휴리스틱이지만 (균등 무작위 문서·이진 존재 가정), 직관은 엄밀하다: 희귀함이 곧 신호다."
+      },
+      "url": "/en/ml/tf-idf"
+    },
+    {
+      "id": "learning-rate",
+      "en": {
+        "term": "learning rate",
+        "oneLiner": "The step size used in gradient descent: at each iteration, the parameter `w` updates as `w ← w − η · ∇L(w)`, where `η` (eta) is the learning rate. Too small and convergence crawls; too large and the iterates overshoot the minimum and may diverge. The \"Goldilocks\" range depends on the curvature of the loss — for a quadratic loss with second derivative `c`, the upper bound for stable convergence is `η < 2/c`. Real ML training uses schedules (decreasing `η` over time) and adaptive rules (per-parameter `η`) — both born from the same observation: one constant rarely works."
+      },
+      "ko": {
+        "term": "학습률",
+        "oneLiner": "경사하강법의 한 걸음 크기: 매 반복에서 매개변수 `w`가 `w ← w − η · ∇L(w)`로 갱신될 때 `η` (에타)가 학습률. 너무 작으면 수렴이 기어가고, 너무 크면 갱신이 최솟값을 지나쳐 발산할 수 있다. \"딱 맞는\" 범위는 손실의 *곡률*에 의존 — 이차식 손실의 2계 도함수가 `c`이면 안정 수렴의 상한은 `η < 2/c`. 실제 ML 훈련은 _스케줄_ (시간이 흐를수록 `η` 감소)과 _적응형_ (매개변수마다 다른 `η`)를 쓰는데, 둘 다 같은 관찰에서 나왔다 — 하나의 상수로 충분한 경우는 드물다."
+      },
+      "url": "/en/ml/gradient-descent"
+    },
+    {
+      "id": "lerp",
+      "en": {
+        "term": "lerp",
+        "oneLiner": "Linear interpolation between two values: `lerp(a, b, t) = (1 − t) · a + t · b`. At `t = 0` you get `a`, at `t = 1` you get `b`, in between you trace a straight line. Works on numbers, points, colors, transformations — anything that supports addition and scaling. The single primitive on which Bezier curves, animation tweening, gradient shading, and most computer-graphics interpolation are built."
+      },
+      "ko": {
+        "term": "lerp",
+        "oneLiner": "두 값 사이의 선형 보간: `lerp(a, b, t) = (1 − t) · a + t · b`. `t = 0`이면 `a`, `t = 1`이면 `b`, 그 사이는 직선으로 잇는다. 숫자·점·색·변환 — 덧셈과 스칼라곱이 정의된 모든 것에 작동한다. 베지에 곡선·애니메이션 트위닝·그라디언트 셰이딩·대부분의 컴퓨터 그래픽 보간이 그 위에 서 있는 _유일한_ 원시 연산."
+      },
+      "url": "/en/graphics/bezier-curves"
+    },
+    {
+      "id": "linearization",
+      "en": {
+        "term": "linearization",
+        "oneLiner": "Replacing a nonlinear function near a chosen point by its tangent line — keeping only the constant and first-derivative terms of the Taylor expansion. Near `x = 0`, `sin x ≈ x`, `cos x ≈ 1 − x²/2`, `e^x ≈ 1 + x`. The approximation is excellent for small `|x|` and grows wrong as `|x|` increases. Mechanical clocks, electrical circuit analysis, control systems, and most of \"the engineering equations\" are linearized versions of much harder nonlinear ones, valid in the small-deviation regime where everything in the system is supposed to live."
+      },
+      "ko": {
+        "term": "선형화",
+        "oneLiner": "비선형 함수를 어떤 점 근처에서 그 점의 접선으로 바꾸는 것 — 테일러 전개의 상수항과 1차 도함수항만 남기기. `x = 0` 근처에서 `sin x ≈ x`, `cos x ≈ 1 − x²/2`, `e^x ≈ 1 + x`. `|x|`가 작을 때 근사가 매우 좋고, `|x|`가 커질수록 어긋난다. 기계식 시계, 회로 해석, 제어 시스템, 대부분의 \"공학 방정식\"은 훨씬 어려운 비선형 식의 선형화 버전 — 시스템의 모든 것이 작은 편차 영역에 머물도록 *설계*된 영역에서만 유효하다."
+      },
+      "url": "/en/modules/linearization"
+    },
+    {
+      "id": "log-axis",
+      "en": {
+        "term": "log axis",
+        "oneLiner": "An axis where equal screen distances mean equal multiplicative steps (×10, ×10, ×10) instead of equal additive steps. Exponential curves become straight lines."
+      },
+      "ko": {
+        "term": "로그 축",
+        "oneLiner": "화면상의 같은 간격이 덧셈으로 같은 양이 아니라 곱셈으로 같은 비율(×10, ×10, ×10)을 뜻하는 축. 지수 곡선이 직선으로 펴진다."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "log-likelihood",
+      "en": {
+        "term": "log-likelihood",
+        "oneLiner": "The log of a probability (or product of probabilities). Used because products of small probabilities underflow floats; their logs sum cleanly."
+      },
+      "ko": {
+        "term": "로그우도",
+        "oneLiner": "확률 (또는 확률들의 곱) 의 로그. 작은 확률들의 곱은 float에서 언더플로우하지만, 로그의 합은 깔끔하게 살아남기 때문에 그 형태로 다룬다."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "log-softmax",
+      "en": {
+        "term": "log_softmax",
+        "oneLiner": "A numerically stable function that computes log(softmax(x)) without ever forming the underflowing softmax probabilities. softmax turns a vector of scores into probabilities; taking the log of that directly would underflow on small entries. log_softmax computes both at once via the logsumexp trick. Used in every modern classifier loss because it gives clean gradients without losing precision."
+      },
+      "ko": {
+        "term": "log_softmax",
+        "oneLiner": "softmax 확률을 직접 만들지 않고 log(softmax(x)) 를 계산하는 수치적으로 안정한 함수. softmax 는 점수 벡터를 확률로 바꾸지만, 그 결과에 그대로 로그를 씌우면 작은 항이 언더플로우한다. log_softmax 는 logsumexp 트릭으로 두 단계를 한 번에 계산한다. 정밀도를 잃지 않으면서 깔끔한 그래디언트를 주기 때문에 모든 현대 분류 손실의 기본으로 쓰인다."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "logarithm",
+      "en": {
+        "term": "logarithm",
+        "oneLiner": "The inverse of exponentiation. log_b(x) asks: what power of b gives x?"
+      },
+      "ko": {
+        "term": "로그",
+        "oneLiner": "지수의 역연산. log_b(x) 는 'b를 몇 제곱하면 x가 되는가'를 묻는다."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "logit",
+      "en": {
+        "term": "logit",
+        "oneLiner": "A real-valued score a model produces before normalization — the raw output of a final linear layer, with no constraint to be positive or sum to anything. Logits can be any size; only their differences matter, since softmax depends only on `zᵢ − zⱼ`. A logit means nothing on its own. It only acquires interpretation as a \"probability\" after softmax — and even then, only in the same sense as any number between 0 and 1."
+      },
+      "ko": {
+        "term": "로짓",
+        "oneLiner": "모델이 정규화 전에 내놓는 실숫값 점수 — 마지막 선형층의 원시 출력으로, 양수일 의무도 합이 무엇이어야 할 의무도 없다. 로짓은 어떤 값이든 가질 수 있고, 의미를 가지는 건 _차이_ `zᵢ − zⱼ`뿐이다. softmax가 차이에만 의존하기 때문. 로짓 하나만으로는 의미가 없다. softmax를 거쳐야 비로소 \"확률\"이라는 해석을 얻는다 — 그것도 0과 1 사이의 어떤 숫자라는 의미에서일 뿐이다."
+      },
+      "url": "/en/ml/confident-wrong"
+    },
+    {
+      "id": "logsumexp",
+      "en": {
+        "term": "logsumexp",
+        "oneLiner": "A numerically stable function for computing log of a sum of exponentials. Available as torch.logsumexp and scipy.special.logsumexp. The building block of softmax, log_softmax, and almost every probabilistic loss."
+      },
+      "ko": {
+        "term": "logsumexp",
+        "oneLiner": "지수 합의 로그를 수치적으로 안정하게 계산하는 함수. torch.logsumexp 와 scipy.special.logsumexp 로 제공된다. softmax, log_softmax, 거의 모든 확률 기반 손실 함수의 기본 부품."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "loss-function",
+      "en": {
+        "term": "loss function",
+        "oneLiner": "A function that turns \"the model is wrong\" into a single number. Given the model's predictions `ŷ` and the true labels `y`, the loss is `L(ŷ, y)` — small when the predictions are close, large when they're far. Squared error `(ŷ − y)²` is the standard choice for regression because it's smooth and its derivative is easy. Cross-entropy is the standard for classification. Training a model means changing its parameters until the loss, summed over the dataset, gets as small as possible."
+      },
+      "ko": {
+        "term": "손실 함수",
+        "oneLiner": "\"모델이 틀렸다\"를 한 숫자로 바꾸는 함수. 모델의 예측 `ŷ`와 실제 라벨 `y`가 주어졌을 때 손실은 `L(ŷ, y)` — 예측이 가까우면 작고, 멀면 크다. 제곱 오차 `(ŷ − y)²`는 회귀의 표준 선택지: 매끄럽고 미분이 쉽기 때문. 교차 엔트로피는 분류의 표준. 모델 *훈련*은 데이터셋 전체에 대한 손실의 합을 가능한 한 작게 만들도록 매개변수를 바꾸는 일."
+      },
+      "url": "/en/ml/gradient-descent"
+    },
+    {
+      "id": "lossless",
+      "en": {
+        "term": "lossless",
+        "oneLiner": "A compression scheme that _throws nothing away_: decompressing the file gives back the exact original bits. PNG, ZIP, FLAC are lossless; the file is smaller because the encoder finds a more compact representation of the same information, not because it dropped any. The Shannon bound is the floor: no lossless scheme, no matter how clever, beats the entropy of the source. The opposite of _lossy_, which trades fidelity for size."
+      },
+      "ko": {
+        "term": "무손실",
+        "oneLiner": "_아무것도 버리지 않는_ 압축 방식: 압축을 풀면 원본 비트가 그대로 돌아온다. PNG, ZIP, FLAC이 무손실이다. 파일이 작아진 이유는 인코더가 *같은 정보*를 더 짧게 표현하는 방법을 찾아냈기 때문이지, 정보를 버려서가 아니다. 섀넌 한계가 바닥선 — 어떤 무손실 방법도, 아무리 영리해도, 원천의 엔트로피를 넘지 못한다. *손실*과 정반대 — 손실 압축은 크기를 위해 충실도를 거래한다."
+      },
+      "url": "/en/graphics/image-compression"
+    },
+    {
+      "id": "lossy",
+      "en": {
+        "term": "lossy",
+        "oneLiner": "A compression scheme that _throws information away_ on purpose, picking what to drop based on what humans don't notice — slight color shifts, high-frequency texture, sub-millisecond audio detail. JPEG, MP3, H.264 are lossy. The decompressed file is _not_ the original bits; it's an approximation chosen to look (or sound) close enough at a much smaller size. Lossy compression is not bound by entropy of the source — only by what perceptual quality the encoder is willing to sacrifice. The opposite of _lossless_."
+      },
+      "ko": {
+        "term": "손실",
+        "oneLiner": "일부러 _정보를 버리는_ 압축 방식. 사람이 잘 못 알아채는 것 — 미세한 색상 차이, 고주파 질감, 밀리초 이하의 음향 디테일 — 부터 골라서 버린다. JPEG, MP3, H.264가 손실 압축이다. 압축을 풀면 원본 비트가 _나오지 않는다_ — 훨씬 작은 크기에 비슷해 보이게 (또는 비슷하게 들리게) 고른 근사치가 나온다. 손실 압축은 원천 엔트로피에 매이지 않는다 — 인코더가 어느 정도의 지각적 품질을 희생할 의향이 있는지에만 매인다. *무손실*의 반대."
+      },
+      "url": "/en/graphics/image-compression"
+    },
+    {
+      "id": "natural-log",
+      "en": {
+        "term": "natural logarithm (ln)",
+        "oneLiner": "Logarithm with base e ≈ 2.71828. Written ln(x) or log_e(x)."
+      },
+      "ko": {
+        "term": "자연로그",
+        "oneLiner": "밑이 e ≈ 2.71828 인 로그. ln(x) 또는 log_e(x) 로 표기."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "negative-log-likelihood",
+      "en": {
+        "term": "negative log-likelihood",
+        "oneLiner": "Abbreviated NLL. Given a probabilistic model and observed data, the _likelihood_ is the probability the model assigns to the data; the _log-likelihood_ is its logarithm; the _negative_ log-likelihood flips the sign so that minimization makes sense. For a single classification example with true class `y` and predicted distribution `p`, NLL is `−log p_y` — identical to cross-entropy in the one-hot case. The `−log p` form makes independent observations _add_, and makes confident-but-wrong predictions diverge to infinity."
+      },
+      "ko": {
+        "term": "음의 로그우도",
+        "oneLiner": "NLL이라고 줄여 쓴다. 확률 모델과 관측 데이터가 주어졌을 때, *우도*는 모델이 데이터에 부여한 확률, *로그우도*는 그 로그, _음의_ 로그우도는 부호를 뒤집어 최소화가 의미를 가지게 한 형태. 정답 `y`와 예측 분포 `p`가 있는 분류 한 건의 경우 NLL = `−log p_y` — 원-핫 타겟에서는 교차 엔트로피와 동일. `−log p` 형태는 *독립 관측의 곱셈*을 *덧셈*으로 만들고, 자신만만하지만 _틀린_ 예측이 무한대로 발산하게 만든다."
+      },
+      "url": "/en/ml/confident-wrong"
+    },
+    {
+      "id": "nonce",
+      "en": {
+        "term": "nonce",
+        "oneLiner": "A \"number used once.\" In ECDSA, every signature requires a fresh random integer `k` from `{1, …, n-1}`, used to compute `R = kG` and then discarded. The nonce hides the private key inside `s = (h + r·d)·k⁻¹`: with `k` random, `s` looks random too. Two failures are catastrophic. (1) If `k` repeats across two signatures with the same key, anyone can solve a small linear system and recover `d`. (2) If `k` is predictable (weak RNG), the same recovery applies. Real wallets now derive `k` deterministically from the message and `d` so it cannot leak by accident."
+      },
+      "ko": {
+        "term": "nonce",
+        "oneLiner": "\"한 번만 쓰는 수\" (number used once). ECDSA에서는 매 서명마다 `{1, …, n-1}`에서 새로 뽑은 임의 정수 `k`가 필요하다. `R = kG`를 계산한 뒤 버려진다. nonce는 `s = (h + r·d)·k⁻¹`에서 개인키를 가리는 역할 — `k`가 임의이면 `s`도 임의처럼 보인다. 두 가지 실패가 치명적. (1) 같은 키로 서명한 두 서명이 같은 `k`를 쓰면, 누구나 작은 일차연립을 풀어 `d`를 복구할 수 있다. (2) `k`가 예측 가능하면 (약한 RNG 등) 같은 복구가 통한다. 현실 지갑은 이제 `k`를 메시지와 `d`에서 *결정론적*으로 유도해 사고로 새지 않게 만든다."
+      },
+      "url": "/en/finance/bitcoin-signature"
+    },
+    {
+      "id": "nth-root",
+      "en": {
+        "term": "n-th root",
+        "oneLiner": "The inverse of raising to the n-th power. The n-th root of x is x^(1/n)."
+      },
+      "ko": {
+        "term": "거듭제곱근",
+        "oneLiner": "n제곱의 역연산. x의 n거듭제곱근은 x^(1/n)이다."
+      },
+      "url": "/en/finance/bitcoin-pizza"
+    },
+    {
+      "id": "parabola",
+      "en": {
+        "term": "parabola",
+        "oneLiner": "The curve given by a quadratic equation `y = ax² + bx + c` (with `a ≠ 0`), or — equivalently — the set of points equidistant from a fixed point (focus) and a fixed line (directrix). It appears whenever a quantity changes as the _square_ of another quantity: in projectile motion as the trace of constant horizontal velocity meeting constant vertical acceleration, in optics as the cross-section that focuses parallel light to a single point, in basic algebra as the graph of any quadratic function. A parabola is the _image_; many different motions can paint it."
+      },
+      "ko": {
+        "term": "포물선",
+        "oneLiner": "이차방정식 `y = ax² + bx + c` (`a ≠ 0`)으로 주어지는 곡선, 또는 동치로 한 고정점 (초점)과 한 고정직선 (준선)에서 같은 거리에 있는 점들의 집합. 어떤 양이 다른 양의 *제곱*에 따라 변하는 모든 곳에 나타난다 — 포물선 운동에서는 일정한 가로 속도와 일정한 세로 가속도가 만나는 자취, 광학에서는 평행광을 한 점에 모으는 단면, 기초 대수에서는 모든 이차함수의 그래프. 포물선은 _이미지_ — 다양한 움직임이 같은 포물선을 칠할 수 있다."
+      },
+      "url": "/en/physics/projectile-motion"
+    },
+    {
+      "id": "parametrized-curve",
+      "en": {
+        "term": "parametrized curve",
+        "oneLiner": "A function γ : I → ℝⁿ from an interval I to a space. Equality is functional: γ₁ = γ₂ iff γ₁(t) = γ₂(t) for every t ∈ I. The picture you draw — its image — is a consequence, not the curve itself."
+      },
+      "ko": {
+        "term": "매개변수 곡선",
+        "oneLiner": "구간 I에서 공간 ℝⁿ으로 가는 함수 γ : I → ℝⁿ. 등식은 함수적이다 — γ₁ = γ₂는 모든 t ∈ I에 대해 γ₁(t) = γ₂(t)라는 뜻. 그려지는 그림(상)은 결과일 뿐, 곡선 자체가 아니다."
+      },
+      "url": "/en/modules/parametric-curves"
+    },
+    {
+      "id": "period",
+      "en": {
+        "term": "period",
+        "oneLiner": "The time it takes a repeating motion to return to the same state and start over. For a clock pendulum, one period is one full swing — left, right, back to where it started. Inverse to _frequency_ (`f = 1/T`). What makes a mechanical clock work is a period that does not change with amplitude or wind-down: tick exactly the same regardless of how widely the bob is swinging today. No real pendulum has that property exactly; small-angle pendulums _almost_ do."
+      },
+      "ko": {
+        "term": "주기",
+        "oneLiner": "반복 운동이 같은 상태로 돌아와 다시 시작하기까지 걸리는 시간. 시계 진자에서 한 주기는 한 번의 완전한 흔들림 — 왼쪽, 오른쪽, 출발점. *진동수*의 역수 (`f = 1/T`). 기계식 시계가 작동하는 이유는 주기가 진폭과도 풀림과도 *무관*하다는 것 — 오늘 얼마나 크게 흔들리든 똑같이 째깍. 어떤 실제 진자도 _정확히_ 이 성질을 가지지 않는다. 작은 각의 진자가 _거의_ 가질 뿐이다."
+      },
+      "url": "/en/physics/pendulum-clock"
+    },
+    {
+      "id": "point-at-infinity",
+      "en": {
+        "term": "point at infinity",
+        "oneLiner": "An extra \"point\" added to the affine plane for each direction, so that parallel lines — which share a direction — meet there. All such points together form the line at infinity. In the projective plane, every two distinct lines meet at exactly one point, parallels included."
+      },
+      "ko": {
+        "term": "무한원점",
+        "oneLiner": "각 *방향*마다 평면에 하나씩 추가하는 점. 같은 방향을 공유하는 평행선들이 거기서 만난다. 모든 무한원점을 모은 것이 무한원선. 사영평면에서는 서로 다른 두 직선이 정확히 한 점에서 만나며, 평행선의 경우 그 점이 무한원점이다."
+      },
+      "url": "/en/modules/bezout"
+    },
+    {
+      "id": "power",
+      "en": {
+        "term": "power",
+        "oneLiner": "The result of raising a base to an exponent. 2⁵ is 'the fifth power of 2.'"
+      },
+      "ko": {
+        "term": "거듭제곱",
+        "oneLiner": "밑을 지수 횟수만큼 곱한 결과. 2⁵은 '2의 5제곱'."
+      },
+      "url": "/en/graph"
+    },
+    {
+      "id": "private-key",
+      "en": {
+        "term": "private key",
+        "oneLiner": "A secret integer the owner keeps. In ECDSA on a curve with generator `G` and subgroup order `n`, the private key `d` is a random element of `{1, …, n-1}`. The owner uses `d` to produce signatures; everyone else uses the matching public key `Q = dG` to verify them. Whoever learns `d` can sign on the owner's behalf indefinitely — that is the entire reason it must never leave the device."
+      },
+      "ko": {
+        "term": "개인키",
+        "oneLiner": "소유자만 알고 있어야 하는 비밀 정수. 생성점 `G`와 부분군 차수 `n`을 가진 곡선의 ECDSA에서, 개인키 `d`는 `{1, …, n-1}`의 임의 원소. 소유자는 `d`로 서명을 만들고, 다른 모두는 그 대응 공개키 `Q = dG`로 서명을 검증한다. `d`를 알게 된 자는 소유자 행세로 영원히 서명할 수 있다 — 그게 `d`가 디바이스 밖으로 나가면 안 되는 _유일한_ 이유."
+      },
+      "url": "/en/finance/bitcoin-signature"
+    },
+    {
+      "id": "projective-plane",
+      "en": {
+        "term": "projective plane",
+        "oneLiner": "The affine plane plus one extra \"point at infinity\" for every direction — so parallel lines, which share a direction, meet at the same one of those points. With this addition, any two distinct lines meet at exactly one point. Real version: ℝℙ². Complex version: ℂℙ². Bezout's theorem works in ℂℙ², not ℝ²."
+      },
+      "ko": {
+        "term": "사영평면",
+        "oneLiner": "보통 평면에 방향마다 무한원점을 하나씩 추가한 평면. 같은 방향을 공유하는 평행선들은 그 무한원점에서 만난다. 이 추가 후에는 서로 다른 두 직선이 정확히 한 점에서 만난다. 실사영평면 ℝℙ², 복사영평면 ℂℙ². 베주 정리는 ℝ²가 아니라 ℂℙ²에서 성립한다."
+      },
+      "url": "/en/modules/bezout"
+    },
+    {
+      "id": "public-key",
+      "en": {
+        "term": "public key",
+        "oneLiner": "The point `Q = dG` on the curve, where `d` is the private key and `G` is the generator. Computing `Q` from `d` is fast (repeated point addition); recovering `d` from `Q` is the discrete logarithm problem and is believed to be infeasible at scale. The owner publishes `Q` freely — it identifies them on the network without revealing `d`. Bitcoin addresses are derived from the public key by hashing."
+      },
+      "ko": {
+        "term": "공개키",
+        "oneLiner": "곡선 위의 점 `Q = dG`. `d`는 개인키, `G`는 생성점. `d`에서 `Q`를 계산하는 건 점 덧셈 반복으로 빠르지만, `Q`에서 `d`를 복구하는 건 이산 로그 문제로 큰 규모에선 불가능하다고 믿어진다. 소유자는 `Q`를 자유롭게 공개한다 — `d`를 노출하지 않고 네트워크 상의 신원이 된다. 비트코인 주소는 공개키를 해시해서 만든다."
+      },
+      "url": "/en/finance/bitcoin-signature"
+    },
+    {
+      "id": "pytorch",
+      "en": {
+        "term": "PyTorch",
+        "oneLiner": "The most widely used deep-learning framework, originally from Meta. Provides tensor operations, automatic differentiation (autograd), and GPU acceleration. Almost every modern neural-network paper since ~2018 ships PyTorch code."
+      },
+      "ko": {
+        "term": "PyTorch",
+        "oneLiner": "가장 널리 쓰이는 딥러닝 프레임워크. 원래 Meta에서 개발했다. 텐서 연산, 자동 미분 (autograd), GPU 가속을 제공한다. 2018년 즈음부터는 거의 모든 현대 신경망 논문이 PyTorch 코드를 함께 공개한다."
+      },
+      "url": "/en/graph"
+    },
+    {
+      "id": "quantization",
+      "en": {
+        "term": "quantization",
+        "oneLiner": "Replacing a continuous (or fine-grained) value with the nearest entry from a coarse table. In JPEG: each DCT coefficient is divided by an integer in a _quantization table_, then rounded to the nearest whole number. Small coefficients (typically the high-frequency ones) round straight to zero; large coefficients survive with reduced precision. _This is where the loss happens_ — the original coefficient cannot be recovered from the rounded value. JPEG quality settings adjust the quantization table: lower quality → larger divisors → more zeros → smaller files but more visible blocks and ringing. Quantization is the bridge from real-valued DCT output to a stream of integers that entropy coding (Huffman/run-length) can pack tightly."
+      },
+      "ko": {
+        "term": "양자화",
+        "oneLiner": "연속 (또는 정밀한) 값을 거친 표에서 가장 가까운 항목으로 바꾸는 일. JPEG에서: 각 DCT 계수를 *양자화 표*의 정수로 나눈 다음 가장 가까운 정수로 반올림. 작은 계수 (보통 고주파) 는 그대로 0이 되고, 큰 계수는 정밀도가 떨어진 채 살아남는다. _손실이 일어나는 곳이 바로 여기다_ — 반올림된 값에서 원래 계수를 복원할 수 없다. JPEG 품질 설정은 양자화 표를 조정한다 — 품질이 낮을수록 → 나누는 수가 커지고 → 0이 늘고 → 파일은 작지만 블록 잡음과 링잉이 더 보인다. 양자화는 실수값 DCT 출력을 엔트로피 부호화 (Huffman/run-length) 가 빽빽이 묶을 수 있는 정수 스트림으로 옮기는 다리."
+      },
+      "url": "/en/graphics/jpeg-compression"
+    },
+    {
+      "id": "reliability-diagram",
+      "en": {
+        "term": "reliability diagram",
+        "oneLiner": "The standard plot for _calibration_. Bin predictions by their stated probability (`[0.0–0.1]`, `[0.1–0.2]`, …, `[0.9–1.0]`); for each bin, plot the _mean predicted probability_ on the x-axis against the _observed accuracy_ (fraction of those predictions that turned out correct) on the y-axis. A perfectly calibrated model traces the diagonal `y = x`. A bar that sits _below_ the diagonal at x=0.9 means the model says \"90% confident\" but is correct only — say — 75% of the time: _overconfident_. Above the diagonal is _underconfident_. The vertical gap at each bin, weighted by the number of predictions in that bin, sums to the _expected calibration error (ECE)_."
+      },
+      "ko": {
+        "term": "신뢰도 다이어그램",
+        "oneLiner": "*캘리브레이션*을 그리는 표준 그래프. 예측을 신뢰도 구간별로 묶고 (`[0.0–0.1]`, `[0.1–0.2]`, …, `[0.9–1.0]`) , 각 구간에서 *평균 예측 확률*을 x축, _관측 정확도_ (그 구간 예측 중 실제로 맞은 비율) 를 y축에 찍는다. 완벽히 캘리브레이트된 모델은 대각선 `y = x` 위를 따라간다. x=0.9에서 막대가 대각선 *아래*에 있다면, 모델이 \"90% 확신\"이라 말했지만 — 예컨대 — 75%만 맞춘다는 뜻; _과신(overconfident)_. 대각선 위쪽이면 _과소확신(underconfident)_. 각 구간의 수직 간격을 그 구간의 예측 개수로 가중평균한 값이 _기대 캘리브레이션 오차(ECE)_."
+      },
+      "url": "/en/ml/model-calibration"
+    },
+    {
+      "id": "reparametrization",
+      "en": {
+        "term": "reparametrization",
+        "oneLiner": "A monotone bijection φ : I → I. If γ : I → ℝⁿ is a parametrized curve, γ ∘ φ traces the same image in the same direction, possibly at a different pace (and reversed if φ is decreasing). Two parametrized curves are \"the same up to reparametrization\" when one is γ ∘ φ of the other — the working definition of \"the same curve\" in differential geometry."
+      },
+      "ko": {
+        "term": "재매개화",
+        "oneLiner": "단조 일대일 함수 φ : I → I. γ : I → ℝⁿ가 매개변수 곡선이면 γ ∘ φ는 같은 상을 같은 방향으로 (φ가 감소함수면 반대 방향으로) 다른 속도로 훑는다. 두 매개변수 곡선이 한쪽이 다른 쪽의 γ ∘ φ로 표현될 때 \"재매개화 동치\"라 하며, 미분기하학에서 \"같은 곡선\"의 작업 정의다."
+      },
+      "url": "/en/modules/parametric-curves"
+    },
+    {
+      "id": "resultant",
+      "en": {
+        "term": "resultant",
+        "oneLiner": "A polynomial built from two polynomials P, Q that vanishes exactly when they share a root. For two conics (degree 2 each in y, with coefficients depending on x), eliminating y via the resultant produces a polynomial in x of degree 2·2 = 4. Its 4 (complex, with multiplicity) roots are the x-coordinates of the 4 intersection points Bezout promises."
+      },
+      "ko": {
+        "term": "종결식",
+        "oneLiner": "두 다항식 P, Q로 만든 다항식으로, 둘이 공통근을 가질 때만 0이 된다. 두 원뿔곡선 (각각 y에 대해 차수 2, 계수는 x의 식)에서 종결식으로 y를 소거하면 x에 대한 차수 2·2 = 4 다항식이 나온다. 그 4개의 (복소수, 중복도 포함) 근이 곧 베주가 약속한 4개 교점의 x좌표."
+      },
+      "url": "/en/modules/bezout"
+    },
+    {
+      "id": "riemann-sum",
+      "en": {
+        "term": "Riemann sum",
+        "oneLiner": "A finite approximation to a definite integral. Chop the interval `[a, b]` into `N` strips, evaluate `f` once per strip (at the left edge, the right edge, or the midpoint — different conventions, different errors), multiply each value by the strip's width `Δx`, and add. Symbolically: `S_N = Σ f(x_i) · Δx`. As `N → ∞` and `Δx → 0`, every reasonable convention converges to the same number — the definite integral. The Riemann sum is what the integral *is*, before the limit is taken; everything calculus does to integrals (by parts, substitution, change of variables) ultimately lands back as a finite sum on a computer."
+      },
+      "ko": {
+        "term": "리만 합",
+        "oneLiner": "정적분의 유한 근사. 구간 `[a, b]`를 `N`개 띠로 자르고, `f`를 띠마다 한 번씩 평가한 뒤 (왼쪽 끝, 오른쪽 끝, 또는 중점 — 관습마다 다르고 오차도 다르다) 각 값에 띠의 폭 `Δx`를 곱하고 모두 더한다. 식: `S_N = Σ f(x_i) · Δx`. `N → ∞`, `Δx → 0`이면 어떤 합리적 관습이든 같은 수로 수렴한다 — 정적분이다. 리만 합은 극한을 취하기 전 적분이 *실제로 무엇인지*; 미적분이 적분에 하는 모든 일 (부분적분, 치환, 변수 변환) 도 결국 컴퓨터에서는 유한 합으로 돌아온다."
+      },
+      "url": "/en/modules/integration"
+    },
+    {
+      "id": "rule-of-72",
+      "en": {
+        "term": "Rule of 72",
+        "oneLiner": "Doubling time ≈ 72 / (rate in %). At 8% per year, money doubles in ~9 years."
+      },
+      "ko": {
+        "term": "72의 법칙",
+        "oneLiner": "원금이 두 배가 되는 데 걸리는 시간 ≈ 72 / (이율 %). 연 8%면 약 9년."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "scalar",
+      "en": {
+        "term": "scalar",
+        "oneLiner": "A single number, distinct from a vector. In `c · v`, `c` is the scalar and `v` is the vector; multiplying a vector by a scalar stretches (or shrinks, or flips) it without changing its direction. Loss values, learning rates, masses, and individual probabilities are scalars; positions, velocities, gradients, and feature embeddings are vectors. The word survives from a time when \"scale\" meant \"stretch by a number\" — exactly what scalar multiplication still does."
+      },
+      "ko": {
+        "term": "스칼라",
+        "oneLiner": "벡터와 구별되는, 단일한 수. `c · v`에서 `c`가 스칼라, `v`가 벡터. 벡터에 스칼라를 곱하면 방향은 그대로 두고 크기만 늘리거나 (줄이거나, 뒤집거나) 한다. 손실값·학습률·질량·개별 확률은 스칼라, 위치·속도·기울기·특징 임베딩은 벡터. \"scalar\"라는 단어는 \"수만큼 _늘인다_\"는 옛 의미에서 살아남았다 — 스칼라 곱이 지금도 하는 일 그대로."
+      },
+      "url": "/en/modules/vectors"
+    },
+    {
+      "id": "scalar-multiplication",
+      "en": {
+        "term": "scalar multiplication",
+        "oneLiner": "Repeated point addition on an elliptic curve: `kP = P + P + ⋯ + P` (k times). Computing `kP` from `(k, P)` is fast — double-and-add finishes in `O(log k)` group operations. Recovering `k` from `(P, kP)` is the discrete logarithm problem and is believed to take exponentially many group operations. This asymmetry — easy to multiply, hard to undo — is the entire cryptographic content of every elliptic-curve scheme: keys, signatures, key exchange."
+      },
+      "ko": {
+        "term": "스칼라 곱셈",
+        "oneLiner": "타원곡선 위의 점 덧셈 반복: `kP = P + P + ⋯ + P` (k번). `(k, P)`에서 `kP`를 계산하는 건 빠르다 — 배수-덧셈(double-and-add)으로 `O(log k)` 군 연산이면 끝. `(P, kP)`에서 `k`를 복구하는 건 이산 로그 문제로, 군 연산이 지수적으로 많이 필요할 거라 믿어진다. 이 비대칭성 — 곱셈은 쉽고 역이 어렵다 — 이 모든 타원곡선 암호 (키, 서명, 키 교환)의 *전부*다."
+      },
+      "url": "/en/finance/bitcoin-signature"
+    },
+    {
+      "id": "secant",
+      "en": {
+        "term": "secant",
+        "oneLiner": "A straight line passing through two points on a curve. Its slope is the _average_ rate of change of the function over the interval between those two points: `(f(b) − f(a)) / (b − a)`. The secant is the quantity you can compute without taking any limit — two points, one division. The tangent is what the secant becomes when the two points are forced to merge."
+      },
+      "ko": {
+        "term": "할선",
+        "oneLiner": "곡선 위의 두 점을 지나는 직선. 기울기는 그 두 점 사이 구간에서의 함수의 _평균_ 변화율: `(f(b) − f(a)) / (b − a)`. 할선은 극한 없이 _계산할 수 있는_ 양 — 두 점, 한 번의 나눗셈. 접선은 그 두 점이 *합쳐지도록 강제*했을 때 할선이 도달하는 극한."
+      },
+      "url": "/en/modules/derivatives"
+    },
+    {
+      "id": "secp256k1",
+      "en": {
+        "term": "secp256k1",
+        "oneLiner": "The specific elliptic curve Bitcoin uses for keys and signatures: `y² = x³ + 7` over the prime field `F_p` with `p = 2²⁵⁶ − 2³² − 977`. Generator `G` and subgroup order `n` are fixed constants in the standard. The curve is defined by `secg.org` (Standards for Efficient Cryptography Group), spec named `secp256k1`. Same group law and same ECDSA equations as any toy elliptic curve — only the numbers are bigger. The 256-bit prime makes `√n ≈ 2¹²⁸` discrete-log work intractable."
+      },
+      "ko": {
+        "term": "secp256k1",
+        "oneLiner": "비트코인이 키와 서명에 쓰는 특수 타원곡선: `p = 2²⁵⁶ − 2³² − 977` 위의 `y² = x³ + 7`. 생성점 `G`와 부분군 차수 `n`은 표준에 고정된 상수. `secg.org` (Standards for Efficient Cryptography Group)이 정의한 규격 이름이 `secp256k1`. 토이 타원곡선과 _완전히 같은_ 군 법칙, _같은_ ECDSA 식 — 숫자만 더 클 뿐. 256-bit 소수 덕에 `√n ≈ 2¹²⁸` 만큼의 이산 로그 작업이 불가능에 가깝다."
+      },
+      "url": "/en/finance/bitcoin-signature"
+    },
+    {
+      "id": "shannon-bound",
+      "en": {
+        "term": "Shannon bound",
+        "oneLiner": "The source-coding theorem (1948): no lossless code can use fewer than `H(X)` bits per symbol on average. Huffman codes get within 1 bit of the bound; arithmetic coding gets arbitrarily close. The reason a 5GB random file barely compresses and a 5GB English-text file compresses to a fifth: the English text has lower per-symbol entropy than its raw bytes suggest."
+      },
+      "ko": {
+        "term": "섀넌 한계",
+        "oneLiner": "소스 부호화 정리 (1948): 어떤 무손실 부호도 심볼당 평균 `H(X)` 비트보다 _적게_ 쓸 수 없다. Huffman 부호는 한계의 1 비트 안으로 들어가고, 산술 부호는 임의로 가까이 다가간다. 5GB 무작위 파일은 거의 압축되지 않고 5GB 영문 텍스트는 1/5로 줄어드는 이유: 영문 텍스트의 심볼당 엔트로피가 그 원시 바이트가 시사하는 것보다 작기 때문."
+      },
+      "url": "/en/modules/entropy"
+    },
+    {
+      "id": "simple-harmonic-motion",
+      "en": {
+        "term": "simple harmonic motion",
+        "oneLiner": "The motion governed by `ẍ = −ω²x` for some constant `ω > 0`. Its solutions are sinusoidal: `x(t) = A cos(ωt + φ)`, with constant period `T = 2π/ω` independent of amplitude `A`. A spring obeying Hooke's law produces it exactly. A pendulum produces it _only_ in the small-angle limit, after `sin θ` has been replaced by `θ`. Most \"oscillator\" intuitions in physics, engineering, and signal processing live inside this single equation."
+      },
+      "ko": {
+        "term": "단순조화운동",
+        "oneLiner": "상수 `ω > 0`에 대해 `ẍ = −ω²x`로 지배되는 운동. 해는 사인꼴: `x(t) = A cos(ωt + φ)`. 주기 `T = 2π/ω`는 진폭 `A`와 무관하다. 후크의 법칙을 따르는 용수철은 _정확히_ 이 운동. 진자는 작은 각 극한, 즉 `sin θ`를 `θ`로 바꾼 _뒤에만_ 이 운동. 물리·공학·신호처리의 \"진동\" 직관 대부분이 이 한 식 안에 산다."
+      },
+      "url": "/en/physics/pendulum-clock"
+    },
+    {
+      "id": "slide-rule",
+      "en": {
+        "term": "slide rule",
+        "oneLiner": "A mechanical analog calculator (~1620 to ~1972) made of two log-spaced sliding scales. Aligning numbers performed multiplication by physically adding their log-distances. Apollo trajectories were checked on these. Replaced abruptly by the pocket electronic calculator."
+      },
+      "ko": {
+        "term": "계산자",
+        "oneLiner": "두 개의 로그 눈금이 서로 미끄러지는 기계식 아날로그 계산기 (~1620년부터 ~1972년까지). 숫자를 맞추면 로그 거리가 물리적으로 더해져 곱셈이 됐다. 아폴로의 궤도도 이걸로 검산했다. 휴대용 전자 계산기가 등장하면서 순식간에 밀려났다."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "small-angle-approximation",
+      "en": {
+        "term": "small-angle approximation",
+        "oneLiner": "The specific linearization of trigonometric functions near `θ = 0`: `sin θ ≈ θ`, `cos θ ≈ 1`, `tan θ ≈ θ`, with `θ` in radians. At `θ = 5°` (≈ 0.087 rad) the error in `sin θ ≈ θ` is about 0.13%; at `θ = 30°` (≈ 0.52 rad) it's about 4.5%; at `θ = 60°` (≈ 1.05 rad) it's nearly 18%. The approximation turns the pendulum equation `θ̈ = −(g/L) sin θ` into the harmonic-oscillator equation `θ̈ = −(g/L) θ`, whose solutions everyone knows."
+      },
+      "ko": {
+        "term": "작은 각 근사",
+        "oneLiner": "`θ = 0` 근처에서의 삼각함수 선형화: `sin θ ≈ θ`, `cos θ ≈ 1`, `tan θ ≈ θ` (단, `θ`는 라디안). `θ = 5°` (≈ 0.087 rad)에서 `sin θ ≈ θ`의 오차는 약 0.13%, `θ = 30°` (≈ 0.52 rad)에서는 약 4.5%, `θ = 60°` (≈ 1.05 rad)에서는 거의 18%. 이 근사가 진자 방정식 `θ̈ = −(g/L) sin θ`를 모두가 아는 조화진동자 방정식 `θ̈ = −(g/L) θ`로 바꾼다."
+      },
+      "url": "/en/physics/pendulum-clock"
+    },
+    {
+      "id": "softmax",
+      "en": {
+        "term": "softmax",
+        "oneLiner": "The function that turns a vector of logits `z = (z₁, …, zₙ)` into a vector of positive numbers summing to 1: `softmax(z)ᵢ = exp(zᵢ) / Σⱼ exp(zⱼ)`. Two facts to keep close. (1) It depends only on differences `zᵢ − zⱼ` — adding the same constant to every logit changes nothing. (2) It never outputs exactly 0 or 1, only their limits. The output _looks like_ a probability distribution; it does not guarantee that the assigned probability matches any real-world frequency."
+      },
+      "ko": {
+        "term": "소프트맥스",
+        "oneLiner": "로짓 벡터 `z = (z₁, …, zₙ)`을 합이 1인 양수 벡터로 바꾸는 함수: `softmax(z)ᵢ = exp(zᵢ) / Σⱼ exp(zⱼ)`. 두 가지 사실을 잊지 말 것. (1) 로짓끼리의 _차이_ `zᵢ − zⱼ`에만 의존한다 — 모든 로짓에 같은 상수를 더해도 결과는 그대로. (2) 정확히 0 또는 1을 출력하지 않는다 (극한일 뿐). 출력은 확률 분포처럼 _보이지만_, 그 확률이 실제 세계의 빈도와 일치한다는 보증은 없다."
+      },
+      "url": "/en/ml/confident-wrong"
+    },
+    {
+      "id": "spy",
+      "en": {
+        "term": "SPY",
+        "oneLiner": "The SPDR S&P 500 ETF — one of the largest exchange-traded funds. Tracks the S&P 500 (the 500 largest US public companies). Returns ~10% per year on average over the long run; used as the boring-but-honest benchmark in finance discussions."
+      },
+      "ko": {
+        "term": "SPY",
+        "oneLiner": "SPDR S&P 500 ETF — 세계 최대 규모의 상장지수펀드 중 하나. S&P 500 (미국 시가총액 상위 500개 상장기업) 을 추종한다. 장기 평균 연 약 10% 수익률로, 금융 논의에서 \"지루하지만 정직한\" 벤치마크로 쓰인다."
+      },
+      "url": "/en/finance/bitcoin-pizza"
+    },
+    {
+      "id": "stirling-approximation",
+      "en": {
+        "term": "Stirling's approximation",
+        "oneLiner": "A formula for the log of a factorial that avoids computing the factorial itself: ln(n!) ≈ n·ln(n) − n + ½·ln(2πn). The leading two terms (n·ln(n) − n) are usually accurate to a few percent and let you estimate the digit count of huge factorials by hand."
+      },
+      "ko": {
+        "term": "스털링 근사",
+        "oneLiner": "계승 자체를 계산하지 않고 계승의 로그를 구하는 공식: ln(n!) ≈ n·ln(n) − n + ½·ln(2πn). 앞 두 항 (n·ln(n) − n) 만으로도 보통 몇 퍼센트 오차로 정확하며, 거대한 계승의 자릿수를 손으로 추정할 수 있게 해준다."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "surprise",
+      "en": {
+        "term": "surprise",
+        "oneLiner": "`I(x) = −log₂ p(x)`, the bits of information you gain by learning that outcome `x` occurred. Rare outcomes (small p) carry high surprise; certain outcomes (p = 1) carry zero. Entropy is the _expected_ surprise — `H = E[I(X)] = Σ p log₂(1/p)`. The Morse code intuition lives here: 'E' is most frequent in English, so its surprise per occurrence is small, so it earns a short code."
+      },
+      "ko": {
+        "term": "놀람도",
+        "oneLiner": "`I(x) = −log₂ p(x)`, 결과 `x`가 일어났음을 알게 됐을 때 얻는 정보의 비트 수. 드문 결과(작은 p)는 큰 놀람도를 나르고, 확실한 결과(p = 1)는 0을 나른다. 엔트로피는 _기대_ 놀람도 — `H = E[I(X)] = Σ p log₂(1/p)`. 모스 부호의 직관이 여기 산다: 영어에서 'E'가 가장 자주 나오므로 등장당 놀람도가 작고, 그래서 짧은 부호를 받는다."
+      },
+      "url": "/en/modules/entropy"
+    },
+    {
+      "id": "tangent",
+      "en": {
+        "term": "tangent line",
+        "oneLiner": "A straight line that touches a curve at a single point and matches the curve's direction there. Its slope at the point of contact equals the derivative of the function at that point: `m_tangent = f'(a)`. The tangent is what the secant becomes in the limit as its two intersection points merge — the curve's _instantaneous direction_ made visible as a line. Distinct from the trigonometric tangent; same word, different concept."
+      },
+      "ko": {
+        "term": "접선",
+        "oneLiner": "곡선과 한 점에서만 닿고 그 점에서 곡선의 방향과 *일치*하는 직선. 접점에서의 기울기가 그 점에서의 함수의 미분값: `m_접선 = f'(a)`. 두 교점이 합쳐질 때 할선이 도달하는 극한 — 곡선의 *순간 방향*을 직선으로 가시화한 것. 삼각함수의 *탄젠트*와는 다른 개념 (같은 단어)."
+      },
+      "url": "/en/modules/derivatives"
+    },
+    {
+      "id": "temperature",
+      "en": {
+        "term": "temperature",
+        "oneLiner": "A positive scalar `T` applied as `softmax(z/T)`. Low `T` _sharpens_ the distribution — the largest logit dominates, and the model looks more confident. High `T` _flattens_ it — every class gets a similar share, and the model looks more uncertain. `T = 1` is the unaltered softmax. Crucially, `T` does not change _which_ class wins, only how strongly the winning probability is reported. Used for sampling control in language models, for soft targets in distillation, and for repairing overconfidence in calibration."
+      },
+      "ko": {
+        "term": "온도",
+        "oneLiner": "`softmax(z/T)`에 적용되는 양의 스칼라 `T`. `T`가 낮으면 분포가 _예리해지고_ 가장 큰 로짓이 지배 — 모델이 더 자신만만해 보인다. `T`가 높으면 _평탄해져서_ 모든 클래스가 비슷한 몫을 가짐 — 모델이 더 불확실해 보인다. `T = 1`은 변형 없는 softmax. 중요한 점은 `T`가 *어느 클래스가 이기는가*를 바꾸지 않고, *이긴 확률이 얼마나 강하게 보고되는가*만 바꾼다는 것. 언어 모델의 샘플링 조절, 디스틸레이션의 부드러운 타겟, 캘리브레이션의 과확신 보정에 쓰인다."
+      },
+      "url": "/en/ml/confident-wrong"
+    },
+    {
+      "id": "temperature-scaling",
+      "en": {
+        "term": "temperature scaling",
+        "oneLiner": "The simplest fix for an overconfident classifier. The model produces _logits_ `z`, then a softmax converts them to probabilities. _Temperature scaling_ divides the logits by a single scalar `T > 0` _before_ the softmax: `softmax(z / T)`. `T = 1` leaves the model alone; `T > 1` flattens the distribution (less confident); `T < 1` sharpens it (more confident). Crucially, dividing every logit by the same constant _preserves the argmax_ — the predicted class never changes, so accuracy is unchanged. Only the confidence numbers move. `T` is fit on a held-out validation set by minimizing log loss; one parameter, one scalar, no architecture changes — usually the first thing to try when a reliability diagram bows below the diagonal."
+      },
+      "ko": {
+        "term": "온도 스케일링",
+        "oneLiner": "과신하는 분류기를 가장 단순하게 보정하는 방법. 모델은 _로짓_ `z`를 내고, 소프트맥스가 그것을 확률로 바꾼다. *온도 스케일링*은 소프트맥스 *전*에 모든 로짓을 단 하나의 스칼라 `T > 0`으로 나눈다: `softmax(z / T)`. `T = 1`은 모델을 그대로 둔다; `T > 1`은 분포를 평평하게 만든다 (덜 확신); `T < 1`은 더 뾰족하게 만든다 (더 확신). 핵심은, 모든 로짓을 같은 상수로 나눠도 *argmax는 변하지 않는다*는 점 — 예측된 클래스는 바뀌지 않으니 정확도도 그대로다. 변하는 건 신뢰도 숫자뿐. `T`는 검증 셋에서 로그 손실을 최소화하도록 맞춘다; 매개변수 하나, 스칼라 하나, 아키텍처 변경 없음 — 신뢰도 다이어그램이 대각선 아래로 휠 때 보통 가장 먼저 시도할 처방."
+      },
+      "url": "/en/ml/model-calibration"
+    },
+    {
+      "id": "term-frequency",
+      "en": {
+        "term": "term frequency",
+        "oneLiner": "`tf(t, d) = count(t, d) / length(d)`. The fraction of words in document `d` that are equal to term `t`. Dividing by doc length is the \"level the playing field\" step — without it, longer docs would score higher just for using more of every word. Variants exist (raw count, log-scaled, augmented), but the normalized form is the standard intuition."
+      },
+      "ko": {
+        "term": "단어 빈도 (TF)",
+        "oneLiner": "`tf(t, d) = count(t, d) / length(d)`. 문서 `d`에서 단어들 중 `t`인 것의 비율. 문서 길이로 나누는 건 \"공정하게 만드는\" 단계다 — 안 그러면 긴 문서가 모든 단어를 더 많이 썼다는 이유로 점수를 더 받는다. 변형 (원시 빈도, 로그 스케일, 증강 형) 도 있지만, 정규화된 형태가 표준 직관이다."
+      },
+      "url": "/en/ml/tf-idf"
+    },
+    {
+      "id": "terminal-velocity",
+      "en": {
+        "term": "terminal velocity",
+        "oneLiner": "The constant speed a falling object approaches when air drag has grown to exactly balance gravity. Not the _maximum_ speed in any imposed sense — the speed at which the net force is zero, so acceleration is zero, so velocity stops changing. For linear drag `F_drag = k v` with mass `m`, terminal velocity is `v_t = mg / k` (or `g/k` in the per-unit-mass form `dv/dt = g − kv`). It's an _asymptote_, not a _cap_: from below, the object asymptotically approaches `v_t`; from above (e.g. a thrown-down rock), it asymptotically _decelerates_ toward the same value. Raindrops, parachutists, and dust motes all live their entire fall in this asymptotic regime."
+      },
+      "ko": {
+        "term": "종단속도",
+        "oneLiner": "낙하하는 물체가 공기 저항이 중력과 정확히 균형을 이룰 때 다가가는 일정한 속도. 어떤 의미에서 _최대_ 속도가 아니라 — 알짜힘이 0이라 가속도가 0이고, 따라서 속도가 변하지 않게 되는 속도. 선형 저항 `F_drag = k v`, 질량 `m`이면 종단속도는 `v_t = mg / k` (또는 단위 질량당 형식 `dv/dt = g − kv`에서 `g/k`). *상한선*이 아니라 *점근선*이다: 아래에서 출발하면 점근적으로 `v_t`에 다가가고, 위에서 출발하면 (예: 아래로 던진 돌) 점근적으로 같은 값으로 *감속*한다. 빗방울, 낙하산, 먼지 알갱이 모두 낙하 전 구간을 이 점근 영역에서 보낸다."
+      },
+      "url": "/en/physics/terminal-velocity"
+    },
+    {
+      "id": "tf-idf",
+      "en": {
+        "term": "TF-IDF",
+        "oneLiner": "A document score equal to `tf(term, doc) · idf(term, corpus)`, summed over the query terms. Term frequency rewards a doc for using the query word a lot; inverse document frequency discounts words that show up in many docs. The product mimics \"log of a joint probability\" intuition — but only mimics: tf is a count, not a probability, so TF-IDF is a heuristic motivated by information theory, not a true probabilistic model. It was the dominant search-ranking score for two decades and remains the baseline (BM25 = TF-IDF + saturation + length normalization) every neural retriever benchmarks against."
+      },
+      "ko": {
+        "term": "TF-IDF",
+        "oneLiner": "`tf(단어, 문서) · idf(단어, 코퍼스)`를 쿼리의 각 단어에 대해 합한 문서 점수. tf는 문서가 그 단어를 많이 쓸수록 점수를 더하고, idf는 여러 문서에 흔히 나타나는 단어를 깎는다. 이 곱은 \"결합 확률의 로그\" 직관을 *흉내*낸다 — 하지만 흉내일 뿐: tf는 빈도지 확률이 아니라서 TF-IDF는 정보이론에서 영감을 받은 휴리스틱이지 진짜 확률모델은 아니다. 20년 동안 검색 순위 매기기의 지배적 점수였고, 지금도 모든 신경 검색기 (BM25 = TF-IDF + 포화 + 길이 정규화) 가 넘어야 할 베이스라인."
+      },
+      "url": "/en/ml/tf-idf"
+    },
+    {
+      "id": "underflow",
+      "en": {
+        "term": "underflow",
+        "oneLiner": "When a number is too small in magnitude for the float type to represent, hardware rounds it to zero. float32 underflows below ~1e-38, float64 below ~1e-308."
+      },
+      "ko": {
+        "term": "언더플로우",
+        "oneLiner": "표현하려는 수가 float 형식의 표현 가능 범위보다 너무 작아서 하드웨어가 0으로 반올림하는 현상. float32는 ~1e-38, float64는 ~1e-308 아래에서 발생."
+      },
+      "url": "/en/modules/log"
+    },
+    {
+      "id": "variance",
+      "en": {
+        "term": "variance",
+        "oneLiner": "The expected square-distance of a random quantity from its mean. For returns `r` with mean `μ`, `Var(r) = E[(r − μ)²]`; the units are the _square_ of whatever you started with, which is why people usually quote the square root, _standard deviation_, instead. Variance is the workhorse measure of _risk_ in finance: not \"how much could I lose worst-case?\" but \"how much does the outcome jitter from the average?\". Two assets with the same mean return can have wildly different variances, and that gap is the entire reason a portfolio is more than the sum of its parts."
+      },
+      "ko": {
+        "term": "분산",
+        "oneLiner": "확률량이 평균에서 떨어진 거리의 제곱의 기대값. 평균 `μ`인 수익률 `r`에 대해 `Var(r) = E[(r − μ)²]`. 단위가 원래 단위의 *제곱*이라 보통은 그 제곱근인 *표준편차*를 쓴다. 분산은 금융에서 *위험*의 표준 척도다: \"최악에 얼마나 잃을 수 있나?\"가 아니라 \"결과가 평균 주변에서 얼마나 흔들리나?\". 같은 평균 수익률이라도 분산이 크게 다를 수 있고, 그 격차가 포트폴리오가 단순한 부분의 합 이상인 이유 전체다."
+      },
+      "url": "/en/finance/portfolio-risk"
+    },
+    {
+      "id": "vector",
+      "en": {
+        "term": "vector",
+        "oneLiner": "A quantity that has both magnitude and direction. Concretely a tuple of numbers — `(3, 4)` in 2D, `(1, 0, −2)` in 3D — but the _meaning_ of those numbers depends on what you're doing. In graphics they describe a control-point offset; in physics, a velocity or force; in ML, a parameter update or a feature representation. The tuple is the same; the _role_ changes. The arithmetic — addition component-wise, scaling by a number — is the same in every role, which is why one set of math serves all of them."
+      },
+      "ko": {
+        "term": "벡터",
+        "oneLiner": "크기와 방향을 모두 가진 양. 구체적으로는 수의 튜플 — 2D에서 `(3, 4)`, 3D에서 `(1, 0, −2)` — 이지만, 그 수가 *무엇을 의미하는가*는 무엇을 하느냐에 따라 다르다. 그래픽에서는 제어점의 오프셋, 물리에서는 속도나 힘, ML에서는 매개변수 갱신이나 특징 표현. 튜플은 _같다_. *역할*이 다르다. 산술 — 성분별 덧셈, 수로의 스칼라배 — 은 모든 역할에서 _같기_ 때문에, 한 벌의 수학이 모두를 받친다."
+      },
+      "url": "/en/modules/vectors"
+    },
+    {
+      "id": "velocity",
+      "en": {
+        "term": "velocity",
+        "oneLiner": "The rate of change of position. A vector — both a magnitude (speed) and a direction. In one dimension, `v = dx/dt`; in two, the velocity vector has components `(dx/dt, dy/dt)`. Velocity that does not change in time is called _uniform_; the position then increases linearly. Velocity that changes corresponds to nonzero acceleration. The distinction between speed (a number) and velocity (a vector) is the difference between \"fast\" and \"fast in which direction.\""
+      },
+      "ko": {
+        "term": "속도",
+        "oneLiner": "위치의 변화율. 벡터 — 크기 (속력)와 방향을 모두 가진다. 1차원에서 `v = dx/dt`, 2차원에서는 속도 벡터가 `(dx/dt, dy/dt)` 성분을 갖는다. 시간에 따라 변하지 않는 속도는 *균일*하다고 하며, 그때 위치는 시간에 선형. 속도가 변한다는 건 가속도가 0이 아니라는 뜻. _속력_ (수)과 _속도_ (벡터) 의 구분은 \"빠르다\"와 \"어느 방향으로 빠르다\"의 차이다."
+      },
+      "url": "/en/modules/derivatives"
+    },
+    {
+      "id": "vieta-formulas",
+      "en": {
+        "term": "Vieta's formulas",
+        "oneLiner": "For a monic polynomial xⁿ + aₙ₋₁ xⁿ⁻¹ + ⋯ + a₀ with roots r₁, …, rₙ: the sum of roots is −aₙ₋₁, the product is (−1)ⁿ · a₀, and every elementary symmetric function of the roots is the corresponding coefficient (with alternating signs). Read off without solving."
+      },
+      "ko": {
+        "term": "비에타 공식",
+        "oneLiner": "monic 다항식 xⁿ + aₙ₋₁ xⁿ⁻¹ + ⋯ + a₀의 근을 r₁, …, rₙ이라 하면: 근의 합 = −aₙ₋₁, 근의 곱 = (−1)ⁿ · a₀, 그리고 모든 기본대칭함수는 그에 대응하는 계수 (부호 교대). 다항식을 풀지 않고 그대로 읽는다."
+      },
+      "url": "/en/modules/bezout"
+    }
+  ]
+}
