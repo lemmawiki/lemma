@@ -118,6 +118,25 @@ The other half of the theorem — the part that says <Formula>{"(d/dx) ∫_a^x f
 
 </ArcRow>
 
+<ArcRow n={6} title="Where this shows up — same accumulator, two pillars">
+
+**Integration adds change across time. In physics that change becomes distance; in finance it becomes present value.** The Riemann-sum picture is the same in both pillars; only the rate being summed differs.
+
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`physics : velocity is accumulated into distance; force·velocity into energy.
+finance : a continuous payment rate is accumulated — discounted — into present value.`}</pre>
+
+[**Projectile motion**](/en/physics/projectile-motion) — fall distance is <Formula>{"∫_0^t v(s) ds = ½ g t²"}</Formula>. The velocity <Formula>v(s) = g · s</Formula> is the rate; integrating gives the area under it; that area is the distance. Two derivatives turn position into acceleration; two integrations run the ladder back the other way.
+
+[**Terminal velocity**](/en/physics/terminal-velocity) — velocity is no longer linear; it bends toward an asymptote. Distance fallen is still <Formula>{"∫_0^t v(s) ds"}</Formula> — area under the curve, only the curve has shape now. Same accumulator, harder shape.
+
+[**Damped oscillator**](/en/physics/damped-oscillator) — average power input under sinusoidal forcing is <Formula>{"⟨F · ẋ⟩"}</Formula>, an integral over a cycle. The peak — resonance — is exactly where this integral is largest; off-resonance, alternating contributions cancel under the integral sign.
+
+[**Present value**](/en/finance/present-value) — a continuous cash-flow rate <Formula>c(t)</Formula> has present value <Formula>{"PV = ∫_0^T c(t) e^(−rt) dt"}</Formula>. The discount factor <Formula>e^(−rt)</Formula> shrinks each future moment before the integral adds them. *Money over time* is structurally identical to *velocity over time*: a rate, accumulated.
+
+**Same machine, different nouns: distance in physics, present value in finance — both are the area under a rate curve, with the rate set by the application.**
+
+</ArcRow>
+
 </Arc>
 
 <Pin>
@@ -192,8 +211,10 @@ A ball is dropped from rest. Gravity gives constant acceleration <Formula>g = 9.
 </Exercises>
 
 <PageFooter>
-  module: **The Integral**. The pair of [the derivative](/en/modules/derivatives). Currently
-  consumed by [projectile motion](/en/physics/projectile-motion) — accelerated motion is integrated
-  twice to get position. Future ML and finance applications (cumulative loss, present value of a
-  cash-flow stream) will plug in the same way.
+  module: **The Integral**. The pair of [the derivative](/en/modules/derivatives). Consumed by four
+  applications across two pillars: physics ([projectile motion](/en/physics/projectile-motion),
+  [terminal velocity](/en/physics/terminal-velocity),
+  [damped oscillator](/en/physics/damped-oscillator)) and finance
+  ([present value](/en/finance/present-value)). *Same accumulator: distance in physics, present
+  value in finance.*
 </PageFooter>

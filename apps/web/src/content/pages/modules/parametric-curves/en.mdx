@@ -70,6 +70,23 @@ Step 1's strict test separates γ₁ from γ₂ even though they paint the same 
 
 </ArcRow>
 
+<ArcRow n={3} title="Where this shows up — same γ, two pillars">
+
+**The same map γ(t) can be a designer's stroke, a projectile's path, or a clock's motion.** Once "curve" stops meaning *shape* and starts meaning *function-of-time*, the same machinery splits cleanly across pillars.
+
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`graphics : γ is design — a stroke a user wants to see.
+physics  : γ is motion — a body's position at time t.`}</pre>
+
+[**Bezier curves**](/en/graphics/bezier-curves) — the curve a designer pulls is literally a parametrized γ : [0, 1] → ℝ². Dragging a handle changes γ; the picture changes because γ has changed. The whole de Casteljau evaluator is "given t and the control points, compute γ(t)." Same tool, used as drawing.
+
+[**Projectile motion**](/en/physics/projectile-motion) — γ(t) = (v₀ cos θ · t, v₀ sin θ · t − ½ g t²) is the position at time t. Here time is the parameter and the *image* is the trajectory through space. Same tool, used as motion.
+
+[**The pendulum clock**](/en/physics/pendulum-clock) — the bob's tip traces a γ over time as θ(t) swings. The image is an arc; the function is the schedule that says when the bob is where. The escapement only works because that schedule is *periodic in t* — a property of γ, not of its image.
+
+**The split arc 2 made — image vs. parametrization — is exactly what lets a designer's drag and a physicist's pendulum both be γ. The image is what each pillar shows; γ is what each pillar manipulates.**
+
+</ArcRow>
+
 <Pin>
 **Three layers of "same":**
 - **same image** — the picture: γ₁ ~ γ₂ ~ γ₃
@@ -127,7 +144,9 @@ A junior says: "Two functions with the same outputs are the same function — th
 </Exercises>
 
 <PageFooter>
-  module: **Parametric Curves**. The crisis-as-hook spike that became a real module. Downstream
-  consumers — Bezier curves in graphics, trajectories in physics, motion paths in animation — plug
-  into the parametrization-vs-image distinction this module makes precise.
+  module: **Parametric Curves**. Consumed across two pillars: graphics
+  ([Bezier curves](/en/graphics/bezier-curves)) and physics
+  ([projectile motion](/en/physics/projectile-motion),
+  [the pendulum clock](/en/physics/pendulum-clock)). *Same γ: a designer's stroke, a body's
+  trajectory, a bob's schedule — the parametrization-vs-image split makes them all one tool.*
 </PageFooter>
