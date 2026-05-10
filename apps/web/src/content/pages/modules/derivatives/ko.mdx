@@ -22,7 +22,7 @@ import Formula from "@/components/page/formula.astro";
 
 # 곡선은 _지금_ 무엇을 하고 있는가?
 
-움직이는 점은 자취를 남긴다. **미분은 그 자취가 아니다.** 지금 이 순간, 자취가 되려고 하는 화살표다. 평균 속도는 두 점을 알고 나누지만, 순간 속도는 한 점만 알고도 어떻게든 숫자를 가진다. 그 숫자 — 물리·ML·공학의 모든 *변화율*이 결국 이것 — 는 두 점을 지나는 할선이 한 점에서의 접선으로 무너지도록 *강제*하는 데서 나온다.
+움직이는 점은 자취를 남긴다. **미분은 그 자취가 아니다.** 지금 이 순간, 자취가 되려고 하는 화살표다. 평균 속도는 두 점을 두고 나누면 그만이지만, 순간 속도는 점 하나뿐인데도 기어이 하나의 수로 정해진다. 그 수 — 물리·ML·공학의 모든 *변화율*이 결국 이것이다 — 는 두 점을 지나는 할선이 한 점에서의 접선으로 무너지도록 *몰아붙여* 얻는다.
 
 <Lede>
   아래 위젯: <Formula>y = x²</Formula> 위의 두 점을 잇는 주황색 **할선**. **h**를 0으로 끌면 할선이
@@ -35,7 +35,7 @@ import Formula from "@/components/page/formula.astro";
 <ToolSpec>
   <Fragment slot="definition">
     순간 변화율. <Formula>f'(a) = lim h→0 (f(a+h) − f(a)) / h</Formula>. 자취가 지금 이 순간 되려는
-    화살표 — 두 번째 점이 첫 번째 점으로 무너지면서, 할선 기울기들이 하나의 접선 기울기로 응축된 것.
+    화살표 — 두 번째 점이 첫 번째 점으로 무너져 들어가면서, 할선 기울기들이 하나의 접선 기울기로 좁혀진다.
   </Fragment>
   <Fragment slot="applies">
     *변화율*이 등장하는 모든 곳. 속도 (위치 → 속력), 경사하강 (손실 → 한 걸음 방향), 작은 각 근사 (0
@@ -44,7 +44,7 @@ import Formula from "@/components/page/formula.astro";
   <Fragment slot="breaks">
     극한이 존재해야 한다. 뾰족한 모서리 (0에서의 |x|), 점프 (계단 함수), 병적인 진동 (어디서도 미분
     불가능한 바이어슈트라스 함수)에는 미분이 없다. ML에서는 숨은 비미분 지점들 — ReLU의 0, 맥스풀링,
-    지시 함수 — 을 *관례*로 메운다. 수학이 아니라 합의로 메운다는 뜻 — 거기를 지나는 그래디언트는
+    지시 함수 — 을 *관례*로 메운다. 수학이 아니라 합의로 메운다는 뜻이다 — 그 지점을 통과하는 그래디언트는
     사실이 아니라 선택이다.
   </Fragment>
 </ToolSpec>
@@ -56,11 +56,11 @@ import Formula from "@/components/page/formula.astro";
 <ArcRow n={1} title="Δ 분의 Δ — 평균 변화율">
 
 <Formula>t = 0 s</Formula>에 <Formula>x = 1 km</Formula>에서 출발해 <Formula>t = 4 s</Formula>에
-<Formula>x = 9 km</Formula>에 도착했다. 당신의 *평균* 속도는
-<Formula>(9 − 1) / (4 − 0) = 2 km/s</Formula>. 이 수는 여행 전체를 묘사하지만,
-<Formula>t = 2 s</Formula>에서 *무엇을 하고 있었는지* 는 알려주지 않는다. 위치 그래프 위
+<Formula>x = 9 km</Formula>에 도착했다. *평균* 속도는
+<Formula>(9 − 1) / (4 − 0) = 2 km/s</Formula>. 이 수는 여정 전체를 요약할 뿐,
+<Formula>t = 2 s</Formula>에 *무엇을 하고 있었는지*는 말해주지 않는다. 위치 그래프 위
 <Formula>(0, 1)</Formula>과 <Formula>(4, 9)</Formula>를 잇는 직선이 <Term id="secant">할선</Term>,
-그 기울기가 평균. *극한 없이 계산할 수 있다.*
+그 기울기가 평균이다. *극한 없이도 계산할 수 있다.*
 
 <CodeBlock slug="derivatives" arc="arc2" />
 
@@ -68,18 +68,18 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={2} title="구간을 0으로 — 순간 변화율">
 
-"<Formula>t = 2 s</Formula>에서 _무엇을 하고 있었나_"는 할선의 두 점이 하나로 합쳐져야 답할 수 있다. 고정 기준 <Formula>a = 2</Formula>와 작은 구간 <Formula>h</Formula>를 잡고 <Formula>(f(a+h) − f(a)) / h</Formula>를 계산하며 <Formula>h</Formula>를 줄여보자. <Formula>f(t) = t²</Formula>에 대해:
+"<Formula>t = 2 s</Formula>에서 _무엇을 하고 있었나_"는 할선의 두 점이 하나로 합쳐져야 답이 나온다. 기준점 <Formula>a = 2</Formula>를 고정하고 작은 구간 <Formula>h</Formula>를 잡아 <Formula>(f(a+h) − f(a)) / h</Formula>를 계산하면서 <Formula>h</Formula>를 줄여 나가자. <Formula>f(t) = t²</Formula>이라면:
 
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`(f(2+h) − f(2)) / h
    = ((2+h)² − 4) / h
    = (4 + 4h + h² − 4) / h
    = 4 + h            ← independent of how big h is, except for the +h tail`}</pre>
 
-<Formula>h → 0</Formula>일 때 식은 <Formula>4</Formula>로 수렴한다. 어딘가 모호하게 "다가간다"는 게
-아니라 값은 *정확히* <Formula>4 + h</Formula>이고 <Formula>h</Formula>는 원하는 만큼 작게 만들 수
+<Formula>h → 0</Formula>일 때 식은 <Formula>4</Formula>로 수렴한다. 막연히 "다가간다"는 뜻이
+아니다 — 값은 *정확히* <Formula>4 + h</Formula>이고, <Formula>h</Formula>는 얼마든지 작게 만들 수
 있다. 극한에서 살아남는 수 **4**가 <Formula>t = 2</Formula>에서 <Formula>t²</Formula>의
-<Term id="derivative">미분</Term>: <Formula>f'(2) = 4</Formula>. 기하적으로는
-<Formula>(2, 4)</Formula>를 지나는 <Term id="tangent">접선</Term>의 기울기.
+<Term id="derivative">미분</Term>이다 — <Formula>f'(2) = 4</Formula>. 기하적으로는
+<Formula>(2, 4)</Formula>를 지나는 <Term id="tangent">접선</Term>의 기울기다.
 
 <CodeBlock slug="derivatives" arc="arc3" />
 
@@ -87,9 +87,9 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={3} title="기계는 하나, 이름은 셋 — 기울기·속도·변화율">
 
-레시피 — 두 점을 잡고, 할선 기울기를 계산하고, 구간을 줄이고, 극한을 취한다 — 는 무엇을 넣든 같은 종류의 수를 낸다. <Formula>f</Formula>가 시간 대 위치 함수면 미분은 <Term id="velocity">속도</Term>. 가격 대 수익 그래프면 미분은 "한계수익." 종이에 그린 곡선이면 미분은 각 점에서의 접선 기울기. _연산은 같다; 축에 무엇을 놓느냐에 따라 물리적 또는 기하적 해석이 달라질 뿐._
+레시피 — 두 점을 잡고, 할선 기울기를 계산하고, 구간을 줄이고, 극한을 취한다 — 는 무엇을 넣어도 같은 종류의 수를 낸다. <Formula>f</Formula>가 시간 대 위치 함수면 미분은 <Term id="velocity">속도</Term>. 가격 대 수익 그래프면 미분은 "한계수익." 종이에 그린 곡선이면 미분은 각 점에서의 접선 기울기. _연산은 같고, 축에 무엇을 놓았는지에 따라 물리적 해석이나 기하적 해석이 달라질 뿐이다._
 
-표준 패턴: <Formula>x^n</Formula>의 미분은 <Formula>n·x^(n−1)</Formula>. 위젯이 <Formula>n = 2</Formula> 경우를 보여준다 — 기준 a를 끌면 <Formula>2a</Formula>가 읽힌다. 같은 기계가 <Formula>sin x</Formula>에 적용되면 <Formula>cos x</Formula>를 내고, <Formula>e^x</Formula>에 적용되면 <Formula>e^x</Formula>를 그대로 돌려주고, 상수에 적용되면 0. 이 이름들 — "미분법" — 은 장부일 뿐. 바닥의 한 연산은 _할선 기울기의 극한_.
+표준 패턴: <Formula>x^n</Formula>의 미분은 <Formula>n·x^(n−1)</Formula>. 위젯은 <Formula>n = 2</Formula> 경우를 보여준다 — 기준 a를 끌면 <Formula>2a</Formula>가 읽힌다. 같은 기계를 <Formula>sin x</Formula>에 돌리면 <Formula>cos x</Formula>가 나오고, <Formula>e^x</Formula>에 돌리면 <Formula>e^x</Formula>가 그대로 돌아오고, 상수에 돌리면 0. 이 이름들 — "미분법" — 은 장부일 뿐, 바닥에 깔린 연산은 단 하나, _할선 기울기의 극한_이다.
 
 <Proof id="deriv-pow" />
 
@@ -97,9 +97,9 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={4} title="두 번 미분하면 — 가속도">
 
-함수의 미분은 그 자체로 함수다. 한 번 더 미분할 수 있다. <Formula>f(t) = t²</Formula>의 경우: <Formula>f'(t) = 2t</Formula> (직선), <Formula>f''(t) = 2</Formula> (상수). 위치를 두 번 미분하면 <Term id="acceleration">가속도</Term> — 속도의 변화율. 자유낙하에서는 상수 <Formula>−g</Formula>.
+함수의 미분은 그 자체로 함수다. 한 번 더 미분할 수 있다. <Formula>f(t) = t²</Formula>이라면 <Formula>f'(t) = 2t</Formula> (직선), <Formula>f''(t) = 2</Formula> (상수). 위치를 두 번 미분하면 <Term id="acceleration">가속도</Term> — 속도의 변화율 — 이 나오고, 자유낙하에서는 그 값이 상수 <Formula>−g</Formula>다.
 
-그 사다리 — 위치, 속도, 가속도 — 는 미분이라는 도구만 있으면 "뉴턴 제2법칙" 전체와 같은 내용이 된다: 힘 = 질량 × 위치의 두 번째 미분. 입문 물리의 대부분은 이 한 사실의 대수·기하적 따름결과.
+이 사다리 — 위치, 속도, 가속도 — 는 미분이라는 도구만 손에 쥐면 "뉴턴 제2법칙" 그 자체가 된다: 힘 = 질량 × 위치의 두 번째 미분. 입문 물리의 대부분은 이 한 사실의 대수·기하적 따름결과다.
 
 </ArcRow>
 
@@ -112,13 +112,13 @@ import Formula from "@/components/page/formula.astro";
 ml      : 매개변수가 움직일 때 손실이 변한다.
           그래디언트가 손실이 떨어지는 방향을 말해준다.`}</pre>
 
-[**포물선 운동**](/ko/physics/projectile-motion) — 식 <Formula>x(t) = v₀ cos θ · t</Formula>와 <Formula>y(t) = v₀ sin θ · t − ½ g t²</Formula>의 미분이 <Formula>vₓ = v₀ cos θ</Formula> (상수) 와 <Formula>v_y(t) = v₀ sin θ − g t</Formula> (선형). *위치*를 미분하면 곧 *속도*; 한 번 더 미분하면 상수 <Formula>−g</Formula> 가속도.
+[**포물선 운동**](/ko/physics/projectile-motion) — 식 <Formula>x(t) = v₀ cos θ · t</Formula>와 <Formula>y(t) = v₀ sin θ · t − ½ g t²</Formula>를 미분하면 <Formula>vₓ = v₀ cos θ</Formula> (상수)와 <Formula>v_y(t) = v₀ sin θ − g t</Formula> (선형)가 나온다. *위치*를 미분하면 바로 *속도*가 되고, 한 번 더 미분하면 상수 <Formula>−g</Formula> 가속도다.
 
-[**진자시계**](/ko/physics/pendulum-clock) — 운동 방정식 <Formula>θ̈ = −(g/L) sin θ</Formula>는 *왼쪽은 θ의 두 번 미분, 오른쪽은 θ의 함수*. <Formula>sin θ</Formula>를 <Formula>θ</Formula>로 바꾸면 (선형화 트릭) <Formula>θ̈ = −(g/L) θ</Formula> — 단순조화진동자 방정식, 미분 도구가 알아보고 풀 수 있는 형태.
+[**진자시계**](/ko/physics/pendulum-clock) — 운동 방정식 <Formula>θ̈ = −(g/L) sin θ</Formula>는 *왼쪽이 θ의 두 번 미분, 오른쪽이 θ의 함수*다. <Formula>sin θ</Formula>를 <Formula>θ</Formula>로 갈아끼우면 (선형화 트릭) <Formula>θ̈ = −(g/L) θ</Formula> — 단순조화진동자 방정식, 미분 도구가 알아보고 풀어낼 수 있는 형태가 된다.
 
-[**종단속도**](/ko/physics/terminal-velocity) — 미분방정식 <Formula>dv/dt = g − k v</Formula>는 왼쪽이 한 번의 미분, 오른쪽이 단위 질량당 알짜힘. 고정점 — 종단속도 — 은 미분을 0으로 두어서 찾는다 — <Formula>g − k v_t = 0</Formula>. *힘 균형이 정확히 "여기서 미분이 사라진다"이다.*
+[**종단속도**](/ko/physics/terminal-velocity) — 미분방정식 <Formula>dv/dt = g − k v</Formula>는 왼쪽이 한 번의 미분, 오른쪽이 단위 질량당 알짜힘이다. 고정점 — 종단속도 — 은 미분을 0으로 놓고 푼다 — <Formula>g − k v_t = 0</Formula>. *힘의 균형이란 정확히 "여기서 미분이 사라진다"는 뜻이다.*
 
-[**경사하강법**](/ko/ml/gradient-descent) — 손실 <Formula>L(w)</Formula>는 다변수 함수. 그 <Term id="gradient">그래디언트</Term> <Formula>∇L</Formula>은 편미분의 벡터. 한 스텝 <Formula>w ← w − η · ∇L</Formula>은 모든 매개변수에 대해 한 번의 미분을 동시에 사용. 손실이 떨어지는 비율은 <Formula>‖∇L‖²</Formula> — 학습이 진전하는지 결정하는 미분-유래 양.
+[**경사하강법**](/ko/ml/gradient-descent) — 손실 <Formula>L(w)</Formula>는 다변수 함수다. 그 <Term id="gradient">그래디언트</Term> <Formula>∇L</Formula>은 편미분으로 이루어진 벡터. 한 스텝 <Formula>w ← w − η · ∇L</Formula>은 모든 매개변수에 대한 미분을 한꺼번에 쓴다. 손실이 떨어지는 비율은 <Formula>‖∇L‖²</Formula> — 학습이 진전하고 있는지를 판가름하는, 미분에서 나온 양이다.
 
 **이름은 달라도 같은 생각이다 — 물리에서는 속도, ML에서는 그래디언트. 둘 다 미분이 국소적인 변화 규칙을 말해준다.**
 
@@ -127,8 +127,8 @@ ml      : 매개변수가 움직일 때 손실이 변한다.
 </ArcRow>
 
 <Pin>
-  **Δ는 구간을 안다. d는 순간을 안다.** 미분은 구간이 0으로 줄어들 때 Δ가 되는 것 — 그리고 그
-  살아남는 극한이, 물리가 *변화율*이라 부르는 모든 것.
+  **Δ는 구간을 안다. d는 순간을 안다.** 미분은 구간이 0으로 줄어들 때 Δ가 도달하는 자리 — 그리고 그
+  살아남는 극한이, 물리가 *변화율*이라 부르는 모든 것이다.
 </Pin>
 
 </Arc>
@@ -137,56 +137,56 @@ ml      : 매개변수가 움직일 때 손실이 변한다.
 
 <Exercise number={1} tag="평균 변화율 손계산" noCalculator>
 
-<Formula>f(t) = t²</Formula>에서 구간 <Formula>[1, 3]</Formula>의 평균 변화율을 계산. 다음
-<Formula>[1, 1.1]</Formula>, 다음 <Formula>[1, 1.001]</Formula>. 어떤 패턴이 보이는가?
+<Formula>f(t) = t²</Formula>에서 구간 <Formula>[1, 3]</Formula>의 평균 변화율을 계산하라. 이어서
+<Formula>[1, 1.1]</Formula>, 그다음 <Formula>[1, 1.001]</Formula>. 어떤 패턴이 보이는가?
 
 <Solution>
-  <Formula>(9 − 1)/(3 − 1) = 4</Formula>. 다음 <Formula>(1.21 − 1)/0.1 = 2.1</Formula>. 다음{" "}
-  <Formula>(1.002001 − 1)/0.001 = 2.001</Formula>. 값들이 **<Formula>2 + h</Formula>** 패턴 (
+  <Formula>(9 − 1)/(3 − 1) = 4</Formula>. 다음은 <Formula>(1.21 − 1)/0.1 = 2.1</Formula>. 그다음은{" "}
+  <Formula>(1.002001 − 1)/0.001 = 2.001</Formula>. 값들이 모두 **<Formula>2 + h</Formula>** 꼴이다 (
   <Formula>h = 2, 0.1, 0.001</Formula>). <Formula>h → 0</Formula>의 극한은 **2** — 미분{" "}
-  <Formula>f'(1)</Formula>.
+  <Formula>f'(1)</Formula>이다.
 </Solution>
 
 </Exercise>
 
 <Exercise number={2} tag="t = 3에서 순간 변화율" noCalculator>
 
-<Formula>f(t) = t²</Formula>에서 할선 기울기 정의로부터 <Formula>f'(3)</Formula>를 유도하라. 모든
-대수 단계 표시.
+<Formula>f(t) = t²</Formula>에서 할선 기울기 정의로부터 <Formula>f'(3)</Formula>를 유도하라. 대수
+과정을 한 단계도 빼지 말고 모두 보여라.
 
 <Solution>
   <Formula>
     (f(3+h) − f(3)) / h = ((3+h)² − 9) / h = (9 + 6h + h² − 9) / h = (6h + h²) / h = 6 + h
   </Formula>
-  . 이제 <Formula>h → 0</Formula>: **f'(3) = 6**. (같은 패턴: 임의의 <Formula>a</Formula>에 대해{" "}
-  <Formula>(2a)·h + h²</Formula>를 <Formula>h</Formula>로 나누면 <Formula>2a + h → 2a</Formula>.
-  그래서 <Formula>d/dt [t²] = 2t</Formula>.)
+  . 이제 <Formula>h → 0</Formula>으로 보내면 **f'(3) = 6**. (같은 패턴이다: 임의의{" "}
+  <Formula>a</Formula>에 대해 <Formula>(2a)·h + h²</Formula>를 <Formula>h</Formula>로 나누면{" "}
+  <Formula>2a + h → 2a</Formula>. 그래서 <Formula>d/dt [t²] = 2t</Formula>.)
 </Solution>
 
 </Exercise>
 
 <Exercise number={3} tag="곡선에서 접선 기울기">
 
-위젯은 <Formula>y = x²</Formula>를 보여준다. 공식 없이, **a**를 움직이고 **h**를 줄여서 <Formula>x = 0.5</Formula>와 <Formula>x = 1.5</Formula>에서 접선 기울기를 읽어라. 두 수를 모두 만족시키는 규칙을 한 줄로 진술.
+위젯은 <Formula>y = x²</Formula>를 보여준다. 공식을 쓰지 말고 **a**를 움직이고 **h**를 줄여서 <Formula>x = 0.5</Formula>와 <Formula>x = 1.5</Formula>에서 접선 기울기를 읽어내라. 두 수를 모두 설명하는 규칙을 한 줄로 적어라.
 
 <Solution>
-  <Formula>x = 0.5</Formula>에서 기울기 **1**. <Formula>x = 1.5</Formula>에서 **3**. 규칙:{" "}
-  <Formula>m(x) = 2x</Formula>. 그림에서 직접 <Formula>d/dx [x²] = 2x</Formula>를 확인 — 대수 극한을
-  한 번도 거치지 않고.
+  <Formula>x = 0.5</Formula>에서는 기울기가 **1**, <Formula>x = 1.5</Formula>에서는 **3**. 규칙은{" "}
+  <Formula>m(x) = 2x</Formula>. 대수 극한을 한 번도 거치지 않고 그림만으로{" "}
+  <Formula>d/dx [x²] = 2x</Formula>를 확인한 셈이다.
 </Solution>
 
 </Exercise>
 
 <Exercise number={4} tag="포물선 운동 미분" noCalculator>
 
-포물선 운동의 세로 위치는 <Formula>y(t) = v₀ sin θ · t − ½ g t²</Formula>. 같은 <Formula>(f(a+h) − f(a)) / h</Formula> 레시피로 <Formula>v_y(t) = dy/dt</Formula>를 유도하라. 포물선 위젯의 **v_y** 값과 일치하는지 확인.
+포물선 운동의 세로 위치는 <Formula>y(t) = v₀ sin θ · t − ½ g t²</Formula>다. 같은 <Formula>(f(a+h) − f(a)) / h</Formula> 레시피로 <Formula>v_y(t) = dy/dt</Formula>를 유도하라. 포물선 위젯이 표시하는 **v_y** 값과 맞아떨어지는지 확인하라.
 
 <Solution>
   <Formula>y(t+h) = v₀ sin θ · (t+h) − ½ g (t+h)²</Formula>. 여기서 <Formula>y(t)</Formula>를 빼고{" "}
-  <Formula>h</Formula>로 나눈다: <Formula>v₀ sin θ</Formula> 항은 <Formula>v₀ sin θ</Formula>를
-  기여, <Formula>½ g</Formula> 항은 <Formula>½ g (2t + h) = g t + ½ g h</Formula>를 기여. 부호 빼기
-  후 <Formula>h → 0</Formula>: **<Formula>v_y(t) = v₀ sin θ − g t</Formula>**. 포물선-운동 위젯이
-  임의의 <Formula>t</Formula>에서 표시하는 그 식.
+  <Formula>h</Formula>로 나눈다. <Formula>v₀ sin θ</Formula> 항에서는 <Formula>v₀ sin θ</Formula>가
+  남고, <Formula>½ g</Formula> 항에서는 <Formula>½ g (2t + h) = g t + ½ g h</Formula>가 남는다.
+  부호를 정리한 뒤 <Formula>h → 0</Formula>: **<Formula>v_y(t) = v₀ sin θ − g t</Formula>**.
+  포물선-운동 위젯이 임의의 <Formula>t</Formula>에서 보여주는 바로 그 식이다.
 </Solution>
 
 </Exercise>

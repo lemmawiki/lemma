@@ -1,6 +1,6 @@
 ---
 title: 7일에 역전파까지 · Lemma
-description: 자신 있게 틀리고, 덜 틀리고, 거의 맞고. 모델은 왜 학습되는가? 언덕을 내려간다.
+description: 자신 있게 틀리다가, 덜 틀리다가, 거의 맞춘다. 모델은 왜 학습하는가? 언덕을 내려간다.
 breadcrumb:
   current: 여정 · 역전파까지
 ---
@@ -14,10 +14,10 @@ import PageFooter from "@/components/page/page-footer.astro";
 
 # 7일에 역전파까지
 
-자신 있게 틀리고, 덜 틀리고, 거의 맞고. 모델은 왜 학습되는가? 언덕을 내려간다. 언덕은 함수. 내려가는 일은 미적분.
+자신 있게 틀리다가, 덜 틀리다가, 거의 맞춘다. 모델은 왜 학습하는가? 언덕을 내려간다. 언덕은 함수다. 내려가는 일이 미적분이다.
 
 <Lede>
-  역전파는 단일 트릭이 아니다. **네 모듈 — 로그, 미분, 선형화, 벡터 — 이 한 응용 아래에서 조용히 협력**한다. 이 경로는 응용이 그것들을 *쓰기 전에*, 각 모듈이 먼저 자기 자리를 정당화하게 한다.
+  역전파는 하나의 트릭이 아니다. **네 모듈 — 로그, 미분, 선형화, 벡터 — 이 한 응용 아래에서 조용히 맞물려 돌아간다**. 이 경로는 응용이 모듈을 *쓰기 전에*, 각 모듈이 먼저 자기 자리를 스스로 벌어내도록 한다.
 </Lede>
 
 </Hook>
@@ -25,7 +25,7 @@ import PageFooter from "@/components/page/page-footer.astro";
 <JourneyDays id="to-backprop" />
 
 <PageFooter>
-  통과 기둥: <strong>ML / DL</strong>.
-  소비 모듈: <code>로그</code>, <code>미분</code>, <code>선형화</code>, <code>벡터</code>.
-  지나는 응용: <code>자신 있게 틀리기</code>, <code>경사하강</code>.
+  지나는 기둥: <strong>ML / DL</strong>.
+  쓰는 모듈: <code>로그</code>, <code>미분</code>, <code>선형화</code>, <code>벡터</code>.
+  거치는 응용: <code>자신 있게 틀리기</code>, <code>경사하강</code>.
 </PageFooter>

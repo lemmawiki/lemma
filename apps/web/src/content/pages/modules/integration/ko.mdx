@@ -21,7 +21,7 @@ import Formula from "@/components/page/formula.astro";
 
 # 속도계만 보고, 얼마나 멀리 왔는지 알 수 있을까?
 
-창밖이 보이지 않는다. 속도계와 스톱워치만 있다. 속도는 변한다 — 어느 순간 30, 어느 순간 60, 어느 순간 0. **총 이동 거리는?** 직관: 속도가 "거의 일정한" 짧은 구간들로 나누고, 각 구간의 속도 × 시간을 더한다. 그게 리만 합이고, 그 합의 *극한* (구간이 줄어들 때) 이 <Term id="definite-integral">정적분</Term>이다. 이름이 다를 뿐, 같은 연산 — 변화의 누적.
+창밖이 보이지 않는다. 속도계와 스톱워치만 있다. 속도는 계속 변한다 — 어느 순간엔 30, 어느 순간엔 60, 또 어느 순간엔 0. **총 이동 거리는?** 이렇게 풀어보자. 속도가 "거의 일정한" 짧은 구간들로 잘게 쪼개고, 각 구간의 속도에 시간을 곱해 모두 더한다. 그게 리만 합이고, 구간이 한없이 줄어들 때 그 합이 다가가는 *극한*이 <Term id="definite-integral">정적분</Term>이다. 이름만 다를 뿐 같은 연산 — 쌓여가는 변화.
 
 <Lede>
   아래 위젯에서 <b>N</b> (직사각형 개수) 을 끌어보면 주황 합이 초록 정확값으로 다가간다. **속도**
@@ -43,11 +43,11 @@ import Formula from "@/components/page/formula.astro";
     똑똑한 규칙을 가진 리만 합.
   </Fragment>
   <Fragment slot="breaks">
-    불연속 구간과 무한 구간은 *이상적분*이 필요. 닫힌 형식 원시함수가 없는 함수
-    (<Formula>e^(−x²)</Formula>, <Formula>sin x / x</Formula>) 는 수치적으로 평가해야 한다. 다차원
-    유사물 (선·면·부피 적분, 측도론) 은 같은 직관을 쓰지만 신중한 장부질이 필요. 또: FTC는 피적분
-    함수가 구간에서 연속할 것을 요구한다. 더 정교한 버전이 이를 완화하지만, 한 줄짜리 정리는 모든
-    함수에 적용되지 않는다.
+    불연속 구간과 무한 구간은 *이상적분*이 필요하다. 닫힌 형식 원시함수가 없는 함수
+    (<Formula>e^(−x²)</Formula>, <Formula>sin x / x</Formula>) 는 수치적으로 평가해야 한다. 고차원
+    확장 (선·면·부피 적분, 측도론) 도 같은 직관을 쓰지만 장부를 훨씬 꼼꼼히 맞춰야 한다. 그리고
+    FTC는 피적분 함수가 구간에서 연속이라야 성립한다. 더 정교한 버전이 이 조건을 누그러뜨리긴
+    하지만, 한 줄짜리 정리만으로 모든 함수를 덮을 수는 없다.
   </Fragment>
 </ToolSpec>
 
@@ -57,19 +57,19 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={1} title="넓이부터 — 일정한 속도의 누적">
 
-가장 단순한 경우는 일정한 비율. <Formula>60 km/h</Formula>로 <Formula>2 h</Formula> 운전하면 <Formula>60 × 2 = 120 km</Formula>. 속도-시간 그래프에서는 직사각형 넓이 — 폭 × 높이. 곡선이 일정하지 않더라도 총 거리는 *속도 곡선 아래 넓이*. 이 모듈 전체가 그 단순한 경우를 *비일정한* 비율로 다시 짜는 일이다.
+가장 단순한 경우는 비율이 일정할 때다. <Formula>60 km/h</Formula>로 <Formula>2 h</Formula> 운전하면 <Formula>60 × 2 = 120 km</Formula>. 속도-시간 그래프로 보면 폭 × 높이의 직사각형 넓이다. 곡선이 일정하지 않을 때도 총 거리는 여전히 *속도 곡선 아래 넓이*. 이 단순한 경우를 *비일정한* 비율로 다시 풀어쓰는 것이 모듈 전체의 일이다.
 
-선형으로 변하는 비율 — 정지에서 떨어진 물체에 중력이 주는 <Formula>v(t) = g · t</Formula> — 의 경우 <Formula>[0, T]</Formula>에서 직선 아래 넓이는 *삼각형* — <Formula>(1/2) · T · (g · T) = (g · T²) / 2</Formula>. 그게 떨어진 거리. 새 물리도, 새 미적분도 없이 — *넓이*만으로.
+비율이 선형으로 변할 때 — 가만히 있다 떨어뜨린 물체에 중력이 만드는 <Formula>v(t) = g · t</Formula>가 그 예다 — <Formula>[0, T]</Formula>에서 직선 아래 넓이는 *삼각형*이고, 그 넓이가 <Formula>(1/2) · T · (g · T) = (g · T²) / 2</Formula>. 그게 떨어진 거리. 새로운 물리학도, 새로운 미적분도 필요 없다 — *넓이*만으로 풀린다.
 
 </ArcRow>
 
 <ArcRow n={2} title="리만 합 — 유한 장부질">
 
-삼각형이 아닌 곡선은 기하만으로 넓이가 안 읽힌다. 대신 *근사*하자. 구간 <Formula>[a, b]</Formula>를 폭 <Formula>Δx = (b − a)/N</Formula>의 <Formula>N</Formula>개 띠로 자른다. 각 띠에서 표본점 하나 — 왼쪽 끝, 오른쪽 끝, 또는 중점, 선택 — 을 잡고 그 한 값을 띠의 "일정한" 높이로 쓴다. 띠 넓이를 모두 더한다. 결과가 <Term id="riemann-sum">리만 합</Term>:
+삼각형이 아닌 곡선은 기하만으로는 넓이가 보이지 않는다. 그러니 *근사*하자. 구간 <Formula>[a, b]</Formula>를 폭 <Formula>Δx = (b − a)/N</Formula>의 <Formula>N</Formula>개 띠로 자른다. 각 띠 안에서 표본점 하나 — 왼쪽 끝, 오른쪽 끝, 중점 중 골라 — 를 잡고 그 한 값을 띠의 "일정한" 높이로 쓴다. 띠의 넓이를 모두 더한다. 그 결과가 <Term id="riemann-sum">리만 합</Term>이다:
 
 <Formula>S_N = Σ f(x_i) · Δx</Formula>
 
-위 위젯이 이걸 직접 보여준다. <Formula>f(x) = x²</Formula>를 <Formula>[0, 1]</Formula>에서 골라 N을 올려보자. <Formula>N = 1</Formula>에선 직사각형이 우스울 정도로 틀리고, <Formula>N = 8</Formula>에선 알아볼 만하고, <Formula>N = 80</Formula>에선 정확값 <Formula>1/3</Formula>과의 격차가 안 보인다. 다른 규칙 (왼쪽/오른쪽/중점) 은 같은 극한으로 다른 속도로 다가간다 — 왼/오른은 <Formula>O(1/N)</Formula>, 중점은 <Formula>O(1/N²)</Formula>. *그래서 모든 수치 적분기는 중점 또는 그 이상을 고른다.*
+위 위젯이 이걸 직접 보여준다. <Formula>f(x) = x²</Formula>를 <Formula>[0, 1]</Formula>에서 골라 N을 올려보자. <Formula>N = 1</Formula>에선 직사각형이 우스울 정도로 틀리고, <Formula>N = 8</Formula>에선 알아볼 만해지고, <Formula>N = 80</Formula>에선 정확값 <Formula>1/3</Formula>과의 격차가 보이지 않는다. 규칙을 (왼쪽/오른쪽/중점) 어떻게 잡든 같은 극한에 다가가지만 다가가는 속도는 다르다 — 왼/오른은 <Formula>O(1/N)</Formula>, 중점은 <Formula>O(1/N²)</Formula>. *그래서 수치 적분기는 모두 중점 이상을 고른다.*
 
 <CodeBlock slug="integration" arc="arc2" />
 
@@ -81,9 +81,9 @@ import Formula from "@/components/page/formula.astro";
 
 <Formula>{"∫_a^b f(x) dx = lim_(N → ∞) Σ_{i=1}^N f(x_i) · Δx"}</Formula>
 
-*하나의 수* — 누적된 총량. 표기는 리만 이전부터 — <Formula>∫</Formula> 기호는 "sum"의 늘인 "S", <Formula>dx</Formula>는 극한이 줄여낸 <Formula>Δx</Formula>의 후손. "<Formula>{"∫_a^b f(x) dx"}</Formula>"를 "<Formula>a</Formula>에서 <Formula>b</Formula>까지 <Formula>f(x)</Formula> 곱하기 작은 <Formula>dx</Formula>들의 합"으로 읽는 건 정확한 직관 — 리만 이전의 뉴턴/라이프니츠 직관이기도 하다.
+*하나의 수* — 누적된 총량이다. 이 표기는 리만 이전부터 쓰였다. <Formula>∫</Formula> 기호는 "sum"의 S를 길게 늘인 모양이고, <Formula>dx</Formula>는 극한이 줄여낸 <Formula>Δx</Formula>의 후손이다. "<Formula>{"∫_a^b f(x) dx"}</Formula>"를 "<Formula>a</Formula>에서 <Formula>b</Formula>까지 <Formula>f(x)</Formula> 곱하기 아주 작은 <Formula>dx</Formula>들의 합"으로 읽는 건 정확한 직관이다 — 리만 이전 뉴턴과 라이프니츠가 쓰던 직관이기도 하다.
 
-위젯의 "정확한 적분" 칸이 이 수다 — 닫힌 형식으로 계산 (쉬운 함수를 골랐기 때문). 대부분의 실제 함수에서는 극한이 수치적으로 취해지고, 컴퓨터가 적분을 실제로 어떻게 계산하는지의 답이 어떤 형태든 리만 합.
+위젯의 "정확한 적분" 칸이 바로 이 값이다 — 닫힌 형식으로 계산했다 (쉬운 함수를 골랐기 때문에). 현실의 대부분의 함수에서는 극한을 수치적으로 잡을 수밖에 없고, 컴퓨터가 적분을 실제로 계산하는 방식이 어떤 형태로든 결국 리만 합이다.
 
 </ArcRow>
 
@@ -91,9 +91,9 @@ import Formula from "@/components/page/formula.astro";
 
 적분이 미분과 만난다. [미분 모듈](/ko/modules/derivatives)에서 <Formula>F(x) = x³</Formula>를 미분하면 <Formula>F'(x) = 3x²</Formula>. 거꾸로 읽으면 — <Formula>3x²</Formula>는 *원시함수를 갖는다* — 그것이 <Formula>x³</Formula>. <Formula>f</Formula>의 <Term id="antiderivative">원시함수</Term>는 <Formula>F'(x) = f(x)</Formula>를 만족하는 임의의 함수 <Formula>F</Formula>.
 
-원시함수는 유일하지 않다 — <Formula>x³</Formula>와 <Formula>x³ + 5</Formula> 둘 다 <Formula>3x²</Formula>로 미분된다. 어떤 상수 <Formula>C</Formula>를 더해도 미분이 변하지 않으니, 교과서가 <Formula>F(x) + C</Formula>로 적는 이유. 한 <Formula>f</Formula>의 모든 원시함수의 집합은 한 매개변수 가족 — 서로 평행 이동된 함수들.
+원시함수는 유일하지 않다 — <Formula>x³</Formula>도 <Formula>x³ + 5</Formula>도 둘 다 미분하면 <Formula>3x²</Formula>가 된다. 어떤 상수 <Formula>C</Formula>를 더해도 미분값이 변하지 않기 때문이다. 그래서 교과서가 <Formula>F(x) + C</Formula>라고 적는 것이다. 한 <Formula>f</Formula>의 원시함수 전체는 한 매개변수 가족 — 서로 평행 이동된 함수들의 모임이다.
 
-다항식의 경우 규칙은 기계적이다 — <Formula>x^n</Formula>의 미분이 <Formula>n · x^(n−1)</Formula>이니, <Formula>x^n</Formula>의 원시함수는 <Formula>x^(n+1) / (n+1)</Formula>. *공식의 장부를 거꾸로.* <Formula>sin x</Formula>의 원시함수는 <Formula>−cos x</Formula>, <Formula>e^x</Formula>의 원시함수는 <Formula>e^x</Formula> (출발한 자리). 이런 유한 목록과 연쇄법칙이 실무에서 만나는 대부분을 덮는다.
+다항식이라면 규칙이 기계적이다. <Formula>x^n</Formula>의 미분이 <Formula>n · x^(n−1)</Formula>이니, <Formula>x^n</Formula>의 원시함수는 <Formula>x^(n+1) / (n+1)</Formula>. *공식의 장부를 거꾸로 뒤집은 것이다.* <Formula>sin x</Formula>의 원시함수는 <Formula>−cos x</Formula>, <Formula>e^x</Formula>의 원시함수는 <Formula>e^x</Formula> (출발한 자리 그대로). 이 짧은 목록과 연쇄법칙만으로 실무에서 만나는 적분의 대부분이 처리된다.
 
 <CodeBlock slug="integration" arc="arc4" />
 
@@ -101,15 +101,15 @@ import Formula from "@/components/page/formula.astro";
 
 <ArcRow n={5} title="기본정리 — 넓이 = 미분의 역">
 
-두 이야기 — *곡선 아래 넓이*와 *미분의 역연산* — 가 같은 이야기로 밝혀진다. <Term id="fundamental-theorem-of-calculus">미적분학의 기본정리</Term>가 다리:
+두 이야기 — *곡선 아래 넓이*와 *미분의 역연산* — 가 알고 보면 같은 이야기다. <Term id="fundamental-theorem-of-calculus">미적분학의 기본정리</Term>가 그 다리다:
 
 <Formula>{"∫_a^b f(x) dx = F(b) − F(a)"}</Formula>
 
-— *어떤* 원시함수 <Formula>F</Formula>에 대해서나. 리만 합의 무한 극한이 함수 평가 두 번과 빼기로 무너진다. 손으로든 계산기로든 *대부분의* 정적분은 이렇게 계산된다. 리만 극한은 적분이 *무엇인지*고, FTC는 *어떻게 계산하는지*다.
+— *어떤* 원시함수 <Formula>F</Formula>를 잡아도 성립한다. 리만 합의 무한 극한이 함수 평가 두 번과 뺄셈 한 번으로 줄어든다. 손으로 풀든 계산기로 풀든, *대부분의* 정적분은 이렇게 계산한다. 리만 극한이 적분의 *정체*라면, FTC는 적분의 *계산법*이다.
 
-포물선 운동의 경우. 속도는 <Formula>v(t) = g · t</Formula>, 원시함수는 <Formula>(g · t²) / 2</Formula>. FTC에 따라 <Formula>0</Formula>에서 <Formula>T</Formula>까지 떨어진 거리는 <Formula>(g · T²)/2 − 0 = (g · T²) / 2</Formula> — § 1의 기하로 읽은 그 삼각형 넓이가 이제 원시함수에서 유도된다. 두 길, 한 수.
+포물선 운동을 보자. 속도가 <Formula>v(t) = g · t</Formula>면 원시함수는 <Formula>(g · t²) / 2</Formula>. FTC에 따라 <Formula>0</Formula>에서 <Formula>T</Formula>까지 떨어진 거리는 <Formula>(g · T²)/2 − 0 = (g · T²) / 2</Formula> — § 1에서 기하로 읽어냈던 그 삼각형 넓이가, 이번에는 원시함수에서 유도된다. 두 길, 한 수.
 
-기본정리의 다른 절반 — <Formula>{"(d/dx) ∫_a^x f(t) dt = f(x)"}</Formula> — 이 양방향 연결을 단단하게 만든다. *미분이 적분을 되돌리고, 적분이 미분을 누적한다.* 둘은 한 교과서 챕터를 공유하는 별개 연산이 아니라, 덧셈과 뺄셈이 역인 것과 같은 의미에서 *역*이다.
+기본정리의 나머지 반쪽 — <Formula>{"(d/dx) ∫_a^x f(t) dt = f(x)"}</Formula> — 이 양방향의 연결을 단단히 죈다. *미분이 적분을 되돌리고, 적분이 미분을 누적한다.* 둘은 우연히 같은 장(章)에 묶인 별개의 연산이 아니라, 덧셈과 뺄셈이 서로의 역인 것과 똑같은 의미에서 *역*이다.
 
 <CodeBlock slug="integration" arc="arc5" />
 
@@ -118,8 +118,9 @@ import Formula from "@/components/page/formula.astro";
 </Arc>
 
 <Pin>
-  **미분은 양이 얼마나 빨리 변하는지 묻는다. 적분은 그 변화가 얼마나 쌓였는지 묻는다.** 리만 합이
-  적분 자체. 원시함수가 계산 방법. 기본정리가 두 그림이 같은 그림임을 — 미분의 역으로서 — 말한다.
+  **미분은 양이 얼마나 빨리 변하는지 묻고, 적분은 그 변화가 얼마나 쌓였는지 묻는다.** 리만 합이
+  적분의 정체이고, 원시함수가 그 계산법이다. 기본정리는 두 그림이 한 그림임을 — 적분이 곧 미분의
+  역임을 — 말한다.
 </Pin>
 
 <Exercises lang="ko">
@@ -185,7 +186,7 @@ FTC로 <Formula>{"∫_0^2 (3t² + 2t + 1) dt"}</Formula>를 계산. 위젯에서
 </Exercises>
 
 <PageFooter>
-  모듈: **적분**. [미분](/ko/modules/derivatives)의 짝. 현재 [포물선 운동](/ko/physics/projectile-motion)이
-  이 모듈을 소비한다 — 가속도를 두 번 적분하면 위치. 미래의 ML/금융 응용 (누적 손실, 현금흐름의
-  현재가치) 도 같은 방식으로 들어온다.
+  모듈: **적분**. [미분](/ko/modules/derivatives)의 짝. 현재는 [포물선 운동](/ko/physics/projectile-motion)이
+  이 모듈을 끌어다 쓴다 — 가속도를 두 번 적분하면 위치다. 앞으로 들어올 ML·금융 응용 (누적 손실,
+  현금흐름의 현재가치) 도 같은 자리에 같은 방식으로 꽂힌다.
 </PageFooter>
