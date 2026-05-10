@@ -101,5 +101,8 @@
   "fundamental-theorem-of-calculus",
   "present-value",
   "discount-factor",
-  "cash-flow"
+  "cash-flow",
+  "damping",
+  "natural-frequency",
+  "resonance"
 ]
