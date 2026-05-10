@@ -1,0 +1,9 @@
+---
+// Legacy unprefixed URL — content lives in
+// src/content/pages/applications/terminal-velocity/{en,ko}.mdx, served at
+// /en/physics/terminal-velocity/ and /ko/physics/terminal-velocity/. We
+// keep this file as a redirect stub (rather than 404) for any external
+// bookmark or internal link that points at the unprefixed URL. Astro emits
+// static redirect HTML with meta refresh + canonical + robots:noindex.
+return Astro.redirect("/en/physics/terminal-velocity/", 301);
+---

@@ -511,6 +511,65 @@ def raw(query, doc):
 [round(raw("the", d), 3)   for d in toks]   # → [2, 1, 0, 1]
 [round(score("the", d), 3) for d in toks]   # → [0.139, 0.104, 0, 0.104]`,
   },
+  terminalVelocity: {
+    arc3: `import math
+
+# Per-unit-mass equation of motion: dv/dt = g - k*v.
+# Two competing forces, both per unit mass:
+#   gravity  →  +g  (constant, pulls v upward in magnitude)
+#   drag     →  -k*v  (proportional to current speed, opposes motion)
+g = 9.8
+
+def dvdt(v, k):
+    return g - k * v
+
+# At v = 0, drag is zero; gravity is unopposed; full acceleration.
+# As v grows, drag grows proportionally; net force shrinks; acceleration
+# shrinks. The shrink is the whole point — the system has a built-in
+# governor.
+[(v, round(dvdt(v, k=0.5), 2)) for v in (0, 5, 10, 15, 19.6, 25)]
+# → [(0,    9.8),    free fall — nothing opposing
+#    (5,    7.3),    drag has eaten 2.5 of g
+#    (10,   4.8),
+#    (15,   2.3),
+#    (19.6, 0.0),    EQUILIBRIUM — v_t exactly
+#    (25,  -2.7)]    above v_t: drag wins, deceleration`,
+    arc4: `# Solve dv/dt = 0 for terminal velocity. One line of algebra.
+#   g - k*v_t = 0  →  v_t = g/k.
+def terminal_velocity(k, g=9.8):
+    return g / k
+
+# Linear-drag terminal velocities for a few familiar k values.
+[(name, k, round(terminal_velocity(k), 1))
+ for name, k in (("feather", 6.0), ("raindrop", 1.6),
+                 ("skydiver", 0.4), ("bowling ball", 0.05))]
+# → [('feather',      6.0,  1.6),     reaches ~1.6 m/s in well under a second
+#    ('raindrop',     1.6,  6.1),
+#    ('skydiver',     0.4, 24.5),     classic ~50 mph free-fall figure
+#    ('bowling ball', 0.05, 196.0)]   approaches very slowly, in practice
+#                                      it'd hit the ground long before
+# Real raindrops sit closer to 9 m/s because actual drag is closer to
+# v² than v; the linear case is a teaching simplification.`,
+    arc5: `# Closed-form solution from rest, by separation of variables.
+#   v(t) = v_t * (1 - exp(-k*t))
+# At t = 0, v = 0 (rest). As t → ∞, v → v_t. Half of v_t is reached at
+# t = ln(2)/k ≈ 0.693/k. After 5 'time-constants' (5/k seconds), v is
+# within 1% of v_t.
+def v_of_t(t, k, g=9.8):
+    return (g / k) * (1 - math.exp(-k * t))
+
+[(t, round(v_of_t(t, k=0.4), 2)) for t in (0, 1, 3, 5, 10, 20)]
+# → [(0,   0.0),
+#    (1,   8.1),     a third of v_t
+#    (3,  17.1),     two-thirds
+#    (5,  21.2),     ~87% of v_t = 24.5
+#    (10, 24.0),     ~98%
+#    (20, 24.5)]     within 0.001
+# Same shape as a charging capacitor, a heating cup of coffee, a leaky
+# bucket — every first-order linear ODE with a stable fixed point traces
+# this curve. The terminal value is the fixed point; k is the rate at
+# which deviation from the fixed point decays.`,
+  },
   portfolioRisk: {
     arc2: `import numpy as np
 

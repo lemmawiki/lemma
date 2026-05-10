@@ -61,6 +61,21 @@ export const applications: ApplicationMeta[] = [
     },
   },
   {
+    id: "terminal-velocity",
+    href: "/physics/terminal-velocity",
+    pillar: "physics",
+    modules: ["derivatives", "vectors"],
+    status: "available",
+    title: {
+      en: "Why Falling Stops Speeding Up",
+      ko: "낙하는 왜 계속 빨라지지 않을까",
+    },
+    hook: {
+      en: "Gravity pulls forever, but a falling raindrop doesn't speed up forever. The reason is one first-order equation — a derivative balanced against a force that grows with speed. Terminal velocity is not a maximum; it's an equilibrium.",
+      ko: "중력은 계속 당기는데, 빗방울은 끝없이 빨라지지 않는다. 이유는 한 줄짜리 1계 방정식 — 미분이 속도에 비례해 자라는 힘과 균형을 이루는 자리. 종단속도는 최대값이 아니라 평형이다.",
+    },
+  },
+  {
     id: "projectile-motion",
     href: "/physics/projectile-motion",
     pillar: "physics",

@@ -88,5 +88,8 @@
   "lossy",
   "variance",
   "covariance",
-  "correlation"
+  "correlation",
+  "terminal-velocity",
+  "drag",
+  "equilibrium"
 ]

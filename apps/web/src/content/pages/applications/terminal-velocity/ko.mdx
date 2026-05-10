@@ -1,0 +1,186 @@
+---
+title: 낙하는 왜 계속 빨라지지 않을까 · Lemma
+description: 중력은 계속 당기는데, 빗방울은 끝없이 빨라지지 않는다. 이유는 한 줄짜리 1계 방정식 — 미분이 속도에 비례해 자라는 힘과 균형을 이루는 자리.
+breadcrumb:
+  current: 물리 · 낙하는 왜 계속 빨라지지 않을까
+---
+
+import {
+  CodeBlock,
+  Term,
+  Exercise,
+  Solution,
+  Counterexample,
+  WhyNotTaught,
+  TerminalVelocityCooker,
+} from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 두 힘, 한 고정점">
+
+# 빗방울은 왜 계속 빨라지지 않을까?
+
+중력은 낙하 내내 같은 힘으로 끌어당긴다 — 1킬로그램당 약 <Formula>g = 9.8 m/s²</Formula>, 1초가 지나도 1분이 지나도. 진공에서의 자유낙하라면 계속 빨라진다 — 그게 [포물선 운동](/ko/physics/projectile-motion) 페이지의 저항 없는 그림. 그러나 공기 중에서 빗방울은 약 9 m/s, 낙하산은 약 5 m/s, 먼지 알갱이는 거의 멈춰 있다. 누구도 뉴턴을 어기지 않는다 — 다만 두 힘이 정확히 상쇄되는 *고정점*에 도달했을 뿐. 수학은 한 줄이고, 그 모양은 식어가는 커피잔이나 충전 중인 축전기에서 보이는 모양과 같다.
+
+<Lede>**종단속도는 최대값이 아니다 — 평형이다.** 중력과 저항이 상쇄되는 점근선.</Lede>
+
+</Hook>
+
+<TerminalVelocityCooker />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="속도는 미분, 가속도는 또 한 번의 미분">
+
+낙하하는 물체에는 위치 <Formula>y(t)</Formula>가 있다. [미분 모듈](/ko/modules/derivatives)에서: <Term id="velocity">속도</Term>는 위치가 변하는 비율 <Formula>v = dy/dt</Formula>. 같은 기계를 한 번 더 돌리면 <Term id="acceleration">가속도</Term> <Formula>a = dv/dt</Formula> — 속도가 변하는 비율이 나온다. 뉴턴의 2법칙이 이걸 묶는다: 단위 질량당 알짜힘 = <Formula>dv/dt</Formula>. 힘들을 적고 질량으로 나누는 순간, 운동을 예측할 레시피가 손에 들어온다. 이 페이지의 모든 드라마가 우변의 두 항에 산다.
+
+</ArcRow>
+
+<ArcRow n={2} title="두 힘 — 중력은 상수, 저항은 아니다">
+
+낙하하는 빗방울에 두 힘이 작용한다. **중력**은 <Formula>F_g = m·g</Formula>의 일정한 크기로 아래로 당긴다. 단위 질량당 그저 <Formula>g ≈ 9.8 m/s²</Formula>, 빠르기와 무관하다. **<Term id="drag">공기 저항</Term>**은 운동 반대 방향으로 밀어올리고, 중력과 달리 *속도와 함께 자란다*. 공기 중 작은 물체에 대해 깨끗한 근사가 *선형 저항*: 단위 질량당 <Formula>F_drag = k·v</Formula>. 빗방울이 느리면 저항도 작고, 빠르면 저항도 크다. 두 힘은 서로 반대 방향을 가리키는 <Term id="vector">벡터</Term>다 — [벡터 모듈](/ko/modules/vectors)에서 다루는 단순한 1차원 더하고 빼기.
+
+<Formula>dv/dt</Formula>로 들어가는 단위 질량당 알짜힘은 그 차이:
+
+<Formula>dv/dt = g − k v</Formula>
+
+두 항. 첫 항은 상수. 둘째 항은 아니다. *그게 식 전부다.*
+
+</ArcRow>
+
+<ArcRow n={3} title="dv/dt = g − kv가 실제로 말하는 것">
+
+왼쪽에서 오른쪽으로 읽자: 임의의 순간, 속도가 변하는 비율 = 중력 − 저항. 흥미로운 부분은 저항이 *v 자체에 의존*한다는 것 — v가 어떻게 진화하는지를 정하는 우변의 일부에 v가 들어 있다. 그래서 이건 *미분방정식*이다. 미지의 함수와 그 미분이 같이 등장.
+
+식만 보고도 세 영역을 읽을 수 있다:
+
+- **<Formula>v</Formula>가 작을 때** (정지에서 막 떨어졌을 때): <Formula>kv</Formula>가 작으니 <Formula>dv/dt ≈ g</Formula> — 진공 자유낙하와 같이 풀가속.
+- **<Formula>v</Formula>가 중간일 때**: <Formula>kv</Formula>가 무시 못 할 크기. <Formula>dv/dt = g − kv</Formula>는 양수지만 작아진다. 속도는 여전히 자라되 더 느리게.
+- **<Formula>v = g/k</Formula>** 정확히: <Formula>kv = g</Formula>. <Formula>dv/dt = 0</Formula>. 속도가 변하지 않음. 이게 <Term id="terminal-velocity">종단속도</Term>.
+- **<Formula>v &gt; g/k</Formula>** (예: 빠르게 아래로 던졌을 때): <Formula>kv &gt; g</Formula>. <Formula>dv/dt &lt; 0</Formula>. 속도가 *감소* — 저항이 이긴다. 위에서부터 <Formula>v_t</Formula>로 다가갈 때까지.
+
+위젯의 파란 곡선은 점선 초록선에 아래에서 다가간다. 어느 방향에서든 <Formula>v_t</Formula>가 목적지.
+
+<CodeBlock slug="terminalVelocity" arc="arc3" />
+
+</ArcRow>
+
+<ArcRow n={4} title="종단속도 = dv/dt = 0 풀기">
+
+"목적지"는 그저 <Formula>dv/dt = 0</Formula>을 만드는 <Formula>v</Formula> 값이다. 식을 세우고 풀면:
+
+<Formula>g − k v_t = 0  →  v_t = g / k</Formula>
+
+대수 한 줄. 저항이 클수록 (더 큰 <Formula>k</Formula>) 종단속도가 작아진다 — 깃털은 빠르고 작게 안정되고, 볼링공은 공기 중에서 <Formula>v_t</Formula>에 도달하는 데 영원이 걸린다 (실제로는 그 전에 땅에 부딪힌다). 이것이 <Term id="equilibrium">평형</Term>: 두 경쟁 영향이 정확히 상쇄되는 속도. 중력은 <Formula>v</Formula>를 더하려 하고, 저항은 빼려 한다. <Formula>v_t</Formula>에서 둘이 동률. 힘이 *사라진* 게 아니라 *균형*을 이룬다. 그 구분이 이 페이지의 가장 흔한 오해.
+
+식 <Formula>v_t = g/k</Formula>는 깊은 정리가 아니다 — 고정점 읽기일 뿐. 어떤 양에 그 양 자체에 의존하는 두 경쟁 영향이 있을 때마다 같은 모양이 나타난다: 시원한 방에서 식어가는 커피는 방 온도에 닿고, 저항을 통한 축전기는 공급 전압에 닿고, 크기에 비례하는 출생/사망률을 가진 인구는 carrying capacity에 닿는다. *물리는 다르다, 같은 고정점 사냥이다.*
+
+<CodeBlock slug="terminalVelocity" arc="arc4" />
+
+</ArcRow>
+
+<ArcRow n={5} title="다가감은 점근적 — 그리고 지수적">
+
+정지에서의 닫힌 형식 해는
+
+<Formula>v(t) = v_t · (1 − e^(−k t))</Formula>
+
+종단으로부터의 오차 — 격차 <Formula>v_t − v(t)</Formula> — 는 <Formula>v_t · e^(−k t)</Formula>: 지수적으로 줄어든다. <Formula>t = ln 2 / k ≈ 0.693/k</Formula>초 후 오차가 절반. <Formula>5/k</Formula>초 후 오차는 <Formula>v_t</Formula>의 1% 미만. 위젯에서 읽힌다: 저항을 크게 (큰 <Formula>k</Formula>) 끌면 곡선이 1초도 안 돼 점근선으로 빨려 들어가고, 저항을 작게 끌면 몇 초에 걸쳐 천천히 기어오른다.
+
+왜 지수일까? 오차 <Formula>ε(t) = v_t − v(t)</Formula>의 미분을 보자: <Formula>dε/dt = −dv/dt = −(g − kv) = −k ε</Formula>. *오차가 변하는 비율이 오차 자체에 비례*, 부호는 음수. 지수 감쇠의 정의 모양. 자기 자신에 비례하는 비율로 변하는 모든 양은 결국 지수가 된다 — [로그 모듈](/ko/modules/log)이 반대 방향에서 같은 것을 명명한다. 선형 저항 낙하, 축전기 충전, 방사능 붕괴, 뉴턴의 냉각: 같은 식, 같은 답.
+
+<CodeBlock slug="terminalVelocity" arc="arc5" />
+
+<Counterexample>
+  실제 빗방울은 *이차* 저항을 따른다. <Formula>F_drag = ½ ρ C_d A v²</Formula>: 힘이 속도의 1차가
+  아니라 *제곱*에 비례해 자란다. 종단속도 논리는 여전히 동일 — <Formula>dv/dt = 0</Formula>을 풀어{" "}
+  <Formula>g = k v_t²</Formula>, <Formula>v_t = √(g/k)</Formula> — 그러나 *접근*은 더 이상 깨끗한
+  지수가 아니고, 수치도 다르다. 선형 저항의 <Formula>v_t = g/k</Formula>는 저속/소형 (낮은 레이놀즈
+  수) 에 대한 교육용 단순화. 답의 *모양* (힘 균형의 점근선) 은 어느 저항 법칙이든 같지만, 닫힌 형식은
+  다르다.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **종단속도는 최대값이 아니다 — 평형이다.** 중력은 상수 힘, 저항은 속도와 함께 자라는 힘. 둘이
+  균형을 이루는 곳에서 <Formula>dv/dt = 0</Formula>, 속도가 변하지 않는다. 식{" "}
+  <Formula>dv/dt = g − kv</Formula>가 "낙하는 왜 평탄해지나"를 "<Formula>g − kv = 0</Formula>의
+  고정점은 어디인가?"로 바꾸고, 답은 대수 한 줄.
+</Pin>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="위젯 읽기 · 점근선에서 종단속도 읽기">
+
+위젯에서 *빗방울* 프리셋 (<Formula>k = 1.6</Formula>) 을 누른다. 점선 점근선에서 종단속도를 계산 없이 읽어내라. 그 다음 <Formula>v_t = g/k</Formula>, <Formula>g = 9.8</Formula>로 식에서 확인.
+
+<Solution>
+  점근선이 약 <Formula>6.1 m/s</Formula> 근처. 식: <Formula>v_t = 9.8 / 1.6 ≈ 6.13</Formula>. 일치.
+  실제 빗방울이 ~9 m/s인 이유는 실제 저항이 이차에 가깝기 때문 — 같은 k의 선형 저항은 약간 과소
+  추정. 답의 *모양* (힘 균형의 점근선) 은 어느 저항 법칙에서든 정확히 같다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="dv/dt = 0을 손으로 풀기" noCalculator>
+
+<Formula>g = 10 m/s²</Formula>, <Formula>k = 0.5 / s</Formula>. 종단속도는? 이제 <Formula>k</Formula>를 두 배로 (<Formula>1.0</Formula>) — <Formula>v_t</Formula>는 어떻게 변하나? 절반으로 (<Formula>0.25</Formula>) 줄이면?
+
+<Solution>
+  <Formula>v_t = g/k</Formula>. <Formula>k = 0.5</Formula>: <Formula>v_t = 20 m/s</Formula>.{" "}
+  <Formula>k → 1.0</Formula>으로 두 배 시 <Formula>v_t</Formula>는 절반인{" "}
+  <Formula>10 m/s</Formula>. <Formula>k → 0.25</Formula>로 절반 시 <Formula>v_t</Formula>는 두 배인{" "}
+  <Formula>40 m/s</Formula>. 관계는 *반비례*: 저항이 크면 종단속도가 작고, 저항이 작으면 종단속도가
+  크다. (볼링공은 단위 질량당 k가 작고, 깃털은 크다.)
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="v_t 위/아래에서 dv/dt 부호">
+
+<Formula>g = 9.8</Formula>, <Formula>k = 0.4</Formula>: 종단속도는 <Formula>v_t = 24.5 m/s</Formula>. 세 속도에서 <Formula>dv/dt</Formula>를 계산: <Formula>v = 10 m/s</Formula>, <Formula>v = 24.5 m/s</Formula>, <Formula>v = 40 m/s</Formula>. 각각의 *부호*가 무엇을 말해주는가?
+
+<Solution>
+  <Formula>dv/dt = 9.8 − 0.4 v</Formula>. <Formula>v = 10</Formula>:{" "}
+  <Formula>9.8 − 4 = +5.8 m/s²</Formula> (양수 — 아직 가속). <Formula>v = 24.5</Formula>:{" "}
+  <Formula>9.8 − 9.8 = 0</Formula> (종단). <Formula>v = 40</Formula>:{" "}
+  <Formula>9.8 − 16 = −6.2 m/s²</Formula> (음수 — 위에서 v_t로 감속). *dv/dt의 부호가 v가 오를지,
+  유지될지, 떨어질지를 말해준다 — 평형은 정확히 그 부호가 뒤집히는 자리.*
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="사악한 것 · '중력이 사라졌다'">
+
+학생이 종단속도로 떨어지는 빗방울을 보고 결론을 내린다: "방울이 가속하지 않으니, 중력은 더 이상 작용하지 않는 거다." 한 문장으로 반박하라. 올바른 그림은?
+
+<Solution>
+  중력은 변하지 않는다 — 여전히 풀세기 <Formula>m·g</Formula>로 당긴다. 변한 건 저항이 자라서
+  중력과 *반대 방향으로 같은 크기*가 됐다는 것. *알짜* 힘이 0이지, 중력이 0이 아니다. 가속은
+  *알짜* 힘에 대한 반응이지, 개별 힘의 부재가 아니다. *평형은 상쇄지 사라짐이 아니다.* 같은 오해가
+  도처에 있다 — 공중에 떠 있는 헬리콥터에도 중력이 작용하고, 책상에 놓인 책에도 중력이 작용한다.
+  두 경우 모두 다른 힘이 정확히 반대로 균형을 이룰 뿐이다.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  입문 물리는 다루기 쉬워서 자유낙하 (저항 없음) 를 가르치고, "실제 낙하는 공기 저항이 있는데 복잡함"
+  하고 손사래를 친다. 그 복잡함은 한 식의 한 항이다: <Formula>dv/dt = g − kv</Formula>. 이 한 줄에서
+  종단속도는 대수 한 줄 (<Formula>g = kv_t</Formula>), 접근은 적분 한 줄 (<Formula>v(t) = v_t(1−e^(−kt))</Formula>),
+  그리고 충전되는 축전기와 식어가는 커피와의 *연결*은 한 단락. Lemma는 식을 독자 눈앞에 둔다 —
+  *물리는 정말 거기에 산다.* 교과서 사이드바를 채우는 "흔한 종단속도 표"가 아니라. 종단속도는 빗방울에
+  대한 사실이 아니라, 안정 고정점을 가진 모든 1계 시스템에 대한 사실이다.
+</WhyNotTaught>

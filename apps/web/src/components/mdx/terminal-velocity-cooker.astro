@@ -1,0 +1,7 @@
+---
+import { TerminalVelocityCooker as TerminalVelocityCookerReact } from "../widgets/terminal-velocity-cooker";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<TerminalVelocityCookerReact language={lang} client:load />
