@@ -43,6 +43,7 @@ export { default as TfIdfCooker } from "./tf-idf-cooker.astro";
 export { default as ImageCompressionCooker } from "./image-compression-cooker.astro";
 export { default as PortfolioMixer } from "./portfolio-mixer.astro";
 export { default as TerminalVelocityCooker } from "./terminal-velocity-cooker.astro";
+export { default as JpegBlockLab } from "./jpeg-block-lab.astro";
 export { default as TwoPendulums } from "./two-pendulums.astro";
 export { default as TwoStacks } from "./two-stacks.astro";
 export { default as VectorRoles } from "./vector-roles.astro";

@@ -1,0 +1,7 @@
+---
+import { JpegBlockLab as JpegBlockLabReact } from "../widgets/jpeg-block-lab";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<JpegBlockLabReact language={lang} client:load />

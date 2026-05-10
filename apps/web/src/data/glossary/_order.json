@@ -91,5 +91,8 @@
   "correlation",
   "terminal-velocity",
   "drag",
-  "equilibrium"
+  "equilibrium",
+  "basis",
+  "dct",
+  "quantization"
 ]

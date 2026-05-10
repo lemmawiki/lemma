@@ -511,6 +511,102 @@ def raw(query, doc):
 [round(raw("the", d), 3)   for d in toks]   # → [2, 1, 0, 1]
 [round(score("the", d), 3) for d in toks]   # → [0.139, 0.104, 0, 0.104]`,
   },
+  jpegCompression: {
+    arc3: `import numpy as np
+
+# 8x8 DCT-II in matrix form. The cosine matrix M is the same one JPEG uses;
+# applying it twice (rows then columns) gives the 2D DCT.
+N = 8
+
+def dct_matrix(N=8):
+    M = np.zeros((N, N))
+    for k in range(N):
+        for n in range(N):
+            M[k, n] = np.cos((2*n + 1) * k * np.pi / (2*N))
+    M[0, :] *= 1 / np.sqrt(N)
+    M[1:, :] *= np.sqrt(2 / N)
+    return M
+
+M = dct_matrix(N)
+
+def dct2d(block):
+    return M @ block @ M.T   # rows, then columns
+
+def idct2d(coef):
+    return M.T @ coef @ M    # inverse: just transpose
+
+# DCT itself is lossless. Round-trip an 8x8 block and the error is zero
+# (up to floating point).
+block = np.random.default_rng(0).integers(0, 256, size=(8, 8)).astype(float)
+coef  = dct2d(block)
+back  = idct2d(coef)
+np.allclose(block, back)   # → True   the transform alone loses nothing`,
+    arc4: `# Keep top K coefficients by magnitude; zero the rest. JPEG's quantization
+# step is more elaborate (a per-coefficient divisor table), but the
+# qualitative effect — kill small / high-frequency entries — is the same.
+def keep_top_k(coef, k):
+    flat = coef.flatten()
+    if k >= flat.size: return coef.copy()
+    threshold = np.sort(np.abs(flat))[-k]
+    out = coef.copy()
+    out[np.abs(out) < threshold] = 0
+    return out
+
+def reconstruct(coef, k):
+    return idct2d(keep_top_k(coef, k))
+
+# Compare four block types: how many of 64 coefficients does each one need?
+def kept_to_target_error(block, target_mae=2.0):
+    coef = dct2d(block)
+    for k in range(1, 65):
+        err = np.mean(np.abs(reconstruct(coef, k) - block))
+        if err <= target_mae:
+            return k, err
+    return 64, np.mean(np.abs(reconstruct(coef, 64) - block))
+
+# (assumes flat / gradient / texture / checker block builders defined elsewhere)
+[(name, *kept_to_target_error(b()))
+ for name, b in (("flat", lambda: np.full((8,8), 128.0)),
+                 ("gradient", lambda: np.add.outer(*[np.linspace(0,255,8)]*2) / 2),
+                 ("checker", lambda: 130 + 100*((np.indices((8,8)).sum(0) % 2)*2 - 1)))]
+# → [('flat',     1, 0.0),    DC alone reconstructs perfectly
+#    ('gradient', 3, ~1.5),   a handful of low-freq entries
+#    ('checker',  1, 0.0)]    surprisingly: ALL energy at one high-freq cell
+# Same data, very different sparsity in the DCT basis.`,
+    arc5: `# Why the file actually shrinks: after quantization, the coefficient
+# stream has lots of zeros and small ints; entropy coding (Huffman or
+# arithmetic) packs that stream tightly. Same entropy module that bounds
+# tf-idf and the lossless image-compression page — JPEG just feeds it a
+# stream that's already been pre-sparsified by DCT + quantization.
+from collections import Counter
+from math import log2
+
+def entropy(symbols):
+    counts = Counter(symbols)
+    N = len(symbols)
+    return sum(-(c / N) * log2(c / N) for c in counts.values() if c > 0)
+
+# Pretend a 256-block image. Compare the entropy of the raw pixel stream
+# to the entropy of the kept-DCT-coefficient stream after rounding.
+rng = np.random.default_rng(1)
+img = rng.integers(50, 200, size=(8, 32))   # 8 high × 32 wide = 32 blocks of 8x8
+
+# This is illustrative; real JPEG quantizes per coefficient (zigzag table).
+raw_h = entropy(img.flatten().tolist())
+print(f"raw pixel H ≈ {raw_h:.2f} bits/symbol")
+
+# After DCT + top-8-of-64 + integer rounding, most symbols are zero.
+coef_stream = []
+for bj in range(4):
+    block = img[:, bj*8:(bj+1)*8].astype(float)
+    kept = keep_top_k(dct2d(block), k=8)
+    coef_stream.extend(np.round(kept).astype(int).flatten().tolist())
+sparse_h = entropy(coef_stream)
+print(f"kept-8 DCT stream H ≈ {sparse_h:.2f} bits/symbol")
+# Typical run: raw ~7 bits/symbol, sparse-DCT ~1-2 bits/symbol.
+# Same entropy bound, very different alphabet — the gap is what JPEG
+# saves in file size on top of what discarding coefficients already saved.`,
+  },
   terminalVelocity: {
     arc3: `import math
 

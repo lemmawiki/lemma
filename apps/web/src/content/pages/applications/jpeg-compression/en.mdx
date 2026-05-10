@@ -1,0 +1,191 @@
+---
+title: Why JPEG Throws Pixels Away · Lemma
+description: Lossy compression isn't bound by entropy — it picks what to discard. JPEG changes basis to find the coordinates that don't matter, drops them, and Huffman-packs the rest.
+breadcrumb:
+  current: graphics · why JPEG throws pixels away
+---
+
+import {
+  CodeBlock,
+  Term,
+  Exercise,
+  Solution,
+  Counterexample,
+  WhyNotTaught,
+  JpegBlockLab,
+} from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · loss you can't see">
+
+# JPEG throws information away. Why does the picture still look like a picture?
+
+The [previous page](/en/graphics/image-compression) closed at the <Term id="lossless">lossless</Term> wall: histogram entropy is a hard floor; even a structure-aware coder can't push below it. JPEG cheats — but the cheat isn't sloppy. It picks _which_ information to throw away based on what humans don't notice, then compresses the rest. The result is a 4 MB photograph that fits in 400 KB without looking damaged. The mathematics is one change of basis followed by aggressive rounding.
+
+<Lede>**Lossy compression isn't compression — it's *prioritization*.**</Lede>
+
+</Hook>
+
+<JpegBlockLab />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="Cut the image into 8×8 blocks">
+
+JPEG starts by chopping the image into independent 8×8 pixel tiles. Why blocks? Two reasons. **Locality**: real pictures aren't statistically uniform across the whole frame — a face has different structure from sky. Working in small windows lets the coder adapt without modeling global structure. **Tractability**: an 8×8 block is 64 numbers, small enough that direct algebra (an 8×8 transform) is fast and exact. The trade-off is *blockiness* — at low quality, the 8×8 tile boundaries become visible because each block was rounded independently. The widget's "checkerboard" preset is one block; everything below scales to the rest of the picture by repetition.
+
+</ArcRow>
+
+<ArcRow n={2} title="See the block in a different basis">
+
+A 64-entry pixel block is a [vector](/en/modules/vectors) in 64-dimensional space. The standard <Term id="basis">basis</Term> is "one direction per pixel position": coordinate <Formula>(0, 0)</Formula> means "the pixel at the top-left." It's the obvious basis but it's not the only one. *Any* set of 64 linearly independent directions is also a basis; the same block has different coordinates in each.
+
+Crucially: switching basis is *lossless*. The information in the block doesn't change; only the labels do. If the new basis is *orthonormal*, switching is just a matrix multiplication, and switching back is multiplying by the transpose. So the question is: *is there a basis that's better than pixels for what JPEG wants to do?*
+
+</ArcRow>
+
+<ArcRow n={3} title="DCT — a basis where natural images are sparse">
+
+JPEG's chosen basis is the <Term id="dct">discrete cosine transform</Term> (DCT). Each of its 64 directions is a 2D cosine pattern at a particular spatial frequency. The <Formula>(0, 0)</Formula> direction is constant — it carries the block's *average brightness*, called the *DC* term. The <Formula>(7, 7)</Formula> direction is a fast-varying checkerboard — it carries the highest frequency the block can represent. In between, smooth patterns sit in the low-frequency corner; sharp edges and noise sit in the high-frequency corner.
+
+The empirical claim that makes JPEG work: *natural images are sparse in the DCT basis*. Most of the energy in any given 8×8 block of a typical photograph concentrates in maybe 5–10 of the 64 DCT coefficients, almost always the low-frequency ones. The widget makes this readable. Toggle to **gradient**: nearly all energy at <Formula>(0, 0)</Formula> and a couple of immediate neighbors. Toggle to **flat**: literally one coefficient (the DC term) carries everything. Toggle to **checkerboard**: an artificial extreme — energy concentrates at a single high-frequency cell, but the *sparsity* is still there.
+
+<CodeBlock slug="jpegCompression" arc="arc3" />
+
+</ArcRow>
+
+<ArcRow n={4} title="Quantization — drop what doesn't matter">
+
+The compression happens here. After the DCT, each coefficient is divided by an integer from a *quantization table* and rounded to the nearest whole number. The quantization table is hand-tuned (and standardized) to divide *more aggressively* in high-frequency cells than in low-frequency ones, because the human visual system is *less sensitive* to high-frequency error. Small high-frequency coefficients round straight to zero; the kept coefficients lose precision but survive.
+
+The widget uses a simplified version: keep the top <Formula>K</Formula> coefficients by magnitude, zero the rest. Real JPEG quantization is per-coefficient with a fixed table per quality setting, but the qualitative effect is identical. Drop the slider to <Formula>K = 4</Formula> on the **texture** preset and you'll see the reconstruction is still recognizable — most of what you saw was carried by those four numbers. Drop to <Formula>K = 1</Formula> and you get a flat block at the average brightness; the reconstruction has *zero* error on the **flat** preset because flat *was* one number's worth of information.
+
+This is also where lossy <Term id="quantization">quantization</Term> earns its name and its danger: rounding is a one-way operation. The original coefficient cannot be recovered from the rounded value. The transform is invertible; the rounding is not.
+
+<CodeBlock slug="jpegCompression" arc="arc4" />
+
+</ArcRow>
+
+<ArcRow n={5} title="Reconstruct — inverse DCT brings the picture back">
+
+To decode, JPEG runs the inverse DCT on the (now mostly zero) coefficient grid. The inverse is the same matrix machinery as the forward DCT, just with the cosine matrix transposed. The output is no longer the original block — it's a *projection* of the original onto the subspace spanned by the kept basis vectors. That projection is the closest approximation to the original under the L² metric, given that you're only allowed to use the kept directions.
+
+Two failure modes show up here. **Blocking**: each 8×8 tile was rounded independently, so adjacent tiles can disagree along their shared edge. **Ringing**: dropping high-frequency coefficients near a sharp edge causes oscillations because the remaining basis vectors can't reproduce a step function. Both are visible at low quality settings. They're the price of the trade.
+
+</ArcRow>
+
+<ArcRow n={6} title="Entropy coding — the final wrap">
+
+After quantization, each block is a stream of integers, mostly zero, with the kept values arranged in a zigzag scan order (low-frequency first). That stream goes into Huffman or arithmetic coding — the [entropy module's](/en/modules/entropy) shannon-bound business — and *that's* where the file actually shrinks on disk. JPEG's contribution isn't the entropy coder; that's standard machinery. JPEG's contribution is producing a stream the entropy coder can pack tightly. Long runs of zeros compress to almost nothing; small integers carry few bits each.
+
+So the file size has three multiplicative savings: **fewer non-zero coefficients** (most rounded to zero), **smaller magnitudes** for the kept ones, and **runs of zeros** that entropy-code beautifully. The page in three bullets:
+
+- *Change basis* (DCT) so the picture's information concentrates in a few coordinates.
+- *Quantize* (round) the small coordinates to zero — that's the lossy step.
+- *Entropy-code* (Huffman) the resulting sparse integer stream — that's where the bytes are saved.
+
+<CodeBlock slug="jpegCompression" arc="arc5" />
+
+<Counterexample>
+  Two images can have the *same DCT-coefficient histogram* (same multiset of values) and *very
+  different* perceptual quality after quantization, because perceptual quality depends on *which
+  cell* a coefficient sits in — high-frequency error is hidden, low-frequency error is glaring.
+  Histogram entropy can't tell them apart; the human eye can. JPEG's quantization table encodes
+  this asymmetry: smaller divisors for low-frequency cells, larger for high-frequency. The
+  *entropy* of the rounded stream tells you the file size; the *quantization table* tells you the
+  perceptual quality. They are different objectives, both stacked on the same DCT basis.
+</Counterexample>
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **Lossy compression isn't compression — it's *prioritization*.** JPEG changes basis (DCT) so
+  the picture becomes sparse, throws away the coordinates that don't matter (quantization), and
+  Huffman-packs the rest (entropy coding). Three steps, one savings: fewer coefficients, smaller
+  values, longer zero runs. The math doesn't beat entropy — it picks a different alphabet.
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="flat block · one coefficient" noCalculator>
+
+In the widget, pick the **flat** preset and slide <Formula>K</Formula> down to 1. The reconstruction is still exactly the original. Why does keeping just *one* coefficient suffice? Which coefficient is it, and what does it carry?
+
+<Solution>
+  A flat 8×8 block (every pixel value the same) has all its information in the <Formula>(0, 0)</Formula>{" "}
+  DCT coefficient — the *DC term*, which encodes the average brightness. Every other coefficient
+  is exactly zero, because the cosine basis vectors at higher frequencies *integrate to zero*
+  against a constant. So the block sits *entirely* on one basis direction; one coefficient is
+  enough to specify it. The widget's "max error" reads 0 even at K=1.
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="checkerboard · high-frequency energy">
+
+In the widget, pick **checkerboard** and look at the DCT panel. Most of the energy concentrates at one cell. Where? Why is it that cell, and what does it tell you about how JPEG would handle a real-image patch full of fine texture?
+
+<Solution>
+  An 8×8 block alternating dark/light at every pixel has its energy concentrated near{" "}
+  <Formula>(u, v) = (4, 4)</Formula> — the highest spatial frequency the basis can represent in
+  both directions, which is exactly what alternates every cell. *Real photographs of fine texture
+  (grass, hair, fabric) populate the high-frequency corner the same way.* JPEG's quantization
+  table divides those cells the most aggressively, so a low-quality JPEG of a textured patch loses
+  the texture first and looks "smudged" — the page in one prediction.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="texture · which coefficients go first">
+
+In the widget, pick **texture** and slide <Formula>K</Formula> from 64 down to 1. The reconstruction degrades as <Formula>K</Formula> falls. *Which* coefficients are dropped first, and why does that match what JPEG actually does?
+
+<Solution>
+  Coefficients are dropped in order of *increasing magnitude*. For a natural texture, that order
+  almost always starts at the high-frequency corner — small numbers there are noise; small numbers
+  in the low-frequency corner would be unusual because the DC and near-DC terms carry the bulk
+  energy. So the visible drop is "fine detail goes first, average brightness goes last." JPEG's
+  zigzag scan + per-coefficient quantization table follows this same order on purpose — the table
+  is empirically tuned so the quantized stream is *also* sorted by perceptual importance. Same
+  ordering principle, different mechanism.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="the evil one · same entropy, different quality">
+
+Two compressed images of the same scene end up with byte streams that have *identical* entropy. One looks fine; the other has visible blocky artifacts. How is that possible? In one sentence, distinguish what entropy bounds and what it doesn't.
+
+<Solution>
+  Entropy bounds the *file size* — the average bits per symbol in the rounded coefficient
+  stream — but not the *perceptual quality*. The same number of bits can buy a visually clean
+  picture (if the quantizer dropped *high-frequency* coefficients) or a visually broken one (if
+  the quantizer rounded *low-frequency* coefficients aggressively). Entropy says "you'll save N
+  bytes"; the quantization table says "and here's what the picture will look like." Two different
+  numbers, both essential, only one bounded by Shannon.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<WhyNotTaught>
+  Image-processing courses introduce DCT and quantization as JPEG-specific machinery. Information
+  theory courses introduce entropy and entropy coding as Shannon-specific. The bridge between them —
+  *change of basis is what makes the entropy bound* survivable on real signals* — gets left
+  implicit. Lemma puts the three steps (basis change, quantization, entropy coding) in one arc so
+  the reader can see what each one does and what it doesn't. The hard part of lossy compression
+  isn't the entropy coder (that's standard) and isn't the transform (that's reversible). The hard
+  part is the quantization table — the hand-tuned weights that decide *which information humans
+  don't notice*. That table is where psychophysics meets information theory, and it's also where
+  every codec since 1992 has competed.
+</WhyNotTaught>

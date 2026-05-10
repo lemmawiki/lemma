@@ -106,6 +106,21 @@ export const applications: ApplicationMeta[] = [
     },
   },
   {
+    id: "jpeg-compression",
+    href: "/graphics/jpeg-compression",
+    pillar: "graphics",
+    modules: ["vectors", "entropy"],
+    status: "available",
+    title: {
+      en: "Why JPEG Throws Pixels Away",
+      ko: "JPEG는 왜 픽셀을 버릴까",
+    },
+    hook: {
+      en: "Lossy compression isn't bound by entropy — it picks what to discard. JPEG changes basis (DCT) so the picture becomes sparse, throws away the coordinates that don't matter (quantization), and Huffman-packs the rest. Three steps, one savings: fewer coefficients, smaller values, longer zero runs.",
+      ko: "손실 압축은 엔트로피에 매이지 않는다 — 무엇을 버릴지를 고른다. JPEG는 기저를 바꿔 (DCT) 그림이 희소해지게 만들고, 의미 없는 좌표를 버리고 (양자화), 나머지를 Huffman으로 묶는다. 세 단계, 하나의 절약: 적은 계수, 작은 값, 긴 0의 연속.",
+    },
+  },
+  {
     id: "image-compression",
     href: "/graphics/image-compression",
     pillar: "graphics",
