@@ -121,13 +121,13 @@ $∫_a^b f(x) dx = F(b) − F(a)$
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`물리 : 속도가 거리로 쌓이고, 힘×속도가 에너지로 쌓인다.
 금융 : 연속 지급 비율이 — 할인된 채 — 현재가치로 쌓인다.`}</pre>
 
-[**포물선 운동**](/ko/physics/projectile-motion) — 떨어진 거리는 <Formula>{"∫_0^t v(s) ds = ½ g t²"}</Formula>. 속도 <Formula>v(s) = g · s</Formula>가 변화율이고, 그 아래 넓이가 거리다. 위치를 두 번 미분하면 가속도가 나오고, 가속도를 두 번 적분하면 같은 사다리를 거꾸로 올라 위치가 다시 나온다.
+[**포물선 운동**](/ko/physics/projectile-motion) — 떨어진 거리는 $\int_0^t v(s)\,ds = \tfrac{1}{2} g t^2$. 속도 $v(s) = g \cdot s$가 변화율이고, 그 아래 넓이가 거리다. 위치를 두 번 미분하면 가속도가 나오고, 가속도를 두 번 적분하면 같은 사다리를 거꾸로 올라 위치가 다시 나온다.
 
-[**종단속도**](/ko/physics/terminal-velocity) — 속도가 더 이상 선형이 아니라 점근선으로 휜다. 그래도 떨어진 거리는 여전히 <Formula>{"∫_0^t v(s) ds"}</Formula> — 곡선 아래 넓이, 곡선 모양만 바뀐 것. 같은 누적, 더 어려운 모양.
+[**종단속도**](/ko/physics/terminal-velocity) — 속도가 더 이상 선형이 아니라 점근선으로 휜다. 그래도 떨어진 거리는 여전히 $\int_0^t v(s)\,ds$ — 곡선 아래 넓이, 곡선 모양만 바뀐 것. 같은 누적, 더 어려운 모양.
 
-[**감쇠 진동자**](/ko/physics/damped-oscillator) — 사인 구동에서 평균 일률은 <Formula>{"⟨F · ẋ⟩"}</Formula>, 한 주기에 걸친 적분이다. 피크 — 공명 — 은 정확히 이 적분이 가장 클 때다. 공명에서 벗어나면 더하는 기여와 빼는 기여가 적분 안에서 상쇄된다.
+[**감쇠 진동자**](/ko/physics/damped-oscillator) — 사인 구동에서 평균 일률은 $\langle F \cdot \dot{x} \rangle$, 한 주기에 걸친 적분이다. 피크 — 공명 — 은 정확히 이 적분이 가장 클 때다. 공명에서 벗어나면 더하는 기여와 빼는 기여가 적분 안에서 상쇄된다.
 
-[**현재가치**](/ko/finance/present-value) — 연속 현금흐름 비율 <Formula>c(t)</Formula>의 현재가치는 <Formula>{"PV = ∫_0^T c(t) e^(−rt) dt"}</Formula>. 할인계수 <Formula>e^(−rt)</Formula>가 각 미래 시점을 줄인 다음에야 적분이 합산한다. *시간에 걸친 돈*은 구조적으로 *시간에 걸친 속도*와 같다 — 변화율, 누적된 것.
+[**현재가치**](/ko/finance/present-value) — 연속 현금흐름 비율 $c(t)$의 현재가치는 $PV = \int_0^T c(t) e^{-rt}\,dt$. 할인계수 $e^{-rt}$가 각 미래 시점을 줄인 다음에야 적분이 합산한다. *시간에 걸친 돈*은 구조적으로 *시간에 걸친 속도*와 같다 — 변화율, 누적된 것.
 
 **이름은 달라도 같은 일이다 — 물리에서는 거리, 금융에서는 현재가치. 둘 다 변화율 곡선 아래 넓이이고, 어떤 변화율인지는 응용이 정한다.**
 

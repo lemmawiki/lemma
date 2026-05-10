@@ -124,13 +124,13 @@ The other half of the theorem — the part that says $(d/dx) ∫_a^x f(t) dt = f
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`physics : velocity is accumulated into distance; force·velocity into energy.
 finance : a continuous payment rate is accumulated — discounted — into present value.`}</pre>
 
-[**Projectile motion**](/en/physics/projectile-motion) — fall distance is <Formula>{"∫_0^t v(s) ds = ½ g t²"}</Formula>. The velocity <Formula>v(s) = g · s</Formula> is the rate; integrating gives the area under it; that area is the distance. Two derivatives turn position into acceleration; two integrations run the ladder back the other way.
+[**Projectile motion**](/en/physics/projectile-motion) — fall distance is $\int_0^t v(s)\,ds = \tfrac{1}{2} g t^2$. The velocity $v(s) = g \cdot s$ is the rate; integrating gives the area under it; that area is the distance. Two derivatives turn position into acceleration; two integrations run the ladder back the other way.
 
-[**Terminal velocity**](/en/physics/terminal-velocity) — velocity is no longer linear; it bends toward an asymptote. Distance fallen is still <Formula>{"∫_0^t v(s) ds"}</Formula> — area under the curve, only the curve has shape now. Same accumulator, harder shape.
+[**Terminal velocity**](/en/physics/terminal-velocity) — velocity is no longer linear; it bends toward an asymptote. Distance fallen is still $\int_0^t v(s)\,ds$ — area under the curve, only the curve has shape now. Same accumulator, harder shape.
 
-[**Damped oscillator**](/en/physics/damped-oscillator) — average power input under sinusoidal forcing is <Formula>{"⟨F · ẋ⟩"}</Formula>, an integral over a cycle. The peak — resonance — is exactly where this integral is largest; off-resonance, alternating contributions cancel under the integral sign.
+[**Damped oscillator**](/en/physics/damped-oscillator) — average power input under sinusoidal forcing is $\langle F \cdot \dot{x} \rangle$, an integral over a cycle. The peak — resonance — is exactly where this integral is largest; off-resonance, alternating contributions cancel under the integral sign.
 
-[**Present value**](/en/finance/present-value) — a continuous cash-flow rate <Formula>c(t)</Formula> has present value <Formula>{"PV = ∫_0^T c(t) e^(−rt) dt"}</Formula>. The discount factor <Formula>e^(−rt)</Formula> shrinks each future moment before the integral adds them. *Money over time* is structurally identical to *velocity over time*: a rate, accumulated.
+[**Present value**](/en/finance/present-value) — a continuous cash-flow rate $c(t)$ has present value $PV = \int_0^T c(t) e^{-rt}\,dt$. The discount factor $e^{-rt}$ shrinks each future moment before the integral adds them. *Money over time* is structurally identical to *velocity over time*: a rate, accumulated.
 
 **Same machine, different nouns: distance in physics, present value in finance — both are the area under a rate curve, with the rate set by the application.**
 

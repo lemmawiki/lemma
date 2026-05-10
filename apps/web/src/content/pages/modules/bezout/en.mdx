@@ -107,7 +107,7 @@ Eliminate one variable. Two polynomials $f(x, y), g(x, y)$, viewed as polynomial
 
 <ArcRow n={7} title="Where this shows up — same count, two pillars">
 
-**Bezout begins as a counting theorem for intersections, then becomes the bookkeeping that makes elliptic-curve addition reliable.** The product <Formula>d · e</Formula> is the same number on both sides; only what gets counted differs.
+**Bezout begins as a counting theorem for intersections, then becomes the bookkeeping that makes elliptic-curve addition reliable.** The product $d \cdot e$ is the same number on both sides; only what gets counted differs.
 
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`graphics : how many points two visible conics actually share — once
            multiplicity, projective points, and complex roots are counted.
@@ -116,7 +116,7 @@ finance  : the third intersection of an elliptic curve with a chord — the
 
 [**Curve intersections**](/en/graphics/curve-intersections) — two conics in the plane meet in *exactly four points*, once you accept the three fixes (projective plane, multiplicity, complex roots). The widget runs the count: tangent contact contributes 2 to the multiplicity, parallel asymptotes contribute points-at-infinity, and disjoint conics meet at four complex points. Bezout decides what "two conics meet" means.
 
-[**Bitcoin signature**](/en/finance/bitcoin-signature) — an elliptic curve has degree 3; a chord has degree 1; Bezout says they meet in <Formula>3 · 1 = 3</Formula> points. Two of those points are the chord's endpoints; the third is the *sum* under elliptic-curve addition. The signature scheme is built on this third-point construction iterated millions of times — the count has to be exact, every time.
+[**Bitcoin signature**](/en/finance/bitcoin-signature) — an elliptic curve has degree 3; a chord has degree 1; Bezout says they meet in $3 \cdot 1 = 3$ points. Two of those points are the chord's endpoints; the third is the *sum* under elliptic-curve addition. The signature scheme is built on this third-point construction iterated millions of times — the count has to be exact, every time.
 
 **Same theorem, different ledger: graphics asks "where do these two curves meet"; finance asks "what is the third point on this chord". Bezout guarantees the third point exists and is unique, and that is why ECDSA is well-defined.**
 
