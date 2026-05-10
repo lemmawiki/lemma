@@ -7,6 +7,7 @@ import { spikes } from "../data/spikes";
 import { journeys } from "../data/journeys";
 import { glossary } from "../data/glossary";
 import { HeaderInner } from "../components/header";
+import { ProgressRecent } from "../components/page/progress-recent";
 
 const KICKER =
   "mb-4 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute";
@@ -343,6 +344,7 @@ export function Home() {
       <Hero />
       <StickyHeader />
       <Counters />
+      <ProgressRecent />
       <ApplicationsList />
       <ModulesList />
       <JourneysList />

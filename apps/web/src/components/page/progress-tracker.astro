@@ -1,0 +1,52 @@
+---
+// Records reader state to localStorage on content pages.
+//
+// Only mounts on /<lang>/<kind>/<slug> routes — not the home hub, not /graph.
+// Records the *first* visit after 5 seconds (so accidental clicks don't
+// appear in the recent list), then refreshes timestamp + scrollMax on
+// scroll (throttled to once per 2 seconds), on tab hide, and on unload.
+---
+
+<script>
+  import { updatePageRead } from "../../lib/progress";
+
+  const ARM_DELAY_MS = 5000;
+  const THROTTLE_MS = 2000;
+
+  let scrollMax = 0;
+  let lastSaved = 0;
+  let armed = false;
+
+  function currentScrollFraction(): number {
+    const docEl = document.documentElement;
+    const total = docEl.scrollHeight - window.innerHeight;
+    if (total <= 0) return 1;
+    return Math.min(1, Math.max(0, window.scrollY / total));
+  }
+
+  function persist(force = false) {
+    if (!armed) return;
+    const now = Date.now();
+    if (!force && now - lastSaved < THROTTLE_MS) return;
+    lastSaved = now;
+    updatePageRead(window.location.pathname, scrollMax);
+  }
+
+  function onScroll() {
+    scrollMax = Math.max(scrollMax, currentScrollFraction());
+    persist(false);
+  }
+
+  // Arm after the dwell delay — only readers who actually stay get tracked.
+  window.setTimeout(() => {
+    armed = true;
+    scrollMax = Math.max(scrollMax, currentScrollFraction());
+    persist(true);
+  }, ARM_DELAY_MS);
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") persist(true);
+  });
+  window.addEventListener("beforeunload", () => persist(true));
+</script>
