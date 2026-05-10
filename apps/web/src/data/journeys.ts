@@ -209,6 +209,92 @@ export const journeys: JourneyMeta[] = [
       },
     ],
   },
+
+  {
+    id: "change-and-accumulation",
+    title: {
+      en: "Change and accumulation in 7 days",
+      ko: "7일에 변화와 누적까지",
+    },
+    hook: {
+      en: "Calculus is two operations — change and its accumulation — and the same pair runs both physics and finance. Distance and present value are the same shape, with different rates plugged in.",
+      ko: "미적분은 두 연산이다 — 변화와 그 누적. 같은 짝이 물리와 금융을 동시에 돌린다. 거리와 현재가치는 같은 모양에 다른 변화율을 꽂은 결과다.",
+    },
+    tagline: {
+      en: "How calculus runs both physics and finance — same math, different nouns.",
+      ko: "같은 미적분이 물리와 금융을 동시에 돌린다 — 같은 수학, 다른 이름.",
+    },
+    duration: 7,
+    destination: {
+      en: "The same accumulator at work in distance and present value.",
+      ko: "거리와 현재가치에서 같은 누적기를 알아보기.",
+    },
+    days: [
+      {
+        day: 1,
+        page: "/physics/projectile-motion",
+        kind: "application",
+        why: {
+          en: "Start with the falling ball — read once without any modules. Note where you reach for v(t) or y(t) and feel the gap.",
+          ko: "떨어지는 공으로 시작. 모듈 없이 한 번 읽고, v(t)나 y(t)를 손으로 더듬는 자리를 표시한다.",
+        },
+      },
+      {
+        day: 2,
+        page: "/modules/derivatives",
+        kind: "module",
+        why: {
+          en: "The change side. Position differentiated once is velocity; twice is acceleration. The whole projectile arc 1 is exactly this ladder.",
+          ko: "변화 쪽. 위치를 한 번 미분하면 속도, 두 번 미분하면 가속도. 포물선 § 1 전체가 이 사다리.",
+        },
+      },
+      {
+        day: 3,
+        page: "/modules/integration",
+        kind: "module",
+        why: {
+          en: "The accumulation side — the pair of the derivative. Reverse the ladder: from acceleration back to velocity, from velocity back to position. Note Arc 6 — the same accumulator runs finance too, with no edits to the math.",
+          ko: "누적 쪽 — 미분의 짝. 사다리를 거꾸로: 가속도에서 속도로, 속도에서 위치로. § 6에 주목 — 같은 누적기가 금융에서도 식 한 줄도 안 바꾸고 그대로 돈다.",
+        },
+      },
+      {
+        day: 4,
+        page: "/physics/projectile-motion",
+        kind: "review",
+        why: {
+          en: "Re-read with both tools in hand. The y(t) = ½gt² formula now reads as ∫₀ᵗ g·s ds — the triangle area you read off geometry on day 1, derived this time from the antiderivative.",
+          ko: "두 도구를 쥐고 다시 읽는다. y(t) = ½gt² 공식이 이제 ∫₀ᵗ g·s ds로 읽힌다 — § 1에서 기하로 읽었던 삼각형 넓이가 이번에는 원시함수에서 유도된다.",
+        },
+      },
+      {
+        day: 5,
+        page: "/physics/terminal-velocity",
+        kind: "application",
+        why: {
+          en: "Change isn't free anymore — drag bends velocity toward an asymptote. Distance is still ∫₀ᵗ v(s) ds; the curve just isn't a triangle. Same accumulator, harder shape.",
+          ko: "변화가 더는 공짜가 아니다 — 저항이 속도를 점근선으로 휜다. 거리는 여전히 ∫₀ᵗ v(s) ds, 곡선만 삼각형이 아니다. 같은 누적, 더 어려운 모양.",
+        },
+      },
+      {
+        day: 6,
+        page: "/finance/present-value",
+        kind: "application",
+        why: {
+          en: "Same accumulator, finance noun. PV = ∫₀ᵀ c(t) e^(−rt) dt — discount each future moment, sum them. Money over time is structurally identical to velocity over time.",
+          ko: "같은 누적, 금융 어휘. PV = ∫₀ᵀ c(t) e^(−rt) dt — 각 미래 시점을 할인하고 합한다. *시간에 걸친 돈*은 구조적으로 *시간에 걸친 속도*와 같다.",
+        },
+      },
+      {
+        day: 7,
+        page: "/modules/integration",
+        kind: "review",
+        why: {
+          en: "Re-read Arc 6 with all four consumers (projectile, terminal, oscillator, present-value) in hand. The cross-pillar admission is now firsthand — *same machine, different nouns*.",
+          ko: "이제 네 소비자(포물선, 종단속도, 진동자, 현재가치)를 다 손에 쥐고 § 6을 다시 읽는다. 필러를 가로지르는 인정이 이제는 직접 경험한 사실이다 — *같은 기계, 다른 이름*.",
+        },
+      },
+    ],
+  },
 ];
 
 export const journeyById: Record<string, JourneyMeta> = Object.fromEntries(

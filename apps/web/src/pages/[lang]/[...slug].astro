@@ -13,6 +13,8 @@ import { getCollection, render } from "astro:content";
 import Page from "../../layouts/page.astro";
 import Breadcrumb from "../../components/page/breadcrumb.astro";
 import GlossaryUsed from "../../components/page/glossary-used.astro";
+import ProgressTracker from "../../components/page/progress-tracker.astro";
+import { ProgressBanner } from "../../components/page/progress-banner";
 import { applicationByHref } from "../../data/applications";
 import { moduleByHref } from "../../data/modules";
 
@@ -100,7 +102,11 @@ const breadcrumb = entry.data.breadcrumb ?? {
     {breadcrumb.current}
   </Breadcrumb>
 
+  <ProgressBanner language={lang} client:load />
+
   <Content />
 
   {termIds.length > 0 && <GlossaryUsed lang={lang} ids={termIds} />}
+
+  <ProgressTracker />
 </Page>

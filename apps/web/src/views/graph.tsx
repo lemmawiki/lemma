@@ -14,6 +14,7 @@ const MONO = "font-mono text-[0.93em]";
 const MODULE_COLOR: Record<string, string> = {
   "parametric-curves": "#b6451e",
   derivatives: "#3a8c4a",
+  integration: "#8c5a2a",
   log: "#1e6da6",
   bezout: "#9a7a1a",
   linearization: "#7a4ea0",
@@ -471,12 +472,10 @@ function GraphSvg() {
 }
 
 function Reading({
-  appCount,
   modCount,
   edgeCount,
   multiCount,
 }: {
-  appCount: number;
   modCount: number;
   edgeCount: number;
   multiCount: number;
@@ -530,7 +529,7 @@ function Reading({
               <b>The manifesto's modular-graph promise has paid off.</b>{" "}
               <span className={MONO}>{pillarsActive.size}/4</span> pillars active,{" "}
               <span className={MONO}>
-                {appCount - orphanMods.length}/{modCount}
+                {modCount - orphanMods.length}/{modCount}
               </span>{" "}
               modules consumed, <span className={MONO}>{edgeCount}</span> edges drawn,{" "}
               <span className={MONO}>
@@ -712,12 +711,7 @@ export function Graph() {
         multiCount={multiCount}
       />
       <GraphSvg />
-      <Reading
-        appCount={appCount}
-        modCount={modCount}
-        edgeCount={edgeCount}
-        multiCount={multiCount}
-      />
+      <Reading modCount={modCount} edgeCount={edgeCount} multiCount={multiCount} />
     </>
   );
 }
