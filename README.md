@@ -125,9 +125,9 @@ We name what we refuse, because the refusals define the project as much as the i
 
 ## Status
 
-Proof-of-system stage. As of May 2026, Lemma has five live applications across all four pillars, three shared modules, and every module is consumed by at least one application. The graph is no longer an aspiration: finance, graphics, ML, and physics all have working entry points with widgets, code mode, exercises, and bilingual glossary support.
+Proof-of-system stage. As of May 2026, Lemma runs 16 applications — four under each pillar — over 8 shared modules, and every module is consumed by at least two applications. The modular graph is no longer a claim, it is a count, drawn at [lemma.wiki/en/graph](https://lemma.wiki/en/graph).
 
-Still early. Most of math is missing. But the central promises of this manifesto now have running examples: application before abstraction, visual intuition plus hand-solving, two modes, a modular graph, and term-level bilingual backfill.
+The manifesto used to run ahead of the code. It now describes the _shape_, not yet the territory: most of math is still missing. But the central claims — application before abstraction, visual intuition plus hand-solving, two modes (math → code, code → math), a modular graph, term-level bilingual backfill — each have running examples.
 
 If this manifesto resonates, the most useful contribution right now is not code — it is challenging the manifesto itself. Open an issue. Tell us what is wrong here, what is missing, what is too soft.
 
