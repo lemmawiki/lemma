@@ -87,14 +87,23 @@ The promise: any quantity that admits component-wise addition and scalar scaling
 
 </ArcRow>
 
-<ArcRow n={6} title="Where this module gets consumed">
+<ArcRow n={6} title="Where this shows up — one object, four faces">
 
-Every application Lemma ships either consumes vectors directly or hides them inside a higher-level abstraction. The widget's role toggle is not just rhetoric — each role corresponds to a live application that actually performs that arithmetic.
+**A vector is not "an arrow." It is a thing you can add and scale.** The face changes by pillar; the arithmetic doesn't.
 
-- [**Bezier curves**](/en/graphics/bezier-curves) — <Term id="control-point">control points</Term> are points; the recursive lerp uses convex combinations of those points; the resulting curve is a path of position vectors parametrized by <Formula>t</Formula>.
-- [**Projectile motion**](/en/physics/projectile-motion) — launch velocity is a vector, decomposed into <Formula>(v₀ cos θ, v₀ sin θ)</Formula>. The position over time is another vector, computed component-wise.
-- [**Gradient descent**](/en/ml/gradient-descent) — the parameter <Formula>w</Formula> in the toy widget is a scalar only because the toy has one parameter. The real version operates on a parameter _vector_; the gradient is the vector of partial derivatives; the descent step is vector subtraction.
-- [**Bitcoin signatures**](/en/finance/bitcoin-signature) — points on the curve are 2-tuples; the chord-and-tangent group law is described as point arithmetic, but every implementation works on the underlying coordinate vectors.
+<pre class="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`graphics : coordinates, directions, control points
+physics  : position, velocity, force
+ml       : feature vectors, embeddings, gradients
+finance  : portfolio weights, returns, risk directions`}</pre>
+
+Every Lemma application that ships consumes vectors as one of those four faces. The widget's role toggle is the four-line table above made interactive — each toggle corresponds to a live application doing exactly that arithmetic.
+
+- **graphics** — [Bezier curves](/en/graphics/bezier-curves) treat <Term id="control-point">control points</Term> as positions and use convex combinations of them; [why JPEG throws pixels away](/en/graphics/jpeg-compression) reinterprets an 8×8 pixel block as a single 64-dimensional vector and changes its basis.
+- **physics** — [Projectile motion](/en/physics/projectile-motion) decomposes a launch velocity into <Formula>(v₀ cos θ, v₀ sin θ)</Formula> and runs each component independently; [why falling stops speeding up](/en/physics/terminal-velocity) sums two opposing force vectors (gravity down, drag up) and reads where they cancel.
+- **ml** — [Gradient descent](/en/ml/gradient-descent) is one-line vector subtraction <Formula>w ← w − η·∇L</Formula> with the parameter, gradient, and step all vectors; [TF-IDF](/en/ml/tf-idf) represents each document as a high-dimensional weight vector and ranks queries by cosine of the angle between vectors.
+- **finance** — [Portfolio risk](/en/finance/portfolio-risk) is the squared-length identity <Formula>|a + b|² = |a|² + |b|² + 2 a · b</Formula> reapplied: covariance is a dot product on returns, correlation is the cosine, and the cross-term is what makes a mix of risky assets less risky than either alone.
+
+**Same operation, different nouns. If you can add two of them and scale one of them, the vector machinery has already started.**
 
 </ArcRow>
 
@@ -168,7 +177,11 @@ The toy gradient-descent page has one parameter <Formula>w</Formula> and one gra
 </Exercises>
 
 <PageFooter>
-  module: **Vectors**. Consumed (directly or implicitly) by every other application Lemma ships.
-  Started as *"why do four pillars all use the same arrow?"*, ends as *"because they share two
-  operations: add and scale."*
+  module: **Vectors**. Consumed across all four pillars: graphics
+  ([bezier-curves](/en/graphics/bezier-curves), [jpeg-compression](/en/graphics/jpeg-compression)),
+  physics ([projectile-motion](/en/physics/projectile-motion),
+  [terminal-velocity](/en/physics/terminal-velocity)), ML
+  ([gradient-descent](/en/ml/gradient-descent), [tf-idf](/en/ml/tf-idf)), and finance
+  ([portfolio-risk](/en/finance/portfolio-risk)). The manifesto promise — *"two operations span
+  four pillars"* — is paid in the graph.
 </PageFooter>
