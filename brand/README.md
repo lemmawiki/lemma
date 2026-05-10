@@ -30,9 +30,14 @@ The mark is drawn in a 100 × 100 viewBox.
 
 |        | Value                                                    |
 | ------ | -------------------------------------------------------- |
-| Circle | center (50, 38), radius 26                               |
-| Line   | y = 64, from x = 10 to x = 90 (tangent to circle bottom) |
+| Circle | center (50, 50), radius 26                               |
+| Line   | y = 76, from x = 10 to x = 90 (tangent to circle bottom) |
 | Stroke | 6 (6 % of viewBox), butt caps, single weight             |
+
+The standalone mark is centered in its 100 × 100 viewBox so it composes
+correctly inside square icon frames (iOS home-screen, PWA, avatar). The
+`lockup*.svg` files use a different mark position — circle (50, 38),
+line y = 64 — so the tangent line aligns with the wordmark baseline.
 
 ## Color
 

@@ -2,9 +2,9 @@
   <rect width="1200" height="630" fill="#faf7f2"/>
 
   <!-- Mark, centered -->
-  <g transform="translate(525 130) scale(1.5)" stroke="#14110d" stroke-width="6" fill="none">
-    <circle cx="50" cy="38" r="26" />
-    <line x1="10" y1="64" x2="90" y2="64" />
+  <g transform="translate(525 112) scale(1.5)" stroke="#14110d" stroke-width="6" fill="none">
+    <circle cx="50" cy="50" r="26" />
+    <line x1="10" y1="76" x2="90" y2="76" />
   </g>
 
   <!-- Wordmark -->

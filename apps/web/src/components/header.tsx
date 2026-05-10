@@ -17,8 +17,8 @@ export function HeaderInner({ pathname }: { pathname: string }) {
             strokeWidth="6"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <circle cx="50" cy="38" r="26" />
-            <line x1="10" y1="64" x2="90" y2="64" />
+            <circle cx="50" cy="50" r="26" />
+            <line x1="10" y1="76" x2="90" y2="76" />
           </svg>
         </span>
         <div>
