@@ -1,0 +1,199 @@
+---
+title: The Integral · Lemma
+description: The accumulated total of a function over an interval. Limit of Riemann sums, computed through antiderivatives, the pair to the derivative.
+breadcrumb:
+  parent: graph
+  parent_path: /graph
+  current: module · the integral
+---
+
+import { CodeBlock, Term, Exercise, Solution, ToolSpec, RiemannSum } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · the trail from a speedometer">
+
+# A speedometer reads. How far have you traveled?
+
+You can't see out the window. You only have the speedometer and a stopwatch. The speed is changing — sometimes 30, sometimes 60, sometimes 0. **What's the total distance?** The intuition is to break the trip into short intervals where the speed is "almost constant," multiply each interval's speed by its duration, and add. That's a Riemann sum, and the *limit* of those sums — as the intervals shrink — is the <Term id="definite-integral">definite integral</Term>. Different name, same operation: change accumulated.
+
+<Lede>
+  In the widget below, drag <b>N</b> (the rectangle count) and watch the orange sum approach the
+  green exact integral. Pick the **velocity** function and you've recovered the projectile-motion
+  story from the other direction: the integral of <span className="font-mono">g·t</span> over time
+  is the distance you've fallen.
+</Lede>
+
+</Hook>
+
+<ToolSpec>
+  <Fragment slot="definition">
+    <Formula>{"∫_a^b f(x) dx"}</Formula>: the accumulated total of <Formula>f</Formula> over{" "}
+    <Formula>[a, b]</Formula>. Limit of Riemann sums:{" "}
+    <Formula>{"lim_(N → ∞) Σ f(x_i) · Δx"}</Formula>. Geometrically, the signed area between the curve
+    and the x-axis. The pair operation to the derivative — what differentiation undoes.
+  </Fragment>
+  <Fragment slot="applies">
+    Any time you want a *total* from a *rate*. Distance from velocity, work from force, charge from
+    current, expected value from a probability density, area from a height function. Numerically:
+    every solver from `scipy.integrate` to PDE codes is a Riemann-style sum with a smarter rule.
+  </Fragment>
+  <Fragment slot="breaks">
+    Discontinuities and unbounded intervals require *improper integrals*. Functions whose
+    antiderivative has no closed form (<Formula>e^(−x²)</Formula>, <Formula>sin x / x</Formula>)
+    must be evaluated numerically. Higher-dimensional analogs (line, surface, volume integrals,
+    measure theory) keep the same intuition but require careful bookkeeping. And: the FTC requires
+    the integrand to be continuous on the interval; sharper versions ease this, but the
+    one-sentence theorem doesn't apply to every function you can write down.
+  </Fragment>
+</ToolSpec>
+
+<RiemannSum />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="Area first — accumulating a constant rate">
+
+The simplest case is a constant rate. If you drive at <Formula>60 km/h</Formula> for <Formula>2 h</Formula>, you cover <Formula>60 × 2 = 120 km</Formula>. On a graph of speed-vs-time, that's the area of a rectangle: width × height. The total distance is the *area under the speed curve*, even when the curve isn't constant. The whole module is reframing this trivial case for *non-constant* rates.
+
+For a rate that changes linearly — say <Formula>v(t) = g · t</Formula>, what gravity gives an object dropped from rest — the area under the line over <Formula>[0, T]</Formula> is a *triangle*: <Formula>(1/2) · T · (g · T) = (g · T²) / 2</Formula>. That's the falling distance. No new physics, no new calculus — just *area*.
+
+</ArcRow>
+
+<ArcRow n={2} title="Riemann sum — finite bookkeeping">
+
+For a curve that isn't a triangle, you can't read the area off geometry. Instead, *approximate*. Chop the interval <Formula>[a, b]</Formula> into <Formula>N</Formula> strips of width <Formula>Δx = (b − a)/N</Formula>. Pick a sample point in each strip — left edge, right edge, or midpoint, your choice — and use that one value as the strip's "constant" height. Add up the strip areas. The result is a <Term id="riemann-sum">Riemann sum</Term>:
+
+<Formula>S_N = Σ f(x_i) · Δx</Formula>
+
+The widget above shows this directly. Pick <Formula>f(x) = x²</Formula> over <Formula>[0, 1]</Formula> and slide N upward. At <Formula>N = 1</Formula> the rectangle is laughably wrong; at <Formula>N = 8</Formula> it's recognizable; at <Formula>N = 80</Formula> the gap from the true value <Formula>1/3</Formula> is invisible. Different rules (left/right/midpoint) approach the same limit at different speeds — left and right rules at <Formula>O(1/N)</Formula>, midpoint at <Formula>O(1/N²)</Formula>. *That's why every numerical integrator picks midpoint or better.*
+
+<CodeBlock slug="integration" arc="arc2" />
+
+</ArcRow>
+
+<ArcRow n={3} title="Definite integral — limit of Riemann sums">
+
+The <Term id="definite-integral">definite integral</Term> is what survives in the limit:
+
+<Formula>{"∫_a^b f(x) dx = lim_(N → ∞) Σ_{i=1}^N f(x_i) · Δx"}</Formula>
+
+A *single number* — the accumulated total. The notation predates Riemann; the symbol <Formula>∫</Formula> is a stretched "S" for "sum," the <Formula>dx</Formula> is the descendant of <Formula>Δx</Formula> after the limit shrinks it. Reading "<Formula>{"∫_a^b f(x) dx"}</Formula>" as "sum of <Formula>f(x)</Formula> times tiny <Formula>dx</Formula>'s, from <Formula>a</Formula> to <Formula>b</Formula>" is exactly correct intuition; it's also the pre-Riemann intuition Newton and Leibniz used.
+
+The widget's "exact integral" readout is this number, computed in closed form (because we picked easy functions). For most real functions, the limit is taken numerically — and Riemann sums of one form or another are how computers actually compute integrals.
+
+</ArcRow>
+
+<ArcRow n={4} title="Antiderivative — reverse of the derivative">
+
+Integration meets differentiation. From the [derivatives module](/en/modules/derivatives), differentiating <Formula>F(x) = x³</Formula> gives <Formula>F'(x) = 3x²</Formula>. Reading right-to-left: <Formula>3x²</Formula> *has an antiderivative*, namely <Formula>x³</Formula>. An <Term id="antiderivative">antiderivative</Term> of <Formula>f</Formula> is any function <Formula>F</Formula> with <Formula>F'(x) = f(x)</Formula>.
+
+Antiderivatives aren't unique — <Formula>x³</Formula> and <Formula>x³ + 5</Formula> both differentiate to <Formula>3x²</Formula>. Any constant <Formula>C</Formula> can be added without changing the derivative, which is why textbooks write <Formula>F(x) + C</Formula>. The set of all antiderivatives of one <Formula>f</Formula> is a one-parameter family, all parallel translates of each other.
+
+For polynomials, the rule is mechanical: the derivative of <Formula>x^n</Formula> is <Formula>n · x^(n−1)</Formula>, so the antiderivative of <Formula>x^n</Formula> is <Formula>x^(n+1) / (n+1)</Formula>. *Reverse the formula's bookkeeping.* For <Formula>sin x</Formula> the antiderivative is <Formula>−cos x</Formula>; for <Formula>e^x</Formula> it's <Formula>e^x</Formula> (back where you started). A finite list of these and the chain rule cover most of what one runs into in practice.
+
+<CodeBlock slug="integration" arc="arc4" />
+
+</ArcRow>
+
+<ArcRow n={5} title="Fundamental theorem — area equals reverse-derivative">
+
+The two stories — *area under the curve* and *reverse of derivative* — turn out to be the same story. The <Term id="fundamental-theorem-of-calculus">fundamental theorem of calculus</Term> is the bridge:
+
+<Formula>{"∫_a^b f(x) dx = F(b) − F(a)"}</Formula>
+
+for *any* antiderivative <Formula>F</Formula> of <Formula>f</Formula>. The infinite limit of Riemann sums collapses to two function evaluations and a subtraction. *Most* definite integrals you ever evaluate by hand or in a calculator are computed this way; the Riemann limit is what the integral *is*, but the FTC is how you *do it*.
+
+Try the projectile-motion case. The velocity is <Formula>v(t) = g · t</Formula>; an antiderivative is <Formula>(g · t²) / 2</Formula>. By the FTC, the distance fallen between <Formula>0</Formula> and <Formula>T</Formula> is <Formula>(g · T²)/2 − 0 = (g · T²) / 2</Formula> — the same triangle area we read off geometry in arc 1, now derived from the antiderivative. Two routes, one number.
+
+The other half of the theorem — the part that says <Formula>{"(d/dx) ∫_a^x f(t) dt = f(x)"}</Formula> — is what makes the connection tight in both directions. *Differentiation undoes integration; integration accumulates derivatives.* They are not separate operations sharing a textbook chapter; they are inverses in the same way that addition and subtraction are inverses.
+
+<CodeBlock slug="integration" arc="arc5" />
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **Differentiation asks how fast a quantity is changing. Integration asks how much change has
+  accumulated.** Riemann sums are what the integral is. Antiderivatives are how you compute it.
+  The fundamental theorem says those two pictures are the same picture — the inverse of the
+  derivative.
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="constant rate by hand" noCalculator>
+
+A car drives at a constant <Formula>60 km/h</Formula> for 2 hours. Compute the total distance two ways: (a) by reading the area of the rectangle on a speed-vs-time graph, (b) by computing the antiderivative of the constant function <Formula>v(t) = 60</Formula> and applying the FTC.
+
+<Solution>
+  (a) Area of a 60 × 2 rectangle = **120 km**. (b) Antiderivative of the constant{" "}
+  <Formula>60</Formula> is <Formula>60 · t</Formula>; FTC: <Formula>60 · 2 − 60 · 0 = 120</Formula>.
+  Same answer, different route. *The constant case is the calibration: every more complicated
+  integral is "the area when the rate isn't constant," and the FTC reduces it to subtracting two
+  values of an antiderivative.*
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="Riemann sum by hand" noCalculator>
+
+Compute the midpoint Riemann sum for <Formula>f(x) = x²</Formula> over <Formula>[0, 1]</Formula> with <Formula>N = 4</Formula> rectangles. (Midpoints are <Formula>0.125, 0.375, 0.625, 0.875</Formula>; <Formula>Δx = 0.25</Formula>.) Compare to the exact value <Formula>1/3 ≈ 0.3333</Formula>.
+
+<Solution>
+  Heights at midpoints: <Formula>0.125² = 0.0156</Formula>, <Formula>0.375² = 0.1406</Formula>,{" "}
+  <Formula>0.625² = 0.3906</Formula>, <Formula>0.875² = 0.7656</Formula>. Sum:{" "}
+  <Formula>0.0156 + 0.1406 + 0.3906 + 0.7656 = 1.3125</Formula>. Multiply by{" "}
+  <Formula>Δx = 0.25</Formula>: <Formula>S_4 = 0.3281</Formula>. The exact value is{" "}
+  <Formula>1/3 ≈ 0.3333</Formula>; error <Formula>≈ 0.005</Formula>, or about{" "}
+  <Formula>1.5%</Formula>. Already useful at <Formula>N = 4</Formula>; doubling to{" "}
+  <Formula>N = 8</Formula> drops the error to roughly <Formula>0.4%</Formula>{" "}
+  (midpoint is <Formula>O(1/N²)</Formula>).
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="antiderivative by reversing the chain">
+
+Compute <Formula>{"∫_0^2 (3t² + 2t + 1) dt"}</Formula> via the FTC. Also compute it via the widget at <Formula>N = 100</Formula> midpoint and confirm the two agree.
+
+<Solution>
+  Antiderivative: <Formula>F(t) = t³ + t² + t</Formula> (each term reversed by the
+  <Formula> x^n → x^(n+1)/(n+1)</Formula> rule). FTC:{" "}
+  <Formula>F(2) − F(0) = (8 + 4 + 2) − 0 = 14</Formula>. The widget can't directly run this
+  function (we picked three presets), but the code-mode arc 5 does — it agrees to four decimals
+  at <Formula>N = 10000</Formula> midpoint. *FTC: 14, exact, in two function evaluations. Riemann
+  sum: 13.999..., approximate, in 10000 evaluations.* Both correct; one is much faster.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="fall distance from velocity">
+
+A ball is dropped from rest. Gravity gives constant acceleration <Formula>g = 9.8 m/s²</Formula>, so the velocity after time <Formula>t</Formula> is <Formula>v(t) = g·t</Formula>. How far has it fallen by <Formula>t = 3 s</Formula>?
+
+<Solution>
+  Distance is <Formula>{"∫_0^3 g·t dt = g · t²/2 |_0^3 = (9.8)(9)/2 = 44.1 m"}</Formula>. Equivalently,
+  the area of a triangle with base <Formula>3</Formula> and height <Formula>v(3) = 29.4 m/s</Formula>
+  is <Formula>(1/2)(3)(29.4) = 44.1 m</Formula>. Two routes, same number. *This is the projectile-
+  motion page's <Formula>y(t) = (1/2) g t²</Formula> formula — derived once from kinematics, derived
+  again here from "integrate v to get y."*
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  module: **The Integral**. The pair of [the derivative](/en/modules/derivatives). Currently
+  consumed by [projectile motion](/en/physics/projectile-motion) — accelerated motion is integrated
+  twice to get position. Future ML and finance applications (cumulative loss, present value of a
+  cash-flow stream) will plug in the same way.
+</PageFooter>

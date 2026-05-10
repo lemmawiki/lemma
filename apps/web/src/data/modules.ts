@@ -60,6 +60,16 @@ export const modules: ModuleMeta[] = [
     },
   },
   {
+    id: "integration",
+    href: "/modules/integration",
+    status: "available",
+    title: { en: "The Integral", ko: "적분" },
+    hook: {
+      en: "A speedometer reads. How far have you traveled? The integral is what survives when you sum a rate over time. The pair to the derivative — and the fundamental theorem says they are inverses.",
+      ko: "속도계만 보고 얼마나 멀리 왔는지 알 수 있을까? 적분은 비율을 시간에 대해 합할 때 살아남는 것. 미분의 짝 — 기본정리가 둘이 역연산임을 말한다.",
+    },
+  },
+  {
     id: "linearization",
     href: "/modules/linearization",
     status: "available",

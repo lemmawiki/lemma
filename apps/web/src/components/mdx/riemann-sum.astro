@@ -1,0 +1,7 @@
+---
+import { RiemannSum as RiemannSumReact } from "../widgets/riemann-sum";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<RiemannSumReact language={lang} client:load />

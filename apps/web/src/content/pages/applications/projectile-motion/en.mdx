@@ -51,6 +51,8 @@ y(t) = v₀ sin θ · t − ½ g t²
 
 That pair is a [parametric curve](/en/modules/parametric-curves): two functions of a shared time parameter <Formula>t</Formula>. The _image_ of this curve is the shape on the field; the _parametrization_ is the actual motion in time. Same image can be painted by many parametrizations — we'll see one shortly.
 
+The phrase "integrate once and you get position" is doing real work here. Gravity gives acceleration. [Integrate](/en/modules/integration) acceleration to get velocity; integrate velocity to get position. *The parabola is not magic — it is accumulated change twice.* The constants of integration are fixed by initial conditions: at <Formula>t = 0</Formula> the velocity is the launch velocity (no fall yet) and the position is the launch point (no displacement yet). Two integrations, two constants, one closed-form trajectory.
+
 <CodeBlock slug="projectileMotion" arc="arc2" />
 
 </ArcRow>

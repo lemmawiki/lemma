@@ -79,7 +79,7 @@ export const applications: ApplicationMeta[] = [
     id: "projectile-motion",
     href: "/physics/projectile-motion",
     pillar: "physics",
-    modules: ["parametric-curves", "derivatives", "vectors"],
+    modules: ["parametric-curves", "derivatives", "integration", "vectors"],
     status: "available",
     title: {
       en: "Projectile Motion",

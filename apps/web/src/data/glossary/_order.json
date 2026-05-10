@@ -94,5 +94,9 @@
   "equilibrium",
   "basis",
   "dct",
-  "quantization"
+  "quantization",
+  "definite-integral",
+  "riemann-sum",
+  "antiderivative",
+  "fundamental-theorem-of-calculus"
 ]

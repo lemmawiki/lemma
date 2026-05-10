@@ -511,6 +511,63 @@ def raw(query, doc):
 [round(raw("the", d), 3)   for d in toks]   # → [2, 1, 0, 1]
 [round(score("the", d), 3) for d in toks]   # → [0.139, 0.104, 0, 0.104]`,
   },
+  integration: {
+    arc2: `# Riemann sum — turn 'area under the curve' into a finite computation.
+# Chop [a, b] into N strips, evaluate f once per strip, multiply by Δx,
+# add. Three rule choices give different errors at the same N.
+def riemann(f, a, b, n, rule="midpoint"):
+    dx = (b - a) / n
+    s = 0.0
+    for i in range(n):
+        if   rule == "left":     x = a + i * dx
+        elif rule == "right":    x = a + (i + 1) * dx
+        else:                    x = a + (i + 0.5) * dx
+        s += f(x) * dx
+    return s
+
+# ∫_0^1 x² dx — the exact answer is 1/3 ≈ 0.333.
+[(rule, riemann(lambda x: x*x, 0, 1, n=20, rule=rule))
+ for rule in ("left", "right", "midpoint")]
+# → [('left',     0.30875),    a bit under 1/3
+#    ('right',    0.35875),    a bit over 1/3
+#    ('midpoint', 0.333125)]   essentially exact at N=20
+# Midpoint converges as ~1/N², the others as ~1/N. That's why every
+# practical numerical integrator picks midpoint or higher (Simpson, Gauss).`,
+    arc4: `# Antiderivative — the function whose derivative is f.
+# For polynomials, the rule is mechanical: x^n → x^(n+1)/(n+1).
+# But the antiderivative isn't unique — F(x) and F(x) + 5 both differentiate
+# to the same f. The +C is a fixed point of the operation.
+def antideriv_poly(coeffs):
+    """Coefficients of polynomial Σ c_i x^i → coeffs of antiderivative
+       Σ c_i x^(i+1)/(i+1).  The constant C is dropped (you supply it)."""
+    return [0.0] + [c / (i + 1) for i, c in enumerate(coeffs)]
+
+# f(x) = 3x² + 2x + 1  →  F(x) = x³ + x² + x  (+ C)
+antideriv_poly([1, 2, 3])
+# → [0.0, 1.0, 1.0, 1.0]   coefficients of x⁰, x¹, x², x³`,
+    arc5: `# Fundamental Theorem of Calculus, Part 2:
+#   ∫_a^b f(x) dx = F(b) − F(a)
+# for any antiderivative F of f. The infinite limit of Riemann sums
+# becomes two function evaluations and a subtraction.
+def evaluate_poly(coeffs, x):
+    return sum(c * x**i for i, c in enumerate(coeffs))
+
+def integral_via_ftc(coeffs, a, b):
+    F = antideriv_poly(coeffs)
+    return evaluate_poly(F, b) - evaluate_poly(F, a)
+
+# ∫_0^2 (3t² + 2t + 1) dt — by FTC.
+integral_via_ftc([1, 2, 3], 0, 2)
+# → 14.0      F(2) − F(0) = (8 + 4 + 2) − 0 = 14
+#
+# Sanity check via Riemann at N=10000 with the lambda form:
+def f(t): return 3*t*t + 2*t + 1
+riemann(f, 0, 2, n=10000, rule="midpoint")
+# → 13.99999...   matches FTC to four decimals
+#
+# The Riemann sum 'is what the integral is.' FTC says you almost never
+# have to take the limit — pick an antiderivative and subtract.`,
+  },
   jpegCompression: {
     arc3: `import numpy as np
 
