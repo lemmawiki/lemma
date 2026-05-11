@@ -99,6 +99,16 @@ export const modules: ModuleMeta[] = [
       ko: "20 questions으로 N개 중 하나를 찾는 데 항목이 모두 같은 확률이면 log₂ N번. 엔트로피는 그 일반화 — 확률이 같지 않을 때의 기대 질문 수. Wordle부터 Huffman 압축, 비밀번호 강도까지 모두 부딪히는 한계.",
     },
   },
+  {
+    id: "distributions",
+    href: "/modules/distributions",
+    status: "available",
+    title: { en: "Distributions", ko: "분포" },
+    hook: {
+      en: "A probability is one guess. A distribution is the whole shape of uncertainty. The thing softmax produces, the thing a histogram is, the thing a return is drawn from. Most quantities a model predicts or a portfolio holds are distributions before they are numbers.",
+      ko: "확률 하나는 하나의 추측이다. 분포는 불확실성 전체의 *모양*이다. softmax가 만들어내는 것, 히스토그램이 곧 그것인 것, 수익률이 뽑혀 나오는 그것. 모델이 예측하는 양, 포트폴리오가 가진 양 대부분은 수가 되기 전에 분포다.",
+    },
+  },
 ];
 
 export const moduleByHref: Record<string, ModuleMeta> = Object.fromEntries(

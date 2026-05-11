@@ -1,0 +1,7 @@
+---
+import { DistributionShapeLab as DistributionShapeLabReact } from "../widgets/distribution-shape-lab";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<DistributionShapeLabReact language={lang} client:load />

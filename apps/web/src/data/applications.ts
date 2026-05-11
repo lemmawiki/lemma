@@ -154,7 +154,7 @@ export const applications: ApplicationMeta[] = [
     id: "image-compression",
     href: "/graphics/image-compression",
     pillar: "graphics",
-    modules: ["entropy"],
+    modules: ["distributions", "entropy"],
     status: "available",
     title: {
       en: "Why Images Compress",
@@ -184,7 +184,7 @@ export const applications: ApplicationMeta[] = [
     id: "portfolio-risk",
     href: "/finance/portfolio-risk",
     pillar: "finance",
-    modules: ["vectors"],
+    modules: ["distributions", "vectors"],
     status: "available",
     title: {
       en: "Portfolio Risk",
@@ -229,7 +229,7 @@ export const applications: ApplicationMeta[] = [
     id: "confident-wrong",
     href: "/ml/confident-wrong",
     pillar: "ml",
-    modules: ["log"],
+    modules: ["distributions", "log"],
     status: "available",
     title: {
       en: "Confidently Wrong",
@@ -244,7 +244,7 @@ export const applications: ApplicationMeta[] = [
     id: "model-calibration",
     href: "/ml/model-calibration",
     pillar: "ml",
-    modules: ["linearization", "log"],
+    modules: ["distributions", "linearization", "log"],
     status: "available",
     title: {
       en: "Model Calibration",
@@ -259,7 +259,7 @@ export const applications: ApplicationMeta[] = [
     id: "tf-idf",
     href: "/ml/tf-idf",
     pillar: "ml",
-    modules: ["log", "entropy", "vectors"],
+    modules: ["distributions", "log", "entropy", "vectors"],
     status: "available",
     title: {
       en: "TF-IDF",

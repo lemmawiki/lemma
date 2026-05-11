@@ -28,7 +28,7 @@ import PageFooter from "@/components/page/page-footer.astro";
 
 모델은 자신이 맞는지 _알지_ 못한다. 가진 건 점수뿐이다. <Term id="softmax">Softmax</Term>는 그 점수를 확률처럼 보이는 수로 바꾸고, <Term id="cross-entropy">교차 엔트로피</Term>는 모델이 정답에 매긴 확률을 벌점으로 환산한다. 함정은 뻔한 자리에 숨어 있다. **형편없는 점수도 얼마든지 자신만만한 확률이 될 수 있다.** 이 페이지가 다루는 건 그게 전부다. 나머지는 거기서 따라 나오는 이야기.
 
-<Lede>**Softmax는 진실을 확인하지 않는다.** 점수끼리 비교할 뿐이다.</Lede>
+<Lede>**Softmax는 진실을 확인하지 않는다.** 점수끼리 비교할 뿐이다. softmax가 돌려주는 건 라벨 위의 <Term id="distribution">분포</Term>지, 진실 증명서가 아니다.</Lede>
 
 </Hook>
 

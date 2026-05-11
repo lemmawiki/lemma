@@ -28,7 +28,7 @@ import PageFooter from "@/components/page/page-footer.astro";
 
 A model says "70% confident." Does that mean, across many such predictions, _seven in ten_ turn out right? Sometimes. Often not. The number on the screen and the long-run frequency are _two different quantities_; their alignment is called <Term id="calibration">calibration</Term>, and most modern neural networks fail it on their first try. The fix is one scalar — the same <Term id="temperature">temperature</Term> dial that [confidently wrong](/en/ml/confident-wrong) introduced — fit against held-out truth.
 
-<Lede>**Confidence is a number. Truth is a frequency. Calibration is the gap.**</Lede>
+<Lede>**Confidence is a number. Truth is a frequency. Calibration is the gap.** Calibration compares a predicted <Term id="distribution">distribution</Term> with observed frequencies.</Lede>
 
 </Hook>
 

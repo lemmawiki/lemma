@@ -1,0 +1,218 @@
+---
+title: Distributions · Lemma
+description: A probability is one guess. A distribution is the whole shape of uncertainty.
+breadcrumb:
+  parent: graph
+  parent_path: /graph
+  current: module · distributions
+---
+
+import { CodeBlock, Term, Exercise, Solution, ToolSpec, DistributionShapeLab } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="the hook · one probability vs. a whole shape">
+
+# A probability is one guess. A distribution is the whole shape of uncertainty.
+
+If you only know the *most likely* outcome of an uncertain thing, you barely know it. *"Most likely heads"* and *"heads 99% of the time"* and *"heads 51% of the time"* all share the same most-likely answer; the difference between them is the whole story. The right object isn't the most likely outcome, or the *expected* one — it's the **distribution**: the entire shape of uncertainty, every possible outcome and how much weight it carries. Most of what a model predicts, a portfolio holds, or an image's histogram counts is a distribution before it is a number.
+
+<Lede>
+  Drag the bars below — five outcomes, five weights, auto-normalized into probabilities. Watch the
+  <b> mean</b> slide and the <b>spread</b> grow and shrink. Same numbers, four shapes:{" "}
+  <em>uniform, peaked, skewed, bimodal</em>. The shape is the thing this module is about.
+</Lede>
+
+</Hook>
+
+<ToolSpec>
+  <Fragment slot="definition">
+    A <Term id="distribution">distribution</Term> assigns probability across possible outcomes of a{" "}
+    <Term id="random-variable">random variable</Term>. Discrete: a <Term id="probability-mass">
+    probability mass function</Term> <Formula>p(x)</Formula> with <Formula>Σ p(x) = 1</Formula>.
+    Continuous: a <Term id="probability-density">probability density</Term>{" "}
+    <Formula>f(x)</Formula> with <Formula>{"∫ f(x) dx = 1"}</Formula>. The
+    <Term id="expected-value"> expected value</Term> is the weighted average; the{" "}
+    <Term id="variance">variance</Term> is the average squared distance from that center.
+  </Fragment>
+  <Fragment slot="applies">
+    Any time uncertainty has a *shape*, not just a single value. Softmax outputs in ML, return
+    distributions in finance, color histograms in compression, calibration bins, term frequencies in
+    text. Once you can name the distribution behind a quantity, the right summary (mean? variance?
+    entropy? a quantile?) usually picks itself.
+  </Fragment>
+  <Fragment slot="breaks">
+    Two big traps. (1) Confusing the *variable* with its *distribution* — `X` is the unknown
+    quantity; `p(x)` is the rule that says how likely each value is. (2) Confusing *mass* with
+    *density* — at a single point of a continuous distribution the probability is zero; only the
+    density is meaningful there. Once those two distinctions are clean, the rest of probability
+    theory falls into place.
+  </Fragment>
+</ToolSpec>
+
+<DistributionShapeLab />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="A distribution allocates probability across outcomes">
+
+A distribution is a *rule for spreading total probability 1 across possible outcomes*. If a model says "this image is a cat with probability 0.6, a dog with 0.3, a bird with 0.1," the model has produced a distribution over three labels. The numbers must add up to 1 because *exactly one of the outcomes will happen*: probability is a constrained budget, not an unrestricted score.
+
+The naive question — *what's the probability?* — implicitly asks for one number, and the answer often *is* one number. The deeper question — *what's the whole distribution?* — gives you the rest of the picture: every outcome the model considers possible, weighted by how much probability it spent on each. A distribution is what survives once you stop privileging one outcome over the rest.
+
+</ArcRow>
+
+<ArcRow n={2} title="Discrete distributions — categories, words, classes">
+
+The simplest case has finitely many outcomes. A coin flip: two outcomes, two probabilities. A die: six. A softmax output: as many as there are classes. A word in a document: as many as there are vocabulary entries. The whole distribution is a list of (outcome, probability) pairs — a function from outcomes to `[0, 1]` whose values sum to 1.
+
+This function has a name — the <Term id="probability-mass">probability mass function</Term>, or <em>pmf</em>. The "mass" terminology comes from picturing probability as a literal mass you distribute across discrete buckets; the height of the bar over outcome `x` is `p(x)`. The widget above is a pmf editor — every drag re-allocates the mass without changing the total.
+
+<CodeBlock slug="distributions" arc="arc2" />
+
+</ArcRow>
+
+<ArcRow n={3} title="Expected value — the center of mass">
+
+When outcomes are numbers, the distribution has a *mean*. The expected value <Formula>E[X] = Σ x · p(x)</Formula> is the weighted average — the center of mass of the bar chart. Drag the widget to **uniform** with outcomes 1..5: the mean lands on 3, the average. Drag to **skewed** so small values are likely and large values rare: the mean shifts toward the heavy side.
+
+The name *expected* is a little misleading. With <Formula>X ∈ {"{"} 0, 1000 {"}"}</Formula> and equal probability, the expected value is 500 — a value `X` will *never* take. The mean is a summary of the distribution, not a forecast of any single draw. It is what the long-run average of independent draws converges to (the *law of large numbers*), and that's why it deserves the name `E`.
+
+<CodeBlock slug="distributions" arc="arc3" />
+
+</ArcRow>
+
+<ArcRow n={4} title="Variance — spread, not just center">
+
+Two distributions can share a mean and disagree wildly on shape. **Peaked** and **bimodal** in the widget both have mean 3 — but peaked piles probability on outcome 3 itself, while bimodal splits it between 1 and 5. The mean alone can't tell them apart; <Term id="variance">variance</Term> can.
+
+<Formula>{"Var[X] = Σ p(x) · (x − μ)²"}</Formula> — the weighted average of squared distance from the mean. Squared, because we want a measure that doesn't cancel positive and negative deviations against each other. The square root, <Formula>σ = √Var</Formula>, is the *standard deviation* — same idea, restored to the original units of `X`.
+
+Variance is *the* second-order summary of a distribution. In finance it is the working definition of risk; in ML it bounds how much an estimator can wobble; in physics it shows up everywhere from thermal noise to measurement error. Two distributions with the same mean and the same variance are still not the same distribution, but the gap between them is much smaller than the gap when only the mean matches.
+
+</ArcRow>
+
+<ArcRow n={5} title="Continuous distributions — density, not mass">
+
+Most distributions in the real world are over the real line, not a finite set of buckets. Daily stock returns, measurement errors, response times, pixel intensities at sub-bit precision — these live on a continuum, and discrete masses don't make sense: there are uncountably many possible values, and any single one has probability zero.
+
+The right object is a <Term id="probability-density">probability density function</Term> <Formula>f(x)</Formula>. Density is *not* probability — `f(x)` can exceed 1 — but it is the *rate* at which probability accumulates around `x`. Probability comes from integrating density over an interval: <Formula>{"P(a ≤ X ≤ b) = ∫_a^b f(x) dx"}</Formula>. The whole line integrates to 1.
+
+This is where distributions meet [the integral](/en/modules/integration). For a discrete distribution, the expected value is a sum — <Formula>Σ x · p(x)</Formula>. For a continuous distribution, it is an integral — <Formula>{"∫ x · f(x) dx"}</Formula>. Same idea, different machinery: integration is the continuous version of the sum, just as it is the continuous version of "accumulate the rate" we used for distance and present value. *Distributions inherit calculus the moment they become continuous.*
+
+</ArcRow>
+
+<ArcRow n={6} title="Where this shows up — same shape, three pillars">
+
+**Distributions are the type behind a surprising fraction of the math Lemma already covers.** Every place where a number is *uncertain*, a distribution sits underneath it. Three pillars, one structure.
+
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`ml       : softmax is a distribution over classes; calibration compares
+           predicted distributions with observed frequencies.
+graphics : a color histogram is a distribution over pixel values; entropy
+           on that distribution sets the compression floor.
+finance  : a return is drawn from a distribution; risk is a property of
+           that distribution, not of any one return.`}</pre>
+
+[**Confidently wrong**](/en/ml/confident-wrong) — softmax produces a distribution over labels, not a *truth certificate*. The probabilities sum to 1 because *some* label has to be picked; the height of each bar is the model's *bet*, not its *knowledge*.
+
+[**Model calibration**](/en/ml/model-calibration) — calibration is the *gap* between a predicted distribution and the observed frequency. A reliability diagram asks: in the bin where the model said `p = 0.8`, was the answer actually correct 80% of the time? Calibration is a property of distributions, not of single predictions.
+
+[**TF-IDF**](/en/ml/tf-idf) — term frequencies are a distribution over a vocabulary, document by document. Comparing documents is comparing distributions; cosine similarity, KL divergence, and BM25 are all *distribution-comparison* tools dressed up under different names.
+
+[**Image compression**](/en/graphics/image-compression) — a histogram is a distribution over pixel values, and <Term id="entropy">entropy</Term> on that distribution is the lower bound on bits-per-pixel for independent encoding. The compression story is a distributions-and-entropy story stitched together.
+
+[**Portfolio risk**](/en/finance/portfolio-risk) — risk is not a worst case; risk is a *property of the return distribution*. Variance, covariance, the whole shape of how returns scatter around their mean — those are the inputs to a portfolio decision, not the mean alone.
+
+**Same object, different pillar — five applications were already speaking distribution-language without a module to back them. Now they share one.**
+
+<CodeBlock slug="distributions" arc="arc6" />
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **A distribution is the whole shape of uncertainty.** Discrete or continuous, the rule is the
+  same: probability sums (or integrates) to 1 across all outcomes. The mean summarizes its center;
+  the variance summarizes its spread; the full shape carries everything else. *Most things you can
+  call a "number" in modern math are distributions first.*
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="normalize by hand" noCalculator>
+
+A model outputs raw scores (logits) <Formula>[2.0, 1.0, 0.1]</Formula>. Convert them into a distribution by softmax: <Formula>p_i = e^(x_i) / Σ e^(x_j)</Formula>. Round to two decimals. Confirm the result sums to 1.
+
+<Solution>
+  Numerators: <Formula>e^2 ≈ 7.39, e^1 ≈ 2.72, e^(0.1) ≈ 1.11</Formula>. Sum:{" "}
+  <Formula>11.22</Formula>. Probabilities: <Formula>0.66, 0.24, 0.10</Formula>. Sum: <em>1.00</em>.
+  *Softmax is exactly the operation that turns a vector of arbitrary real numbers into a discrete
+  distribution. The highest logit gets the most mass; the spread of logits sets the sharpness.*
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="same mean, different variance" noCalculator>
+
+Two discrete distributions with outcomes <Formula>1, 2, 3</Formula>. Distribution A: <Formula>p = [0, 1, 0]</Formula>. Distribution B: <Formula>p = [0.5, 0, 0.5]</Formula>. Compute the mean and variance of each. State which is *bigger* on each dimension.
+
+<Solution>
+  *Distribution A:* mean <Formula>= 1·0 + 2·1 + 3·0 = 2</Formula>; variance{" "}
+  <Formula>= (1−2)²·0 + (2−2)²·1 + (3−2)²·0 = 0</Formula>. *Distribution B:* mean{" "}
+  <Formula>= 1·0.5 + 2·0 + 3·0.5 = 2</Formula>; variance{" "}
+  <Formula>= 1·0.5 + 0 + 1·0.5 = 1</Formula>. **Same mean, very different variance.** A is a
+  certainty (always 2); B is a coin flip between 1 and 3. The mean alone collapses these into the
+  same number — that's why variance exists.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="density isn't probability">
+
+A continuous distribution has density <Formula>f(x) = 2x</Formula> on <Formula>x ∈ [0, 1]</Formula> and <Formula>0</Formula> elsewhere. Confirm it is a valid density (integrates to 1). Compute <Formula>P(X ≤ 0.5)</Formula>. Then point out the value of <Formula>f(0.5)</Formula> and explain why that value alone is *not* the probability of <Formula>X = 0.5</Formula>.
+
+<Solution>
+  Total: <Formula>{"∫_0^1 2x dx = x² |_0^1 = 1"}</Formula>. Valid density. Half-integral:{" "}
+  <Formula>{"P(X ≤ 0.5) = ∫_0^(0.5) 2x dx = (0.5)² = 0.25"}</Formula>. Density value:{" "}
+  <Formula>f(0.5) = 1.0</Formula>. That number is *not* a probability — densities can hit values
+  larger than 1, and <Formula>P(X = 0.5) = 0</Formula> exactly, because no single point of a
+  continuous distribution carries finite probability. The *probability* of landing near 0.5 in a
+  small interval of width <Formula>dx</Formula> is approximately <Formula>f(0.5) · dx = dx</Formula>{" "}
+  — proportional to the interval's width.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="recognize the distribution">
+
+In each of the five applications listed in arc 6, name the random variable, the outcome space, and whether the distribution is discrete or continuous.
+
+<Solution>
+  *Confident wrong:* `X` is the class label; outcomes are the K classes; discrete. *Model
+  calibration:* `X` is again the class label per example; discrete. The *predicted probability*
+  itself is a real number in `[0, 1]`, and the calibration plot bins those continuous predictions
+  to compare them to discrete outcome frequencies. *TF-IDF:* `X` is a word in a document;
+  vocabulary; discrete. *Image compression:* `X` is the pixel value; values `{0, 1, ..., 255}`
+  (eight-bit grayscale); discrete. *Portfolio risk:* `X` is a return; real number; continuous.
+  Four of the five are discrete; one is continuous; the same module covers both because the
+  difference is mass vs. density, not different math.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  module: **Distributions**. Consumed across three pillars: ML
+  ([confident wrong](/en/ml/confident-wrong), [model calibration](/en/ml/model-calibration),
+  [TF-IDF](/en/ml/tf-idf)), graphics ([image compression](/en/graphics/image-compression)), and
+  finance ([portfolio risk](/en/finance/portfolio-risk)). *Same object: a softmax output, a color
+  histogram, a return — each is a distribution before it is a number, and the math knows it.*
+</PageFooter>

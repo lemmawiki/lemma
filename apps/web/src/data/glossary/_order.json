@@ -104,5 +104,10 @@
   "cash-flow",
   "damping",
   "natural-frequency",
-  "resonance"
+  "resonance",
+  "distribution",
+  "random-variable",
+  "expected-value",
+  "probability-mass",
+  "probability-density"
 ]

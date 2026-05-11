@@ -1088,6 +1088,76 @@ sorted(np.round(resultant_y(c1, c2).roots(), 4))
 # → [(-0.8944+0j), (-0.8944+0j), (0.8944+0j), (0.8944+0j)]
 #   (each root with multiplicity 2; the two y-values per x come back from c1)`,
   },
+  distributions: {
+    arc2: `import numpy as np
+
+# A discrete distribution is a list of (outcome, probability) pairs that
+# sum to 1. The 'outcome' can be a label, a class, a number, anything — but
+# the probabilities have to add up to one because *something* must happen.
+outcomes = ["cat", "dog", "bird"]
+probs    = [0.6,   0.3,   0.1]
+assert abs(sum(probs) - 1.0) < 1e-9
+
+# Sampling: pick one outcome with the given probability. The law of large
+# numbers says long-run sample frequencies converge to these probabilities.
+rng = np.random.default_rng(0)
+draws = rng.choice(outcomes, size=10_000, p=probs)
+[(o, (draws == o).mean()) for o in outcomes]
+# → [('cat',  0.6021),
+#    ('dog',  0.2978),
+#    ('bird', 0.1001)]
+# Each empirical frequency ≈ the probability we set. A distribution is what
+# the long-run frequency *is*; a single draw is a finite, noisy peek at it.`,
+    arc3: `# Expected value E[X] of a numerical random variable.
+# Outcomes need to be numbers (else there is no mean) — labels do not.
+xs = np.array([1, 2, 3, 4, 5])
+ps = np.array([0.05, 0.20, 0.50, 0.20, 0.05])  # peaked at 3, sums to 1
+assert abs(ps.sum() - 1.0) < 1e-9
+
+mu = (xs * ps).sum()
+# → 3.00   the weighted average; equals the center of mass of the bars.
+
+# Variance: weighted average of (x − μ)². Spread, in squared units.
+var = (ps * (xs - mu)**2).sum()
+sigma = var ** 0.5
+(mu, var, sigma)
+# → (3.0, 0.6, 0.7746)
+
+# Sanity check by direct sampling:
+rng = np.random.default_rng(0)
+draws = rng.choice(xs, size=200_000, p=ps)
+(draws.mean(), draws.var(), draws.std())
+# → (2.9997, 0.6003, 0.7747)
+# Same numbers, with the sampling noise you would expect at N = 200k.
+#
+# Two distributions can share a mean and disagree wildly on variance.
+# Same μ, different shape — and the shape is what drives risk in finance,
+# calibration in ML, and bits-per-symbol in compression.`,
+    arc6: `# Where this module shows up — five existing applications, one shape.
+
+# (1) ML: softmax output is a distribution over labels.
+def softmax(logits):
+    e = np.exp(logits - logits.max())   # max-subtract for numerical safety
+    return e / e.sum()
+softmax(np.array([2.0, 1.0, 0.1]))
+# → array([0.659, 0.242, 0.099])   sums to 1, is a distribution
+
+# (2) Graphics: a color histogram is a distribution over pixel values.
+img = np.array([0, 0, 0, 1, 1, 2, 2, 2, 2, 3], dtype=int)
+counts = np.bincount(img, minlength=4)
+hist = counts / counts.sum()
+# → array([0.3, 0.2, 0.4, 0.1])   sums to 1, is a distribution
+
+# (3) Finance: a return distribution is the input to risk.
+# Two assets with identical mean but different spread.
+rets_A = np.array([0.04, 0.05, 0.06])         # tight
+rets_B = np.array([-0.10, 0.05, 0.20])        # wide
+[(r.mean(), r.std()) for r in (rets_A, rets_B)]
+# → [(0.05, 0.0081), (0.05, 0.1224)]
+# Same expected return, very different distribution. *That gap is risk.*
+# Portfolio variance, calibration gap, histogram entropy — all three start
+# from a distribution and ask different questions of the same object.`,
+  },
 } as const;
 
 export type CodeMap = Record<string, string>;

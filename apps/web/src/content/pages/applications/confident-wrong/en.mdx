@@ -28,7 +28,7 @@ import PageFooter from "@/components/page/page-footer.astro";
 
 A model does not _know_ it is right. It has scores. <Term id="softmax">Softmax</Term> turns those scores into numbers that look like probabilities. <Term id="cross-entropy">Cross-entropy</Term> punishes the probability the model gave to the correct answer. The trap is hidden in plain sight: **a bad score can still become a very confident probability**. That is the entire page. Everything else is consequence.
 
-<Lede>**Softmax does not check truth.** It only compares scores.</Lede>
+<Lede>**Softmax does not check truth.** It only compares scores. Softmax returns a <Term id="distribution">distribution</Term> over labels, not a truth certificate.</Lede>
 
 </Hook>
 

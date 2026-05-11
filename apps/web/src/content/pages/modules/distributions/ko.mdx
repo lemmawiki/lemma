@@ -1,0 +1,211 @@
+---
+title: 분포 · Lemma
+description: 확률 하나는 하나의 추측이다. 분포는 불확실성 전체의 모양이다.
+breadcrumb:
+  parent: 그래프
+  parent_path: /graph
+  current: 모듈 · 분포
+---
+
+import { CodeBlock, Term, Exercise, Solution, ToolSpec, DistributionShapeLab } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+import Formula from "@/components/page/formula.astro";
+
+<Hook kicker="도입 · 확률 하나 vs 모양 전체">
+
+# 확률 하나는 하나의 추측이다. 분포는 불확실성 전체의 모양이다.
+
+불확실한 일에 대해 *가장 그럴듯한* 결과만 알면, 사실 거의 모른다. *"앞면이 나올 가능성이 가장 높다"*, *"앞면이 99%다"*, *"앞면이 51%다"* — 셋 다 "가장 그럴듯한 답"은 같지만, 그 셋 사이의 차이가 이야기 전체다. 올바른 대상은 가장 그럴듯한 결과도, *기대되는* 결과도 아니다 — **분포**다. 불확실성의 모양 전체, 가능한 결과 하나하나와 그 결과가 가진 무게. 모델이 예측하는 양, 포트폴리오가 가진 양, 이미지 히스토그램이 세는 양 — 대부분은 *수가 되기 전에 분포*다.
+
+<Lede>
+  아래 바를 끌어보자 — 결과 다섯, 가중치 다섯, 자동 정규화로 확률이 된다. <b>평균</b>이 움직이고{" "}
+  <b>퍼짐</b>이 늘고 줄어드는 걸 본다. 같은 수, 네 모양 — <em>균등, 집중, 치우침, 쌍봉</em>. 이
+  모듈이 다루는 건 그 *모양*이다.
+</Lede>
+
+</Hook>
+
+<ToolSpec>
+  <Fragment slot="definition">
+    <Term id="distribution">분포</Term>는 <Term id="random-variable">확률변수</Term>의 가능한
+    결과들에 확률을 배분한다. 이산이면 <Term id="probability-mass">확률질량함수</Term>{" "}
+    <Formula>p(x)</Formula>가 <Formula>Σ p(x) = 1</Formula>을 만족한다. 연속이면{" "}
+    <Term id="probability-density">확률밀도함수</Term> <Formula>f(x)</Formula>가{" "}
+    <Formula>{"∫ f(x) dx = 1"}</Formula>를 만족한다. <Term id="expected-value">기댓값</Term>이 그
+    중심을, <Term id="variance">분산</Term>이 그 중심으로부터의 평균 제곱 거리를 요약한다.
+  </Fragment>
+  <Fragment slot="applies">
+    불확실성에 *모양*이 있을 때 — 단일 값이 아니라. ML의 softmax 출력, 금융의 수익률 분포, 압축의
+    색 히스토그램, calibration bin, 텍스트의 단어 빈도. 어떤 양 뒤에 분포가 있다는 걸 알아챈
+    순간, 그 분포의 올바른 요약 (평균? 분산? 엔트로피? 분위?) 도 자연스럽게 결정된다.
+  </Fragment>
+  <Fragment slot="breaks">
+    두 개의 큰 함정. (1) *변수*와 그것의 *분포*를 혼동 — `X`는 알 수 없는 양이고, `p(x)`는 각 값이
+    얼마나 그럴듯한지 말해주는 규칙이다. (2) *질량*과 *밀도*의 혼동 — 연속 분포의 한 점에서 확률은
+    0이고, 그 자리에는 밀도만이 있다. 이 두 구분이 깨끗해지면, 나머지 확률 이론은 그 위에 정리돼
+    얹힌다.
+  </Fragment>
+</ToolSpec>
+
+<DistributionShapeLab />
+
+<Arc kicker="흐름">
+
+<ArcRow n={1} title="분포는 가능한 결과에 확률을 배분한다">
+
+분포는 *총 확률 1을 가능한 결과들에 나눠주는 규칙*이다. 모델이 "이 이미지는 고양이 0.6, 강아지 0.3, 새 0.1"이라고 말하면, 모델은 세 라벨 위의 분포를 만들어낸 것이다. 합이 1이어야 하는 이유는 — *결과 중 정확히 하나는 일어나기* 때문이다. 확률은 제약된 예산이지, 자유로운 점수가 아니다.
+
+순진한 질문 — *확률이 얼마인가?* — 은 답 하나를 요구하고, 그 답도 *한 수*인 경우가 많다. 더 깊은 질문 — *분포 전체가 무엇인가?* — 은 나머지 그림을 준다. 모델이 가능하다고 본 모든 결과, 각각에 얼마만큼의 확률을 썼는지. *분포는 한 결과를 특권화하지 않을 때 남는 것*이다.
+
+</ArcRow>
+
+<ArcRow n={2} title="이산 분포 — 범주, 단어, 클래스">
+
+가장 단순한 경우는 결과가 유한할 때다. 동전 던지기는 둘. 주사위는 여섯. softmax 출력은 클래스 수만큼. 문서 안 한 단어는 어휘 크기만큼. 분포 전체는 (결과, 확률) 쌍의 목록이다 — 결과에서 `[0, 1]`로 가는 함수, 그 값을 다 더하면 1.
+
+이 함수의 이름이 <Term id="probability-mass">확률질량함수</Term> — *pmf*다. "질량"이라는 말은 확률을 이산 칸에 나눠주는 *실제 질량*으로 그릴 수 있어서다. 결과 `x` 위 막대의 높이가 `p(x)`. 위의 위젯은 pmf 편집기 — 가중치를 끌 때마다 총합은 그대로 두고 질량이 재배분된다.
+
+<CodeBlock slug="distributions" arc="arc2" />
+
+</ArcRow>
+
+<ArcRow n={3} title="기댓값 — 질량의 중심">
+
+결과가 수일 때, 분포에는 *평균*이 있다. 기댓값 <Formula>E[X] = Σ x · p(x)</Formula>은 가중 평균 — 바 차트의 *질량 중심*이다. 위젯을 결과 1..5의 **균등**으로 끌어보자 — 평균은 3, 정중앙. **치우침**으로 끌어 작은 값이 흔하고 큰 값이 드물게 만들면, 평균은 무거운 쪽으로 옮긴다.
+
+"기대"라는 이름은 살짝 오해 소지가 있다. <Formula>X ∈ {"{"} 0, 1000 {"}"}</Formula>, 두 결과의 확률이 같다면, 기댓값은 500 — 그런데 이 값은 `X`가 *절대 가지지 못하는* 값이다. 평균은 분포의 요약이지 한 번 뽑힐 값의 예측이 아니다. 독립 시행을 길게 반복했을 때 그 평균이 수렴하는 값 (*큰 수의 법칙*) — 그래서 `E`라는 이름을 받는다.
+
+<CodeBlock slug="distributions" arc="arc3" />
+
+</ArcRow>
+
+<ArcRow n={4} title="분산 — 중심만이 아니라 퍼짐">
+
+평균이 같으면서 모양이 전혀 다른 분포 두 개가 있을 수 있다. 위젯의 **집중**과 **쌍봉**은 평균이 둘 다 3 — 그런데 집중은 결과 3 자체에 확률을 쌓고, 쌍봉은 1과 5에 확률을 가른다. 평균만으로는 둘을 구별할 수 없다 — <Term id="variance">분산</Term>이 그 일을 한다.
+
+<Formula>{"Var[X] = Σ p(x) · (x − μ)²"}</Formula> — 평균으로부터의 제곱 거리의 가중 평균. 제곱하는 이유는 양의 편차와 음의 편차가 서로 상쇄되지 않게 하기 위해서다. 그 제곱근, <Formula>σ = √Var</Formula>이 *표준편차* — 같은 아이디어를 `X`의 원래 단위로 복원한 양.
+
+분산은 분포의 *2차* 요약이다. 금융에서는 리스크의 작업 정의, ML에서는 추정기 동요의 한계, 물리에서는 열적 잡음부터 측정 오차까지 어디에나. 평균도 분산도 같은 두 분포는 여전히 같은 분포는 아니지만, 평균만 일치할 때보다 둘 사이의 간극은 훨씬 좁다.
+
+</ArcRow>
+
+<ArcRow n={5} title="연속 분포 — 질량이 아니라 밀도">
+
+실세계 분포 대부분은 유한한 칸이 아니라 실수선 위에 있다. 하루치 주가 수익률, 측정 오차, 응답 시간, 비트 정밀도 아래 픽셀 밝기 — 이들은 연속체 위에 살고, 이산 질량으로는 다룰 수 없다 — 가능한 값이 비가산이라 한 값의 확률이 0이기 때문이다.
+
+올바른 대상은 <Term id="probability-density">확률밀도함수</Term> <Formula>f(x)</Formula>다. 밀도는 확률이 *아니지만* — `f(x)`가 1을 넘을 수 있다 — `x` 근처에서 확률이 쌓이는 *비율*이다. 확률은 밀도를 구간에 적분해서 나온다: <Formula>{"P(a ≤ X ≤ b) = ∫_a^b f(x) dx"}</Formula>. 실수선 전체에 대한 적분은 1.
+
+여기서 분포가 [적분](/ko/modules/integration) 과 만난다. 이산 분포의 기댓값은 합 — <Formula>Σ x · p(x)</Formula>. 연속 분포의 기댓값은 적분 — <Formula>{"∫ x · f(x) dx"}</Formula>. 같은 아이디어, 다른 기계 — 적분이 합의 연속 판이고, 그것이 *비율을 누적한다*는 우리가 거리와 현재가치에서 본 그 일이다. *분포는 연속이 되는 순간 미적분을 상속받는다.*
+
+</ArcRow>
+
+<ArcRow n={6} title="이게 어디에 나타나나 — 같은 모양, 세 필러">
+
+**분포는 Lemma가 이미 다루는 수학 대부분의 *타입*이다.** 어떤 수가 *불확실*한 자리마다 그 아래에 분포가 앉아 있다. 세 필러, 한 구조.
+
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`ml     : softmax는 클래스 위의 분포; calibration은 예측 분포와 실제
+         빈도를 비교한다.
+graphics : 색 히스토그램은 픽셀 값 위의 분포; 그 분포의 엔트로피가
+           압축 한계를 정한다.
+finance  : 수익률은 분포에서 뽑힌다; 리스크는 한 수익률이 아니라
+           그 분포의 성질이다.`}</pre>
+
+[**자신 있게 틀리기**](/ko/ml/confident-wrong) — softmax는 라벨 위의 *분포*를 만들어내지, *진실 증명서*를 만들지 않는다. 확률 합이 1인 이유는 *어떤* 라벨은 골라야 하기 때문이고, 각 바의 높이는 모델의 *베팅*이지 *지식*이 아니다.
+
+[**모델 보정**](/ko/ml/model-calibration) — 보정은 예측 분포와 실제 빈도 사이의 *간극*이다. 신뢰도 다이어그램은 묻는다 — 모델이 `p = 0.8`이라고 한 bin에서 실제 정답률은 80%였는가? 보정은 분포의 성질이지 단일 예측의 성질이 아니다.
+
+[**TF-IDF**](/ko/ml/tf-idf) — 단어 빈도는 문서마다의 *어휘 위 분포*. 문서를 비교한다는 건 분포를 비교하는 일 — 코사인 유사도, KL 발산, BM25는 모두 다른 이름을 쓴 *분포 비교 도구*다.
+
+[**이미지 압축**](/ko/graphics/image-compression) — 히스토그램은 픽셀 값 위의 분포이고, 그 위의 <Term id="entropy">엔트로피</Term>가 독립 인코딩에서 픽셀당 비트의 *하한*이다. 압축 이야기는 분포와 엔트로피가 함께 짠 직물이다.
+
+[**포트폴리오 리스크**](/ko/finance/portfolio-risk) — 리스크는 최악의 경우가 아니라 *수익률 분포의 성질*이다. 분산, 공분산, 수익률이 평균 둘레로 흩어지는 모양 — 그게 포트폴리오 결정의 입력이지, 평균 하나가 아니다.
+
+**같은 대상, 다른 필러 — 응용 다섯 개가 받침 모듈 없이 이미 분포 언어를 쓰고 있었다. 이제 그 다섯이 한 모듈을 공유한다.**
+
+<CodeBlock slug="distributions" arc="arc6" />
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **분포는 불확실성 전체의 모양이다.** 이산이든 연속이든 규칙은 같다 — 모든 결과에 대한 확률의
+  합 (또는 적분) 이 1. 평균이 그 중심을 요약하고, 분산이 그 퍼짐을 요약하고, 모양 전체가 나머지를
+  담는다. *현대 수학에서 "수"라 부르는 대부분은 그보다 먼저 분포다.*
+</Pin>
+
+<Exercises lang="ko">
+
+<Exercise number={1} tag="손으로 정규화하기" noCalculator>
+
+모델이 raw 점수 (로짓) <Formula>[2.0, 1.0, 0.1]</Formula>을 낸다. softmax로 분포로 바꿔라 — <Formula>p_i = e^(x_i) / Σ e^(x_j)</Formula>. 소수 둘째 자리까지. 합이 1임을 확인하라.
+
+<Solution>
+  분자: <Formula>e^2 ≈ 7.39, e^1 ≈ 2.72, e^(0.1) ≈ 1.11</Formula>. 합:{" "}
+  <Formula>11.22</Formula>. 확률: <Formula>0.66, 0.24, 0.10</Formula>. 합: <em>1.00</em>. *softmax는
+  임의의 실수 벡터를 이산 분포로 바꾸는 정확한 그 연산이다. 가장 큰 로짓이 가장 큰 질량을 받고,
+  로짓들의 퍼짐이 분포의 날카로움을 정한다.*
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="평균은 같고 분산은 다르고" noCalculator>
+
+결과 <Formula>1, 2, 3</Formula>의 이산 분포 둘. A: <Formula>p = [0, 1, 0]</Formula>. B: <Formula>p = [0.5, 0, 0.5]</Formula>. 각각의 평균과 분산을 구하고, 어느 쪽이 더 *큰지* 차원별로 말해라.
+
+<Solution>
+  *A:* 평균 <Formula>= 1·0 + 2·1 + 3·0 = 2</Formula>; 분산{" "}
+  <Formula>= (1−2)²·0 + (2−2)²·1 + (3−2)²·0 = 0</Formula>. *B:* 평균{" "}
+  <Formula>= 1·0.5 + 2·0 + 3·0.5 = 2</Formula>; 분산{" "}
+  <Formula>= 1·0.5 + 0 + 1·0.5 = 1</Formula>. **평균은 같고, 분산은 전혀 다르다.** A는 확정 (항상
+  2), B는 1과 3 사이의 동전 던지기. 평균 하나가 둘을 같은 수로 무너뜨린다 — 그래서 분산이 따로
+  존재한다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="밀도는 확률이 아니다">
+
+연속 분포의 밀도가 <Formula>x ∈ [0, 1]</Formula>에서 <Formula>f(x) = 2x</Formula>이고 그 밖에서 <Formula>0</Formula>이다. 이게 유효한 밀도임 (적분이 1) 을 확인하라. <Formula>P(X ≤ 0.5)</Formula>을 구하라. 그리고 <Formula>f(0.5)</Formula>의 값을 짚고, 왜 이 값 자체가 <Formula>X = 0.5</Formula>의 확률이 *아닌지* 설명하라.
+
+<Solution>
+  전체: <Formula>{"∫_0^1 2x dx = x² |_0^1 = 1"}</Formula>. 유효한 밀도. 반쪽 적분:{" "}
+  <Formula>{"P(X ≤ 0.5) = ∫_0^(0.5) 2x dx = (0.5)² = 0.25"}</Formula>. 밀도값:{" "}
+  <Formula>f(0.5) = 1.0</Formula>. 이 수는 확률이 *아니다* — 밀도는 1을 넘을 수 있고,{" "}
+  <Formula>P(X = 0.5) = 0</Formula>이다 — 연속 분포에서 단일 점은 유한한 확률을 가지지 않으니까. 0.5
+  근처 폭 <Formula>dx</Formula>의 작은 구간에 들어갈 *확률*은 대략{" "}
+  <Formula>f(0.5) · dx = dx</Formula> — 구간 폭에 비례한다.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="분포 알아보기">
+
+§ 6에서 든 다섯 응용 각각에 대해, 확률변수가 무엇인지, 결과 공간이 무엇인지, 분포가 이산인지 연속인지 적어라.
+
+<Solution>
+  *자신 있게 틀리기:* `X`는 클래스 라벨; 결과는 K개 클래스; 이산. *모델 보정:* `X`는 다시 예제별
+  클래스 라벨; 이산. 다만 *예측 확률* 자체는 `[0, 1]` 위의 실수이고, 보정 다이어그램은 그 연속
+  예측을 bin으로 묶어 이산 빈도와 비교한다. *TF-IDF:* `X`는 문서 안 단어; 어휘; 이산. *이미지 압축:*
+  `X`는 픽셀 값; `{0, 1, ..., 255}` (8비트 그레이스케일); 이산. *포트폴리오 리스크:* `X`는 수익률;
+  실수; 연속. 다섯 중 넷이 이산, 하나가 연속 — 같은 모듈이 둘 다 다루는 이유는 차이가 *질량 vs
+  밀도*이지 다른 수학이 아니라서다.
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  모듈: **분포**. 세 필러에 걸쳐 쓰인다 — ML
+  ([자신 있게 틀리기](/ko/ml/confident-wrong), [모델 보정](/ko/ml/model-calibration),
+  [TF-IDF](/ko/ml/tf-idf)), 그래픽 ([이미지 압축](/ko/graphics/image-compression)), 금융
+  ([포트폴리오 리스크](/ko/finance/portfolio-risk)). *같은 대상 — softmax 출력, 색 히스토그램,
+  수익률 — 이 각각 수가 되기 전에 분포이고, 수학이 그 사실을 안다.*
+</PageFooter>
