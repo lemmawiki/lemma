@@ -295,6 +295,65 @@ export const journeys: JourneyMeta[] = [
       },
     ],
   },
+
+  {
+    id: "finding-the-minimum",
+    title: {
+      en: "Finding the Minimum",
+      ko: "최솟값을 찾아가기",
+    },
+    hook: {
+      en: "The nouns change: loss, calibration error, portfolio risk. The shape is the same: choose a number to improve, move through choices, stop when improvement runs out. One module, three applications, one skeleton.",
+      ko: "이름은 바뀐다 — 손실, 보정 오차, 포트폴리오 위험. 모양은 같다 — 좋아져야 할 숫자를 정하고, 선택지 사이를 움직이다가, 더 좋아지지 않는 곳에서 멈춘다. 한 모듈, 세 응용, 한 골격.",
+    },
+    tagline: {
+      en: "One skeleton — objective, move, step, stop — under three applications across ML and finance.",
+      ko: "한 골격 — 목적, 움직임, 스텝, 정지 — 이 ML과 금융의 세 응용을 받친다.",
+    },
+    duration: 4,
+    destination: {
+      en: "Reading three different optimization stories as one shared procedure.",
+      ko: "세 다른 최적화 이야기를 한 공유 절차로 읽기.",
+    },
+    days: [
+      {
+        day: 1,
+        page: "/modules/optimization",
+        kind: "module",
+        why: {
+          en: "Read the skeleton first. Five steps — objective, search space, move, step size, stopping — and the widget that walks them in 1D. Note what each step is *named* abstractly; the applications will rename them.",
+          ko: "골격부터 읽는다. 다섯 단계 — 목적, 탐색 공간, 움직임, 스텝 크기, 정지 — 와 그 다섯을 1차원에서 보여주는 위젯. 각 단계의 추상적 *이름*에 주의한다. 응용에서는 이 이름이 다시 붙는다.",
+        },
+      },
+      {
+        day: 2,
+        page: "/ml/gradient-descent",
+        kind: "application",
+        why: {
+          en: "The canonical example. Objective = loss. Search space = a parameter. Move = the derivative. Step size = the learning rate. Read with the five-step skeleton in mind — every word on the page lands on one of the five.",
+          ko: "정전적 예. 목적 = 손실. 탐색 공간 = 매개변수. 움직임 = 미분. 스텝 크기 = 학습률. 다섯 단계 골격을 머리에 두고 읽는다 — 페이지의 모든 단어가 다섯 중 하나에 떨어진다.",
+        },
+      },
+      {
+        day: 3,
+        page: "/ml/model-calibration",
+        kind: "application",
+        why: {
+          en: "Same skeleton, one-dimensional search space. Objective = negative log-likelihood. Search space = a single scalar T. Move = the derivative of NLL with respect to T. *Two pages, identical procedure*; only the dimension differs.",
+          ko: "같은 골격, 1차원 탐색 공간. 목적 = 음의 로그 가능도. 탐색 공간 = 스칼라 하나 T. 움직임 = T에 대한 NLL의 미분. *두 페이지, 같은 절차*. 차원만 다르다.",
+        },
+      },
+      {
+        day: 4,
+        page: "/finance/portfolio-risk",
+        kind: "application",
+        why: {
+          en: "Same skeleton, finance vocabulary. Objective = portfolio variance. Search space = weights summing to 1. Move = the derivative of variance with respect to weight. For two assets the minimum is closed-form; in higher dimensions the same procedure iterates. *The skeleton crosses pillars without changing.*",
+          ko: "같은 골격, 금융 어휘. 목적 = 포트폴리오 분산. 탐색 공간 = 합이 1인 비중. 움직임 = 비중에 대한 분산의 미분. 두 자산이면 최솟값은 닫힌 형식, 고차원에서는 같은 절차를 반복한다. *골격은 필러를 가로지르며 그대로다.*",
+        },
+      },
+    ],
+  },
 ];
 
 export const journeyById: Record<string, JourneyMeta> = Object.fromEntries(
