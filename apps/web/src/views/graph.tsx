@@ -20,6 +20,7 @@ const MODULE_COLOR: Record<string, string> = {
   linearization: "#7a4ea0",
   vectors: "#2c8a8c",
   entropy: "#a83b80",
+  distributions: "#6e8c2c",
 };
 const ORPHAN_COLOR = "#9ca3a4";
 const PILLAR_ORDER: Pillar[] = ["graphics", "physics", "ml", "finance"];

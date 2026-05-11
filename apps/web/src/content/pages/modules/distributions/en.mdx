@@ -41,10 +41,12 @@ If you only know the *most likely* outcome of an uncertain thing, you barely kno
     <Term id="variance">variance</Term> is the average squared distance from that center.
   </Fragment>
   <Fragment slot="applies">
-    Any time uncertainty has a *shape*, not just a single value. Softmax outputs in ML, return
-    distributions in finance, color histograms in compression, calibration bins, term frequencies in
-    text. Once you can name the distribution behind a quantity, the right summary (mean? variance?
-    entropy? a quantile?) usually picks itself.
+    Any time uncertainty has a *shape*, not just a single value.{" "}
+    <Term id="softmax">Softmax</Term> outputs in ML, return distributions in finance, color{" "}
+    <Term id="histogram">histograms</Term> in compression,{" "}
+    <Term id="calibration">calibration</Term> bins, term frequencies in text. Once you can name the
+    distribution behind a quantity, the right summary (mean? variance? entropy? a quantile?)
+    usually picks itself.
   </Fragment>
   <Fragment slot="breaks">
     Two big traps. (1) Confusing the *variable* with its *distribution* — `X` is the unknown
