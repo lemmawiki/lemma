@@ -63,13 +63,21 @@ interface Manifest {
   }>;
 }
 
+// Sidecars are schema.org JSON-LD with `lemma:` namespaced extensions. We
+// only read the fields the tools surface; the rest is left to consumers
+// that speak the full vocabulary.
 interface Sidecar {
-  kind: string;
-  id: string;
-  lang: Lang;
+  "@type": string;
+  "@id": string;
   url: string;
-  title: string;
-  body: string;
+  inLanguage: Lang;
+  name: string;
+  headline: string;
+  description?: string | null;
+  abstract?: string;
+  articleBody: string;
+  "lemma:kind": string;
+  "lemma:id": string;
 }
 
 // ---- Fetch + cache --------------------------------------------------------
@@ -271,7 +279,7 @@ async function toolGetModule(args: { id: string; lang?: string }): Promise<unkno
     url: `${BASE_URL}/${lang}${meta.href}`,
     title: meta.title[lang],
     hook: meta.hook[lang],
-    body: sidecar ? stripMdx(sidecar.body) : null,
+    body: sidecar ? stripMdx(sidecar.articleBody) : null,
     consumed_by: m.applications
       .filter((a) => a.modules.includes(meta.id))
       .map((a) => ({ id: a.id, title: a.title[lang] })),
@@ -291,7 +299,7 @@ async function toolGetApplication(args: { id: string; lang?: string }): Promise<
     modules: meta.modules,
     title: meta.title[lang],
     hook: meta.hook[lang],
-    body: sidecar ? stripMdx(sidecar.body) : null,
+    body: sidecar ? stripMdx(sidecar.articleBody) : null,
   };
 }
 
@@ -353,13 +361,13 @@ async function toolSearch(args: {
   );
   const ranked = sidecars
     .filter((s): s is Sidecar => s !== null)
-    .map((s) => ({ s, score: scoreBody(args.query, s.body) }))
+    .map((s) => ({ s, score: scoreBody(args.query, s.articleBody) }))
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 
   return ranked.map(({ s, score }) => {
-    const body = stripMdx(s.body);
+    const body = stripMdx(s.articleBody);
     const q = tokenize(args.query);
     let snippet = body.slice(0, 320);
     for (const term of q) {
@@ -371,9 +379,9 @@ async function toolSearch(args: {
       }
     }
     return {
-      kind: s.kind,
-      slug: s.id,
-      title: s.title,
+      kind: s["lemma:kind"],
+      slug: s["lemma:id"],
+      title: s.name,
       url: `${BASE_URL}${s.url}`,
       score: Number(score.toFixed(4)),
       snippet: snippet.trim() + (body.length > snippet.length ? "…" : ""),

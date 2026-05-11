@@ -15,44 +15,19 @@ import Breadcrumb from "../../components/page/breadcrumb.astro";
 import GlossaryUsed from "../../components/page/glossary-used.astro";
 import ProgressTracker from "../../components/page/progress-tracker.astro";
 import { ProgressBanner } from "../../components/page/progress-banner";
-import { applicationByHref } from "../../data/applications";
 import { moduleByHref } from "../../data/modules";
+import { routeFromEntryId } from "../../lib/route-from-entry";
+import { buildPageJsonLd } from "../../lib/page-jsonld";
 
 export async function getStaticPaths() {
   const entries = await getCollection("pages");
-  // Each entry id is `<kind>/<slug>/<lang>` (e.g. `modules/entropy/en`). The
-  // URL is `/<lang>/<routePath>` where routePath is derived per entry.
   return entries
     .map((entry) => {
-      const parts = entry.id.split("/");
-      if (parts.length < 2) return null;
-      const lang = parts.pop() as "en" | "ko";
-      // Skip locales that aren't en|ko
-      if (lang !== "en" && lang !== "ko") return null;
-      const kind = parts[0]; // modules | applications | hubs
-      const slug = parts.slice(1).join("/");
-
-      // Route path for the URL (without the lang prefix).
-      let routePath: string;
-      if (kind === "modules") {
-        routePath = `modules/${slug}`;
-      } else if (kind === "applications") {
-        // Look up the application's href to recover its pillar path
-        // (e.g. /finance/bitcoin-pizza). Fall back to applications/<slug>.
-        const app = Object.values(applicationByHref).find((a) => a.id === slug);
-        routePath = app ? app.href.replace(/^\//, "") : `applications/${slug}`;
-      } else if (kind === "journeys") {
-        routePath = `journey/${slug}`;
-      } else if (kind === "hubs") {
-        // Hubs (home, graph) — slug is the path. "home" → "" (the root).
-        routePath = slug === "home" ? "" : slug;
-      } else {
-        routePath = `${kind}/${slug}`;
-      }
-
+      const route = routeFromEntryId(entry.id);
+      if (!route) return null;
       return {
-        params: { lang, slug: routePath },
-        props: { entry, kind, slug },
+        params: { lang: route.lang, slug: route.routePath },
+        props: { entry, kind: route.kind, slug: route.slug },
       };
     })
     .filter((p): p is NonNullable<typeof p> => p !== null);
@@ -68,6 +43,22 @@ const { entry, kind, slug } = Astro.props as Props;
 const lang = (Astro.params.lang as "en" | "ko") ?? "en";
 
 const { Content } = await render(entry);
+
+// Structured metadata for the <head>. The same builder serves the per-page
+// JSON-LD sidecar — HTML and JSON can't disagree about a page's metadata.
+// includeBody=false keeps the inline JSON-LD tiny (no MDX prose duplication
+// inside the script tag); the full body still lives at <page-url>.json.
+const route = routeFromEntryId(entry.id);
+const jsonLd = buildPageJsonLd({
+  kind,
+  slug,
+  lang,
+  url: route?.url ?? `/${lang}/${kind}/${slug}`,
+  title: entry.data.title,
+  description: entry.data.description ?? null,
+  body: "",
+  includeBody: false,
+});
 
 // Extract glossary term ids referenced anywhere in the body. Cheap regex over
 // the MDX source; the GlossaryUsed component dedupes and order-preserves.
@@ -90,7 +81,7 @@ const breadcrumb = entry.data.breadcrumb ?? {
 };
 ---
 
-<Page lang={lang} title={entry.data.title} description={entry.data.description}>
+<Page lang={lang} title={entry.data.title} description={entry.data.description} jsonLd={jsonLd}>
   <Breadcrumb
     lang={lang}
     parent={

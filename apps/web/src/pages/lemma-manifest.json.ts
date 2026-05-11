@@ -14,18 +14,19 @@
 
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { applications, applicationByHref, PILLAR_LABEL, type Pillar } from "../data/applications";
+import { applications, PILLAR_LABEL, type Pillar } from "../data/applications";
 import { modules } from "../data/modules";
 import { journeys } from "../data/journeys";
 import { computes } from "../data/computes";
 import { glossary } from "../data/glossary";
 import { provenance } from "../data/provenance";
 import { proofs } from "../data/proofs";
+import { routeFromEntryId, type Kind, type Lang } from "../lib/route-from-entry";
 
 interface PageEntry {
-  kind: "modules" | "applications" | "journeys" | "hubs";
+  kind: Kind;
   id: string;
-  lang: "en" | "ko";
+  lang: Lang;
   url: string;
   sidecar: string;
   title: string;
@@ -38,37 +39,16 @@ export const GET: APIRoute = async ({ site }) => {
 
   const pages: PageEntry[] = entries
     .map((entry): PageEntry | null => {
-      const parts = entry.id.split("/");
-      if (parts.length < 2) return null;
-      const lang = parts.pop() as "en" | "ko";
-      if (lang !== "en" && lang !== "ko") return null;
-      const kind = parts[0] as PageEntry["kind"];
-      const slug = parts.slice(1).join("/");
-
-      let routePath: string;
-      if (kind === "modules") {
-        routePath = `modules/${slug}`;
-      } else if (kind === "applications") {
-        const app = Object.values(applicationByHref).find((a) => a.id === slug);
-        routePath = app ? app.href.replace(/^\//, "") : `applications/${slug}`;
-      } else if (kind === "journeys") {
-        routePath = `journey/${slug}`;
-      } else if (kind === "hubs") {
-        routePath = slug === "home" ? "" : slug;
-      } else {
-        routePath = `${kind}/${slug}`;
-      }
-
+      const route = routeFromEntryId(entry.id);
+      if (!route) return null;
       // Relative paths only — consumers (MCP, integrations) prepend their own
       // base. That way one manifest serves prod, staging, and local dev.
-      const url = routePath ? `/${lang}/${routePath}` : `/${lang}/`;
-      const sidecar = routePath ? `${url}.json` : "";
-
+      const sidecar = route.routePath ? `${route.url}.json` : "";
       return {
-        kind,
-        id: slug,
-        lang,
-        url,
+        kind: route.kind,
+        id: route.slug,
+        lang: route.lang,
+        url: route.url,
         sidecar,
         title: entry.data.title,
         description: entry.data.description ?? undefined,
