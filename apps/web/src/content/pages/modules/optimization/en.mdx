@@ -1,0 +1,229 @@
+---
+title: Optimization · Lemma
+description: Optimization is not finding the formula. It is choosing a quantity to improve, then moving through possible choices until improvement stops.
+breadcrumb:
+  parent: graph
+  parent_path: /graph
+  current: module · optimization
+---
+
+import { CodeBlock, Term, Exercise, Solution, ToolSpec, ObjectiveExplorer } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import Arc from "@/components/page/arc.astro";
+import ArcRow from "@/components/page/arc-row.astro";
+import Pin from "@/components/page/pin.astro";
+import Exercises from "@/components/page/exercises.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+
+<Hook kicker="the hook · when a formula will not answer">
+
+# A function tells you the height. How do you know which way to go down?
+
+A function says how good your current choice is — a *single number*. It does not tell you the best choice. For simple functions you can write down the answer; for almost everything else, you cannot. There is no formula for *the temperature that calibrates this network*, or *the portfolio weights that minimize this variance under these constraints*, or *the model parameters that fit this dataset*. Yet all three problems get solved, every day, by the same five moves: name the objective, name the search space, compare nearby choices, choose how far to step, and decide when to stop.
+
+<Lede>
+  **Optimization is not finding the formula. It is choosing a quantity to improve, then moving
+  through possible choices until improvement stops.** This module is about the *moves*. Different
+  algorithms do them differently; the bones are identical.
+</Lede>
+
+</Hook>
+
+<ToolSpec>
+  <Fragment slot="definition">
+    Given an <Term id="objective-function">objective function</Term> $f$ over a *search space*,
+    find a point $x^*$ that makes $f$ as small (or large) as possible. The standard machinery: start
+    somewhere, take steps in a direction that improves $f$, control how far each step goes (the{" "}
+    <Term id="step-size">step size</Term>), and stop when no nearby move improves $f$ — that is{" "}
+    <Term id="convergence">convergence</Term>. The point where you stop is a{" "}
+    <Term id="local-minimum">local minimum</Term>; whether it is also the global minimum depends
+    on the geometry of $f$ and where you started.
+  </Fragment>
+  <Fragment slot="applies">
+    Any time you have a choice and a number that says how good the choice is. Fitting model
+    parameters in ML, picking portfolio weights in finance, tuning a temperature scalar in{" "}
+    <Term id="calibration">calibration</Term>, finding <Term id="equilibrium">equilibrium</Term>{" "}
+    points in physics, designing a cheaper part in engineering. The same five-step loop runs all of
+    them; what differs is the objective, the space, and the move rule.
+  </Fragment>
+  <Fragment slot="breaks">
+    Three places the simple loop fails. (1) The objective has many local minima and descent finds
+    a *bad* one. (2) The search space has constraints (probabilities sum to 1, weights are
+    non-negative, parameters live on a manifold) and naive steps leave it. (3) The objective is
+    cheap to evaluate but its <Term id="gradient">gradient</Term> is not, so deciding the direction
+    is the costly step. Each of these has its own family of techniques; this module is the
+    *base case* they all extend.
+  </Fragment>
+</ToolSpec>
+
+<ObjectiveExplorer />
+
+<Arc kicker="the arc">
+
+<ArcRow n={1} title="Objective — what are we trying to improve?">
+
+Every optimization problem starts with one number. *Smaller is better*, or *bigger is better*, but only one number gets that vote. In machine learning that number is the [loss function](/en/glossary/loss-function) — sum of errors over a dataset. In finance it can be portfolio <Term id="variance">variance</Term>, expected shortfall, or the negative of risk-adjusted return. In physics it is often potential energy, and "equilibrium" is the word physicists use for "the place where the objective stops decreasing." In calibration it is <Term id="negative-log-likelihood">negative log-likelihood</Term>. Different fields, different words, identical role: one quantity that determines whether a candidate is preferable to its neighbours.
+
+"Minimize" and "maximize" are the same problem twice — maximizing $f$ is minimizing $-f$. By convention this module talks about *minimization*; everything carries over to maximization by flipping the sign. The objective is what locks the problem in place. Without one, "make it better" has no agreed direction. *With* one, every candidate has a number attached and the comparison becomes mechanical.
+
+</ArcRow>
+
+<ArcRow n={2} title="Search space — what choices are allowed?">
+
+The objective alone is not enough; you also need to say *what can vary*. The set of all allowed choices is the *search space*. For ML it is the high-dimensional <Term id="vector">vector</Term> of model parameters. For a portfolio it is the vector of weights, often constrained to be non-negative and sum to 1. For calibration it can be a single scalar (one temperature value) or a small vector (per-class temperatures). For physics, it is the set of positions or configurations consistent with the constraints.
+
+Whether the search space is *finite* (pick one of 100 hyperparameter combinations), *discrete and combinatorial* (assign tasks to workers), or *continuous* (anywhere in $\mathbb{R}^n$) changes which algorithms apply. This module focuses on the *continuous* case, because that is where the derivative — the move rule that makes the rest of Lemma tick — has the most to say. Discrete optimization (integer programming, scheduling, the travelling salesman) exists; it uses different math.
+
+</ArcRow>
+
+<ArcRow n={3} title="Move — compare nearby choices">
+
+Given the current point $x$, the optimizer must decide *which way to go*. The simplest, most general answer: evaluate $f$ at $x$ and at points near $x$, then move toward the smaller value. When $f$ is differentiable, "near" collapses into a single object — the [derivative](/en/modules/derivatives), or in higher dimensions the [gradient](/en/glossary/gradient) — which says, *to first order*, exactly which direction makes $f$ smaller fastest. Movement becomes one operation: $x \leftarrow x - \alpha \cdot \nabla f(x)$.
+
+The widget makes this concrete. The orange tangent at the current $x$ shows the slope $f'(x)$; pressing **step** moves $x$ to the left if the slope is positive (function is increasing → go the other way) or to the right if negative. The size of the move is $\alpha \cdot f'(x)$ — proportional to the slope itself. Where the slope is steep the step is big; where the slope is shallow the step is small. The optimizer *slows down on its own* as it approaches a minimum.
+
+This is not the only move rule. *Newton's method* uses the second derivative to choose the step in one shot. *Coordinate descent* moves one variable at a time. *Stochastic gradient descent* uses a noisy approximation of the gradient. All of them are answers to the same question: which way is better, and how far?
+
+<CodeBlock slug="optimization" arc="arc3" />
+
+</ArcRow>
+
+<ArcRow n={4} title="Step size — moving too little, too much">
+
+The step size $\alpha$ is the second knob, and it has at least as much practical impact as the direction. Try the widget: with the **convex bowl** preset and small $\alpha$, the position creeps left-to-right toward the minimum — many tiny correct steps. Increase $\alpha$ — the descent gets faster, then *too* fast: each step overshoots, and the trajectory oscillates back and forth. Push $\alpha$ further and the position blows up entirely, walking off the screen with each iteration amplifying the previous error.
+
+For a quadratic $f$ with second derivative $c$, the stability bound is sharp: $\alpha < 2/c$ converges, $\alpha > 2/c$ diverges. For non-quadratic $f$ the bound moves as you do — the local curvature at one point differs from the curvature elsewhere. Real algorithms either fix $\alpha$ conservatively, schedule it (start big, decrease over time), or compute it adaptively each step (*line search*, *trust regions*). All three are answers to the same fact: *no single constant works for every geometry*.
+
+In ML, $\alpha$ has a special name — the [learning rate](/en/glossary/learning-rate) — because tuning it dominates training outcomes. In the rest of optimization it is just $\alpha$. Same number, same role; different communities give it different folklore.
+
+<CodeBlock slug="optimization" arc="arc4" />
+
+</ArcRow>
+
+<ArcRow n={5} title="Stopping — local minimum and convergence">
+
+The simplest stopping rule: *stop when the move would not change $f$ much*. Concretely, when the gradient magnitude $\|\nabla f\|$ falls below a small tolerance, or when the change $|f(x_{n+1}) - f(x_n)|$ does, or when the iterate $x_n$ stops moving. Without a rule like this, the loop runs forever. With one, *something* stops the optimizer — but the stopping point is only guaranteed to be a *local* minimum.
+
+This is the most important caveat the module carries. A *convex* objective (a single bowl, no other dips) has exactly one minimum, and any descent reaches it. Almost nothing in the real world is convex. Neural network loss surfaces are spectacularly non-convex; portfolio problems with constraints become non-convex; calibration loss is convex but its higher-dimensional cousins are not. The widget's **two valleys** preset shows the problem in one dimension: starting from $x = -2.4$, descent lands in the *left* valley — a local minimum — and stops, oblivious to the deeper right valley.
+
+The honest position: *stopped* and *solved* are different things. Local minima look identical to global ones from the inside (no nearby move helps). Strategies that try to escape — random restarts, momentum, stochastic noise, simulated annealing — all add some way to *not* stop at the first place gradient vanishes.
+
+</ArcRow>
+
+<ArcRow n={6} title="Where this shows up — same five steps, three pillars">
+
+**Optimization is the math behind every "we don't have a formula, but we have a procedure" page in Lemma.** Three applications already speak this language; they share the same skeleton, with different choices for what to minimize, where, and how.
+
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`ml      : loss over training data; parameters in ℝⁿ;
+          gradient descent with a learning rate.
+ml      : negative log-likelihood; a single temperature scalar;
+          one-dimensional descent.
+finance : portfolio variance; weights summing to 1;
+          minimize a quadratic, sometimes closed-form, sometimes iterative.`}</pre>
+
+[**Gradient descent**](/en/ml/gradient-descent) — the canonical example. Objective = a regression loss summed over a dataset. Search space = the model's parameters. Move = the gradient, computed via backpropagation. Step size = the learning rate. Stopping = the loss plateaus or you run out of training budget. Every detail is one of the five steps with a domain-specific name.
+
+[**Model calibration**](/en/ml/model-calibration) — temperature scaling is optimization with a *one-dimensional* search space. Objective = negative log-likelihood on a held-out set. Search space = $T \in (0, \infty)$. Move = the derivative of NLL with respect to $T$. Step size = small enough that a single scalar fit converges in seconds. The page solves the problem by descent; this module is what justifies that descent works.
+
+[**Portfolio risk**](/en/finance/portfolio-risk) — finding the minimum-variance weights is optimization with a *closed-form* answer for two assets, and an iterative answer in higher dimensions. Objective = portfolio variance. Search space = weights $w$ summing to 1. Move = the derivative of variance with respect to weight. The arc-5 derivation on that page is exactly *step one of step three* — set the gradient to zero and solve. When closed form exists, optimization collapses to algebra; when it does not, the same machinery iterates instead.
+
+**Same five-step skeleton, different bones. Naming the skeleton is what makes it portable.**
+
+<CodeBlock slug="optimization" arc="arc6" />
+
+</ArcRow>
+
+</Arc>
+
+<Pin>
+  **Optimization is choosing a quantity to improve, then moving through possible choices until
+  improvement stops.** Five moves: objective, search space, move rule, step size, stopping. Almost
+  everything called *fitting*, *tuning*, *minimizing*, or *finding equilibrium* in the rest of
+  Lemma is some version of this loop.
+</Pin>
+
+<Exercises lang="en">
+
+<Exercise number={1} tag="recognize the five steps">
+
+Pick one of the three retro-fitted applications (gradient descent, model calibration, or portfolio risk). Name what *that page* uses as the objective, the search space, the move rule, the step size, and the stopping condition.
+
+<Solution>
+  *Gradient descent:* objective = mean squared error on a training set; search space = the model
+  weight $w \in \mathbb{R}$ (one-parameter version) or weight vector $\mathbb{R}^n$; move = the
+  gradient $\nabla L(w)$; step size = the learning rate $\eta$; stopping = a fixed iteration
+  budget or "loss plateaus." *Model calibration:* objective = negative log-likelihood on a
+  held-out set; search space = $T > 0$ (one scalar); move = $dNLL/dT$; step size = small constant
+  (the problem is well-conditioned in 1D); stopping = NLL stops decreasing within tolerance.
+  *Portfolio risk:* objective = portfolio variance $\sigma_p^2$; search space = weights $w \in
+  [0, 1]$ summing to 1; move = the derivative $d\sigma_p^2 / dw$; step size = irrelevant when
+  the closed-form answer is available, otherwise small; stopping = the derivative hits zero (or
+  the iterate plateaus). *Three pages, three different setups, identical skeleton.*
+</Solution>
+
+</Exercise>
+
+<Exercise number={2} tag="step-size stability by hand" noCalculator>
+
+Take $f(x) = (x - 3)^2$. Compute $f'(x)$. Starting at $x_0 = 0$, write the first three iterates $x_1, x_2, x_3$ for (a) $\alpha = 0.1$, (b) $\alpha = 0.5$, (c) $\alpha = 1.1$. State which one converges, which one stays steady, and which one diverges.
+
+<Solution>
+  $f'(x) = 2(x - 3)$. Update: $x_{n+1} = x_n - \alpha \cdot 2(x_n - 3)$.
+
+  **(a) $\alpha = 0.1$**: $x_1 = 0 - 0.1 \cdot (-6) = 0.6$. $x_2 = 0.6 - 0.1 \cdot (-4.8) = 1.08$.
+  $x_3 = 1.08 - 0.1 \cdot (-3.84) = 1.464$. *Steady creep toward 3 from below.*
+
+  **(b) $\alpha = 0.5$**: $x_1 = 0 - 0.5 \cdot (-6) = 3$. *Lands in one step.* The exact $\alpha$ for
+  a quadratic is $\alpha = 1/c = 1/2 = 0.5$ — Newton's step in disguise.
+
+  **(c) $\alpha = 1.1$**: $x_1 = 0 - 1.1 \cdot (-6) = 6.6$. $x_2 = 6.6 - 1.1 \cdot (7.2) = -1.32$.
+  $x_3 = -1.32 - 1.1 \cdot (-8.64) = 8.184$. *Oscillating divergence — each step lands farther from
+  the minimum, on the opposite side.*
+
+  The bound $\alpha < 2/c = 1$ is exact for this quadratic. *(a)* is inside, *(b)* is the perfect
+  step, *(c)* is past the edge.
+</Solution>
+
+</Exercise>
+
+<Exercise number={3} tag="convex vs not — local vs global">
+
+In the widget, switch to **two valleys**. Reset and use the position slider to start at $x = -2.4$, then take steps until you stop moving. Record where you stopped and the value of $f$ there. Now restart at $x = +2.4$ and do the same. Are the two stopping points the same? What does this say about the descent rule?
+
+<Solution>
+  Starting at $x = -2.4$, descent lands near $x \approx -1.5$, the *left* well. Starting at
+  $x = +2.4$, descent lands near $x \approx +1.5$, the *right* well — *and that well is deeper*
+  (slightly lower $f$). *Descent is local: where you stop depends on where you started.* The
+  widget's left vertical bar (true minimum, near $+1.5$) is missed entirely from a starting point
+  on the left side. Real algorithms try to escape this trap with random restarts, momentum, or
+  stochastic noise — none are free; each adds complexity to recover a property convex problems
+  give you for nothing.
+</Solution>
+
+</Exercise>
+
+<Exercise number={4} tag="maximize vs minimize" noCalculator>
+
+A trader wants to *maximize* expected return $\mu(w)$ over a portfolio weight $w$. Rewrite this as a minimization problem in the form this module uses. What is the objective function? What is its derivative in terms of $\mu'$?
+
+<Solution>
+  Maximizing $\mu(w)$ is minimizing $-\mu(w)$. The objective function is $f(w) = -\mu(w)$. Its
+  derivative is $f'(w) = -\mu'(w)$. The gradient descent step becomes $w \leftarrow w - \alpha \cdot
+  (-\mu'(w)) = w + \alpha \cdot \mu'(w)$ — *move in the direction $\mu$ increases.* In practice
+  finance often calls this *gradient ascent*; mathematically it is the same loop with the sign
+  flipped at the objective. *Minimization and maximization are not separate techniques; they are
+  the same loop with one sign change at the front.*
+</Solution>
+
+</Exercise>
+
+</Exercises>
+
+<PageFooter>
+  module: **Optimization**. Consumed across two pillars: ML
+  ([gradient descent](/en/ml/gradient-descent), [model calibration](/en/ml/model-calibration))
+  and finance ([portfolio risk](/en/finance/portfolio-risk)). *Same five-step skeleton: objective,
+  search space, move rule, step size, stopping. Different pages, different choices at each step,
+  identical bones.*
+</PageFooter>

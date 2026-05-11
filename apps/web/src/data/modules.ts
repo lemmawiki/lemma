@@ -126,6 +126,17 @@ export const modules: ModuleMeta[] = [
       ko: "확률 하나는 하나의 추측이다. 분포는 불확실성 전체의 *모양*이다. softmax가 만들어내는 것, 히스토그램이 곧 그것인 것, 수익률이 뽑혀 나오는 그것. 모델이 예측하는 양, 포트폴리오가 가진 양 대부분은 수가 되기 전에 분포다.",
     },
   },
+  {
+    id: "optimization",
+    href: "/modules/optimization",
+    status: "available",
+    color: "#8a2c2c",
+    title: { en: "Optimization", ko: "최적화" },
+    hook: {
+      en: "Optimization is not finding the formula. It is choosing a quantity to improve, then moving through possible choices until improvement stops. The same five steps — objective, search space, move, step size, stopping — run gradient descent in ML, weight selection in portfolios, and temperature fitting in calibration. Different algorithms, identical bones.",
+      ko: "최적화는 *공식을 찾는 것*이 아니다. *좋아져야 할 양*을 정하고, 가능한 선택지 사이를 움직이다가 더 좋아지지 않는 곳에서 멈추는 일이다. 같은 다섯 단계 — 목적, 탐색 공간, 움직임, 스텝 크기, 정지 — 가 ML의 경사하강법, 포트폴리오의 비중 선택, 보정의 온도 적합을 모두 돌린다. 알고리즘은 다르고, 골격은 같다.",
+    },
+  },
 ];
 
 export const moduleByHref: Record<string, ModuleMeta> = Object.fromEntries(

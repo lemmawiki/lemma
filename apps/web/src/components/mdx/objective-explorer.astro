@@ -1,0 +1,7 @@
+---
+import { ObjectiveExplorer as ObjectiveExplorerReact } from "../widgets/objective-explorer";
+
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+---
+
+<ObjectiveExplorerReact language={lang} client:load />

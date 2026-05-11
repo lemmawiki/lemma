@@ -28,7 +28,7 @@ import PageFooter from "@/components/page/page-footer.astro";
 
 모델이 "70% 확신"이라고 말한다. 그런 예측을 많이 모아 보면 _열에 일곱_이 정말 맞을까? 가끔은. 대개는 아니다. 화면에 찍힌 수와 장기 빈도는 _서로 다른 두 양_이고, 둘을 맞추는 일이 <Term id="calibration">캘리브레이션</Term>이다. 요즘 신경망은 처음부터 이걸 거의 못 맞춘다. 처방은 스칼라 하나 — [자신 있게 틀리기](/ko/ml/confident-wrong)에 나온 그 <Term id="temperature">온도</Term> 다이얼 — 를 따로 빼둔 정답에 맞춰 조정하는 것뿐이다.
 
-<Lede>**신뢰도는 수다. 진실은 빈도다. 캘리브레이션은 그 사이의 격차다.** 보정은 예측한 <Term id="distribution">분포</Term>를 관측 빈도와 견주는 일이다.</Lede>
+<Lede>**신뢰도는 수다. 진실은 빈도다. 캘리브레이션은 그 사이의 격차다.** 보정은 예측한 <Term id="distribution">분포</Term>를 관측 빈도와 견주는 일이다. 온도 적합은 1차원 [최적화](/ko/modules/optimization) — 스칼라 하나, 목적 함수 하나, 하강 하나다.</Lede>
 
 </Hook>
 

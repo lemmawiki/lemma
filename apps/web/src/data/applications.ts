@@ -184,7 +184,7 @@ export const applications: ApplicationMeta[] = [
     id: "portfolio-risk",
     href: "/finance/portfolio-risk",
     pillar: "finance",
-    modules: ["distributions", "vectors"],
+    modules: ["distributions", "optimization", "vectors"],
     status: "available",
     title: {
       en: "Portfolio Risk",
@@ -214,7 +214,7 @@ export const applications: ApplicationMeta[] = [
     id: "gradient-descent",
     href: "/ml/gradient-descent",
     pillar: "ml",
-    modules: ["derivatives", "vectors"],
+    modules: ["derivatives", "optimization", "vectors"],
     status: "available",
     title: {
       en: "Gradient Descent",
@@ -244,7 +244,7 @@ export const applications: ApplicationMeta[] = [
     id: "model-calibration",
     href: "/ml/model-calibration",
     pillar: "ml",
-    modules: ["distributions", "linearization", "log"],
+    modules: ["distributions", "linearization", "log", "optimization"],
     status: "available",
     title: {
       en: "Model Calibration",

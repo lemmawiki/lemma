@@ -109,5 +109,9 @@
   "random-variable",
   "expected-value",
   "probability-mass",
-  "probability-density"
+  "probability-density",
+  "objective-function",
+  "local-minimum",
+  "step-size",
+  "convergence"
 ]

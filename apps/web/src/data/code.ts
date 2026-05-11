@@ -1158,6 +1158,105 @@ rets_B = np.array([-0.10, 0.05, 0.20])        # wide
 # Portfolio variance, calibration gap, histogram entropy — all three start
 # from a distribution and ask different questions of the same object.`,
   },
+  optimization: {
+    arc3: `import numpy as np
+
+# A general "improve until you can't" loop. Given an objective f and its
+# derivative f', start somewhere, take steps in the direction f' says is
+# downhill, stop when f' is essentially zero (or you run out of budget).
+def descend(f, df, x0, alpha=0.1, tol=1e-4, max_iters=500):
+    x = x0
+    history = [x]
+    for _ in range(max_iters):
+        g = df(x)
+        if abs(g) < tol:
+            break
+        x = x - alpha * g
+        history.append(x)
+    return x, history
+
+# Convex bowl: f(x) = (x - 1)², f'(x) = 2(x - 1). Unique min at x = 1.
+f  = lambda x: (x - 1)**2
+df = lambda x: 2 * (x - 1)
+
+x_star, hist = descend(f, df, x0=-2.4, alpha=0.3)
+(round(x_star, 4), len(hist), round(f(x_star), 6))
+# → (1.0000, 28, 0.0)
+# 28 iterations from x = -2.4 to x = 1.0. Each step uses f'(x) — the
+# "which way is better" question, answered locally.`,
+    arc4: `# Step size α decides whether descent crawls, lands, or diverges.
+# Same convex bowl, three different α.
+for alpha in (0.02, 0.3, 1.05):
+    x_star, hist = descend(f, df, x0=-2.4, alpha=alpha, max_iters=300)
+    print(f"α = {alpha:5.2f}  →  iters = {len(hist):4d}  final x = {x_star:8.4f}")
+# α =  0.02  →  iters =  300  final x =  -0.0241   (crawls, hit max_iters)
+# α =  0.30  →  iters =   28  final x =   1.0000   (lands)
+# α =  1.05  →  iters =  300  final x = -1.5e+87   (overshoots, diverges)
+#
+# For this quadratic, the curvature is f''(x) = 2, and the stability
+# bound is α < 2 / f''(x) = 1. α = 1.05 sits past the edge, so each step
+# amplifies the previous error. The right α is geometry-dependent.
+
+# Adaptive trick: shrink α whenever a step *increases* f. Backtracking
+# line search is one widely-used version.
+def descend_backtrack(f, df, x0, alpha0=1.0, tol=1e-4, max_iters=500):
+    x = x0
+    alpha = alpha0
+    for _ in range(max_iters):
+        g = df(x)
+        if abs(g) < tol:
+            break
+        # Halve α until the step actually improves f.
+        while f(x - alpha * g) > f(x):
+            alpha *= 0.5
+        x = x - alpha * g
+        alpha = min(alpha * 1.5, alpha0)  # gently grow back
+    return x
+
+round(descend_backtrack(f, df, x0=-2.4, alpha0=2.0), 4)
+# → 1.0   converges even with a deliberately too-big starting α`,
+    arc6: `# Where this shows up — three real optimization stories share the same loop.
+
+# (1) ML: gradient descent on a regression loss.
+# Data y = 3·x; fit w to minimize L(w) = Σ (w·x_i − y_i)².
+X = np.array([1.0, 2.0, 3.0, 4.0])
+Y = 3.0 * X
+def L(w):  return float(((w * X - Y) ** 2).sum())
+def dL(w): return float((2 * (w * X - Y) * X).sum())
+w_star, _ = descend(L, dL, x0=0.0, alpha=0.02)
+round(w_star, 4)
+# → 3.0   the slope of Y = 3x, recovered by descent
+
+# (2) Calibration: fit one scalar T (temperature) to minimize NLL.
+# Logits z, true labels y; we pick T to make softmax(z/T) match observed
+# correctness frequencies. One parameter, well-behaved objective.
+def softmax(z):
+    e = np.exp(z - z.max(axis=-1, keepdims=True))
+    return e / e.sum(axis=-1, keepdims=True)
+np.random.seed(0)
+z_logits = np.random.randn(200, 5) * 3.0       # overconfident logits
+labels   = np.random.randint(0, 5, size=200)
+def nll(T): return float(-np.log(softmax(z_logits / T)[range(200), labels] + 1e-12).mean())
+T_star = 1.0
+for _ in range(80):
+    g = (nll(T_star + 1e-3) - nll(T_star - 1e-3)) / 2e-3  # numerical gradient
+    T_star -= 0.1 * g
+round(T_star, 3), round(nll(T_star), 3)
+# → (>1.0, <nll(1.0))   T > 1 softens overconfident predictions
+
+# (3) Portfolio risk: minimize variance over weight w ∈ [0, 1].
+# Two assets, σ_A = 0.2, σ_B = 0.1, ρ = 0.0 (independent).
+def var_p(w):  return float(w**2 * 0.04 + (1 - w)**2 * 0.01)
+def dvar_p(w): return float(2 * w * 0.04 - 2 * (1 - w) * 0.01)
+w_star, _ = descend(var_p, dvar_p, x0=0.5, alpha=2.0)
+round(w_star, 4)
+# → 0.2    20% in the volatile asset minimizes variance. The closed-form
+#          answer w* = σ_B² / (σ_A² + σ_B²) = 0.01 / 0.05 = 0.2. Match.
+#
+# Three pillars, one loop: objective + derivative + step + stopping.
+# The science is in the choices (which f? which start? which α?). The
+# *machinery* is identical.`,
+  },
 } as const;
 
 export type CodeMap = Record<string, string>;
