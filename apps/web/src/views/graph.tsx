@@ -2,26 +2,17 @@ import { useEffect, useMemo } from "react";
 import { useApp, pick } from "../context/app-context";
 import { Link } from "../lib/router";
 import { applications, PILLAR_LABEL, type Pillar } from "../data/applications";
-import { modules } from "../data/modules";
+import { modules, moduleById } from "../data/modules";
 
 const KICKER =
   "mb-4 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute";
 const MONO = "font-mono text-[0.93em]";
 
-// Stable per-module color palette. Module color is inherited by every edge
-// that lands on that module, so a quick scan shows "all the orange edges
-// converge here" — that *is* the module's reuse story, made visible.
-const MODULE_COLOR: Record<string, string> = {
-  "parametric-curves": "#b6451e",
-  derivatives: "#3a8c4a",
-  integration: "#8c5a2a",
-  log: "#1e6da6",
-  bezout: "#9a7a1a",
-  linearization: "#7a4ea0",
-  vectors: "#2c8a8c",
-  entropy: "#a83b80",
-  distributions: "#6e8c2c",
-};
+// Each module's colour lives on the module meta in data/modules.ts — edges
+// that land on a module inherit it, so a quick scan shows "all the orange
+// edges converge here" — that *is* the module's reuse story, made visible.
+// ORPHAN_COLOR is the only fallback, used when a module is built but
+// currently has no consumers (so the edge story doesn't apply yet).
 const ORPHAN_COLOR = "#9ca3a4";
 const PILLAR_ORDER: Pillar[] = ["graphics", "physics", "ml", "finance"];
 
@@ -49,7 +40,7 @@ type ModNode = {
 type Edge = { from: string; to: string; color: string };
 
 function moduleColor(id: string): string {
-  return MODULE_COLOR[id] ?? ORPHAN_COLOR;
+  return moduleById[id]?.color ?? ORPHAN_COLOR;
 }
 
 // Stable, data-derived offsets for the consumer-count dots — using the

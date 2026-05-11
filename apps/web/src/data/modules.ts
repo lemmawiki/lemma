@@ -14,6 +14,14 @@ export interface ModuleMeta {
   id: string;
   href: string;
   status: ModuleStatus;
+  /**
+   * Stable per-module palette colour. Edges that land on this module inherit
+   * it, so a quick scan of /graph shows "all the X-coloured edges converge
+   * here" — that is the module's reuse story made visible. Kept here (not
+   * in the graph view) because the graph is the truth ledger; a missing
+   * colour would silently render as ORPHAN grey, a real correctness bug.
+   */
+  color: string;
   title: Record<Locale, string>;
   hook: Record<Locale, string>;
 }
@@ -23,6 +31,7 @@ export const modules: ModuleMeta[] = [
     id: "log",
     href: "/modules/log",
     status: "available",
+    color: "#1e6da6",
     title: { en: "The Logarithm", ko: "로그" },
     hook: {
       en: "The trick that turns × into +. The whole module is one equation; everything else is consequence.",
@@ -33,6 +42,7 @@ export const modules: ModuleMeta[] = [
     id: "parametric-curves",
     href: "/modules/parametric-curves",
     status: "available",
+    color: "#b6451e",
     title: { en: "Parametric Curves", ko: "매개변수 곡선" },
     hook: {
       en: "A curve is not a picture. Three motions can paint the same parabola — same image, different parametrizations. Pin down the distinction the word 'curve' was hiding, and a whole stack of downstream tools snaps into place.",
@@ -43,6 +53,7 @@ export const modules: ModuleMeta[] = [
     id: "derivatives",
     href: "/modules/derivatives",
     status: "available",
+    color: "#3a8c4a",
     title: { en: "The Derivative", ko: "미분" },
     hook: {
       en: "A moving point leaves a trail. The derivative is not the trail — it is the arrow the trail wants to become at this instant. Secant slopes converge to tangent slopes, and the same machine becomes slope, velocity, and rate.",
@@ -53,6 +64,7 @@ export const modules: ModuleMeta[] = [
     id: "bezout",
     href: "/modules/bezout",
     status: "available",
+    color: "#9a7a1a",
     title: { en: "Bezout's Theorem", ko: "베주 정리" },
     hook: {
       en: "Two curves of degrees d, e meet in exactly d·e points — once the plane is repaired three ways. The chord-and-tangent feeds elliptic-curve arithmetic, which feeds Bitcoin signatures.",
@@ -63,6 +75,7 @@ export const modules: ModuleMeta[] = [
     id: "integration",
     href: "/modules/integration",
     status: "available",
+    color: "#8c5a2a",
     title: { en: "The Integral", ko: "적분" },
     hook: {
       en: "A speedometer reads. How far have you traveled? The integral is what survives when you sum a rate over time. The pair to the derivative — and the fundamental theorem says they are inverses.",
@@ -73,6 +86,7 @@ export const modules: ModuleMeta[] = [
     id: "linearization",
     href: "/modules/linearization",
     status: "available",
+    color: "#7a4ea0",
     title: { en: "Linearization", ko: "선형화" },
     hook: {
       en: "Most equations are hard. Their tangent line at a point is easy. Replace one with the other and you get a tool that powers the pendulum clock, Newton's method, and gradient descent — valid in a regime, wrong outside it. The discipline is the regime.",
@@ -83,6 +97,7 @@ export const modules: ModuleMeta[] = [
     id: "vectors",
     href: "/modules/vectors",
     status: "available",
+    color: "#2c8a8c",
     title: { en: "Vectors", ko: "벡터" },
     hook: {
       en: "A point says where. A vector says how to move. The same tuple plays four roles — position, displacement, velocity, feature — across graphics, physics, and ML. Two operations (add and scale) carry every one of them.",
@@ -93,6 +108,7 @@ export const modules: ModuleMeta[] = [
     id: "entropy",
     href: "/modules/entropy",
     status: "available",
+    color: "#a83b80",
     title: { en: "Entropy", ko: "엔트로피" },
     hook: {
       en: "20 questions to find any one of N items needs log₂ N when items are equally likely. Entropy is the generalization — the expected number of yes/no questions when they aren't. The bound everything from Wordle to Huffman to password strength bumps against.",
@@ -103,6 +119,7 @@ export const modules: ModuleMeta[] = [
     id: "distributions",
     href: "/modules/distributions",
     status: "available",
+    color: "#6e8c2c",
     title: { en: "Distributions", ko: "분포" },
     hook: {
       en: "A probability is one guess. A distribution is the whole shape of uncertainty. The thing softmax produces, the thing a histogram is, the thing a return is drawn from. Most quantities a model predicts or a portfolio holds are distributions before they are numbers.",
@@ -113,4 +130,8 @@ export const modules: ModuleMeta[] = [
 
 export const moduleByHref: Record<string, ModuleMeta> = Object.fromEntries(
   modules.map((m) => [m.href, m]),
+);
+
+export const moduleById: Record<string, ModuleMeta> = Object.fromEntries(
+  modules.map((m) => [m.id, m]),
 );
