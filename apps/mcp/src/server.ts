@@ -2,18 +2,16 @@
 
 // Lemma MCP server.
 //
-// Exposes the Lemma corpus to AI agents via the Model Context Protocol. The
-// corpus JSON is built by `apps/web` at build time (the /lemma-corpus.json
-// endpoint) and copied into ./corpus/ during this package's build.
+// Thin adapter over lemma.wiki's machine-readable surface. No vendored
+// corpus: the manifest + per-page JSON sidecars are fetched at runtime
+// from the canonical site and held in an in-memory cache. Set
+// `LEMMA_BASE_URL` to point at a different origin (default
+// https://lemma.wiki) — useful for local development against
+// http://localhost:4321.
 //
-// Tools exposed:
-//   lemma_list           — list everything in a kind (modules/applications/...)
-//   lemma_get_module     — fetch one module's full content (en + ko)
-//   lemma_get_application— fetch one application
-//   lemma_get_journey    — fetch one journey + its days
-//   lemma_glossary       — fetch one glossary term, or search terms
-//   lemma_search         — full-text search across all page bodies
-//   lemma_compute        — fetch the metadata of a named executable formula
+// Tools (unchanged surface from v0.1):
+//   lemma_list, lemma_get_module, lemma_get_application, lemma_get_journey,
+//   lemma_glossary, lemma_search, lemma_compute
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
@@ -22,129 +20,98 @@ import {
   ListToolsRequestSchema,
   type Tool,
 } from "@modelcontextprotocol/sdk/types.js";
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { dirname, resolve } from "node:path";
 
-// ---- Corpus types (mirror of the build-time schema) -----------------------
+// ---- Types — only the fields tools actually read --------------------------
 
-interface Locales {
-  en: string;
-  ko: string;
+type Lang = "en" | "ko";
+type L = Record<Lang, string>;
+type Kind = "modules" | "applications" | "journeys" | "hubs";
+
+interface Manifest {
+  site: string;
+  pages: Array<{ kind: Kind; id: string; lang: Lang; url: string; sidecar: string; title: string }>;
+  modules: Array<{ id: string; href: string; title: L; hook: L }>;
+  applications: Array<{
+    id: string;
+    href: string;
+    pillar_label: L;
+    modules: string[];
+    title: L;
+    hook: L;
+  }>;
+  journeys: Array<{
+    id: string;
+    title: L;
+    tagline: L;
+    hook: L;
+    duration: number;
+    destination: L;
+    days: Array<{ day: number; page: string; kind: string; why: L }>;
+  }>;
+  computes: Record<
+    string,
+    {
+      formula: string;
+      vars: Record<string, { value: number; range: [number, number]; step?: number; label: L }>;
+      caption?: L;
+    }
+  >;
+  glossary: Array<{
+    id: string;
+    related: string[];
+    locales: Partial<Record<Lang, { term: string; body: string; flag?: string }>>;
+  }>;
 }
 
-interface CorpusModule {
-  id: string;
-  href: string;
-  status: string;
-  title: Locales;
-  hook: Locales;
-}
-
-interface CorpusApplication {
-  id: string;
-  href: string;
-  pillar: string;
-  pillar_label: Locales;
-  modules: string[];
-  status: string;
-  title: Locales;
-  hook: Locales;
-}
-
-interface CorpusJourneyDay {
-  day: number;
-  page: string;
+interface Sidecar {
   kind: string;
-  why: Locales;
-}
-
-interface CorpusJourney {
   id: string;
-  title: Locales;
-  hook: Locales;
-  tagline: Locales;
-  duration: number;
-  destination: Locales;
-  days: CorpusJourneyDay[];
-}
-
-interface CorpusGlossaryEntry {
-  id: string;
-  related: string[];
-  locales: Partial<Record<"en" | "ko", { term: string; body: string; flag?: string }>>;
-}
-
-interface CorpusComputeVar {
-  value: number;
-  range: [number, number];
-  step?: number;
-  label: Locales;
-}
-
-interface CorpusCompute {
-  formula: string;
-  vars: Record<string, CorpusComputeVar>;
-  caption?: Locales;
-}
-
-interface CorpusPage {
-  kind: "modules" | "applications" | "journeys" | "hubs";
-  slug: string;
-  lang: "en" | "ko";
+  lang: Lang;
   url: string;
   title: string;
-  description?: string;
   body: string;
 }
 
-interface Corpus {
-  schema_version: string;
-  generated_at: string;
-  site: string;
-  counts: Record<string, number>;
-  modules: CorpusModule[];
-  applications: CorpusApplication[];
-  journeys: CorpusJourney[];
-  computes: Record<string, CorpusCompute>;
-  glossary: CorpusGlossaryEntry[];
-  pages: CorpusPage[];
-}
+// ---- Fetch + cache --------------------------------------------------------
 
-// ---- Load corpus ----------------------------------------------------------
+const BASE_URL = (process.env.LEMMA_BASE_URL ?? "https://lemma.wiki").replace(/\/$/, "");
 
-function loadCorpus(): Corpus {
-  const here = dirname(fileURLToPath(import.meta.url));
-  // Try the published location first (./corpus/ next to dist/), then the dev
-  // location (../corpus/) for local `pnpm dev` flows.
-  const candidates = [
-    resolve(here, "..", "corpus", "lemma-corpus.json"),
-    resolve(here, "..", "..", "corpus", "lemma-corpus.json"),
-  ];
-  for (const path of candidates) {
-    try {
-      const raw = readFileSync(path, "utf8");
-      return JSON.parse(raw) as Corpus;
-    } catch {
-      // try next
-    }
+let manifestPromise: Promise<Manifest> | null = null;
+const sidecarCache = new Map<string, Promise<Sidecar | null>>();
+
+async function loadManifest(): Promise<Manifest> {
+  if (!manifestPromise) {
+    manifestPromise = fetch(`${BASE_URL}/lemma-manifest.json`).then(async (r) => {
+      if (!r.ok) throw new Error(`manifest fetch failed: ${r.status} ${r.statusText}`);
+      return (await r.json()) as Manifest;
+    });
   }
-  throw new Error(
-    `Could not find lemma-corpus.json. Run \`pnpm --filter @lemmawiki/mcp build\` first. Searched: ${candidates.join(", ")}`,
-  );
+  return manifestPromise;
 }
 
-const corpus = loadCorpus();
-
-// ---- Helpers --------------------------------------------------------------
-
-function pickLang(arg: unknown): "en" | "ko" {
-  return arg === "ko" ? "ko" : "en";
+async function loadSidecar(url: string): Promise<Sidecar | null> {
+  let cached = sidecarCache.get(url);
+  if (!cached) {
+    cached = fetch(url).then(async (r) => {
+      if (!r.ok) return null;
+      return (await r.json()) as Sidecar;
+    });
+    sidecarCache.set(url, cached);
+  }
+  return cached;
 }
 
-function localizeBody(page: CorpusPage): string {
-  // Strip MDX import statements + JSX comments to keep the prose clean for LLMs.
-  return page.body
+async function findSidecar(kind: Kind, id: string, lang: Lang): Promise<Sidecar | null> {
+  const m = await loadManifest();
+  const page = m.pages.find((p) => p.kind === kind && p.id === id && p.lang === lang);
+  if (!page) return null;
+  return loadSidecar(`${BASE_URL}${page.sidecar}`);
+}
+
+// ---- Body helpers ---------------------------------------------------------
+
+function stripMdx(body: string): string {
+  return body
     .replace(/^import\s[\s\S]*?from\s+["'][^"']+["'];?\s*$/gm, "")
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
     .replace(/\n{3,}/g, "\n\n")
@@ -167,31 +134,34 @@ function scoreBody(query: string, body: string): number {
   const bSet = new Set(b);
   let hits = 0;
   for (const t of q) if (bSet.has(t)) hits++;
-  // Crude but good enough — rank by fraction of query terms hit, divided by
-  // log(body length) to keep short pages from ranking too high.
   return hits / q.length / Math.log10(Math.max(b.length, 10));
+}
+
+function pickLang(arg: unknown): Lang {
+  return arg === "ko" ? "ko" : "en";
 }
 
 // ---- Tools ----------------------------------------------------------------
 
+const LANG = { type: "string", enum: ["en", "ko"], default: "en" };
+const KIND_ID: Tool["inputSchema"] = {
+  type: "object",
+  properties: { id: { type: "string" }, lang: LANG },
+  required: ["id"],
+};
+
 const TOOLS: Tool[] = [
   {
     name: "lemma_list",
-    description:
-      "List items in the Lemma corpus by kind. Use this first to discover what's available.",
+    description: "List items in the Lemma corpus by kind. Call first to discover what's available.",
     inputSchema: {
       type: "object",
       properties: {
         kind: {
           type: "string",
           enum: ["modules", "applications", "journeys", "glossary", "computes"],
-          description: "Which kind of item to list.",
         },
-        lang: {
-          type: "string",
-          enum: ["en", "ko"],
-          default: "en",
-        },
+        lang: LANG,
       },
       required: ["kind"],
     },
@@ -199,69 +169,36 @@ const TOOLS: Tool[] = [
   {
     name: "lemma_get_module",
     description:
-      "Fetch a single Lemma module's full prose, hook, and title. A module is a piece of math (e.g. 'log', 'entropy', 'derivatives') that's reused across applications.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        id: { type: "string", description: "Module id, e.g. 'log' or 'entropy'." },
-        lang: { type: "string", enum: ["en", "ko"], default: "en" },
-      },
-      required: ["id"],
-    },
+      "Fetch a Lemma module's full prose, hook, and title. A module is a piece of math (log, entropy, derivatives) reused across applications.",
+    inputSchema: KIND_ID,
   },
   {
     name: "lemma_get_application",
     description:
-      "Fetch a single Lemma application's full prose, hook, and the modules it consumes. An application starts from a real-world question (e.g. 'bitcoin-pizza', 'projectile-motion').",
-    inputSchema: {
-      type: "object",
-      properties: {
-        id: { type: "string", description: "Application id, e.g. 'bitcoin-pizza'." },
-        lang: { type: "string", enum: ["en", "ko"], default: "en" },
-      },
-      required: ["id"],
-    },
+      "Fetch a Lemma application's full prose, hook, and the modules it consumes. An application starts from a real-world question.",
+    inputSchema: KIND_ID,
   },
   {
     name: "lemma_get_journey",
     description:
-      "Fetch a curated reading path through the graph, with day-by-day notes. Use when the user asks 'where do I start?' or 'how do I learn X?'.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        id: {
-          type: "string",
-          description: "Journey id, e.g. 'to-bitcoin' or 'to-backprop'.",
-        },
-        lang: { type: "string", enum: ["en", "ko"], default: "en" },
-      },
-      required: ["id"],
-    },
+      "Fetch a curated reading path through the Lemma graph, with day-by-day notes. Use when the user asks 'where do I start?'.",
+    inputSchema: KIND_ID,
   },
   {
     name: "lemma_glossary",
     description:
       "Look up a Lemma glossary term by id (returns full definition and counterpart language), or omit id to list all terms.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        id: {
-          type: "string",
-          description: "Term id, e.g. 'entropy', 'logarithm'. Omit to list all.",
-        },
-        lang: { type: "string", enum: ["en", "ko"], default: "en" },
-      },
-    },
+    inputSchema: { type: "object", properties: { id: { type: "string" }, lang: LANG } },
   },
   {
     name: "lemma_search",
     description:
-      "Full-text search across all Lemma page bodies. Returns ranked list of matching pages with snippets. Use when the user's question doesn't match a known module/application id.",
+      "Full-text search across all Lemma page bodies. Returns ranked list of matching pages with snippets.",
     inputSchema: {
       type: "object",
       properties: {
-        query: { type: "string", description: "Free-text search query." },
-        lang: { type: "string", enum: ["en", "ko"], default: "en" },
+        query: { type: "string" },
+        lang: LANG,
         limit: { type: "integer", default: 5, minimum: 1, maximum: 20 },
       },
       required: ["query"],
@@ -270,56 +207,50 @@ const TOOLS: Tool[] = [
   {
     name: "lemma_compute",
     description:
-      "Fetch the metadata of a named executable formula on Lemma (e.g. 'bitcoin-pizza-future-value', 'entropy-four-outcomes'). Useful for understanding what variables a formula takes and what it computes.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        id: { type: "string", description: "Compute id." },
-        lang: { type: "string", enum: ["en", "ko"], default: "en" },
-      },
-      required: ["id"],
-    },
+      "Fetch the metadata of a named executable formula on Lemma (e.g. 'bitcoin-pizza-future-value').",
+    inputSchema: KIND_ID,
   },
 ];
 
-// ---- Tool handlers --------------------------------------------------------
+// ---- Handlers -------------------------------------------------------------
 
-function toolList(args: { kind: string; lang?: string }): unknown {
+async function toolList(args: { kind: string; lang?: string }): Promise<unknown> {
+  const m = await loadManifest();
   const lang = pickLang(args.lang);
   switch (args.kind) {
     case "modules":
-      return corpus.modules.map((m) => ({
-        id: m.id,
-        title: m.title[lang],
-        hook: m.hook[lang],
-        url: `${corpus.site}/${lang}${m.href}/`,
+      return m.modules.map((x) => ({
+        id: x.id,
+        title: x.title[lang],
+        hook: x.hook[lang],
+        url: `${BASE_URL}/${lang}${x.href}`,
       }));
     case "applications":
-      return corpus.applications.map((a) => ({
-        id: a.id,
-        pillar: a.pillar_label[lang],
-        modules: a.modules,
-        title: a.title[lang],
-        hook: a.hook[lang],
-        url: `${corpus.site}/${lang}${a.href}/`,
+      return m.applications.map((x) => ({
+        id: x.id,
+        pillar: x.pillar_label[lang],
+        modules: x.modules,
+        title: x.title[lang],
+        hook: x.hook[lang],
+        url: `${BASE_URL}/${lang}${x.href}`,
       }));
     case "journeys":
-      return corpus.journeys.map((j) => ({
-        id: j.id,
-        title: j.title[lang],
-        tagline: j.tagline[lang],
-        duration_days: j.duration,
-        destination: j.destination[lang],
-        url: `${corpus.site}/${lang}/journey/${j.id}/`,
+      return m.journeys.map((x) => ({
+        id: x.id,
+        title: x.title[lang],
+        tagline: x.tagline[lang],
+        duration_days: x.duration,
+        destination: x.destination[lang],
+        url: `${BASE_URL}/${lang}/journey/${x.id}`,
       }));
     case "glossary":
-      return corpus.glossary.map((g) => ({
-        id: g.id,
-        term: g.locales[lang]?.term ?? g.id,
-        related: g.related,
+      return m.glossary.map((x) => ({
+        id: x.id,
+        term: x.locales[lang]?.term ?? x.id,
+        related: x.related,
       }));
     case "computes":
-      return Object.entries(corpus.computes).map(([id, c]) => ({
+      return Object.entries(m.computes).map(([id, c]) => ({
         id,
         formula: c.formula,
         vars: Object.keys(c.vars),
@@ -329,50 +260,49 @@ function toolList(args: { kind: string; lang?: string }): unknown {
   }
 }
 
-function findPage(kind: CorpusPage["kind"], slug: string, lang: "en" | "ko"): CorpusPage | null {
-  return corpus.pages.find((p) => p.kind === kind && p.slug === slug && p.lang === lang) ?? null;
-}
-
-function toolGetModule(args: { id: string; lang?: string }): unknown {
+async function toolGetModule(args: { id: string; lang?: string }): Promise<unknown> {
+  const m = await loadManifest();
   const lang = pickLang(args.lang);
-  const meta = corpus.modules.find((m) => m.id === args.id);
+  const meta = m.modules.find((x) => x.id === args.id);
   if (!meta) return { error: `unknown module: ${args.id}` };
-  const page = findPage("modules", args.id, lang);
+  const sidecar = await findSidecar("modules", args.id, lang);
   return {
     id: meta.id,
-    url: `${corpus.site}/${lang}${meta.href}/`,
+    url: `${BASE_URL}/${lang}${meta.href}`,
     title: meta.title[lang],
     hook: meta.hook[lang],
-    body: page ? localizeBody(page) : null,
-    consumed_by: corpus.applications
+    body: sidecar ? stripMdx(sidecar.body) : null,
+    consumed_by: m.applications
       .filter((a) => a.modules.includes(meta.id))
       .map((a) => ({ id: a.id, title: a.title[lang] })),
   };
 }
 
-function toolGetApplication(args: { id: string; lang?: string }): unknown {
+async function toolGetApplication(args: { id: string; lang?: string }): Promise<unknown> {
+  const m = await loadManifest();
   const lang = pickLang(args.lang);
-  const meta = corpus.applications.find((a) => a.id === args.id);
+  const meta = m.applications.find((x) => x.id === args.id);
   if (!meta) return { error: `unknown application: ${args.id}` };
-  const page = findPage("applications", args.id, lang);
+  const sidecar = await findSidecar("applications", args.id, lang);
   return {
     id: meta.id,
-    url: `${corpus.site}/${lang}${meta.href}/`,
+    url: `${BASE_URL}/${lang}${meta.href}`,
     pillar: meta.pillar_label[lang],
     modules: meta.modules,
     title: meta.title[lang],
     hook: meta.hook[lang],
-    body: page ? localizeBody(page) : null,
+    body: sidecar ? stripMdx(sidecar.body) : null,
   };
 }
 
-function toolGetJourney(args: { id: string; lang?: string }): unknown {
+async function toolGetJourney(args: { id: string; lang?: string }): Promise<unknown> {
+  const m = await loadManifest();
   const lang = pickLang(args.lang);
-  const j = corpus.journeys.find((x) => x.id === args.id);
+  const j = m.journeys.find((x) => x.id === args.id);
   if (!j) return { error: `unknown journey: ${args.id}` };
   return {
     id: j.id,
-    url: `${corpus.site}/${lang}/journey/${j.id}/`,
+    url: `${BASE_URL}/${lang}/journey/${j.id}`,
     title: j.title[lang],
     tagline: j.tagline[lang],
     hook: j.hook[lang],
@@ -380,22 +310,20 @@ function toolGetJourney(args: { id: string; lang?: string }): unknown {
     destination: j.destination[lang],
     days: j.days.map((d) => ({
       day: d.day,
-      page: `${corpus.site}/${lang}${d.page}/`,
+      page: `${BASE_URL}/${lang}${d.page}`,
       kind: d.kind,
       why: d.why[lang],
     })),
   };
 }
 
-function toolGlossary(args: { id?: string; lang?: string }): unknown {
+async function toolGlossary(args: { id?: string; lang?: string }): Promise<unknown> {
+  const m = await loadManifest();
   const lang = pickLang(args.lang);
   if (!args.id) {
-    return corpus.glossary.map((g) => ({
-      id: g.id,
-      term: g.locales[lang]?.term ?? g.id,
-    }));
+    return m.glossary.map((g) => ({ id: g.id, term: g.locales[lang]?.term ?? g.id }));
   }
-  const g = corpus.glossary.find((x) => x.id === args.id);
+  const g = m.glossary.find((x) => x.id === args.id);
   if (!g) return { error: `unknown term: ${args.id}` };
   const view = g.locales[lang] ?? g.locales.en ?? null;
   const counter = lang === "en" ? g.locales.ko : g.locales.en;
@@ -410,18 +338,28 @@ function toolGlossary(args: { id?: string; lang?: string }): unknown {
   };
 }
 
-function toolSearch(args: { query: string; lang?: string; limit?: number }): unknown {
+async function toolSearch(args: {
+  query: string;
+  lang?: string;
+  limit?: number;
+}): Promise<unknown> {
+  const m = await loadManifest();
   const lang = pickLang(args.lang);
   const limit = args.limit ?? 5;
-  const candidates = corpus.pages.filter((p) => p.lang === lang);
-  const ranked = candidates
-    .map((p) => ({ page: p, score: scoreBody(args.query, p.body) }))
+
+  // Fetch every sidecar for the chosen language. Cache makes repeats free.
+  const sidecars = await Promise.all(
+    m.pages.filter((p) => p.lang === lang).map((p) => loadSidecar(`${BASE_URL}${p.sidecar}`)),
+  );
+  const ranked = sidecars
+    .filter((s): s is Sidecar => s !== null)
+    .map((s) => ({ s, score: scoreBody(args.query, s.body) }))
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
-  return ranked.map(({ page, score }) => {
-    const body = localizeBody(page);
-    // Snippet: first 320 chars containing any query term, or just first 320.
+
+  return ranked.map(({ s, score }) => {
+    const body = stripMdx(s.body);
     const q = tokenize(args.query);
     let snippet = body.slice(0, 320);
     for (const term of q) {
@@ -433,19 +371,20 @@ function toolSearch(args: { query: string; lang?: string; limit?: number }): unk
       }
     }
     return {
-      kind: page.kind,
-      slug: page.slug,
-      title: page.title,
-      url: `${corpus.site}${page.url}/`,
+      kind: s.kind,
+      slug: s.id,
+      title: s.title,
+      url: `${BASE_URL}${s.url}`,
       score: Number(score.toFixed(4)),
       snippet: snippet.trim() + (body.length > snippet.length ? "…" : ""),
     };
   });
 }
 
-function toolCompute(args: { id: string; lang?: string }): unknown {
+async function toolCompute(args: { id: string; lang?: string }): Promise<unknown> {
+  const m = await loadManifest();
   const lang = pickLang(args.lang);
-  const c = corpus.computes[args.id];
+  const c = m.computes[args.id];
   if (!c) return { error: `unknown compute: ${args.id}` };
   return {
     id: args.id,
@@ -453,12 +392,7 @@ function toolCompute(args: { id: string; lang?: string }): unknown {
     vars: Object.fromEntries(
       Object.entries(c.vars).map(([k, v]) => [
         k,
-        {
-          value: v.value,
-          range: v.range,
-          step: v.step,
-          label: v.label[lang],
-        },
+        { value: v.value, range: v.range, step: v.step, label: v.label[lang] },
       ]),
     ),
     caption: c.caption?.[lang],
@@ -467,50 +401,31 @@ function toolCompute(args: { id: string; lang?: string }): unknown {
 
 // ---- Server wire-up -------------------------------------------------------
 
-const server = new Server({ name: "lemma", version: "0.1.0" }, { capabilities: { tools: {} } });
+const server = new Server({ name: "lemma", version: "0.2.0" }, { capabilities: { tools: {} } });
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: TOOLS }));
 
+type Args = Record<string, unknown>;
+const HANDLERS: Record<string, (a: Args) => Promise<unknown>> = {
+  lemma_list: (a) => toolList(a as Parameters<typeof toolList>[0]),
+  lemma_get_module: (a) => toolGetModule(a as Parameters<typeof toolGetModule>[0]),
+  lemma_get_application: (a) => toolGetApplication(a as Parameters<typeof toolGetApplication>[0]),
+  lemma_get_journey: (a) => toolGetJourney(a as Parameters<typeof toolGetJourney>[0]),
+  lemma_glossary: (a) => toolGlossary(a as Parameters<typeof toolGlossary>[0]),
+  lemma_search: (a) => toolSearch(a as Parameters<typeof toolSearch>[0]),
+  lemma_compute: (a) => toolCompute(a as Parameters<typeof toolCompute>[0]),
+};
+
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
+  const handler = HANDLERS[name];
   let result: unknown;
   try {
-    switch (name) {
-      case "lemma_list":
-        result = toolList(args as { kind: string; lang?: string });
-        break;
-      case "lemma_get_module":
-        result = toolGetModule(args as { id: string; lang?: string });
-        break;
-      case "lemma_get_application":
-        result = toolGetApplication(args as { id: string; lang?: string });
-        break;
-      case "lemma_get_journey":
-        result = toolGetJourney(args as { id: string; lang?: string });
-        break;
-      case "lemma_glossary":
-        result = toolGlossary(args as { id?: string; lang?: string });
-        break;
-      case "lemma_search":
-        result = toolSearch(args as { query: string; lang?: string; limit?: number });
-        break;
-      case "lemma_compute":
-        result = toolCompute(args as { id: string; lang?: string });
-        break;
-      default:
-        result = { error: `unknown tool: ${name}` };
-    }
+    result = handler ? await handler(args ?? {}) : { error: `unknown tool: ${name}` };
   } catch (err) {
     result = { error: err instanceof Error ? err.message : String(err) };
   }
-  return {
-    content: [
-      {
-        type: "text",
-        text: JSON.stringify(result, null, 2),
-      },
-    ],
-  };
+  return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
 });
 
 const transport = new StdioServerTransport();

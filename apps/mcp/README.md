@@ -4,7 +4,7 @@
 [Lemma](https://lemma.wiki) corpus. AI agents (Claude Desktop, Cursor, any
 MCP-compatible host) can query Lemma's modules, applications, journeys, and
 glossary terms as grounded ground truth — bilingual (en + ko), structured,
-and derived directly from the same content that ships to lemma.wiki.
+and **fetched live from lemma.wiki**.
 
 ## Why
 
@@ -13,6 +13,12 @@ this make a curious learner understand something they could not understand
 before?_ When that prose is exposed to LLMs as a structured corpus, they can
 answer math questions by quoting Lemma instead of hallucinating. The corpus
 is small but reliable — exactly the shape modern grounding wants.
+
+Starting with v0.2, the server is a thin adapter over a canonical, web-owned
+source of truth (`https://lemma.wiki/lemma-manifest.json` + per-page sidecars
+at `<page-url>.json`). There is no vendored snapshot inside the package — every
+fetch hits the live site. Set `LEMMA_BASE_URL` to point at a different origin
+(e.g. a staging deploy or a local `http://localhost:4321`).
 
 ## Tools
 
@@ -56,6 +62,18 @@ Claude will call the tools, get Lemma's structured prose back, and answer
 with citations — no hallucination on the math because the answer is
 provably from the Lemma corpus.
 
+## Configuration
+
+| Env var          | Default              | Purpose                                   |
+| ---------------- | -------------------- | ----------------------------------------- |
+| `LEMMA_BASE_URL` | `https://lemma.wiki` | Origin to fetch manifest + sidecars from. |
+
+To run the server against a local dev site:
+
+```bash
+LEMMA_BASE_URL=http://localhost:4321 lemma-mcp
+```
+
 ## Build from source
 
 ```bash
@@ -65,9 +83,8 @@ pnpm install
 pnpm --filter @lemmawiki/mcp build
 ```
 
-This builds the `lemma-web` site (which emits `dist/lemma-corpus.json`),
-copies the corpus into `apps/mcp/corpus/`, then compiles the TypeScript
-server into `apps/mcp/dist/`.
+This compiles the TypeScript server into `apps/mcp/dist/`. No corpus snapshot
+is generated or shipped — the server fetches everything it needs at runtime.
 
 To run locally:
 
@@ -77,29 +94,21 @@ node apps/mcp/dist/server.js
 
 The server speaks MCP over stdio, so this is mainly useful when wiring up a
 host like Claude Desktop or Cursor. For development, `pnpm --filter
-@lemmawiki/mcp dev` builds and runs in one step.
+@lemmawiki/mcp dev` runs the TypeScript directly via `tsx`.
 
-## Corpus schema
+## External surface
 
-The corpus JSON has a stable schema_version (1.0.0). The top-level shape:
+The MCP server is just one consumer of Lemma's machine-readable web surface.
+Anything that can `fetch` JSON can use the same endpoints:
 
-```ts
-{
-  schema_version: "1.0.0",
-  generated_at: ISO 8601 string,
-  site: "https://lemma.wiki",
-  counts: { modules, applications, journeys, glossary_terms, computes, pages },
-  modules:      [{ id, href, status, title:{en,ko}, hook:{en,ko} }, …],
-  applications: [{ id, href, pillar, pillar_label:{en,ko}, modules, status, title, hook }, …],
-  journeys:     [{ id, title, hook, tagline, duration, destination, days:[…] }, …],
-  computes:     { [id]: { formula, vars, caption } },
-  glossary:     [{ id, related, locales:{en,ko} }, …],
-  pages:        [{ kind, slug, lang, url, title, description, body }, …]
-}
-```
+| URL pattern                                    | What it carries                                                        |
+| ---------------------------------------------- | ---------------------------------------------------------------------- |
+| `/lemma-manifest.json`                         | Slim index — every page URL, every registry entry, no bodies. ~250 KB. |
+| `/sitemap.xml` (and per-locale sub-sitemaps)   | Standard sitemap of every reachable HTML page.                         |
+| `<page-url>.json`, e.g. `/en/modules/log.json` | One page's full body + frontmatter + registry overlay.                 |
 
-All bilingual fields are objects keyed by `"en"` and `"ko"`. `body` is raw
-MDX with the import statements stripped.
+Schema version `2.0`. Bilingual fields are objects keyed by `"en"` and
+`"ko"`. Bodies are raw MDX. Cache-friendly (`Cache-Control: max-age=300`).
 
 ## License
 
