@@ -15,7 +15,6 @@ import ArcRow from "@/components/page/arc-row.astro";
 import Pin from "@/components/page/pin.astro";
 import Exercises from "@/components/page/exercises.astro";
 import PageFooter from "@/components/page/page-footer.astro";
-import Formula from "@/components/page/formula.astro";
 
 <Hook kicker="the hook · one probability vs. a whole shape">
 
@@ -35,9 +34,9 @@ If you only know the *most likely* outcome of an uncertain thing, you barely kno
   <Fragment slot="definition">
     A <Term id="distribution">distribution</Term> assigns probability across possible outcomes of a{" "}
     <Term id="random-variable">random variable</Term>. Discrete: a <Term id="probability-mass">
-    probability mass function</Term> <Formula>p(x)</Formula> with <Formula>Σ p(x) = 1</Formula>.
+    probability mass function</Term> $p(x)$ with $Σ p(x) = 1$.
     Continuous: a <Term id="probability-density">probability density</Term>{" "}
-    <Formula>f(x)</Formula> with <Formula>{"∫ f(x) dx = 1"}</Formula>. The
+    $f(x)$ with $∫ f(x) dx = 1$. The
     <Term id="expected-value"> expected value</Term> is the weighted average; the{" "}
     <Term id="variance">variance</Term> is the average squared distance from that center.
   </Fragment>
@@ -80,9 +79,9 @@ This function has a name — the <Term id="probability-mass">probability mass fu
 
 <ArcRow n={3} title="Expected value — the center of mass">
 
-When outcomes are numbers, the distribution has a *mean*. The expected value <Formula>E[X] = Σ x · p(x)</Formula> is the weighted average — the center of mass of the bar chart. Drag the widget to **uniform** with outcomes 1..5: the mean lands on 3, the average. Drag to **skewed** so small values are likely and large values rare: the mean shifts toward the heavy side.
+When outcomes are numbers, the distribution has a *mean*. The expected value $E[X] = Σ x · p(x)$ is the weighted average — the center of mass of the bar chart. Drag the widget to **uniform** with outcomes 1..5: the mean lands on 3, the average. Drag to **skewed** so small values are likely and large values rare: the mean shifts toward the heavy side.
 
-The name *expected* is a little misleading. With <Formula>X ∈ {"{"} 0, 1000 {"}"}</Formula> and equal probability, the expected value is 500 — a value `X` will *never* take. The mean is a summary of the distribution, not a forecast of any single draw. It is what the long-run average of independent draws converges to (the *law of large numbers*), and that's why it deserves the name `E`.
+The name *expected* is a little misleading. With $X ∈ \{0, 1000\}$ and equal probability, the expected value is 500 — a value `X` will *never* take. The mean is a summary of the distribution, not a forecast of any single draw. It is what the long-run average of independent draws converges to (the *law of large numbers*), and that's why it deserves the name `E`.
 
 <CodeBlock slug="distributions" arc="arc3" />
 
@@ -92,7 +91,7 @@ The name *expected* is a little misleading. With <Formula>X ∈ {"{"} 0, 1000 {"
 
 Two distributions can share a mean and disagree wildly on shape. **Peaked** and **bimodal** in the widget both have mean 3 — but peaked piles probability on outcome 3 itself, while bimodal splits it between 1 and 5. The mean alone can't tell them apart; <Term id="variance">variance</Term> can.
 
-<Formula>{"Var[X] = Σ p(x) · (x − μ)²"}</Formula> — the weighted average of squared distance from the mean. Squared, because we want a measure that doesn't cancel positive and negative deviations against each other. The square root, <Formula>σ = √Var</Formula>, is the *standard deviation* — same idea, restored to the original units of `X`.
+$Var[X] = Σ p(x) · (x − μ)²$ — the weighted average of squared distance from the mean. Squared, because we want a measure that doesn't cancel positive and negative deviations against each other. The square root, $σ = √Var$, is the *standard deviation* — same idea, restored to the original units of `X`.
 
 Variance is *the* second-order summary of a distribution. In finance it is the working definition of risk; in ML it bounds how much an estimator can wobble; in physics it shows up everywhere from thermal noise to measurement error. Two distributions with the same mean and the same variance are still not the same distribution, but the gap between them is much smaller than the gap when only the mean matches.
 
@@ -102,9 +101,9 @@ Variance is *the* second-order summary of a distribution. In finance it is the w
 
 Most distributions in the real world are over the real line, not a finite set of buckets. Daily stock returns, measurement errors, response times, pixel intensities at sub-bit precision — these live on a continuum, and discrete masses don't make sense: there are uncountably many possible values, and any single one has probability zero.
 
-The right object is a <Term id="probability-density">probability density function</Term> <Formula>f(x)</Formula>. Density is *not* probability — `f(x)` can exceed 1 — but it is the *rate* at which probability accumulates around `x`. Probability comes from integrating density over an interval: <Formula>{"P(a ≤ X ≤ b) = ∫_a^b f(x) dx"}</Formula>. The whole line integrates to 1.
+The right object is a <Term id="probability-density">probability density function</Term> $f(x)$. Density is *not* probability — `f(x)` can exceed 1 — but it is the *rate* at which probability accumulates around `x`. Probability comes from integrating density over an interval: $P(a ≤ X ≤ b) = ∫_a^b f(x) dx$. The whole line integrates to 1.
 
-This is where distributions meet [the integral](/en/modules/integration). For a discrete distribution, the expected value is a sum — <Formula>Σ x · p(x)</Formula>. For a continuous distribution, it is an integral — <Formula>{"∫ x · f(x) dx"}</Formula>. Same idea, different machinery: integration is the continuous version of the sum, just as it is the continuous version of "accumulate the rate" we used for distance and present value. *Distributions inherit calculus the moment they become continuous.*
+This is where distributions meet [the integral](/en/modules/integration). For a discrete distribution, the expected value is a sum — $Σ x · p(x)$. For a continuous distribution, it is an integral — $∫ x · f(x) dx$. Same idea, different machinery: integration is the continuous version of the sum, just as it is the continuous version of "accumulate the rate" we used for distance and present value. *Distributions inherit calculus the moment they become continuous.*
 
 </ArcRow>
 
@@ -148,11 +147,11 @@ finance  : a return is drawn from a distribution; risk is a property of
 
 <Exercise number={1} tag="normalize by hand" noCalculator>
 
-A model outputs raw scores (logits) <Formula>[2.0, 1.0, 0.1]</Formula>. Convert them into a distribution by softmax: <Formula>p_i = e^(x_i) / Σ e^(x_j)</Formula>. Round to two decimals. Confirm the result sums to 1.
+A model outputs raw scores (logits) $[2.0, 1.0, 0.1]$. Convert them into a distribution by softmax: $p_i = e^(x_i) / Σ e^(x_j)$. Round to two decimals. Confirm the result sums to 1.
 
 <Solution>
-  Numerators: <Formula>e^2 ≈ 7.39, e^1 ≈ 2.72, e^(0.1) ≈ 1.11</Formula>. Sum:{" "}
-  <Formula>11.22</Formula>. Probabilities: <Formula>0.66, 0.24, 0.10</Formula>. Sum: <em>1.00</em>.
+  Numerators: $e^2 ≈ 7.39, e^1 ≈ 2.72, e^(0.1) ≈ 1.11$. Sum:{" "}
+  $11.22$. Probabilities: $0.66, 0.24, 0.10$. Sum: <em>1.00</em>.
   *Softmax is exactly the operation that turns a vector of arbitrary real numbers into a discrete
   distribution. The highest logit gets the most mass; the spread of logits sets the sharpness.*
 </Solution>
@@ -161,13 +160,13 @@ A model outputs raw scores (logits) <Formula>[2.0, 1.0, 0.1]</Formula>. Convert 
 
 <Exercise number={2} tag="same mean, different variance" noCalculator>
 
-Two discrete distributions with outcomes <Formula>1, 2, 3</Formula>. Distribution A: <Formula>p = [0, 1, 0]</Formula>. Distribution B: <Formula>p = [0.5, 0, 0.5]</Formula>. Compute the mean and variance of each. State which is *bigger* on each dimension.
+Two discrete distributions with outcomes $1, 2, 3$. Distribution A: $p = [0, 1, 0]$. Distribution B: $p = [0.5, 0, 0.5]$. Compute the mean and variance of each. State which is *bigger* on each dimension.
 
 <Solution>
-  *Distribution A:* mean <Formula>= 1·0 + 2·1 + 3·0 = 2</Formula>; variance{" "}
-  <Formula>= (1−2)²·0 + (2−2)²·1 + (3−2)²·0 = 0</Formula>. *Distribution B:* mean{" "}
-  <Formula>= 1·0.5 + 2·0 + 3·0.5 = 2</Formula>; variance{" "}
-  <Formula>= 1·0.5 + 0 + 1·0.5 = 1</Formula>. **Same mean, very different variance.** A is a
+  *Distribution A:* mean $= 1·0 + 2·1 + 3·0 = 2$; variance{" "}
+  $= (1−2)²·0 + (2−2)²·1 + (3−2)²·0 = 0$. *Distribution B:* mean{" "}
+  $= 1·0.5 + 2·0 + 3·0.5 = 2$; variance{" "}
+  $= 1·0.5 + 0 + 1·0.5 = 1$. **Same mean, very different variance.** A is a
   certainty (always 2); B is a coin flip between 1 and 3. The mean alone collapses these into the
   same number — that's why variance exists.
 </Solution>
@@ -176,15 +175,15 @@ Two discrete distributions with outcomes <Formula>1, 2, 3</Formula>. Distributio
 
 <Exercise number={3} tag="density isn't probability">
 
-A continuous distribution has density <Formula>f(x) = 2x</Formula> on <Formula>x ∈ [0, 1]</Formula> and <Formula>0</Formula> elsewhere. Confirm it is a valid density (integrates to 1). Compute <Formula>P(X ≤ 0.5)</Formula>. Then point out the value of <Formula>f(0.5)</Formula> and explain why that value alone is *not* the probability of <Formula>X = 0.5</Formula>.
+A continuous distribution has density $f(x) = 2x$ on $x ∈ [0, 1]$ and $0$ elsewhere. Confirm it is a valid density (integrates to 1). Compute $P(X ≤ 0.5)$. Then point out the value of $f(0.5)$ and explain why that value alone is *not* the probability of $X = 0.5$.
 
 <Solution>
-  Total: <Formula>{"∫_0^1 2x dx = x² |_0^1 = 1"}</Formula>. Valid density. Half-integral:{" "}
-  <Formula>{"P(X ≤ 0.5) = ∫_0^(0.5) 2x dx = (0.5)² = 0.25"}</Formula>. Density value:{" "}
-  <Formula>f(0.5) = 1.0</Formula>. That number is *not* a probability — densities can hit values
-  larger than 1, and <Formula>P(X = 0.5) = 0</Formula> exactly, because no single point of a
+  Total: $∫_0^1 2x dx = x² |_0^1 = 1$. Valid density. Half-integral:{" "}
+  $P(X ≤ 0.5) = ∫_0^(0.5) 2x dx = (0.5)² = 0.25$. Density value:{" "}
+  $f(0.5) = 1.0$. That number is *not* a probability — densities can hit values
+  larger than 1, and $P(X = 0.5) = 0$ exactly, because no single point of a
   continuous distribution carries finite probability. The *probability* of landing near 0.5 in a
-  small interval of width <Formula>dx</Formula> is approximately <Formula>f(0.5) · dx = dx</Formula>{" "}
+  small interval of width $dx$ is approximately $f(0.5) · dx = dx${" "}
   — proportional to the interval's width.
 </Solution>
 
