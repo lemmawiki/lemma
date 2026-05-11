@@ -94,11 +94,22 @@ const altKo = new URL(altPath("ko"), Astro.site ?? "https://lemma.wiki").href;
     />
     <title>{title}</title>
 
-    {
-      jsonLd && (
-        <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
-      )
-    }
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(
+        jsonLd ?? {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": canonical,
+          url: canonical,
+          name: "Lemma",
+          alternateName: lang === "ko" ? "레마" : "Lemma",
+          inLanguage: lang,
+          description,
+        },
+      )}
+      is:inline
+    />
   </head>
   <body>
     <main class="mx-auto max-w-[880px] px-7 pt-8 pb-24 max-md:px-[18px] max-md:pt-5 max-md:pb-16">

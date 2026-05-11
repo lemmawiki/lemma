@@ -70,6 +70,19 @@ const canonical = new URL(pathname, Astro.site ?? "https://lemma.wiki").href;
       rel="stylesheet"
     />
     <title>{title}</title>
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": canonical,
+        url: canonical,
+        name: "Lemma",
+        description,
+      })}
+      is:inline
+    />
   </head>
   <body>
     <main class="mx-auto max-w-[880px] px-7 pt-8 pb-24 max-md:px-[18px] max-md:pt-5 max-md:pb-16">
