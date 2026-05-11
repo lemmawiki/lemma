@@ -1,0 +1,131 @@
+---
+// /en/glossary/ and /ko/glossary/ — the index over every Lemma term.
+//
+// Pedagogical order (the _order.json the glossary registry already
+// exposes) is the default; readers who want alphabetical can toggle.
+// The page itself advertises a schema.org DefinedTermSet so crawlers
+// can ingest the whole vocabulary at once.
+import Page from "../../../layouts/page.astro";
+import Breadcrumb from "../../../components/page/breadcrumb.astro";
+import { glossary } from "../../../data/glossary";
+import type { Lang } from "../../../lib/route-from-entry";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "en" } }, { params: { lang: "ko" } }];
+}
+
+const lang = (Astro.params.lang as Lang) ?? "en";
+
+const items = glossary
+  .map((entry) => {
+    const view = entry.locales[lang] ?? entry.locales.en;
+    const counterpart = entry.locales[lang === "en" ? "ko" : "en"];
+    return {
+      id: entry.id,
+      term: view?.term ?? entry.id,
+      counterpart: counterpart?.term,
+      oneLiner: (view?.body ?? "").split("\n")[0].trim(),
+    };
+  })
+  .filter((x) => x.term);
+
+const jsonLd = {
+  "@context": ["https://schema.org", { lemma: "https://lemma.wiki/ns#" }],
+  "@type": "DefinedTermSet",
+  "@id": `/${lang}/glossary/`,
+  url: `/${lang}/glossary/`,
+  name: lang === "ko" ? "Lemma 용어집" : "Lemma Glossary",
+  description:
+    lang === "ko"
+      ? "수학·통계·ML 용어의 영-한 짝과 한 줄 정의."
+      : "Bilingual (en + ko) definitions for the mathematical and ML vocabulary Lemma uses.",
+  inLanguage: lang,
+  numberOfItems: items.length,
+  hasDefinedTerm: items.slice(0, 20).map((item) => ({
+    "@type": "DefinedTerm",
+    "@id": `/${lang}/glossary/${item.id}`,
+    name: item.term,
+    alternateName: item.counterpart,
+  })),
+};
+
+const title = lang === "ko" ? `용어집 · Lemma` : `Glossary · Lemma`;
+const description =
+  lang === "ko"
+    ? "Lemma 가 쓰는 모든 수학·ML 용어의 영-한 짝과 한 줄 정의."
+    : "Every math and ML term Lemma uses, with bilingual counterparts.";
+
+const labels = {
+  en: {
+    kicker: "glossary",
+    breadcrumb: "graph",
+    intro: "Every term Lemma uses, with its Korean counterpart and a one-line gloss. The vocabulary gap is sabotage — here it is, mapped.",
+    countLabel: "terms",
+  },
+  ko: {
+    kicker: "용어집",
+    breadcrumb: "그래프",
+    intro: "Lemma 가 쓰는 모든 용어와 영어 짝, 한 줄 정의. 용어의 격차는 사보타지다 — 여기 다 펼쳐놨다.",
+    countLabel: "용어",
+  },
+}[lang];
+---
+
+<Page lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumb
+    lang={lang}
+    parent={{ href: "/graph", label: labels.breadcrumb }}
+  >
+    {labels.kicker}
+  </Breadcrumb>
+
+  <section class="mt-8">
+    <header class="mb-8">
+      <h1 class="m-0 mb-3 font-serif text-[42px] font-medium leading-[1.1] tracking-[-0.02em] text-ink max-md:text-[32px]">
+        {labels.kicker}
+      </h1>
+      <p class="m-0 max-w-[640px] font-serif text-[18px] leading-[1.55] text-ink-soft">
+        {labels.intro}
+      </p>
+      <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.08em] text-ink-mute">
+        {items.length} {labels.countLabel}
+      </p>
+    </header>
+
+    <ul class="m-0 grid grid-cols-1 gap-1 p-0 [list-style:none] md:grid-cols-2">
+      {
+        items.map((item) => (
+          <li>
+            <a
+              href={`/${lang}/glossary/${item.id}`}
+              class="group flex items-baseline gap-3 rounded-md border border-transparent px-2 py-1.5 no-underline hover:border-rule hover:bg-rule-soft"
+            >
+              <span class="min-w-[140px] font-serif text-[16px] font-medium text-ink group-hover:text-acc">
+                {item.term}
+              </span>
+              {item.counterpart && (
+                <span class="font-mono text-[12px] text-ink-mute">{item.counterpart}</span>
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Page>
+
+<script>
+  // Pre-warm: prefetch a handful of likely-clicked term pages on idle so
+  // the glossary feels snappy once the reader picks one.
+  if ("requestIdleCallback" in window) {
+    (window as any).requestIdleCallback(() => {
+      document.querySelectorAll<HTMLAnchorElement>("a[href*='/glossary/']").forEach((a, i) => {
+        if (i > 12) return;
+        const link = document.createElement("link");
+        link.rel = "prefetch";
+        link.href = a.href;
+        document.head.appendChild(link);
+      });
+    });
+  }
+</script>

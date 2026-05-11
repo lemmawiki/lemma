@@ -96,6 +96,13 @@ export function Term({
               ⚠ {flag}
             </span>
           )}
+          <a
+            href={`/${language}/glossary/${id}`}
+            className="mt-2 block border-t border-rule pt-2 font-mono text-[11px] uppercase tracking-[0.06em] text-ink-mute no-underline hover:text-acc"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {language === "ko" ? "전체 항목 →" : "full entry →"}
+          </a>
         </span>
       )}
     </span>

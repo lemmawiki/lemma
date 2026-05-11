@@ -1,0 +1,212 @@
+---
+// Per-term glossary page — first-class indexable surface for every term.
+//
+//   /en/glossary/logarithm
+//   /ko/glossary/logarithm
+//
+// Carries schema.org DefinedTerm JSON-LD so search engines can render it
+// as a structured definition card. Surfaces the bilingual counterpart,
+// the provenance entry (if one exists), related terms, and a reverse
+// index of every page on Lemma that cites this term.
+import Page from "../../../layouts/page.astro";
+import Breadcrumb from "../../../components/page/breadcrumb.astro";
+import { glossaryById, glossary } from "../../../data/glossary";
+import { provenance } from "../../../data/provenance";
+import { buildGlossaryJsonLd } from "../../../lib/glossary-jsonld";
+import { getTermUsage } from "../../../lib/term-usage";
+import type { Lang } from "../../../lib/route-from-entry";
+
+export async function getStaticPaths() {
+  const langs: Lang[] = ["en", "ko"];
+  const paths = [];
+  for (const lang of langs) {
+    for (const entry of glossary) {
+      paths.push({ params: { lang, id: entry.id }, props: { id: entry.id } });
+    }
+  }
+  return paths;
+}
+
+const lang = (Astro.params.lang as Lang) ?? "en";
+const { id } = Astro.props as { id: string };
+const entry = glossaryById[id];
+
+if (!entry) {
+  return Astro.redirect(`/${lang}/graph`);
+}
+
+const counterLang: Lang = lang === "en" ? "ko" : "en";
+const view = entry.locales[lang] ?? entry.locales.en;
+const counter = entry.locales[counterLang];
+const prov = provenance.find((p) => p.concept === id);
+
+const usageMap = await getTermUsage();
+const usage = (usageMap.get(id) ?? []).filter((u) => u.lang === lang);
+
+const url = `/${lang}/glossary/${id}`;
+const jsonLd = buildGlossaryJsonLd({ id, lang, url, usage: usageMap.get(id) ?? [] });
+
+const title = `${view?.term ?? id} · ${lang === "ko" ? "용어집" : "glossary"} · Lemma`;
+const description = view?.body ?? "";
+
+const labels = {
+  en: {
+    breadcrumb: "glossary",
+    kicker: "glossary",
+    counterpart: "counterpart",
+    note: "translator's note",
+    provenanceHeader: "invented",
+    relatedHeader: "related",
+    usedHeader: "used on",
+    backToIndex: "← all terms",
+  },
+  ko: {
+    breadcrumb: "용어집",
+    kicker: "용어집",
+    counterpart: "짝",
+    note: "역자 주",
+    provenanceHeader: "발명",
+    relatedHeader: "관련 용어",
+    usedHeader: "사용 위치",
+    backToIndex: "← 전체 용어",
+  },
+}[lang];
+---
+
+<Page lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumb
+    lang={lang}
+    parent={{ href: `/${lang}/glossary`, label: labels.breadcrumb }}
+  >
+    {`${labels.kicker} · ${view?.term ?? id}`}
+  </Breadcrumb>
+
+  <article class="mt-8">
+    <header class="mb-8">
+      <h1 class="m-0 mb-3 font-serif text-[42px] font-medium leading-[1.1] tracking-[-0.02em] text-ink max-md:text-[32px]">
+        {view?.term ?? id}
+      </h1>
+      {
+        counter?.term && (
+          <div class="flex items-baseline gap-2">
+            <span class="font-mono text-[10.5px] uppercase tracking-[0.06em] text-ink-mute">
+              {counterLang === "ko" ? "ko" : "en"} · {labels.counterpart}
+            </span>
+            <a
+              href={`/${counterLang}/glossary/${id}`}
+              class="font-serif text-[20px] font-medium text-ink-soft no-underline hover:text-acc"
+            >
+              {counter.term}
+            </a>
+          </div>
+        )
+      }
+    </header>
+
+    <p class="font-serif text-[19px] leading-[1.55] text-ink-soft">{view?.body}</p>
+
+    {
+      view?.flag && (
+        <aside class="mt-6 rounded-md border border-rule bg-rule-soft p-4">
+          <div class="mb-1 font-mono text-[10.5px] uppercase tracking-[0.06em] text-acc-deep">
+            {labels.note}
+          </div>
+          <p class="m-0 text-[14.5px] text-ink-soft">⚠ {view.flag}</p>
+        </aside>
+      )
+    }
+
+    {
+      prov && (
+        <section class="mt-10">
+          <div class="mb-3 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute">
+            {labels.provenanceHeader}
+          </div>
+          <p class="m-0 mb-2 font-serif text-[18px] leading-[1.5] text-ink">
+            <strong class="font-semibold text-acc">
+              {prov.yearLabel?.[lang] ?? prov.year}
+            </strong>
+            <span class="text-ink-soft"> · {prov.who} · {prov.where}</span>
+          </p>
+          <p class="m-0 text-[15px] leading-[1.55] text-ink-soft">
+            {prov.oneLiner[lang] ?? prov.oneLiner.en}
+          </p>
+          {
+            prov.source && (
+              <p class="mt-2">
+                <a
+                  href={prov.source}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="font-mono text-[12px] text-acc no-underline hover:underline"
+                >
+                  {prov.source.replace(/^https?:\/\//, "")} ↗
+                </a>
+              </p>
+            )
+          }
+        </section>
+      )
+    }
+
+    {
+      entry.related.length > 0 && (
+        <section class="mt-10">
+          <div class="mb-3 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute">
+            {labels.relatedHeader}
+          </div>
+          <ul class="m-0 flex flex-wrap gap-2 p-0 [list-style:none]">
+            {entry.related.map((relId) => {
+              const relEntry = glossaryById[relId];
+              const relTerm = relEntry?.locales[lang]?.term ?? relId;
+              return (
+                <li>
+                  <a
+                    href={`/${lang}/glossary/${relId}`}
+                    class="rounded-full border border-rule px-3 py-1 font-serif text-[14px] text-ink no-underline hover:border-acc hover:text-acc"
+                  >
+                    {relTerm}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      usage.length > 0 && (
+        <section class="mt-10">
+          <div class="mb-3 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute">
+            {labels.usedHeader} · {usage.length}
+          </div>
+          <ul class="m-0 grid gap-1.5 p-0 [list-style:none]">
+            {usage.map((u) => (
+              <li>
+                <a
+                  href={u.url}
+                  class="block rounded-md border border-rule bg-rule-soft px-3 py-2 no-underline hover:border-acc"
+                >
+                  <span class="font-mono text-[10.5px] uppercase tracking-[0.06em] text-ink-mute">
+                    {u.kind}
+                  </span>
+                  <span class="ml-2 font-serif text-[15px] text-ink hover:text-acc">{u.title}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <footer class="mt-12 border-t border-rule pt-4">
+      <a
+        href={`/${lang}/glossary`}
+        class="font-mono text-[12px] text-ink-mute no-underline hover:text-acc"
+      >
+        {labels.backToIndex}
+      </a>
+    </footer>
+  </article>
+</Page>
