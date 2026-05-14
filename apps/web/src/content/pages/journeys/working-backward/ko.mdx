@@ -1,0 +1,35 @@
+---
+title: 거꾸로 풀어가기 · Lemma
+description: 세 페이지, 한 질문 — 출력을 보고 입력을 찾는다.
+breadcrumb:
+  current: 여정 · 거꾸로 풀어가기
+---
+
+import { JourneyDays } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+
+<Hook kicker="여정 · 4일 · 금융 → ML">
+
+# 거꾸로 풀어가기
+
+정방향이라면 Lemma의 식은 시시하다. *$P$, $r$, $t$를 넣으면 $F = P(1+r)^t$가 나온다*. *온도 값을 넣으면 softmax가 확률을 만든다*. *현금흐름을 넣으면 적분이 현재가치를 만든다*. 교과서 연습문제는 모두 그 방향이다. 그런데 **실제 질문**은 거의 모두 *반대 방향* — 답이 주어졌을 때 어떤 입력이 그걸 만들었는가? *내 돈이 두 배가 되는 데 얼마나 걸리지? 어느 금리가 오늘 가격을 미래 현금흐름에 맞춰주지? 어느 온도 값이 모델 신뢰도를 관측 빈도에 맞춰주지?*
+
+<Lede>
+  Lemma에서 *역문제*는 [골격(shape)](/ko/shapes/inverse-problem) — 세 단계 (정방향 모델 → 기지/미지
+  표시 → 역산) 가 다른 어휘를 입고 금융과 ML에 반복된다. 이 경로는 정전적인 역연산 도구 — 로그 —
+  로 시작해 세 페이지를 차례로 만난다. 각각이 *다른 종류의 역산*을 적용한다 — 대수적, 적분된,
+  수치적.
+</Lede>
+
+</Hook>
+
+<JourneyDays id="working-backward" />
+
+<PageFooter>
+  지나는 기둥: <strong>금융</strong>, <strong>ML</strong>.
+  쓰는 모듈: <code>로그</code>, <code>최적화</code>.
+  거치는 응용: <code>비트코인 피자</code>, <code>현재가치</code>, <code>모델 보정</code>.
+  도착점 — *정방향 식은 교과서 연습문제, 역방향 식은 *모두가 답값을 내고 풀어달라는 질문들*이다.*
+</PageFooter>

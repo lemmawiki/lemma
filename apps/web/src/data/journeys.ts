@@ -540,6 +540,65 @@ export const journeys: JourneyMeta[] = [
       },
     ],
   },
+
+  {
+    id: "working-backward",
+    title: {
+      en: "Working Backward",
+      ko: "거꾸로 풀어가기",
+    },
+    hook: {
+      en: "Forward, the formula is trivial: plug in, compute, get the answer. Backward, the *same formula* is the question that actually matters — given the answer, what input produced it? *How long until my money doubles? What rate makes today's price match these future cash flows? What temperature setting makes the model's confidence match observed frequency?* Each is one inversion of an equation that's easy forward. This path walks the three.",
+      ko: "정방향이라면 식은 시시하다 — 값을 넣고, 계산하고, 답을 얻는다. 역방향에서 *같은 식*이 *진짜 답해야 할 질문*이 된다 — 답이 주어졌을 때 어떤 입력이 그걸 만들었는가? *내 돈이 두 배가 되는 데 얼마나 걸리지? 어느 금리가 오늘 가격을 미래 현금흐름에 맞춰주지? 어느 온도 값이 모델의 신뢰도를 관측 빈도에 맞춰주지?* 셋 다 *정방향으로는 시시한* 식의 *역방향 풀이*. 이 경로가 그 셋을 차례로 걷는다.",
+    },
+    tagline: {
+      en: "Three pages, one question — given the output, find the input.",
+      ko: "세 페이지, 한 질문 — 출력을 보고 입력을 찾는다.",
+    },
+    duration: 4,
+    destination: {
+      en: "Recognising that *most of finance and most of model fitting* is the inverse direction of an equation that is easy forward.",
+      ko: "*금융의 대부분과 모델 적합의 대부분*이 정방향으로는 시시한 식의 역방향 풀이임을 알아보기.",
+    },
+    days: [
+      {
+        day: 1,
+        page: "/modules/log",
+        kind: "module",
+        why: {
+          en: "Open with the canonical inverter. Logarithm is what undoes exponentiation — *the* tool for inverting compound-growth equations algebraically. Every page on this path uses it, in one form or another. Read with one question in mind: *when does log give a closed-form inverse, and when do you have to solve numerically instead?*",
+          ko: "정전적인 역연산 도구를 먼저 연다. 로그는 거듭제곱을 *되돌리는 것* — 복리식을 *대수적으로* 역산할 때 *바로 그* 도구. 이 경로의 모든 페이지가 이걸 어떤 형태로든 쓴다. 한 질문을 머리에 두고 읽는다 — *언제 log가 닫힌 형식 역해를 주고, 언제는 수치로 풀어야만 하는가?*",
+        },
+      },
+      {
+        day: 2,
+        page: "/finance/bitcoin-pizza",
+        kind: "application",
+        why: {
+          en: "First instance — algebraic inversion. Forward: $F = P(1+r)^t$ — plug in price, rate, time, get future value. Backward: *given the 10,000-BTC pizza's 2010 price and today's price, what compound annual growth rate connects them?* Take logs of both sides; the unknown drops out of the exponent. One line of algebra, one historical fact about the most expensive meal in history.",
+          ko: "첫 사례 — 대수적 역산. 정방향: $F = P(1+r)^t$ — 가격·금리·시간을 넣으면 미래 가치. 역방향: *2010년 1만 BTC 피자의 당시 가격과 오늘 가격이 주어졌을 때, 둘을 잇는 복리 연수익률은 얼마인가?* 양변에 log를 취하면 미지수가 지수에서 떨어진다. 대수 한 줄, 역사상 가장 비싼 식사 한 사실.",
+        },
+      },
+      {
+        day: 3,
+        page: "/finance/present-value",
+        kind: "application",
+        why: {
+          en: "Second instance — same family, integrated. Compounding *forward* multiplies by $(1+r)^t$; *discounting* — the inverse — divides by the same factor. Present value *is* the inverse-direction calculation: future cash flows are observed, today's price is the unknown to solve for. The integral of $c(t) · e^{-rt}$ is one inversion machine running continuously.",
+          ko: "두 번째 사례 — 같은 가족, 적분된 판. *정방향* 복리는 $(1+r)^t$를 곱하고, *할인* — 역방향 — 은 같은 인수로 나눈다. 현재가치는 *바로 그 역방향 계산* — 미래 현금흐름이 관측치, 오늘 가격이 풀어야 할 미지수. $c(t) · e^{-rt}$의 적분은 *연속적으로 돌아가는* 한 역산 기계다.",
+        },
+      },
+      {
+        day: 4,
+        page: "/ml/model-calibration",
+        kind: "application",
+        why: {
+          en: "Third instance — numerical inversion. Now there is no closed-form inverse. Forward: a temperature value $T$ produces softmax probabilities. Observed: a held-out set of correctness frequencies. Unknown: *which $T$ makes the forward pass match reality?* Algebra cannot answer; the inverse is found by *minimising log-loss over $T$* — an optimization, exactly the kind day 1's module hinted you'd need when log alone runs out.",
+          ko: "세 번째 사례 — 수치 역산. 이번엔 닫힌 형식 역해가 *없다*. 정방향 — 온도 값 $T$가 softmax 확률을 만든다. 관측치 — 따로 빼둔 정답률. 미지수 — *어느 $T$가 정방향을 현실에 맞춰주는가?* 대수가 답하지 못한다. 역해는 *$T$에 대해 log-loss를 최소화*해 얻는다 — 최적화, 1일차 모듈이 *log만으로 부족할 때*를 미리 가리킨 그 도구.",
+        },
+      },
+    ],
+  },
 ];
 
 export const journeyById: Record<string, JourneyMeta> = Object.fromEntries(

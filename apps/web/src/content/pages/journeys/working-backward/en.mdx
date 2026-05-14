@@ -1,0 +1,35 @@
+---
+title: Working Backward · Lemma
+description: Three pages, one question — given the output, find the input.
+breadcrumb:
+  current: journey · working backward
+---
+
+import { JourneyDays } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+
+<Hook kicker="journey · 4 days · finance → ml">
+
+# Working Backward
+
+Forward, the formulas on Lemma are trivial. *Plug in $P$, $r$, $t$ and out comes $F = P(1+r)^t$*. *Plug in a temperature and softmax produces probabilities*. *Plug in cash flows and the integral produces present value*. Every textbook exercise runs that direction. But almost every **practical question** is the *opposite* direction — given the answer, what input produced it? *How long until my money doubles? What rate makes today's price match these future cash flows? What temperature setting makes the model's confidence match observed frequency?*
+
+<Lede>
+  *The inverse problem* in Lemma is a [shape](/en/shapes/inverse-problem) — three steps (forward
+  model → mark known and unknown → invert) that recur, under different vocabularies, in finance
+  and ML. This path opens with the logarithm — the canonical inverter — and walks three pages
+  that each apply a different kind of inverse: algebraic, integrated, numerical.
+</Lede>
+
+</Hook>
+
+<JourneyDays id="working-backward" />
+
+<PageFooter>
+  Path through: <strong>finance</strong> and <strong>ml</strong> pillars.
+  Modules consumed: <code>log</code>, <code>optimization</code>.
+  Applications passed: <code>bitcoin-pizza</code>, <code>present-value</code>, <code>model-calibration</code>.
+  Destination — *forward formulas are textbook exercises; inverse formulas are the questions everyone actually pays to have answered.*
+</PageFooter>

@@ -257,6 +257,7 @@ export const shapes: ShapeMeta[] = [
       },
     ],
     modules: ["log", "optimization"],
+    journey: "working-backward",
   },
   {
     id: "compression",
