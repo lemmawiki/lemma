@@ -1,0 +1,135 @@
+---
+// /en/journeys/ — the full journeys catalog.
+//
+// A journey is one author's pick of one path through Lemma's graph,
+// with a destination in mind. Readers who want a directed start use
+// them; readers who want to wander still can.
+import Page from "../../../layouts/page.astro";
+import Breadcrumb from "../../../components/page/breadcrumb.astro";
+import { journeys } from "../../../data/journeys";
+import type { Lang } from "../../../lib/route-from-entry";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "en" } }, { params: { lang: "ko" } }];
+}
+
+const lang = (Astro.params.lang as Lang) ?? "en";
+
+function pathSlugs(j: (typeof journeys)[number]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const d of j.days) {
+    const slug = d.page.split("/").filter(Boolean).pop() ?? d.page;
+    if (seen.has(slug)) continue;
+    seen.add(slug);
+    out.push(slug);
+  }
+  return out;
+}
+
+const jsonLd = {
+  "@context": ["https://schema.org", { lemma: "https://lemma.wiki/ns#" }],
+  "@type": "CollectionPage",
+  "@id": `/${lang}/journeys/`,
+  url: `/${lang}/journeys/`,
+  name: lang === "ko" ? "Lemma 여정" : "Lemma Journeys",
+  description:
+    lang === "ko"
+      ? "Lemma 그래프를 가로지르는 큐레이션 경로."
+      : "Curated reading paths through the Lemma graph.",
+  inLanguage: lang,
+  numberOfItems: journeys.length,
+  hasPart: journeys.map((j) => ({
+    "@type": "Course",
+    "@id": `/${lang}/journey/${j.id}`,
+    name: j.title[lang] ?? j.title.en,
+  })),
+};
+
+const title = lang === "ko" ? "여정 · Lemma" : "Journeys · Lemma";
+const description =
+  lang === "ko"
+    ? `${journeys.length}개의 큐레이션 경로 — Lemma 그래프를 *가로질러*.`
+    : `${journeys.length} curated paths through the Lemma graph.`;
+
+const labels = {
+  en: {
+    kicker: "journeys",
+    breadcrumb: "graph",
+    intro:
+      "Modules form a graph, not a curriculum. A journey is one editor's pick of one route — a destination, a daily reading sequence, and the editorial glue between stops.",
+    countLabel: "journeys",
+    daysSuffix: "days",
+    destinationLabel: "→",
+  },
+  ko: {
+    kicker: "여정",
+    breadcrumb: "그래프",
+    intro:
+      "모듈은 그래프지 커리큘럼이 아니다. 여정은 한 편집자의 한 경로 픽 — 목적지, 일일 읽기 순서, 그리고 정류장 사이의 편집적 접착제.",
+    countLabel: "여정",
+    daysSuffix: "일",
+    destinationLabel: "→",
+  },
+}[lang];
+---
+
+<Page lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumb lang={lang} parent={{ href: "/graph", label: labels.breadcrumb }}>
+    {labels.kicker}
+  </Breadcrumb>
+
+  <section class="mt-8">
+    <header class="mb-8">
+      <h1
+        class="m-0 mb-3 font-serif text-[42px] font-medium leading-[1.1] tracking-[-0.02em] text-ink max-md:text-[32px]"
+      >
+        {labels.kicker}
+      </h1>
+      <p class="m-0 max-w-[680px] font-serif text-[18px] leading-[1.55] text-ink-soft">
+        {labels.intro}
+      </p>
+      <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.08em] text-ink-mute">
+        {journeys.length}
+        {` ${labels.countLabel}`}
+      </p>
+    </header>
+
+    <ul class="m-0 grid list-none gap-3 p-0">
+      {
+        journeys.map((j) => {
+          const path = pathSlugs(j);
+          return (
+            <li>
+              <a
+                href={`/${lang}/journey/${j.id}`}
+                class="group block rounded-md border border-rule bg-rule-soft p-5 no-underline hover:border-acc"
+              >
+                <div class="mb-2 flex items-baseline justify-between gap-3">
+                  <span class="font-mono text-[10.5px] uppercase tracking-[0.06em] text-ink-mute">
+                    {j.duration} {labels.daysSuffix} {labels.destinationLabel}{" "}
+                    {j.destination[lang] ?? j.destination.en}
+                  </span>
+                </div>
+                <h2 class="m-0 mb-2 font-serif text-[22px] font-semibold text-ink group-hover:text-acc">
+                  {j.title[lang] ?? j.title.en}
+                </h2>
+                <p class="m-0 text-[15px] leading-[1.55] text-ink-soft">
+                  {j.tagline[lang] ?? j.tagline.en}
+                </p>
+                <div class="mt-3 flex flex-wrap items-center gap-x-1 gap-y-1 font-mono text-[11px] text-ink-mute">
+                  {path.map((slug, i) => (
+                    <span class="inline-flex items-center gap-1">
+                      {i > 0 && <span class="text-rule">→</span>}
+                      <span class="text-ink-soft">{slug}</span>
+                    </span>
+                  ))}
+                </div>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
+</Page>

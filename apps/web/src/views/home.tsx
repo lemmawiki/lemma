@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useApp, pick } from "../context/app-context";
 import { Link } from "../lib/router";
 import { applications, PILLAR_LABEL } from "../data/applications";
@@ -6,8 +6,16 @@ import { modules } from "../data/modules";
 import { spikes } from "../data/spikes";
 import { journeys } from "../data/journeys";
 import { glossary } from "../data/glossary";
+import { shapes } from "../data/shapes";
 import { HeaderInner } from "../components/header";
 import { ProgressRecent } from "../components/page/progress-recent";
+
+// Home redesigned as a digest, not a catalog. The full lists migrated to
+// dedicated /<lang>/applications, /<lang>/modules, /<lang>/journeys, and
+// /<lang>/shapes index pages — so the home stays a constant length
+// regardless of how much content lands. Featured rotation is date-
+// deterministic (same day → same picks) so the home doesn't shuffle on
+// every refresh.
 
 const KICKER =
   "mb-4 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute";
@@ -36,157 +44,160 @@ function Hero() {
   );
 }
 
-function ApplicationsList() {
+/** Days-since-epoch — stable across all visits on the same calendar day,
+ *  so the rotation is "today's pick", not "this refresh's pick". */
+function todayIndex(): number {
+  return Math.floor(Date.now() / (24 * 60 * 60 * 1000));
+}
+
+function pickTodays<T>(items: readonly T[], salt: number): T | null {
+  if (items.length === 0) return null;
+  return items[(todayIndex() + salt) % items.length] ?? null;
+}
+
+function Featured() {
   const { language } = useApp();
-  const live = applications.filter((a) => a.status === "available");
+  const liveApps = useMemo(() => applications.filter((a) => a.status === "available"), []);
+  const liveModules = useMemo(() => modules.filter((m) => m.status === "available"), []);
+
+  // Each category uses a different salt so today's app, module, shape, and
+  // journey rotate independently rather than locking together.
+  const app = pickTodays(liveApps, 0);
+  const mod = pickTodays(liveModules, 1);
+  const shape = pickTodays(shapes, 2);
+  const journey = pickTodays(journeys, 3);
+
+  if (!app && !mod && !shape && !journey) return null;
+
   return (
     <section className="mt-14">
-      <div className={KICKER}>
-        {pick(
-          language,
-          `applications · available · ${live.length}`,
-          `응용 · 공개됨 · ${live.length}`,
+      <div className={KICKER}>{pick(language, "today's pick", "오늘의 한 줌")}</div>
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        {app && (
+          <FeaturedCard
+            kicker={pick(
+              language,
+              `application · ${PILLAR_LABEL[app.pillar].en}`,
+              `응용 · ${PILLAR_LABEL[app.pillar].ko}`,
+            )}
+            title={app.title[language]}
+            body={app.hook[language]}
+            href={`/${language}${app.href}`}
+          />
+        )}
+        {mod && (
+          <FeaturedCard
+            kicker={pick(language, "module", "모듈")}
+            title={mod.title[language]}
+            body={mod.hook[language]}
+            href={`/${language}${mod.href}`}
+          />
+        )}
+        {shape && (
+          <FeaturedCard
+            kicker={pick(language, "shape", "골격")}
+            title={shape.title[language]}
+            body={shape.hook[language]}
+            href={`/${language}/shapes/${shape.id}`}
+          />
+        )}
+        {journey && (
+          <FeaturedCard
+            kicker={pick(
+              language,
+              `journey · ${journey.duration} days`,
+              `여정 · ${journey.duration}일`,
+            )}
+            title={journey.title[language]}
+            body={journey.tagline[language]}
+            href={`/${language}/journey/${journey.id}`}
+          />
         )}
       </div>
-      <ul className="m-0 grid list-none gap-3.5 p-0">
-        {live.map((app) => (
-          <li
-            key={app.id}
-            className="group rounded-[10px] border border-rule bg-bg-card transition-[border,transform] duration-[0.18s] hover:border-acc"
-          >
-            <Link to={app.href} className="block px-6 py-[22px] text-inherit no-underline">
-              <div className="mb-2.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
-                <span className="font-semibold text-acc">{PILLAR_LABEL[app.pillar][language]}</span>
-                <span className="mx-1.5 text-rule">·</span>
-                <span>{app.modules.join(" · ")}</span>
-              </div>
-              <h2 className="m-0 mb-2.5 font-serif text-[26px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
-                {app.title[language]}
-              </h2>
-              <p className="m-0 mb-3.5 font-serif text-[17px] leading-[1.55] text-ink-soft">
-                {app.hook[language]}
-              </p>
-              <span className="font-mono text-xs lowercase tracking-[0.06em] text-acc">
-                {pick(language, "open →", "열기 →")}
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
     </section>
   );
 }
 
-function ModulesList() {
-  const { language } = useApp();
-  const live = modules.filter((m) => m.status === "available");
+function FeaturedCard({
+  kicker,
+  title,
+  body,
+  href,
+}: {
+  kicker: string;
+  title: string;
+  body: string;
+  href: string;
+}) {
   return (
-    <section className="mt-14">
-      <div className={KICKER}>
-        {pick(language, `modules · available · ${live.length}`, `모듈 · 공개됨 · ${live.length}`)}
+    <Link
+      to={href}
+      className="group block h-full rounded-[10px] border border-rule bg-bg-card px-5 py-5 text-inherit no-underline transition-[border] duration-[0.18s] hover:border-acc"
+    >
+      <div className="mb-2.5 font-mono text-[10.5px] uppercase tracking-[0.08em] text-ink-mute">
+        {kicker}
       </div>
-      <ul className="m-0 grid list-none gap-3.5 p-0">
-        {live.map((m) => (
-          <li
-            key={m.id}
-            className="group rounded-[10px] border border-rule bg-bg-card transition-[border,transform] duration-[0.18s] hover:border-acc"
-          >
-            <Link to={m.href} className="block px-6 py-[22px] text-inherit no-underline">
-              <div className="mb-2.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
-                <span className="font-semibold text-acc">{pick(language, "module", "모듈")}</span>
-              </div>
-              <h2 className="m-0 mb-2.5 font-serif text-[26px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
-                {m.title[language]}
-              </h2>
-              <p className="m-0 mb-3.5 font-serif text-[17px] leading-[1.55] text-ink-soft">
-                {m.hook[language]}
-              </p>
-              <span className="font-mono text-xs lowercase tracking-[0.06em] text-acc">
-                {pick(language, "open →", "열기 →")}
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </section>
+      <h2 className="m-0 mb-2 font-serif text-[22px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
+        {title}
+      </h2>
+      <p className="m-0 font-serif text-[15.5px] leading-[1.5] text-ink-soft">{body}</p>
+    </Link>
   );
 }
 
-function pathSlugs(j: (typeof journeys)[number]): string[] {
-  // Unique slugs in order of first appearance — re-reads collapse, so the
-  // path reads as a clean breadcrumb of stops the journey hits. Deduping on
-  // the displayed slug (not the full page path) lets the slug itself serve
-  // as a stable React key downstream.
-  const seen = new Set<string>();
-  const out: string[] = [];
-  for (const d of j.days) {
-    const slug = d.page.split("/").filter(Boolean).pop() ?? d.page;
-    if (seen.has(slug)) continue;
-    seen.add(slug);
-    out.push(slug);
-  }
-  return out;
-}
-
-function JourneysList() {
+function IndexShortcuts() {
   const { language } = useApp();
-  if (journeys.length === 0) return null;
+  const liveApps = applications.filter((a) => a.status === "available").length;
+  const liveModules = modules.filter((m) => m.status === "available").length;
+  const cells = [
+    {
+      href: `/${language}/applications/`,
+      count: liveApps,
+      label: pick(language, "applications", "응용"),
+    },
+    {
+      href: `/${language}/modules/`,
+      count: liveModules,
+      label: pick(language, "modules", "모듈"),
+    },
+    {
+      href: `/${language}/journeys/`,
+      count: journeys.length,
+      label: pick(language, "journeys", "여정"),
+    },
+    {
+      href: `/${language}/shapes/`,
+      count: shapes.length,
+      label: pick(language, "shapes", "골격"),
+    },
+  ];
   return (
-    <section className="mt-14">
-      <div className={KICKER}>
-        {pick(
-          language,
-          `journeys · curated paths · ${journeys.length}`,
-          `여정 · 큐레이션 경로 · ${journeys.length}`,
-        )}
-      </div>
-      <ul className="m-0 grid list-none gap-3.5 p-0">
-        {journeys.map((j) => {
-          const path = pathSlugs(j);
-          return (
-            <li
-              key={j.id}
-              className="group rounded-[10px] border border-rule bg-bg-card transition-[border,transform] duration-[0.18s] hover:border-acc"
+    <section className="mt-10">
+      <div className={KICKER}>{pick(language, "browse", "둘러보기")}</div>
+      <ul className="m-0 grid list-none grid-cols-2 gap-2 p-0 md:grid-cols-4">
+        {cells.map((c) => (
+          <li key={c.href}>
+            <Link
+              to={c.href}
+              className="group block rounded-md border border-rule bg-rule-soft px-3 py-3 no-underline hover:border-acc"
             >
-              <Link
-                to={`/${language}/journey/${j.id}`}
-                className="block px-6 py-[22px] text-inherit no-underline"
-              >
-                <div className="mb-2.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
-                  <span className="font-semibold text-acc">
-                    {pick(language, "journey", "여정")}
-                  </span>
-                  <span className="mx-1.5 text-rule">·</span>
-                  <span>
-                    {j.duration} {pick(language, "days", "일")}
-                  </span>
-                  <span className="mx-1.5 text-rule">·</span>
-                  <span>→ {j.destination[language]}</span>
-                </div>
-                <h2 className="m-0 mb-2 font-serif text-[26px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
-                  {j.title[language]}
-                </h2>
-                <p className="m-0 mb-3 font-serif text-[16.5px] leading-[1.55] text-ink-soft">
-                  {j.tagline[language]}
-                </p>
-                <div className="flex flex-wrap items-center gap-x-1 gap-y-1 font-mono text-[11.5px] text-ink-mute">
-                  {path.map((slug, i) => (
-                    <span key={slug} className="inline-flex items-center gap-1">
-                      {i > 0 && <span className="text-rule">→</span>}
-                      <span className="text-ink-soft">{slug}</span>
-                    </span>
-                  ))}
-                </div>
-              </Link>
-            </li>
-          );
-        })}
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="font-serif text-[17px] font-semibold text-ink group-hover:text-acc">
+                  {c.label}
+                </span>
+                <span className="font-mono text-[12px] text-ink-mute">{c.count}</span>
+              </div>
+            </Link>
+          </li>
+        ))}
       </ul>
     </section>
   );
 }
 
 function SpikesList() {
+  // Spikes are experiments — they appear on the home only when there are any
+  // in flight. Empty registry → no slot at all.
   const { language } = useApp();
   if (spikes.length === 0) return null;
   return (
@@ -202,7 +213,7 @@ function SpikesList() {
         {spikes.map((s) => (
           <li
             key={s.id}
-            className="group rounded-[10px] border border-dashed border-rule bg-bg-card transition-[border,transform] duration-[0.18s] hover:border-acc"
+            className="group rounded-[10px] border border-dashed border-rule bg-bg-card transition-[border] duration-[0.18s] hover:border-acc"
           >
             <Link to={s.href} className="block px-6 py-[22px] text-inherit no-underline">
               <div className="mb-2.5 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-mute">
@@ -212,15 +223,12 @@ function SpikesList() {
                 <span className="mx-1.5 text-rule">·</span>
                 <span className="italic">{s.testing[language]}</span>
               </div>
-              <h2 className="m-0 mb-2.5 font-serif text-[26px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
+              <h2 className="m-0 mb-2.5 font-serif text-[24px] font-semibold tracking-[-0.01em] text-ink group-hover:text-acc">
                 {s.title[language]}
               </h2>
-              <p className="m-0 mb-3.5 font-serif text-[17px] leading-[1.55] text-ink-soft">
+              <p className="m-0 font-serif text-[16px] leading-[1.55] text-ink-soft">
                 {s.hook[language]}
               </p>
-              <span className="font-mono text-xs lowercase tracking-[0.06em] text-acc">
-                {pick(language, "open →", "열기 →")}
-              </span>
             </Link>
           </li>
         ))}
@@ -270,10 +278,15 @@ function Counters() {
   const apps = applications.filter((a) => a.status === "available");
   const consumedModules = new Set(apps.flatMap((a) => a.modules));
   const cells: Array<{ num: number | string; label: string; href?: string }> = [
-    { num: apps.length, label: pick(language, "applications", "응용") },
+    {
+      num: apps.length,
+      label: pick(language, "applications", "응용"),
+      href: `/${language}/applications/`,
+    },
     {
       num: `${consumedModules.size}/${modules.length}`,
       label: pick(language, "modules · consumed", "모듈 · 소비됨"),
+      href: `/${language}/modules/`,
     },
     {
       num: glossary.length,
@@ -372,9 +385,8 @@ export function Home() {
       <StickyHeader />
       <Counters />
       <ProgressRecent />
-      <ApplicationsList />
-      <ModulesList />
-      <JourneysList />
+      <Featured />
+      <IndexShortcuts />
       <SpikesList />
       <Status />
       <HomeFooter />

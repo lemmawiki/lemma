@@ -1,0 +1,120 @@
+---
+// /en/applications/ — the full applications catalog.
+//
+// Home used to carry the whole list, which made the page grow with content.
+// Now the home is a digest; this is the canonical index. Same shape as
+// /<lang>/glossary/, /<lang>/shapes/.
+//
+// Applications are grouped by pillar. Inside each pillar they keep the
+// order from applications.ts so the editorial sequence survives.
+import Page from "../../../layouts/page.astro";
+import Breadcrumb from "../../../components/page/breadcrumb.astro";
+import { applications, PILLAR_LABEL, type Pillar } from "../../../data/applications";
+import type { Lang } from "../../../lib/route-from-entry";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "en" } }, { params: { lang: "ko" } }];
+}
+
+const lang = (Astro.params.lang as Lang) ?? "en";
+
+const live = applications.filter((a) => a.status === "available");
+const PILLARS: Pillar[] = ["graphics", "physics", "ml", "finance"];
+const byPillar = PILLARS.map((pillar) => ({
+  pillar,
+  label: PILLAR_LABEL[pillar][lang] ?? PILLAR_LABEL[pillar].en,
+  apps: live.filter((a) => a.pillar === pillar),
+}));
+
+const jsonLd = {
+  "@context": ["https://schema.org", { lemma: "https://lemma.wiki/ns#" }],
+  "@type": "CollectionPage",
+  "@id": `/${lang}/applications/`,
+  url: `/${lang}/applications/`,
+  name: lang === "ko" ? "Lemma 응용" : "Lemma Applications",
+  description:
+    lang === "ko"
+      ? "현재 공개된 모든 응용 — 분야별로 묶음."
+      : "Every live Lemma application, grouped by pillar.",
+  inLanguage: lang,
+  numberOfItems: live.length,
+};
+
+const title = lang === "ko" ? "응용 · Lemma" : "Applications · Lemma";
+const description =
+  lang === "ko"
+    ? `${live.length}개의 공개 응용 — finance · physics · graphics · ml 네 필러에 걸쳐.`
+    : `${live.length} live applications across finance, physics, graphics, and ml.`;
+
+const labels = {
+  en: {
+    kicker: "applications",
+    breadcrumb: "graph",
+    intro:
+      "Each application starts with a real question. The math comes after. Grouped by pillar; within each pillar, ordered as Lemma's editorial sequence.",
+    countLabel: "applications",
+  },
+  ko: {
+    kicker: "응용",
+    breadcrumb: "그래프",
+    intro:
+      "각 응용은 실제 질문에서 시작한다. 수학은 그 뒤에 따라온다. 필러별로 묶음; 같은 필러 안에서는 Lemma 의 편집 순서대로.",
+    countLabel: "응용",
+  },
+}[lang];
+---
+
+<Page lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumb lang={lang} parent={{ href: "/graph", label: labels.breadcrumb }}>
+    {labels.kicker}
+  </Breadcrumb>
+
+  <section class="mt-8">
+    <header class="mb-8">
+      <h1
+        class="m-0 mb-3 font-serif text-[42px] font-medium leading-[1.1] tracking-[-0.02em] text-ink max-md:text-[32px]"
+      >
+        {labels.kicker}
+      </h1>
+      <p class="m-0 max-w-[680px] font-serif text-[18px] leading-[1.55] text-ink-soft">
+        {labels.intro}
+      </p>
+      <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.08em] text-ink-mute">
+        {live.length}
+        {` ${labels.countLabel}`}
+      </p>
+    </header>
+
+    <div class="grid gap-8">
+      {
+        byPillar.map((g) => (
+          <div>
+            <div class="mb-3 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute">
+              {g.label} · {g.apps.length}
+            </div>
+            <ul class="m-0 grid list-none gap-3 p-0 md:grid-cols-2">
+              {g.apps.map((app) => (
+                <li>
+                  <a
+                    href={`/${lang}${app.href}`}
+                    class="group block h-full rounded-md border border-rule bg-rule-soft p-4 no-underline hover:border-acc"
+                  >
+                    <div class="mb-1.5 font-mono text-[10.5px] uppercase tracking-[0.06em] text-ink-mute">
+                      {app.modules.join(" · ")}
+                    </div>
+                    <div class="mb-1.5 font-serif text-[18px] font-semibold text-ink group-hover:text-acc">
+                      {app.title[lang] ?? app.title.en}
+                    </div>
+                    <p class="m-0 text-[14px] leading-[1.5] text-ink-soft">
+                      {app.hook[lang] ?? app.hook.en}
+                    </p>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Page>

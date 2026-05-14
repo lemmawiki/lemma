@@ -1,0 +1,121 @@
+---
+// /en/modules/ — the full modules catalog.
+//
+// Modules are sorted by consumer count (most-reused first) — that's the
+// cross-pillar reuse story Lemma's manifesto promises, surfaced as the
+// default sort. Orphan modules sit at the bottom.
+import Page from "../../../layouts/page.astro";
+import Breadcrumb from "../../../components/page/breadcrumb.astro";
+import { modules } from "../../../data/modules";
+import { applications } from "../../../data/applications";
+import type { Lang } from "../../../lib/route-from-entry";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "en" } }, { params: { lang: "ko" } }];
+}
+
+const lang = (Astro.params.lang as Lang) ?? "en";
+
+const live = modules.filter((m) => m.status === "available");
+const consumerCount = (id: string) => applications.filter((a) => a.modules.includes(id)).length;
+const sorted = [...live].sort((a, b) => consumerCount(b.id) - consumerCount(a.id));
+
+const totalConsumed = sorted.filter((m) => consumerCount(m.id) > 0).length;
+
+const jsonLd = {
+  "@context": ["https://schema.org", { lemma: "https://lemma.wiki/ns#" }],
+  "@type": "CollectionPage",
+  "@id": `/${lang}/modules/`,
+  url: `/${lang}/modules/`,
+  name: lang === "ko" ? "Lemma 모듈" : "Lemma Modules",
+  description:
+    lang === "ko"
+      ? "Lemma 의 모든 모듈 — 가장 많이 재사용되는 것부터."
+      : "Every Lemma module, sorted by how many applications consume it.",
+  inLanguage: lang,
+  numberOfItems: live.length,
+};
+
+const title = lang === "ko" ? "모듈 · Lemma" : "Modules · Lemma";
+const description =
+  lang === "ko"
+    ? `${live.length}개의 모듈, 가장 많이 재사용되는 순.`
+    : `${live.length} modules, ordered by cross-pillar reuse.`;
+
+const labels = {
+  en: {
+    kicker: "modules",
+    breadcrumb: "graph",
+    intro:
+      "Modules are the reusable pieces of math underneath applications. Sorted by how many applications consume each — the manifesto's modular-graph claim, made data-shaped.",
+    countLabel: "modules",
+    consumedSuffix: "applications",
+    orphan: "no consumer yet",
+  },
+  ko: {
+    kicker: "모듈",
+    breadcrumb: "그래프",
+    intro:
+      "모듈은 응용 아래에 깔린 재사용 가능한 수학 조각. 응용이 얼마나 많이 이걸 가져다 쓰는지 순으로 정렬 — manifesto 의 modular-graph 주장이 데이터로.",
+    countLabel: "모듈",
+    consumedSuffix: "응용",
+    orphan: "아직 소비자 없음",
+  },
+}[lang];
+---
+
+<Page lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumb lang={lang} parent={{ href: "/graph", label: labels.breadcrumb }}>
+    {labels.kicker}
+  </Breadcrumb>
+
+  <section class="mt-8">
+    <header class="mb-8">
+      <h1
+        class="m-0 mb-3 font-serif text-[42px] font-medium leading-[1.1] tracking-[-0.02em] text-ink max-md:text-[32px]"
+      >
+        {labels.kicker}
+      </h1>
+      <p class="m-0 max-w-[680px] font-serif text-[18px] leading-[1.55] text-ink-soft">
+        {labels.intro}
+      </p>
+      <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.08em] text-ink-mute">
+        {live.length}
+        {` ${labels.countLabel} · ${totalConsumed}/${live.length} consumed`}
+      </p>
+    </header>
+
+    <ul class="m-0 grid list-none gap-3 p-0 md:grid-cols-2">
+      {
+        sorted.map((m) => {
+          const cn = consumerCount(m.id);
+          return (
+            <li>
+              <a
+                href={`/${lang}${m.href}`}
+                class="group block h-full rounded-md border border-rule bg-rule-soft p-4 no-underline hover:border-acc"
+              >
+                <div class="mb-1.5 flex items-baseline justify-between gap-3">
+                  <span class="font-mono text-[10.5px] uppercase tracking-[0.06em] text-ink-mute">
+                    {lang === "ko" ? "모듈" : "module"}
+                  </span>
+                  <span class="font-mono text-[10.5px] uppercase tracking-[0.06em] text-ink-mute">
+                    {cn === 0
+                      ? labels.orphan
+                      : `${cn} ${labels.consumedSuffix}`}
+                  </span>
+                </div>
+                <div class="mb-1.5 font-serif text-[18px] font-semibold text-ink group-hover:text-acc">
+                  {m.title[lang] ?? m.title.en}
+                </div>
+                <p class="m-0 text-[14px] leading-[1.5] text-ink-soft">
+                  {m.hook[lang] ?? m.hook.en}
+                </p>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
+</Page>
