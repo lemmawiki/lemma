@@ -481,6 +481,65 @@ export const journeys: JourneyMeta[] = [
       },
     ],
   },
+
+  {
+    id: "where-change-vanishes",
+    title: {
+      en: "Where Change Vanishes",
+      ko: "변화가 사라지는 곳",
+    },
+    hook: {
+      en: "Why does anything ever stop moving? A pendulum hung from above swings forever in principle. A raindrop falls to a constant speed and never accelerates again. A car spring jiggles, then settles. Three different physics, *one underlying question*: where does the net force vanish, and how does the system get there? This path opens with the derivative — the tool that names *no change* — and walks the three pages that obey it.",
+      ko: "왜 무엇은 결국 멈추는가? 위에서 매단 진자는 원칙적으로 영원히 흔들린다. 빗방울은 어떤 속도에 도달한 뒤 더 가속되지 않는다. 자동차 스프링은 진동하다가 정지로 가라앉는다. 세 다른 물리, *한 질문* — 알짜 힘이 사라지는 곳은 어디이고, 시스템은 그곳에 어떻게 도달하는가? 이 경로는 *변화 없음*을 이름 붙이는 도구, 미분으로 시작해 그 도구를 따르는 세 페이지를 걷는다.",
+    },
+    tagline: {
+      en: "One question — *where does change vanish?* — under three physics applications.",
+      ko: "한 질문 — *변화는 어디서 사라지는가?* — 세 물리 응용을 관통한다.",
+    },
+    duration: 4,
+    destination: {
+      en: "Three different ways a system relates to its equilibrium — orbit it, approach it asymptotically, settle into it.",
+      ko: "시스템이 평형과 맺을 수 있는 세 가지 관계 — 돌고 있다, 점근적으로 다가간다, 내려앉는다.",
+    },
+    days: [
+      {
+        day: 1,
+        page: "/modules/derivatives",
+        kind: "module",
+        why: {
+          en: "Open with the tool that *names* equilibrium. A derivative is the rate of change; setting a derivative equal to zero is what equilibrium *means*. Read Arc 5 — *force balance is exactly where the derivative vanishes here* — and note the pattern before you meet it three times.",
+          ko: '평형을 *이름 붙이는* 도구를 먼저 연다. 미분은 변화율이고, 미분을 0으로 놓는 일이 평형의 *정의*다. § 5 — *힘의 균형이란 정확히 "여기서 미분이 사라진다"는 뜻이다* — 를 읽고, 세 번 만나기 전에 패턴을 인지한다.',
+        },
+      },
+      {
+        day: 2,
+        page: "/physics/pendulum-clock",
+        kind: "application",
+        why: {
+          en: "First instance — *orbit*. The pendulum has an equilibrium at θ = 0, but it never settles there in the ideal model — it *orbits* the equilibrium, swinging through it twice per period. The whole 17th-century clock technology lives in this *periodic-around-equilibrium* regime. The equilibrium is the *axis* of the motion, not its end.",
+          ko: "첫 사례 — *공전*. 진자는 θ = 0에서 평형을 가지지만, 이상 모형에서는 그곳에 *멈추지* 않고 그 점을 한 주기에 두 번 지나치며 *공전*한다. 17세기 시계 기술 전부가 *평형 둘레 주기*의 이 영역 안에서 작동한다. 평형은 운동의 *축*이지 *끝*이 아니다.",
+        },
+      },
+      {
+        day: 3,
+        page: "/physics/terminal-velocity",
+        kind: "application",
+        why: {
+          en: "Second instance — *approach*. The raindrop's equilibrium $v_t = g/k$ is never quite reached — gravity pulling down and drag pushing up approach equality asymptotically, never algebraically. The trajectory *bends toward* the equilibrium without touching it. Calculus is the only honest description of *almost there forever*.",
+          ko: "두 번째 사례 — *접근*. 빗방울의 평형 $v_t = g/k$는 *완전히* 도달되지 않는다 — 중력과 공기 저항이 점근적으로 같아질 뿐, 대수적으로는 결코 같아지지 않는다. 자취는 평형을 *향해 휘지만* 닿지 않는다. *영원히 거의 도달*을 정직하게 묘사하는 도구는 미적분뿐이다.",
+        },
+      },
+      {
+        day: 4,
+        page: "/physics/damped-oscillator",
+        kind: "application",
+        why: {
+          en: "Third instance — *settle*. With both a restoring force and a damping force, the system *reaches* equilibrium — but the shape of the approach depends on the damping ratio. Underdamped: oscillates while shrinking. Critically damped: returns straight, fastest. Overdamped: crawls back slowly. Same equilibrium, three different ways to get there. *Pendulum + terminal-velocity, generalised — and now the equilibrium can actually be reached.*",
+          ko: "세 번째 사례 — *내려앉음*. 복원력과 감쇠력이 *둘 다* 있으면 시스템은 평형에 *도달한다* — 하지만 도달 *모양*이 감쇠비에 달려 있다. 부족 감쇠 — 줄어들면서 진동. 임계 감쇠 — 곧장, 가장 빠르게. 과 감쇠 — 천천히 기어서. 같은 평형, 세 가지 도달 방식. *진자 + 종단속도의 일반화 — 그리고 이번엔 평형이 *실제로* 닿는다.*",
+        },
+      },
+    ],
+  },
 ];
 
 export const journeyById: Record<string, JourneyMeta> = Object.fromEntries(

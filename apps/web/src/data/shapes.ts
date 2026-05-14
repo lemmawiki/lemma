@@ -186,6 +186,7 @@ export const shapes: ShapeMeta[] = [
       },
     ],
     modules: ["derivatives", "linearization"],
+    journey: "where-change-vanishes",
   },
   {
     id: "inverse-problem",
