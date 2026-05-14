@@ -359,6 +359,10 @@ function HomeFooter() {
           github
         </a>
         <span className="text-rule"> · </span>
+        <a href={language === "ko" ? "/feed.ko.xml" : "/feed.xml"}>
+          {pick(language, "rss", "rss")}
+        </a>
+        <span className="text-rule"> · </span>
         CC BY 4.0 (content) · MIT (code)
       </div>
     </footer>

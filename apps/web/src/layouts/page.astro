@@ -46,6 +46,29 @@ const altKo = new URL(altPath("ko"), Astro.site ?? "https://lemma.wiki").href;
     <link rel="alternate" hreflang="ko" href={altKo} />
     <link rel="alternate" hreflang="x-default" href={altEn} />
 
+    <!-- Daily picks subscription — RSS readers and JSON Feed clients auto-detect. -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Lemma — Today's Pick"
+      href="/feed.xml"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      hreflang="ko"
+      title="Lemma — 오늘의 한 줌"
+      href="/feed.ko.xml"
+    />
+    <link rel="alternate" type="application/feed+json" title="Lemma — JSON Feed" href="/feed.json" />
+    <link
+      rel="alternate"
+      type="application/feed+json"
+      hreflang="ko"
+      title="Lemma — JSON Feed (KO)"
+      href="/feed.ko.json"
+    />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
