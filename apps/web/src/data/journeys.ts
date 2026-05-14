@@ -354,6 +354,74 @@ export const journeys: JourneyMeta[] = [
       },
     ],
   },
+
+  {
+    id: "vectors-everywhere",
+    title: {
+      en: "Vectors Everywhere",
+      ko: "벡터는 어디에나",
+    },
+    hook: {
+      en: "Four pillars hold the same tuple and call it different things — a point, a velocity, a feature, a weight. Two operations — add and scale — make all four behave. This path walks one example per pillar with the vectors module open as a constant frame.",
+      ko: "네 필러가 같은 튜플을 들고 서로 다른 이름으로 부른다 — 점, 속도, 특징, 비중. 두 연산 — 더하기와 늘이기 — 가 그 넷 모두를 받친다. 이 경로는 벡터 모듈을 상수 프레임으로 열어두고 필러마다 예시 하나씩을 걷는다.",
+    },
+    tagline: {
+      en: "Same tuple, four roles — across graphics, physics, ML, and finance.",
+      ko: "같은 튜플, 네 역할 — 그래픽, 물리, ML, 금융을 가로질러.",
+    },
+    duration: 5,
+    destination: {
+      en: "Seeing one tuple and two operations wear four pillar-shaped hats.",
+      ko: "한 튜플과 두 연산이 네 필러의 모자를 바꿔 쓰는 모습 보기.",
+    },
+    days: [
+      {
+        day: 1,
+        page: "/modules/vectors",
+        kind: "module",
+        why: {
+          en: "Open with the abstract object. A vector is a tuple plus two operations: addition and scalar multiplication. Read for the *roles* the module names — position, displacement, velocity, feature — each is the same algebra wearing a different hat. The next four days fill those hats with real pages.",
+          ko: "추상 객체부터 연다. 벡터는 튜플 + 두 연산 (더하기와 스칼라 곱) 이다. 모듈이 명명하는 *역할들* — 위치, 변위, 속도, 특징 — 을 읽는다. 같은 대수가 다른 모자를 쓴다. 다음 4일이 그 모자에 실제 페이지를 채워 넣는다.",
+        },
+      },
+      {
+        day: 2,
+        page: "/graphics/bezier-curves",
+        kind: "application",
+        why: {
+          en: "Pillar 1 — graphics. The control points the designer drags *are* vectors. The Bezier curve is built by repeated linear interpolation, which is *add* and *scale* iterated. The drawing on screen is the algebra running with no friction.",
+          ko: "필러 1 — 그래픽. 디자이너가 끄는 제어점이 *곧* 벡터다. 베지에 곡선은 반복된 선형 보간으로 만들어지고, 그건 *더하기*와 *늘이기*의 반복일 뿐. 화면의 그림은 마찰 없이 돌아가는 그 대수다.",
+        },
+      },
+      {
+        day: 3,
+        page: "/physics/projectile-motion",
+        kind: "application",
+        why: {
+          en: "Pillar 2 — physics. The same tuple now names *motion*. Position and velocity are vectors evolving in time; gravity is a constant vector added each step. The graphics tuple stored *where*; the physics tuple stores *how it changes*. Algebra unchanged.",
+          ko: "필러 2 — 물리. 이제 같은 튜플이 *움직임*을 부른다. 위치와 속도는 시간에 따라 진화하는 벡터, 중력은 매 스텝마다 더해지는 상수 벡터. 그래픽의 튜플이 *어디*를 담았다면, 물리의 튜플은 *어떻게 변하는가*를 담는다. 대수는 그대로.",
+        },
+      },
+      {
+        day: 4,
+        page: "/ml/gradient-descent",
+        kind: "application",
+        why: {
+          en: "Pillar 3 — ML. The model's parameters are a vector; the gradient is a vector; the update step is *parameter ← parameter − α · gradient* — add and scale again. The *feature* role the module names lives here too: each training example is a vector in ℝⁿ.",
+          ko: "필러 3 — ML. 모델 매개변수가 벡터, 그래디언트가 벡터, 갱신 스텝이 *매개변수 ← 매개변수 − α · 그래디언트* — 다시 더하기와 늘이기. 모듈이 명명하는 *특징* 역할도 여기 산다 — 각 학습 예시가 ℝⁿ 위의 벡터.",
+        },
+      },
+      {
+        day: 5,
+        page: "/finance/portfolio-risk",
+        kind: "application",
+        why: {
+          en: "Pillar 4 — finance. The portfolio weights form a vector; the returns form a vector; the variance involves a dot product against a covariance matrix. The most famous portfolio formula is *literally* the |a + b|² identity from the vectors module, with finance-flavoured names on each term.",
+          ko: "필러 4 — 금융. 포트폴리오 비중이 벡터, 수익률이 벡터, 분산은 공분산 행렬에 대한 내적을 거친다. 가장 유명한 포트폴리오 공식은 *글자 그대로* 벡터 모듈의 |a + b|² 항등식 — 각 항에 금융 이름표만 붙은 것.",
+        },
+      },
+    ],
+  },
 ];
 
 export const journeyById: Record<string, JourneyMeta> = Object.fromEntries(
