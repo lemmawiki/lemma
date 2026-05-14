@@ -113,5 +113,6 @@
   "objective-function",
   "local-minimum",
   "step-size",
-  "convergence"
+  "convergence",
+  "fixed-point"
 ]
