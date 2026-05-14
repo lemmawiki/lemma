@@ -62,7 +62,7 @@ The direction is settled. The size still isn't. We multiply the gradient by a po
 
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`w  ←  w  −  η · L'(w)`}</pre>
 
-Different $η$ shapes the trajectory. Try $η = 0.04$ in the widget: each step shrinks the distance to $w_$ by a constant factor (about 0.68 here), so convergence is geometric but slow. $η = 0.12$ is near the Newton-optimal $η = 1/L''(w_) = 1/8 = 0.125$ — convergence in two or three steps. $η = 0.27$ is past the boundary; we'll see what happens to it next.
+Different $η$ shapes the trajectory. Try $η = 0.04$ in the widget: each step shrinks the distance to $w_$ by a constant factor (about 0.68 here), so <Term id="convergence">convergence</Term> is geometric but slow. $η = 0.12$ is near the Newton-optimal $η = 1/L''(w_) = 1/8 = 0.125$ — convergence in two or three steps. $η = 0.27$ is past the boundary; we'll see what happens to it next.
 
 </ArcRow>
 
@@ -105,7 +105,8 @@ Real ML doesn't have one parameter; it has millions or billions. It doesn't have
   </li>
   <li>
     **Clean parabola → real loss surface.** Cross-entropy on a deep network is non-convex. There is
-    no single optimum; we settle for "good enough" local minima, found by the same descent loop.
+    no single optimum; we settle for "good enough" <Term id="local-minimum">local minima</Term>,
+    found by the same descent loop.
   </li>
   <li>
     **Hand-derived gradient → autograd.** The chain rule is mechanical. Modern ML frameworks build a
