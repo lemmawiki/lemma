@@ -102,7 +102,9 @@ That tower — position, velocity, acceleration — is the entire content of "Ne
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`physics : position changes into velocity; velocity into acceleration;
           forces decide those changes.
 ml      : loss changes when a parameter moves; the gradient tells
-          which way the loss falls.`}</pre>
+          which way the loss falls.
+finance : a price changes when a rate moves; the derivative measures
+          the sensitivity — duration for bonds, the Greeks for options.`}</pre>
 
 [**Projectile motion**](/en/physics/projectile-motion) — the equations $x(t) = v₀ \cos θ · t$ and $y(t) = v₀ \sin θ · t − \tfrac{1}{2} g t²$ have derivatives $vₓ = v₀ \cos θ$ (constant) and $v_y(t) = v₀ \sin θ − g t$ (linear). Differentiating the *position* gives the *velocity* directly; one more derivative gives the constant $−g$ acceleration.
 
@@ -110,9 +112,13 @@ ml      : loss changes when a parameter moves; the gradient tells
 
 [**Terminal velocity**](/en/physics/terminal-velocity) — the differential equation $dv/dt = g − k v$ is one derivative on the left, the net force per unit mass on the right. The fixed point — the terminal speed — is found by setting the derivative to zero: $g − k v_t = 0$. *Force balance is exactly "the derivative vanishes here."*
 
+[**Damped oscillator**](/en/physics/damped-oscillator) — the equation $\ddot{x} + 2γ\dot{x} + ω₀² x = F(t)$ runs two derivatives on the left: a velocity term and an acceleration term. Damping is exactly *the term that multiplies the first derivative*; resonance is *the place where forcing matches the second-derivative geometry*. The whole page is the derivative ladder, twice.
+
 [**Gradient descent**](/en/ml/gradient-descent) — the loss $L(w)$ is a multivariable function; its <Term id="gradient">gradient</Term> $∇L$ is the vector of partial derivatives. The descent step $w ← w − η · ∇L$ uses one derivative per parameter, all at once. The rate at which the loss falls is $\|∇L\|²$ — a derivative-derived quantity that determines whether learning is making progress.
 
-**Same idea, different nouns: velocity in physics, gradient in ML. In both cases, the derivative is the local rule for change.**
+[**Present value**](/en/finance/present-value) — the same operation, in finance vocabulary. The price of a bond is $PV(r) = \int_0^T c(t) · e^{-rt} dt$, and the *modified duration* $D = -(\partial PV / \partial r) / PV$ is a derivative, normalized — it predicts how much the bond price moves when rates shift. Option Greeks are the same family: $\Delta = \partial \text{Price} / \partial S$, $\Gamma$ the second derivative, and so on. *Financial derivative* and *mathematical derivative* are the same word for a reason.
+
+**Same idea, different nouns: velocity in physics, gradient in ML, sensitivity in finance. In all three the derivative is the local rule for change.**
 
 <CodeBlock slug="derivatives" arc="arc5" />
 
@@ -183,10 +189,12 @@ The vertical position of a projectile is $y(t) = v₀ \sin θ · t − \tfrac{1}
 </Exercises>
 
 <PageFooter>
-  module: **The Derivative**. Consumed by four applications across two pillars: physics
+  module: **The Derivative**. Consumed by six applications across three pillars: physics
   ([projectile motion](/en/physics/projectile-motion),
   [the pendulum clock](/en/physics/pendulum-clock),
-  [terminal velocity](/en/physics/terminal-velocity)) and ML
-  ([gradient descent](/en/ml/gradient-descent)). *Same idea, different nouns: velocity in physics,
-  gradient in ML. In both cases, the derivative is the local rule for change.*
+  [terminal velocity](/en/physics/terminal-velocity),
+  [damped oscillator](/en/physics/damped-oscillator)), ML
+  ([gradient descent](/en/ml/gradient-descent)), and finance
+  ([present value](/en/finance/present-value)). *Same idea, different nouns: velocity in physics,
+  gradient in ML, sensitivity in finance. In all three the derivative is the local rule for change.*
 </PageFooter>

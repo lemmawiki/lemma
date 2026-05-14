@@ -34,7 +34,7 @@ export const applications: ApplicationMeta[] = [
     id: "present-value",
     href: "/finance/present-value",
     pillar: "finance",
-    modules: ["log", "integration"],
+    modules: ["derivatives", "integration", "linearization", "log"],
     status: "available",
     title: {
       en: "What Is Future Money Worth Today?",

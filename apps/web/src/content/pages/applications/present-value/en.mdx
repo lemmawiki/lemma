@@ -100,6 +100,24 @@ This is why infinite-life valuations (perpetuities, real estate, sovereign debt)
 
 </ArcRow>
 
+<ArcRow n={6} title="Sensitivity — how PV moves when the rate moves">
+
+Up to here, $r$ has been a number *you set*. In practice it is a number that *moves* — central banks change it, markets re-price it, your view on it shifts. The natural next question is: **if $r$ shifts by a small amount $\Delta r$, how much does PV move?** That is a question about a [derivative](/en/modules/derivatives) — specifically $\partial PV / \partial r$, the slope of PV viewed as a function of $r$.
+
+For the continuous case $PV = \int_0^T c(t) · e^{-rt} dt$, differentiating under the integral sign gives
+
+$\partial PV / \partial r \; = \; -\int_0^T t · c(t) · e^{-rt} dt$
+
+— the *same integral as PV*, except each cash-flow slice is multiplied by an extra $t$. **Far-future money contributes more to the sensitivity.** Define the **modified duration** $D = -(\partial PV / \partial r) / PV$. Then a small rate move predicts a price move by [linearization](/en/modules/linearization):
+
+$\Delta PV \;\approx\; -D · PV · \Delta r$
+
+A 10-year zero-coupon bond has $D \approx 10$; a 1% rise in rates predicts about a 10% drop in price. A 2-year bond has $D \approx 2$; the same rate move predicts only about 2%. *Duration is a derivative of price with respect to rate, normalized — and it is what the bond market uses to price interest-rate risk every day.*
+
+The same shape runs the **Greeks** in option pricing — $\Delta$ is $\partial \text{Price} / \partial S$, $\Gamma$ is the second derivative, $\Theta$ is $\partial \text{Price} / \partial t$, $\mathcal{V}$ is $\partial \text{Price} / \partial \sigma$. Every financial instrument has a family of *sensitivities* — partial derivatives of the price with respect to each input. The word *derivative* in "financial derivative" and the word *derivative* in calculus are the same word for a deep reason: **the instrument's price is the derivative of something else, and its risk is captured by its own derivatives.**
+
+</ArcRow>
+
 </Arc>
 
 <Pin>

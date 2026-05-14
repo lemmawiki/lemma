@@ -64,18 +64,23 @@ Concretely for $\sin$ at $0$: the leading error term is $−x³/6$, so $error / 
 
 </ArcRow>
 
-<ArcRow n={4} title="Where this shows up — one tool, two pillars">
+<ArcRow n={4} title="Where this shows up — one tool, three pillars">
 
 **Linearization is the first honest lie: replace a curved thing by the line that tells the truth nearby.** The lie shows up under different names in different pillars; the math is the same.
 
 <pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`physics : sin θ ≈ θ near zero
-ml      : calibration curve ≈ tangent near one bin`}</pre>
+ml      : calibration curve ≈ tangent near one bin
+finance : ΔPV ≈ -D · PV · Δr near the current rate (bond duration)`}</pre>
 
 [**The pendulum clock**](/en/physics/pendulum-clock) runs on a single linearization: $\sin θ ≈ θ$ for small angles. The nonlinear ODE $\ddot{θ} = −(g/L) \sin θ$ becomes $\ddot{θ} = −(g/L) θ$ — a linear oscillator with a closed-form sinusoidal solution and a *constant-period* swing. The whole 17th-century clock technology lives inside the small-angle regime where the lie holds, and the page's widget makes that regime visible.
 
+[**The damped oscillator**](/en/physics/damped-oscillator) extends the same lie one step further: $\ddot{x} + 2γ\dot{x} + ω₀² x = F(t)$ is the small-amplitude linearization of every physical system that oscillates with friction and forcing. Car suspensions, building sway, RLC circuits, vocal cords driving glass — the same equation runs all of them *inside the regime the linearization holds*.
+
 [**Model calibration**](/en/ml/model-calibration) does the same trick on a curve a model produces. Click any bin in the reliability diagram and the widget draws the *tangent* to the calibration curve at that bin's center: locally, $actual(p) ≈ m·p + c$. Two numbers — slope and intercept — describe the gap between confidence and frequency *near that bin*. Slope ≈ 1 means the curve is parallel to the diagonal there (a constant shift); slope ≠ 1 means the gap *changes* with confidence, which a global rotation (temperature scaling) can fix. Same tangent-line tool, completely different use.
 
-The same machine also drives [Newton's method](https://en.wikipedia.org/wiki/Newton's_method) (linearize, find the line's zero, repeat) and [gradient descent](/en/ml/gradient-descent) (the first-order Taylor approximation says $L(w − η·∇L) ≈ L(w) − η·\|∇L\|²$; if $η$ is small enough that the linearization is trustworthy, the loss decreases — past the ceiling and the linearization lies, which is exactly the explosion at $η = 0.27$ in that page's widget). Newton, gradient descent, the pendulum, and calibration all run the same step: replace the curve with its tangent for as long as the tangent is honest.
+[**Present value**](/en/finance/present-value) — the bond market's working approximation. PV is a nonlinear function of the interest rate $r$ (an integral of $e^{-rt}$), but for small rate moves it linearizes to $\Delta PV \approx -D · PV · \Delta r$, where $D$ is the *modified duration*. Traders quote duration instead of recomputing the integral after every rate tick. The approximation is honest inside a small Δr neighbourhood; outside it, the same page's *convexity* correction (the second-order term) catches what duration misses. Linearization first, second-order correction second — the standard pattern.
+
+The same machine also drives [Newton's method](https://en.wikipedia.org/wiki/Newton's_method) (linearize, find the line's zero, repeat) and [gradient descent](/en/ml/gradient-descent) (the first-order Taylor approximation says $L(w − η·∇L) ≈ L(w) − η·\|∇L\|²$; if $η$ is small enough that the linearization is trustworthy, the loss decreases — past the ceiling and the linearization lies, which is exactly the explosion at $η = 0.27$ in that page's widget). Newton, gradient descent, the pendulum, calibration, and bond duration all run the same step: replace the curve with its tangent for as long as the tangent is honest.
 
 <CodeBlock slug="linearization" arc="arc4" />
 
@@ -167,10 +172,12 @@ The first-order Taylor approximation of the loss $L(w + d) ≈ L(w) + ∇L(w) ·
 </Exercises>
 
 <PageFooter>
-  module: **Linearization**. Consumed across two pillars: physics
-  ([the pendulum clock](/en/physics/pendulum-clock) — `sin θ ≈ θ`) and ML
-  ([model calibration](/en/ml/model-calibration) — calibration curve ≈ tangent at one bin).
-  Algorithmically also under the hood of [gradient descent](/en/ml/gradient-descent) and Newton's
-  method. *Two faces of one tool: replace the curve with its tangent for as long as the tangent is
-  honest.*
+  module: **Linearization**. Consumed across three pillars: physics
+  ([the pendulum clock](/en/physics/pendulum-clock) — `sin θ ≈ θ`,
+  [the damped oscillator](/en/physics/damped-oscillator) — small-amplitude linear ODE), ML
+  ([model calibration](/en/ml/model-calibration) — calibration curve ≈ tangent at one bin), and
+  finance ([present value](/en/finance/present-value) — modified duration = first-order rate
+  sensitivity). Algorithmically also under the hood of [gradient descent](/en/ml/gradient-descent)
+  and Newton's method. *Three faces of one tool: replace the curve with its tangent for as long as
+  the tangent is honest.*
 </PageFooter>

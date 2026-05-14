@@ -102,14 +102,16 @@ $(2, 4)$를 지나는 <Term id="tangent">접선</Term>의 기울기다.
 
 </ArcRow>
 
-<ArcRow n={5} title="이게 어디에 나타나나 — 같은 연산, 두 필러">
+<ArcRow n={5} title="이게 어디에 나타나나 — 같은 연산, 세 필러">
 
 **미분은 단순히 기울기가 아니다. 국소적인 변화다 — 한 양을 아주 조금 건드렸을 때 다른 양이 어떻게 반응하는가.** 같은 연산이 필러마다 다른 이름으로 나타나지만, 대수는 같다.
 
-<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`physics : 위치가 속도로 바뀌고, 속도가 가속도로 바뀐다.
-          그 변화를 결정하는 것이 힘.
-ml      : 매개변수가 움직일 때 손실이 변한다.
-          그래디언트가 손실이 떨어지는 방향을 말해준다.`}</pre>
+<pre className="my-2 overflow-x-auto rounded-md bg-rule-soft p-3 font-mono text-[13px] leading-[1.55] text-ink">{`물리 : 위치가 속도로 바뀌고, 속도가 가속도로 바뀐다.
+       그 변화를 결정하는 것이 힘.
+ML   : 매개변수가 움직일 때 손실이 변한다.
+       그래디언트가 손실이 떨어지는 방향을 말해준다.
+금융 : 금리가 움직일 때 가격이 변한다. 미분이 그 민감도를 잰다 —
+       채권에는 듀레이션, 옵션에는 그릭스.`}</pre>
 
 [**포물선 운동**](/ko/physics/projectile-motion) — 식 $x(t) = v₀ \cos θ · t$와 $y(t) = v₀ \sin θ · t − \tfrac{1}{2} g t²$를 미분하면 $vₓ = v₀ \cos θ$ (상수)와 $v_y(t) = v₀ \sin θ − g t$ (선형)가 나온다. *위치*를 미분하면 바로 *속도*가 되고, 한 번 더 미분하면 상수 $−g$ 가속도다.
 
@@ -117,9 +119,13 @@ ml      : 매개변수가 움직일 때 손실이 변한다.
 
 [**종단속도**](/ko/physics/terminal-velocity) — 미분방정식 $dv/dt = g − k v$는 왼쪽이 한 번의 미분, 오른쪽이 단위 질량당 알짜힘이다. 고정점 — 종단속도 — 은 미분을 0으로 놓고 푼다 — $g − k v_t = 0$. *힘의 균형이란 정확히 "여기서 미분이 사라진다"는 뜻이다.*
 
+[**감쇠 진동자**](/ko/physics/damped-oscillator) — 식 $\ddot{x} + 2γ\dot{x} + ω₀² x = F(t)$의 왼쪽에 미분이 두 번 깔린다 — 속도 항과 가속도 항. 감쇠는 *바로 그 1계 도함수에 곱해진 항*이고, 공명은 *2계 도함수 기하와 외부 구동이 맞는 자리*다. 페이지 전체가 미분 사다리를 두 번 돈 것이다.
+
 [**경사하강법**](/ko/ml/gradient-descent) — 손실 $L(w)$는 다변수 함수다. 그 <Term id="gradient">그래디언트</Term> $∇L$은 편미분으로 이루어진 벡터. 한 스텝 $w ← w − η · ∇L$은 모든 매개변수에 대한 미분을 한꺼번에 쓴다. 손실이 떨어지는 비율은 $\|∇L\|²$ — 학습이 진전하고 있는지를 판가름하는, 미분에서 나온 양이다.
 
-**이름은 달라도 같은 생각이다 — 물리에서는 속도, ML에서는 그래디언트. 둘 다 미분이 국소적인 변화 규칙을 말해준다.**
+[**현재가치**](/ko/finance/present-value) — 같은 연산, 금융 어휘로. 채권 가격은 $PV(r) = \int_0^T c(t) · e^{-rt} dt$이고, *수정 듀레이션* $D = -(\partial PV / \partial r) / PV$는 정규화된 미분 — 금리가 움직일 때 채권 가격이 얼마나 움직일지를 예측한다. 옵션의 그릭스도 같은 가족 — $\Delta = \partial \text{Price} / \partial S$, $\Gamma$는 그 2계 도함수, 등등. *금융의 derivative*와 *수학의 미분 (derivative)* 이 같은 단어인 데에는 이유가 있다.
+
+**이름은 달라도 같은 생각이다 — 물리에서는 속도, ML에서는 그래디언트, 금융에서는 민감도. 셋 다 미분이 국소적인 변화 규칙을 말해준다.**
 
 <CodeBlock slug="derivatives" arc="arc5" />
 
@@ -191,9 +197,10 @@ $f(t) = t²$에서 할선 기울기 정의로부터 $f'(3)$를 유도하라. 대
 </Exercises>
 
 <PageFooter>
-  모듈: **미분**. 두 필러의 네 응용이 이 모듈을 소비한다 — 물리
+  모듈: **미분**. 세 필러의 여섯 응용이 이 모듈을 소비한다 — 물리
   ([포물선 운동](/ko/physics/projectile-motion), [진자시계](/ko/physics/pendulum-clock),
-  [종단속도](/ko/physics/terminal-velocity)) 와 ML
-  ([경사하강법](/ko/ml/gradient-descent)). *이름은 달라도 같은 생각이다 — 물리에서는 속도, ML에서는
-  그래디언트. 둘 다 미분이 국소적인 변화 규칙을 말해준다.*
+  [종단속도](/ko/physics/terminal-velocity),
+  [감쇠 진동자](/ko/physics/damped-oscillator)), ML ([경사하강법](/ko/ml/gradient-descent)), 그리고
+  금융 ([현재가치](/ko/finance/present-value)). *이름은 달라도 같은 생각이다 — 물리에서는 속도,
+  ML에서는 그래디언트, 금융에서는 민감도. 셋 다 미분이 국소적인 변화 규칙을 말해준다.*
 </PageFooter>

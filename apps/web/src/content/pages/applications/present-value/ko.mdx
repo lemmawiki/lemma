@@ -99,6 +99,24 @@ $PV = ∫_0^T c(t) · e^(−rt) dt$
 
 </ArcRow>
 
+<ArcRow n={6} title="민감도 — r이 움직이면 PV는 얼마나 움직이는가">
+
+여기까지는 $r$이 *당신이 정한* 수였다. 실제로는 *움직이는* 수다 — 중앙은행이 바꾸고, 시장이 다시 매기고, 당신의 관점이 바뀐다. 자연스럽게 따라오는 질문 — **$r$이 작은 양 $\Delta r$만큼 움직이면 PV는 얼마나 움직이는가?** 이건 [미분](/ko/modules/derivatives) 질문이다 — 정확히는 $\partial PV / \partial r$, $r$의 함수로 본 PV의 기울기.
+
+연속 경우 $PV = \int_0^T c(t) · e^{-rt} dt$를 적분 안에서 미분하면
+
+$\partial PV / \partial r \; = \; -\int_0^T t · c(t) · e^{-rt} dt$
+
+— *PV와 같은 적분*인데, 각 현금흐름 조각에 $t$가 한 번 더 곱해진다. **더 먼 미래의 돈이 민감도에 더 크게 기여한다.** **수정 듀레이션** $D = -(\partial PV / \partial r) / PV$로 정의하면, 작은 금리 변동에 대한 가격 변동은 [선형화](/ko/modules/linearization)로 예측된다 —
+
+$\Delta PV \;\approx\; -D · PV · \Delta r$
+
+10년 만기 무이표채는 $D \approx 10$ — 금리 1%p 상승이 가격 약 10% 하락을 예측한다. 2년 만기 채권은 $D \approx 2$ — 같은 변동이 약 2% 하락만 예측한다. *듀레이션은 정규화된, 금리에 대한 가격의 미분이고, 채권 시장이 매일 금리 위험을 가격으로 옮길 때 쓰는 도구다.*
+
+같은 모양이 옵션의 **그릭스 (Greeks)** 를 돌린다 — $\Delta$는 $\partial \text{Price} / \partial S$, $\Gamma$는 그 2계 도함수, $\Theta$는 $\partial \text{Price} / \partial t$, $\mathcal{V}$는 $\partial \text{Price} / \partial \sigma$. 모든 금융 상품은 *민감도의 가족*을 갖는다 — 가격을 각 입력에 대해 편미분한 것. "금융 derivative"의 *derivative*와 미적분의 *미분 (derivative)* 이 글자 그대로 같은 단어인 건 깊은 이유가 있어서다 — **상품의 가격이 다른 어떤 것의 도함수이고, 그 위험은 자신의 도함수들로 포착된다.**
+
+</ArcRow>
+
 </Arc>
 
 <Pin>
