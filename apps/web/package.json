@@ -12,6 +12,8 @@
     "validate:pages": "node scripts/validate-pages.mjs",
     "validate:links": "node scripts/validate-links.mjs",
     "audit:backlinks": "node scripts/audit-backlinks.mjs",
+    "new": "node scripts/new.mjs",
+    "health": "node scripts/audit.mjs",
     "build:brand": "node scripts/build-brand.mjs",
     "build:seeds": "node scripts/build-seeds.mjs"
   },

@@ -11,6 +11,8 @@
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "validate:glossary": "pnpm --filter lemma-web validate:glossary",
+    "new": "pnpm --filter lemma-web new",
+    "health": "pnpm --filter lemma-web health",
     "prepare": "lefthook install"
   },
   "devDependencies": {
