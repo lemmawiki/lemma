@@ -1,0 +1,86 @@
+---
+// <CrossPillarReuse module="log" /> — auto-generated "where this module
+// is used" panel for the end of a module page.
+//
+// Replaces the hand-written Arc 5 ("Same identity, two pillars") prose
+// that the user has been committing manually for every module. The
+// applications.modules field is the only source of truth; this
+// component reads it and renders.
+//
+// Authors can still write their own editorial Arc 5 — this panel is
+// the *data-driven baseline* and shows up reliably when applications
+// are added.
+
+import { consumersByPillar } from "../../lib/module-reuse";
+
+interface Props {
+  module: string;
+  /** Optional override of the panel's headline; defaults to the
+   *  bilingual "this module is used here" line. */
+  kicker?: string;
+}
+
+const { module: moduleId, kicker } = Astro.props;
+const lang: "en" | "ko" = (Astro.currentLocale as "en" | "ko" | undefined) ?? "en";
+const groups = consumersByPillar(moduleId, lang);
+const totalApps = groups.reduce((n, g) => n + g.apps.length, 0);
+
+const labels = {
+  en: {
+    kicker: kicker ?? "where this module is used",
+    countLabel: totalApps === 1 ? "application" : "applications",
+    pillarsLabel: groups.length === 1 ? "pillar" : "pillars",
+    empty: "No application consumes this module yet — the module sits on its own.",
+  },
+  ko: {
+    kicker: kicker ?? "이 모듈이 쓰이는 곳",
+    countLabel: "응용",
+    pillarsLabel: "필러",
+    empty: "아직 이 모듈을 소비하는 응용이 없다 — 모듈이 단독으로 존재.",
+  },
+}[lang];
+---
+
+<aside class="my-8 rounded-md border border-rule bg-rule-soft p-5 font-sans">
+  <header class="mb-4 flex items-baseline justify-between gap-3">
+    <div class="font-mono text-[10.5px] uppercase tracking-[0.08em] text-ink-mute">
+      {labels.kicker}
+    </div>
+    {
+      totalApps > 0 && (
+        <div class="font-mono text-[11px] text-ink-mute">
+          {totalApps} {labels.countLabel} · {groups.length} {labels.pillarsLabel}
+        </div>
+      )
+    }
+  </header>
+
+  {totalApps === 0 && <p class="m-0 text-[14.5px] text-ink-soft">{labels.empty}</p>}
+
+  <div class="grid gap-4">
+    {
+      groups.map((g) => (
+        <div>
+          <div class="mb-2 font-mono text-[10.5px] uppercase tracking-[0.08em] text-acc-deep">
+            {g.label}
+          </div>
+          <ul class="m-0 grid list-none gap-2 p-0">
+            {g.apps.map((a) => (
+              <li>
+                <a
+                  href={a.href}
+                  class="block rounded-md border border-rule bg-bg-card px-3 py-2 no-underline hover:border-acc"
+                >
+                  <div class="font-serif text-[15px] font-semibold text-ink hover:text-acc">
+                    {a.title}
+                  </div>
+                  <div class="mt-0.5 text-[13px] leading-[1.45] text-ink-soft">{a.hook}</div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</aside>

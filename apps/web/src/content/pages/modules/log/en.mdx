@@ -8,7 +8,7 @@ breadcrumb:
 ---
 
 import {
-  CodeBlock, Term, Exercise, Solution, ToolSpec, History, Proof, DoublingLadder, TwoStacks } from "@/components/mdx";
+  CodeBlock, Term, Exercise, Solution, ToolSpec, History, Proof, CrossPillarReuse, DoublingLadder, TwoStacks } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -213,6 +213,8 @@ A junior says: "<Term id="log-softmax">$\log_softmax$</Term> is just a perf opti
 </Exercise>
 
 </Exercises>
+
+<CrossPillarReuse module="log" />
 
 <PageFooter>
   module: **The Logarithm**. The most-shared module after vectors — consumed across two pillars by

@@ -1,0 +1,119 @@
+---
+// /en/shapes/ — the index of every procedural skeleton Lemma names.
+//
+// Shapes are the third axis of Lemma's content (modules / pillars /
+// shapes). The index page is small on purpose — each shape's hook is
+// already a one-paragraph promise of recognition.
+import Page from "../../../layouts/page.astro";
+import Breadcrumb from "../../../components/page/breadcrumb.astro";
+import { shapes } from "../../../data/shapes";
+import { applications } from "../../../data/applications";
+import type { Lang } from "../../../lib/route-from-entry";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "en" } }, { params: { lang: "ko" } }];
+}
+
+const lang = (Astro.params.lang as Lang) ?? "en";
+
+const jsonLd = {
+  "@context": ["https://schema.org", { lemma: "https://lemma.wiki/ns#" }],
+  "@type": "CollectionPage",
+  "@id": `/${lang}/shapes/`,
+  url: `/${lang}/shapes/`,
+  name: lang === "ko" ? "Lemma 골격" : "Lemma Shapes",
+  description:
+    lang === "ko"
+      ? "이름은 다른데 절차는 같은 곳들. 한 골격을 인식하면 모든 인스턴스가 익숙해진다."
+      : "Places where the names differ but the procedure is the same. Recognise one shape and every instance becomes familiar.",
+  inLanguage: lang,
+  hasPart: shapes.map((s) => ({
+    "@type": "HowTo",
+    "@id": `/${lang}/shapes/${s.id}`,
+    name: s.title[lang] ?? s.title.en,
+  })),
+};
+
+const title = lang === "ko" ? "골격 · Lemma" : "Shapes · Lemma";
+const description =
+  lang === "ko"
+    ? "이름은 다른데 절차는 같은 곳들 — Lemma 의 세 번째 축."
+    : "Procedural skeletons that recur across Lemma — the third axis after modules and pillars.";
+
+const labels = {
+  en: {
+    kicker: "shapes",
+    breadcrumb: "graph",
+    intro:
+      "Modules organise by math tool. Pillars organise by domain. Shapes organise by procedure — the same step-by-step skeleton hiding under different vocabularies in different applications. Read one, recognise the others.",
+    countLabel: "shapes",
+    instancesLabel: "instances",
+  },
+  ko: {
+    kicker: "골격",
+    breadcrumb: "그래프",
+    intro:
+      "모듈은 수학 도구로, 필러는 분야로 묶는다. 골격은 *절차* 로 묶는다 — 분야마다 다른 이름을 쓰지만 *같은 단계별 골격* 을 공유하는 응용들. 하나를 읽으면 나머지가 익숙해진다.",
+    countLabel: "골격",
+    instancesLabel: "인스턴스",
+  },
+}[lang];
+---
+
+<Page lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumb lang={lang} parent={{ href: "/graph", label: labels.breadcrumb }}>
+    {labels.kicker}
+  </Breadcrumb>
+
+  <section class="mt-8">
+    <header class="mb-8">
+      <h1
+        class="m-0 mb-3 font-serif text-[42px] font-medium leading-[1.1] tracking-[-0.02em] text-ink max-md:text-[32px]"
+      >
+        {labels.kicker}
+      </h1>
+      <p class="m-0 max-w-[680px] font-serif text-[18px] leading-[1.55] text-ink-soft">
+        {labels.intro}
+      </p>
+      <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.08em] text-ink-mute">
+        {shapes.length}
+        {` ${labels.countLabel}`}
+      </p>
+    </header>
+
+    <ul class="m-0 grid list-none gap-4 p-0">
+      {
+        shapes.map((s) => (
+          <li>
+            <a
+              href={`/${lang}/shapes/${s.id}`}
+              class="group block rounded-md border border-rule bg-rule-soft p-5 no-underline hover:border-acc"
+            >
+              <div class="mb-2 flex items-baseline justify-between gap-3">
+                <h2 class="m-0 font-serif text-[22px] font-semibold text-ink group-hover:text-acc">
+                  {s.title[lang] ?? s.title.en}
+                </h2>
+                <span class="font-mono text-[11px] uppercase tracking-[0.06em] text-ink-mute">
+                  {s.instances.length} {labels.instancesLabel}
+                </span>
+              </div>
+              <p class="m-0 text-[15px] leading-[1.55] text-ink-soft">
+                {s.hook[lang] ?? s.hook.en}
+              </p>
+              <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[10.5px] uppercase tracking-[0.06em] text-ink-mute">
+                {s.instances.map((inst) => {
+                  const app = applications.find((a) => a.id === inst.page);
+                  return (
+                    <span class="rounded-sm bg-bg-card px-1.5 py-0.5">
+                      {app ? (app.title[lang] ?? app.title.en).toLowerCase() : inst.page}
+                    </span>
+                  );
+                })}
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Page>

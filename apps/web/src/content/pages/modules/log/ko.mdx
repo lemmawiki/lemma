@@ -8,7 +8,7 @@ breadcrumb:
 ---
 
 import {
-  CodeBlock, Term, Exercise, Solution, ToolSpec, History, Proof, DoublingLadder, TwoStacks } from "@/components/mdx";
+  CodeBlock, Term, Exercise, Solution, ToolSpec, History, Proof, CrossPillarReuse, DoublingLadder, TwoStacks } from "@/components/mdx";
 import Hook from "@/components/page/hook.astro";
 import Lede from "@/components/page/lede.astro";
 import Arc from "@/components/page/arc.astro";
@@ -225,6 +225,8 @@ $\log₁₀(n!) ≈ n·\log₁₀(n) − n·\log₁₀(e)$, $\log₁₀(e) ≈ 0
 </Exercise>
 
 </Exercises>
+
+<CrossPillarReuse module="log" />
 
 <PageFooter>
   모듈: **로그**. 벡터 다음으로 가장 많이 공유되는 모듈 — 두 필러의 다섯 응용이 이걸 가져다 쓴다 —

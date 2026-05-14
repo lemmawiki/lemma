@@ -312,8 +312,11 @@ function Counters() {
           );
         })}
       </div>
-      <div className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-1 text-center font-mono text-xs tracking-[0.04em] text-ink-mute [&_a]:text-ink-mute [&_a]:no-underline hover:[&_a]:text-acc">
+      <div className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-1 text-center font-mono text-xs tracking-[0.04em] text-ink-mute [&_a]:text-ink-mute [&_a]:no-underline [&_a:hover]:text-acc">
         <Link to="/graph">{pick(language, "see the graph →", "그래프 보기 →")}</Link>
+        <Link to={`/${language}/shapes/`}>
+          {pick(language, "recognise the shapes →", "골격 알아보기 →")}
+        </Link>
         <Link to={`/${language}/glossary/`}>
           {pick(language, "browse the glossary →", "용어집 보기 →")}
         </Link>

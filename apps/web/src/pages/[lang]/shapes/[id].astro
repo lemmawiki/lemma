@@ -1,0 +1,191 @@
+---
+// Per-shape page — one procedural skeleton, multiple instances side by side.
+//
+//   /en/shapes/find-the-minimum
+//   /ko/shapes/equilibrium
+//
+// Carries HowTo JSON-LD so search engines can render the skeleton as a
+// stepwise rich result and LLM crawlers can ingest the procedure.
+import Page from "../../../layouts/page.astro";
+import Breadcrumb from "../../../components/page/breadcrumb.astro";
+import { shapes, shapeById } from "../../../data/shapes";
+import { applications, PILLAR_LABEL } from "../../../data/applications";
+import { modules } from "../../../data/modules";
+import { journeys } from "../../../data/journeys";
+import { buildShapeJsonLd } from "../../../lib/shapes-jsonld";
+import type { Lang } from "../../../lib/route-from-entry";
+
+export function getStaticPaths() {
+  const langs: Lang[] = ["en", "ko"];
+  return langs.flatMap((lang) =>
+    shapes.map((s) => ({ params: { lang, id: s.id }, props: { id: s.id } })),
+  );
+}
+
+const lang = (Astro.params.lang as Lang) ?? "en";
+const { id } = Astro.props as { id: string };
+const shape = shapeById[id];
+if (!shape) return Astro.redirect(`/${lang}/`);
+
+const url = `/${lang}/shapes/${id}`;
+const jsonLd = buildShapeJsonLd({ id, lang, url });
+
+const title = `${shape.title[lang] ?? shape.title.en} · ${lang === "ko" ? "골격" : "shape"} · Lemma`;
+const description = shape.hook[lang] ?? shape.hook.en;
+
+const journey = shape.journey ? journeys.find((j) => j.id === shape.journey) : undefined;
+
+const labels = {
+  en: {
+    breadcrumb: "shapes",
+    skeletonHeader: "the skeleton",
+    instancesHeader: "instances",
+    modulesHeader: "leans on",
+    journeyHeader: "walk the instances",
+    pillarLabel: "pillar",
+    objectiveLabel: "objective",
+    stopLabel: "stops when",
+  },
+  ko: {
+    breadcrumb: "골격",
+    skeletonHeader: "골격",
+    instancesHeader: "인스턴스",
+    modulesHeader: "기댄 모듈",
+    journeyHeader: "이 골격을 따라 읽기",
+    pillarLabel: "필러",
+    objectiveLabel: "목적",
+    stopLabel: "종료 조건",
+  },
+}[lang];
+---
+
+<Page lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumb lang={lang} parent={{ href: `/${lang}/shapes`, label: labels.breadcrumb }}>
+    {`${labels.breadcrumb} · ${shape.title[lang] ?? shape.title.en}`}
+  </Breadcrumb>
+
+  <article class="mt-8">
+    <header class="mb-8">
+      <h1
+        class="m-0 mb-4 font-serif text-[42px] font-medium leading-[1.1] tracking-[-0.02em] text-ink max-md:text-[32px]"
+      >
+        {shape.title[lang] ?? shape.title.en}
+      </h1>
+      <p class="m-0 max-w-[680px] font-serif text-[18px] leading-[1.55] text-ink-soft">
+        {shape.hook[lang] ?? shape.hook.en}
+      </p>
+    </header>
+
+    <section class="mt-10">
+      <div
+        class="mb-4 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute"
+      >
+        {labels.skeletonHeader}
+      </div>
+      <ol class="m-0 grid list-none gap-3 p-0">
+        {
+          shape.skeleton.map((step, i) => (
+            <li class="flex items-baseline gap-4">
+              <span class="min-w-[28px] font-serif text-[28px] font-semibold leading-none text-acc [font-feature-settings:'lnum']">
+                {i + 1}
+              </span>
+              <div>
+                <div class="font-serif text-[17px] font-semibold text-ink">
+                  {step.name[lang] ?? step.name.en}
+                </div>
+                <div class="mt-0.5 text-[15px] leading-[1.5] text-ink-soft">
+                  {step.gloss[lang] ?? step.gloss.en}
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="mt-10">
+      <div
+        class="mb-4 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute"
+      >
+        {labels.instancesHeader} · {shape.instances.length}
+      </div>
+      <div class="grid grid-cols-1 gap-3 md:grid-cols-3">
+        {
+          shape.instances.map((inst) => {
+            const app = applications.find((a) => a.id === inst.page);
+            const href = app ? `/${lang}${app.href}` : `/${lang}/applications/${inst.page}`;
+            return (
+              <a
+                href={href}
+                class="block rounded-md border border-rule bg-rule-soft p-4 no-underline transition-colors hover:border-acc"
+              >
+                <div class="mb-1 font-mono text-[10.5px] uppercase tracking-[0.06em] text-ink-mute">
+                  {app ? PILLAR_LABEL[app.pillar][lang] : labels.pillarLabel} · {inst.page}
+                </div>
+                <div class="mb-2 font-serif text-[16px] font-semibold text-ink hover:text-acc">
+                  {app ? (app.title[lang] ?? app.title.en) : inst.page}
+                </div>
+                <div class="mb-2 text-[13.5px] leading-[1.5] text-ink-soft">
+                  <span class="font-mono text-[10.5px] uppercase tracking-[0.06em] text-ink-mute">
+                    {labels.objectiveLabel}
+                  </span>
+                  <span class="ml-1.5">{inst.objective[lang] ?? inst.objective.en}</span>
+                </div>
+                <div class="text-[13.5px] leading-[1.5] text-ink-soft">
+                  <span class="font-mono text-[10.5px] uppercase tracking-[0.06em] text-ink-mute">
+                    {labels.stopLabel}
+                  </span>
+                  <span class="ml-1.5">{inst.stop[lang] ?? inst.stop.en}</span>
+                </div>
+              </a>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    {
+      shape.modules.length > 0 && (
+        <section class="mt-10">
+          <div class="mb-4 inline-block border-b border-rule pb-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute">
+            {labels.modulesHeader}
+          </div>
+          <ul class="m-0 flex flex-wrap gap-2 p-0 [list-style:none]">
+            {shape.modules.map((mid) => {
+              const m = modules.find((x) => x.id === mid);
+              return (
+                <li>
+                  <a
+                    href={`/${lang}/modules/${mid}`}
+                    class="rounded-full border border-rule px-3 py-1 font-serif text-[14px] text-ink no-underline hover:border-acc hover:text-acc"
+                  >
+                    {m ? (m.title[lang] ?? m.title.en) : mid}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      journey && (
+        <section class="mt-10 rounded-md border border-rule bg-rule-soft p-4">
+          <div class="mb-2 font-mono text-[10.5px] uppercase tracking-[0.06em] text-ink-mute">
+            {labels.journeyHeader}
+          </div>
+          <a
+            href={`/${lang}/journey/${journey.id}`}
+            class="font-serif text-[18px] font-semibold text-ink no-underline hover:text-acc"
+          >
+            {journey.title[lang] ?? journey.title.en} →
+          </a>
+          <p class="m-0 mt-1 text-[14px] leading-[1.5] text-ink-soft">
+            {journey.tagline[lang] ?? journey.tagline.en}
+          </p>
+        </section>
+      )
+    }
+  </article>
+</Page>
