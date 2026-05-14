@@ -323,6 +323,7 @@ export const shapes: ShapeMeta[] = [
       },
     ],
     modules: ["entropy", "vectors"],
+    journey: "how-compression-works",
   },
 ];
 

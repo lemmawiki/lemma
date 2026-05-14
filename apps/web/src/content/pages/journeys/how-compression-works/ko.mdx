@@ -1,0 +1,34 @@
+---
+title: 압축은 어떻게 돌아가는가 · Lemma
+description: JPEG · TF-IDF · 픽셀 엔트로피 하한 — 그래픽과 ML에서 같은 3-단계 절차.
+breadcrumb:
+  current: 여정 · 압축은 어떻게 돌아가는가
+---
+
+import { JourneyDays } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+
+<Hook kicker="여정 · 4일 · 그래픽 → ML">
+
+# 압축은 어떻게 돌아가는가
+
+JPEG는 1 MB 사진을 100 KB로 줄인다. TF-IDF는 백만 단어 어휘를 *의미 있는* 한 줌으로 줄인다. 두 페이지는 표면적으로 무관해 보인다 — 한쪽은 그래픽 코덱, 다른 한쪽은 검색 관련도 점수 — 그러나 같은 **세 단계**를 돈다 — *기저 변환, 작은 좌표 버리기, 재구성*. 이 경로는 가능 영역을 정하는 엔트로피 한계를 먼저 열고, 그 한계를 따르는 세 페이지를 차례로 걷는다.
+
+<Lede>
+  Lemma에서 *압축*은 [골격(shape)](/ko/shapes/compression) — 다른 이름으로 반복되는 절차다.
+  추상 하한을 먼저 읽고, 세 사례를 차례로 만난다. 4일차에 이르면 *픽셀*과 *단어* 사이의 다리는
+  우연이 아니라 *번역 문제*로 보인다.
+</Lede>
+
+</Hook>
+
+<JourneyDays id="how-compression-works" />
+
+<PageFooter>
+  지나는 기둥: <strong>그래픽</strong>, <strong>ML</strong>.
+  쓰는 모듈: <code>엔트로피</code>, <code>벡터</code>.
+  거치는 응용: <code>이미지 압축</code>, <code>JPEG 압축</code>, <code>TF-IDF</code>.
+  도착점 — *한 절차, 세 이름 — 무손실 하한, 손실 기저, 문서 순위. 압축되는 단위는 바뀌지만 단계는 그대로다.*
+</PageFooter>

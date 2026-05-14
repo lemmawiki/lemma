@@ -1,0 +1,34 @@
+---
+title: How Compression Works · Lemma
+description: One three-step procedure under JPEG, TF-IDF, and the raw-pixel entropy floor — across graphics and ML.
+breadcrumb:
+  current: journey · how compression works
+---
+
+import { JourneyDays } from "@/components/mdx";
+import Hook from "@/components/page/hook.astro";
+import Lede from "@/components/page/lede.astro";
+import PageFooter from "@/components/page/page-footer.astro";
+
+<Hook kicker="journey · 4 days · graphics → ml">
+
+# How Compression Works
+
+JPEG squeezes a 1 MB photo into 100 KB. TF-IDF squeezes a million-word vocabulary into the handful of words that actually mean something. The two pages look unrelated — one is a graphics codec, one is a search-relevance score — but they run the **same three steps**: *change basis, drop small, reconstruct.* This path opens with the entropy bound that decides what is possible, then walks the three pages that obey it.
+
+<Lede>
+  *Compression* in Lemma is a [shape](/en/shapes/compression) — a procedural skeleton that recurs
+  under different names. Read the abstract floor first, then meet the three instances. By day four
+  the bridge between *pixels* and *words* will look like a translation problem, not a coincidence.
+</Lede>
+
+</Hook>
+
+<JourneyDays id="how-compression-works" />
+
+<PageFooter>
+  Path through: <strong>graphics</strong> and <strong>ml</strong> pillars.
+  Modules consumed: <code>entropy</code>, <code>vectors</code>.
+  Applications passed: <code>image-compression</code>, <code>jpeg-compression</code>, <code>tf-idf</code>.
+  Destination — *one procedure, three names: lossless floor, lossy basis, document ranking. The unit being compressed changes; the steps do not.*
+</PageFooter>

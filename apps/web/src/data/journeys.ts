@@ -422,6 +422,65 @@ export const journeys: JourneyMeta[] = [
       },
     ],
   },
+
+  {
+    id: "how-compression-works",
+    title: {
+      en: "How Compression Works",
+      ko: "압축은 어떻게 돌아가는가",
+    },
+    hook: {
+      en: "JPEG squeezes a 1 MB photo to 100 KB. TF-IDF squeezes a million-word vocabulary to a handful of words that actually mean something. Two unrelated pages, one *three-step* procedure — change basis, drop small, reconstruct. This path reads the entropy bound first, then walks the three pages that obey it.",
+      ko: "JPEG는 1 MB 사진을 100 KB로 줄인다. TF-IDF는 백만 단어 어휘를 의미 있는 한 줌으로 줄인다. 보기엔 무관한 두 페이지가 같은 *3단계* 절차를 돈다 — 기저 변환, 작은 좌표 버리기, 재구성. 이 경로는 엔트로피 한계를 먼저 읽고, 그 한계를 따르는 세 페이지를 차례로 걷는다.",
+    },
+    tagline: {
+      en: "One three-step procedure under JPEG, TF-IDF, and the raw-pixel entropy floor — across graphics and ML.",
+      ko: "JPEG · TF-IDF · 픽셀 엔트로피 하한 — 그래픽과 ML에서 같은 3-단계 절차.",
+    },
+    duration: 4,
+    destination: {
+      en: "Seeing one procedure (change basis, drop small, reconstruct) wear three names across graphics and ML.",
+      ko: "한 절차 (기저 변환, 작은 좌표 버리기, 재구성) 가 그래픽과 ML에서 세 이름을 바꿔 쓰는 모습 보기.",
+    },
+    days: [
+      {
+        day: 1,
+        page: "/modules/entropy",
+        kind: "module",
+        why: {
+          en: "Open with the bound the rest of the path bumps against. Entropy $H = -Σ pᵢ \\log pᵢ$ is the minimum bits-per-symbol any lossless coder can hit. Read Arc 5 — *same equation, two pillars* — and note that the compression story already extends across pillars before you finish the abstract.",
+          ko: "이 경로의 나머지가 부딪힐 *한계*를 먼저 연다. 엔트로피 $H = -Σ pᵢ \\log pᵢ$는 어떤 무손실 코더도 깰 수 없는 *심볼당 비트* 최솟값. § 5 — *같은 식, 두 필러* — 를 읽고, 추상이 끝나기 전에 압축 이야기가 이미 필러를 가로지른다는 사실을 표시해둔다.",
+        },
+      },
+      {
+        day: 2,
+        page: "/graphics/image-compression",
+        kind: "application",
+        why: {
+          en: "First instance — pillar: graphics. The objective is a raw pixel grid; the *change of basis* is the move from raw pixels to neighbour-differences (or to a histogram); the entropy of the new representation is much smaller than the entropy of the raw one. PNG lives inside this gap.",
+          ko: "첫 사례 — 필러: 그래픽. 대상은 원본 픽셀 그리드, *기저 변환*은 원본 픽셀에서 이웃 차분 (또는 히스토그램) 으로 옮기는 일, 새 표현의 엔트로피가 원본의 엔트로피보다 훨씬 작다. PNG는 그 격차 안에 산다.",
+        },
+      },
+      {
+        day: 3,
+        page: "/graphics/jpeg-compression",
+        kind: "application",
+        why: {
+          en: "Second instance — still graphics. Same three steps, more aggressive. The basis is now the DCT — 8×8 blocks become 64 frequency coefficients, signal concentrates in the low ones. *Drop small* is quantisation; *reconstruct* runs inverse DCT. Crucially, this is *lossy* — JPEG accepts irreversible loss in exchange for going below the lossless floor day 1 named.",
+          ko: "두 번째 사례 — 여전히 그래픽. 같은 세 단계, 더 공격적. 기저는 이번엔 DCT — 8×8 블록이 64개 주파수 계수로 바뀌고, 신호는 저주파에 모인다. *작은 좌표 버리기*는 양자화, *재구성*은 역 DCT. 결정적으로 이건 *손실 압축* — JPEG는 1일차가 말한 무손실 하한 아래로 가기 위해 *되돌릴 수 없는 손실*을 받아들인다.",
+        },
+      },
+      {
+        day: 4,
+        page: "/ml/tf-idf",
+        kind: "application",
+        why: {
+          en: "Third instance — pillar jumps to ML. The basis is the bag-of-words representation. *Drop small* is $idf(t) = \\log(N / df(t))$ — common words get near-zero weight and effectively *vanish*. The procedure is the same three steps, applied to a document instead of an image, ranking instead of bytes. *Same skeleton, different unit of compression.*",
+          ko: "세 번째 사례 — 필러가 ML로 점프한다. 기저는 단어 가방 표현. *작은 좌표 버리기*는 $idf(t) = \\log(N / df(t))$ — 흔한 단어가 거의 0 가중치를 받아 *사라진다*. 절차는 같은 세 단계, 이미지 대신 문서에, 바이트 대신 순위에 적용된 것. *같은 골격, 다른 압축 단위.*",
+        },
+      },
+    ],
+  },
 ];
 
 export const journeyById: Record<string, JourneyMeta> = Object.fromEntries(
